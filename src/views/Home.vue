@@ -6,18 +6,16 @@
         <label class="is-flex is-flex-direction-column is-justify-content-center">
           <p>Letztes erfolgreich abgeschlossenes Semester</p>
         </label>
-          <div class="select pl-2">
-            <select v-model="lastSemesterNumber">
-              <option
-                v-for="semester in semesters"
-                :key="semester.number">
-                {{ semester.number }}
-              </option>
-            </select>
-          </div>
+        <div class="select pl-2">
+          <select v-model="lastSemesterNumber">
+            <option v-for="semester in semesters" :key="semester.number">
+              {{ semester.number }}
+            </option>
+          </select>
         </div>
       </div>
-      <div class="column is-narrow">
+    </div>
+    <div class="column is-narrow">
       <Transition>
         <div v-if="errorMsg" class="notification is-danger">
           <span>- {{ errorMsg }}</span>
@@ -34,7 +32,8 @@
             </li>
           </ul>
           <button class="button" v-on:click="removeUnknownModulesFromUrl">
-            Remove all from URL</button>
+            Remove all from URL
+          </button>
         </div>
       </Transition>
     </div>
@@ -62,35 +61,34 @@
         <h2 class="subtitle">Übersicht der ECTS Punkte</h2>
         <table>
           <tbody>
-          <tr
-            v-for="category in mappedCategories"
-            :key="category.name"
-            v-bind:class="category.categoryClass">
-            <td style="vertical-align:bottom;padding-right:1em;text-align:end">
-              {{ category.name }}
-            </td>
-            <td style="padding-top:8px">
-              <BeautifulProgressIndicator
-              :required=category.required_ects
-              :earned=category.earnedCredits
-              :planned=category.plannedCredits
-              :color="category.color"
-              ></BeautifulProgressIndicator>
-            </td>
-          </tr>
-          <tr>
-            <td style="vertical-align:bottom;padding-right:1em;text-align:end">
-              Total
-            </td>
-            <td style="padding-top:8px">
-              <BeautifulProgressIndicator
-              :required=180
-              :earned="totalEarnedEcts"
-              :planned="totalPlannedEcts"
-              :color="`orange`"
-              ></BeautifulProgressIndicator>
-            </td>
-          </tr>
+            <tr
+              v-for="category in mappedCategories"
+              :key="category.name"
+              v-bind:class="category.categoryClass"
+            >
+              <td style="vertical-align: bottom; padding-right: 1em; text-align: end">
+                {{ category.name }}
+              </td>
+              <td style="padding-top: 8px">
+                <BeautifulProgressIndicator
+                  :required="category.required_ects"
+                  :earned="category.earnedCredits"
+                  :planned="category.plannedCredits"
+                  :color="category.color"
+                ></BeautifulProgressIndicator>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: bottom; padding-right: 1em; text-align: end">Total</td>
+              <td style="padding-top: 8px">
+                <BeautifulProgressIndicator
+                  :required="180"
+                  :earned="totalEarnedEcts"
+                  :planned="totalPlannedEcts"
+                  :color="`orange`"
+                ></BeautifulProgressIndicator>
+              </td>
+            </tr>
           </tbody>
         </table>
       </article>
@@ -99,8 +97,7 @@
       <article>
         <h2 class="subtitle">Vertiefungen</h2>
         <div class="columns is-multiline mt-5">
-          <div v-for="focus in mappedFocuses"
-            :key="focus.name" class="column is-full">
+          <div v-for="focus in mappedFocuses" :key="focus.name" class="column is-full">
             <Focus
               :name="focus.name"
               :allModules="focus.modules"
@@ -111,7 +108,7 @@
       </article>
     </div>
     <div class="column">
-      <img src="../assets/this_is_fine.jpg">
+      <img src="../assets/this_is_fine.jpg" />
     </div>
   </div>
 </template>
@@ -158,11 +155,10 @@ export default {
       }));
     },
     plannedModules() {
-      return this.semesters
-        .flatMap((semester) => semester.modules);
+      return this.semesters.flatMap((semester) => semester.modules);
     },
     mappedFocuses() {
-      const plannedModuleNames = this.plannedModules.map(module => module.id);
+      const plannedModuleNames = this.plannedModules.map((module) => module.id);
       return this.focuses.map((focus) => ({
         ...focus,
         filteredModules: focus.modules
@@ -211,7 +207,7 @@ export default {
             number: index + 1,
             modules: semesterPart
               .split(moduleSeparator)
-              .filter((id) => !(isNullOrWhitespace(id)))
+              .filter((id) => !isNullOrWhitespace(id))
               .map((moduleId) => {
                 const newModule = this.modules.find((module) => module.id === moduleId);
                 if (newModule == null) {
@@ -232,9 +228,8 @@ export default {
       window.location.hash = `plan/${encodedPlan}`;
     },
     getPlannedSemesterForModule(moduleName) {
-      return this.semesters.find(
-        (semester) => semester.modules.some(module => module.name === moduleName),
-      )?.number;
+      // eslint-disable-next-line max-len
+      return this.semesters.find((semester) => semester.modules.some((module) => module.name === moduleName))?.number;
     },
     getEarnedCredits(category = undefined) {
       return this.semesters
@@ -271,8 +266,9 @@ export default {
       this.updateUrlFragment();
     },
     removeModule(semesterNumber, moduleId) {
-      this.semesters[semesterNumber - 1].modules = this.semesters[semesterNumber - 1].modules
-        .filter((module) => module.id !== moduleId);
+      this.semesters[semesterNumber - 1].modules = this.semesters[
+        semesterNumber - 1
+      ].modules.filter((module) => module.id !== moduleId);
       this.unknownModules = this.unknownModules.filter((f) => f.moduleId !== moduleId);
 
       this.updateUrlFragment();
