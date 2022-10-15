@@ -1,13 +1,12 @@
 <template>
   <Navigation></Navigation>
   <div class="p-5 custom-container">
-    <router-view/>
+    <router-view />
   </div>
   <Footer></Footer>
 </template>
 
-<style>
-</style>
+<style></style>
 <script>
 import Navigation from './components/Navigation.vue';
 import Footer from './components/Footer.vue';
@@ -19,5 +18,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>
