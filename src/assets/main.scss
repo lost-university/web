@@ -74,18 +74,29 @@
   border-radius: 5px;
   color: white;
   cursor: move;
+  position: relative;
 }
 
-.module .delete-button {
+.module-header {
+  display: flex;
+  justify-content: end;
+  position: absolute;
+  right: 0;
   margin-top: -0.5rem;
-  margin-right: -0.5rem;
+  margin-right: 0.5rem;
+  row-gap: 0.5rem;
 }
 
+.info-link {
+  color: inherit;
+}
 @include desktop {
-  .module .delete-button {
+  .module .delete-button,
+    .module .info-link {
     visibility: hidden;
   }
-  .module:hover .delete-button {
+  .module:hover .delete-button,
+  .module:hover .info-link {
     visibility: visible;
   }
 }

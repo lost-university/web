@@ -3,8 +3,12 @@
     class="column module mt-1"
     :key="module.name"
     :style="{ 'background-color': this.getColorForCategory(module.categories[0]) }">
-    <button class="delete-button delete is-pulled-right" @click="$emit('on-delete', module.id)">
-    </button>
+    <div class="module-header">
+      <a class="info-link" v-bind:href="module.url" target="_blank">
+        <i class="fa fa-circle-info"></i>
+      </a>
+      <button class="delete-button delete" @click="$emit('on-delete', module.id)"></button>
+    </div>
     <h3 class="has-text-weight-bold">{{module.name}}</h3>
     <p>{{module.ects}} ECTS</p>
   </div>
