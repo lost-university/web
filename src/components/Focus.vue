@@ -3,59 +3,53 @@
     <button
       @click="toggleFocus()"
       class="button is-fullwidth button-focus"
-      type="button"
       :aria-expanded="isOpen"
-      :class="{ 'is-success': !filteredModules.length }"
+      :class="{'is-success': !filteredModules.length}"
     >
-      <div class="focus-main">
-        <span>{{ name }}</span>
+     <div class="focus-main">
+      <span>{{ name }}</span>
         <span v-if="filteredModules.length" class="tag is-info is-light">
           {{filteredModules.length}} Module werden noch benötigt
         </span>
         <span v-if="!filteredModules.length" class="tag is-success is-light">
           Vertiefung geplant
         </span>
-      </div>
-      <div class="focus-aside">
+     </div>
+     <div class="focus-aside">
         <span class="icon">
           <font-awesome-icon :icon="isOpen ? openIconClass : closedIconClass" />
         </span>
-      </div>
+     </div>
     </button>
     <div v-show="isOpen" class="column is-full column-focus">
       <div class="box box-focus">
-        <p v-if="!filteredModules.length">
-          Alle benötigten Module sind bestanden/geplant.
-        </p>
-        <p v-if="filteredModules.length">
-          Für die Vertiefung müssen folgende Module noch geplant werden:
-        </p>
-        <ul class="focus-missing-modules-list">
-          <li
-            v-for="filteredModule in filteredModules"
-            :key="filteredModule.name">{{filteredModule.name}}</li>
-        </ul>
+            <p v-if="!filteredModules.length">
+              Alle benötigten Module sind bestanden/geplant.
+            </p>
+            <p v-if="filteredModules.length">
+              Für die Vertiefung müssen folgende Module noch geplant werden:
+            </p>
+            <ul class="focus-missing-modules-list">
+              <li v-for="filteredModule in filteredModules"
+            :key="filteredModule">{{filteredModule}}</li>
+            </ul>
 
       </div>
     </div>
-  </div>
+    </div>
 </template>
 <script>
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
   name: 'Focus',
   props: {
     name: {
       type: String,
-      default: '',
     },
     allModules: {
       type: Array,
-      default: () => [],
     },
     filteredModules: {
       type: Array,
-      default: () => [],
     },
   },
   data() {
