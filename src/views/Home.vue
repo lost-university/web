@@ -199,15 +199,27 @@ export default {
       return response.ok ? response.json() : [];
     },
     getPlanDataFromUrl() {
-      const path = window.location.hash;
+      let path = window.location.hash;
       const planIndicator = '#/plan/';
       const moduleSeparator = '_';
       const semesterSeparator = '-';
       function isNullOrWhitespace(input) {
         return !input || !input.trim();
       }
+
+      if (!path.startsWith(planIndicator)) {
+        const cachedPlan = localStorage.getItem('plan');
+        if (cachedPlan) {
+          window.location.hash = cachedPlan;
+          path = cachedPlan;
+        }
+      }
+
       if (path.startsWith(planIndicator)) {
-        return path
+        // This ensures backwards compatability.
+        // Removing it after about 6 months should be fine (so around October 2023)
+        const newPath = path.replace('FunProg', 'FP').replace('BAI14', 'BAI21');
+        const planData = newPath
           .slice(planIndicator.length)
           .split(semesterSeparator)
           .map((semesterPart, index) => ({
@@ -217,18 +229,21 @@ export default {
               .filter((id) => !(isNullOrWhitespace(id)))
               .map((moduleId) => {
                 const newModule = this.modules.find((module) => module.id === moduleId);
-                if (newModule == null) {
+                if (newModule === null) {
                   this.showUnknownModulesError(index + 1, moduleId);
                 }
                 return newModule;
               })
               .filter((module) => module),
           }));
-      }
 
-      const cachedPlan = localStorage.getItem('plan');
-      if (cachedPlan != null) {
-        window.location.hash = cachedPlan;
+        if (newPath !== path) {
+          window.location.hash = newPath.replace('#/', '');
+        }
+
+        this.savePlanInLocalStorage(newPath);
+
+        return planData;
       }
 
       return [];
@@ -240,9 +255,12 @@ export default {
 
       window.location.hash = `plan/${encodedPlan}`;
 
-      if (encodedPlan !== []) {
-        localStorage.setItem('plan', window.location.hash);
+      if (encodedPlan) {
+        this.savePlanInLocalStorage(window.location.hash);
       }
+    },
+    savePlanInLocalStorage(path) {
+      localStorage.setItem('plan', path);
     },
     getPlannedSemesterForModule(moduleName) {
       return this.semesters.find(
