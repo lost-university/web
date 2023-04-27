@@ -21,9 +21,14 @@ npm run dev
 npm run build
 ```
 
-### Lints and fixes files (current unavailable)
+### Lints
 ```
 npm run lint
+```
+
+### TODO: Lints and fixes files
+```
+npm run lint-fix?
 ```
 
 ### Customize configuration
