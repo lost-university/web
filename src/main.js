@@ -14,5 +14,4 @@ import App from './App.vue';
 library.add(faChevronUp);
 library.add(faChevronDown);
 
-
 createApp(App).use(router).component('font-awesome-icon', FontAwesomeIcon).mount('#app');
