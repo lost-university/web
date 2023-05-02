@@ -81,8 +81,15 @@
       <article>
         <h2 class="subtitle">Vertiefungen</h2>
         <div class="columns is-multiline mt-5">
-          <div v-for="focus in mappedFocuses" :key="focus.name" class="column is-full">
-            <Focus :name="focus.name" :allModules="focus.modules" :filteredModules="focus.filteredModules" />
+          <div
+            v-for="focus in mappedFocuses"
+            :key="focus.name"
+            class="column is-full">
+            <Focus
+              :name="focus.name"
+              :allModules="focus.modules"
+              :filteredModuleNames="focus.filteredModuleNames"
+            />
           </div>
         </div>
       </article>
@@ -143,8 +150,9 @@ export default {
       const plannedModuleIds = this.plannedModules.map((module) => module.id);
       return this.focuses.map((focus) => ({
         ...focus,
-        filteredModules: focus.modules
-          .filter((module) => !plannedModuleIds.includes(module.id)),
+        filteredModuleNames: focus.modules
+          .filter((module) => !plannedModuleIds.includes(module.id))
+          .map((module) => module.name),
       }));
     },
     totalPlannedEcts() {
