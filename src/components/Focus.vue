@@ -35,26 +35,30 @@
             v-for="filteredModule in filteredModules"
             :key="filteredModule">{{filteredModule}}</li>
         </ul>
-
       </div>
     </div>
   </div>
 </template>
+
 <script>
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: 'Focus',
   props: {
     name: {
       required: true,
       type: String,
+      default: '',
     },
     allModules: {
       required: true,
       type: Array,
+      default: () => [],
     },
     filteredModules: {
       required: true,
       type: Array,
+      default: () => [],
     },
   },
   data() {
