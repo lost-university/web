@@ -5,12 +5,13 @@
       <div class="column is-11">
         <p>
           © 2023
-          <a class="contributor-link" href="https://github.com/jeremystucki" target="_blank">Jeremy Stucki</a>,
-          <a class="contributor-link" href="https://github.com/unkelhoebbi" target="_blank">Gregor Stuber</a>,
-          <a class="contributor-link" href="https://github.com/joshuabeny1999" target="_blank">Joshua Hürzeler</a>,
-          <a class="contributor-link" href="https://github.com/Mafii" target="_blank">Mathias Fischler</a>,
-          <a class="contributor-link" href="https://github.com/lzkndg" target="_blank">Luzia Kündig</a>,
-          <a class="contributor-link" href="https://github.com/StefanieJaeger" target="_blank">Stefanie Jäger</a>
+          <!-- eslint-disable max-len,vue/max-len -->
+          <a class="contributor-link" href="https://github.com/jeremystucki" target="_blank" rel="noopener noreferrer">Jeremy Stucki</a>,
+          <a class="contributor-link" href="https://github.com/unkelhoebbi" target="_blank" rel="noopener noreferrer">Gregor Stuber</a>,
+          <a class="contributor-link" href="https://github.com/joshuabeny1999" target="_blank" rel="noopener noreferrer">Joshua Hürzeler</a>,
+          <a class="contributor-link" href="https://github.com/Mafii" target="_blank" rel="noopener noreferrer">Mathias Fischler</a>,
+          <a class="contributor-link" href="https://github.com/lzkndg" target="_blank" rel="noopener noreferrer">Luzia Kündig</a>,
+          <a class="contributor-link" href="https://github.com/StefanieJaeger" target="_blank" rel="noopener noreferrer">Stefanie Jäger</a>
         </p>
       </div>
       <div class="column is-1 ml-auto">

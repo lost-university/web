@@ -40,7 +40,8 @@
     "rules": {
       "max-len": ["error", { "code": 120 }],
       "vue/max-len": ["error", { "code": 120 }],
-      "vue/multi-word-component-names": "off"
+      "vue/multi-word-component-names": "off",
+      "vuejs-accessibility/anchor-has-content": "off"
     }
   },
   "browserslist": [
