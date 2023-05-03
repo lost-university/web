@@ -6,7 +6,7 @@
       </router-link>
       <a
         @click="onBurgerClick"
-        @keydown="onBurgerClick"
+        @keypress="onBurgerClick"
         v-bind:class="{ 'is-active': isBurgerActive }"
         role="button"
         tabindex=0
