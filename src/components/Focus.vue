@@ -45,12 +45,15 @@ export default {
   name: 'Focus',
   props: {
     name: {
+      required: true,
       type: String,
     },
     allModules: {
+      required: true,
       type: Array,
     },
     filteredModules: {
+      required: true,
       type: Array,
     },
   },
