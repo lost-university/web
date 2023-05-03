@@ -39,7 +39,7 @@
 </template>
 
 <script>
-/* eslint-disable max-len */
+/* eslint-disable max-len,vue/max-len */
 export default {
   name: 'Navigation',
   data() {
