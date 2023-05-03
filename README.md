@@ -26,9 +26,9 @@ npm run build
 npm run lint
 ```
 
-### TODO: Lints and fixes files
+### Auto-fix your linter errors (if possible)
 ```
-npm run lint-fix?
+npm run lint-fix
 ```
 
 ### Customize configuration

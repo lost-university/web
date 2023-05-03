@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint --ext .js,.vue src --ignore-path .gitignore"
+    "lint": "eslint --ext .js,.vue src --ignore-path .gitignore --max-warnings 0",
+    "lint-fix": "eslint --ext .js,.vue src --ignore-path .gitignore --max-warnings 0 --fix"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
@@ -42,7 +43,5 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ],
-  "gitHooks": {},
-  "lint-staged": {}
+  ]
 }
