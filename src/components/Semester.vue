@@ -12,7 +12,7 @@
     <template #header>
       <div class="semester-header">
         <h2 class="subtitle pl-3 mb-2">Semester {{ number }}</h2>
-        <button class="delete-button delete is-medium" @click="removeSemester()" />
+        <button class="delete-button delete is-medium" @click="removeSemester()" type="button" />
       </div>
     </template>
     <template #item="{ element }">
@@ -23,7 +23,7 @@
     </template>
     <template #footer>
       <div class="column semester-footer" v-bind:class="{ 'is-hidden': isAddingNewModule }">
-        <button class="button is-dark button-add is-fullwidth" @click="isAddingNewModule = true">
+        <button class="button is-dark button-add is-fullwidth" @click="isAddingNewModule = true" type="button">
           +
         </button>
       </div>
@@ -61,12 +61,15 @@ export default {
   props: {
     number: {
       type: Number,
+      required: true,
     },
     modules: {
       type: Array,
+      required: true,
     },
     allModules: {
       type: Array,
+      required: true,
     },
   },
   components: {
