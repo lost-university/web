@@ -1,8 +1,10 @@
-name: Build
-on: push
+name: Deploy
+on:
+  push:
+    branches: [main]
 jobs:
   build:
-    name: Build
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -15,5 +17,8 @@ jobs:
         run: npm install
       - name: Build
         run: npm run build
-      - name: Lint
-        run: npm run lint
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.2.2
+        with:
+          branch: gh-pages
+          folder: dist 
