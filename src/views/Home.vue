@@ -3,11 +3,11 @@
     <div class="column">
       <h1 class="title">Plane deine Module</h1>
       <div class="is-flex is-align-content-space-evenly is-justify-content-left">
-        <label class="is-flex is-flex-direction-column is-justify-content-center">
+        <label class="is-flex is-flex-direction-column is-justify-content-center" for="last-semester-select">
           <p>Letztes erfolgreich abgeschlossenes Semester</p>
         </label>
         <div class="select pl-2">
-          <select v-model="lastSemesterNumber">
+          <select v-model="lastSemesterNumber" id="last-semester-select">
             <option
               v-for="semester in semesters"
               :key="semester.number">
@@ -33,8 +33,9 @@
               {{ unknown.moduleId }}
             </li>
           </ul>
-          <button class="button" v-on:click="removeUnknownModulesFromUrl">
-            Remove all from URL</button>
+          <button class="button" v-on:click="removeUnknownModulesFromUrl" type="button">
+            Remove all from URL
+          </button>
         </div>
       </Transition>
     </div>
@@ -51,7 +52,7 @@
       />
     </div>
     <div class="column add-semester">
-      <button class="add-semester-btn button is-dark is-fullwidth" v-on:click="addSemester">
+      <button class="add-semester-btn button is-dark is-fullwidth" v-on:click="addSemester" type="button">
         +
       </button>
     </div>
@@ -113,7 +114,7 @@
       </article>
     </div>
     <div class="column">
-      <img src="../assets/this_is_fine.jpg">
+      <img src="../assets/this_is_fine.jpg" alt="Well known 'this is fine' meme with a dog in a room on fire">
     </div>
   </div>
 </template>
