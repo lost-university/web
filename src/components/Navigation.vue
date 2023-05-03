@@ -2,12 +2,14 @@
   <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/">
-        <img src="../assets/logo.png" class="logo-nav">
+        <img src="../assets/logo.png" class="logo-nav" alt="Home">
       </router-link>
       <a
-        v-on:click="onBurgerClick"
+        @click="onBurgerClick"
+        @keydown="onBurgerClick"
         v-bind:class="{ 'is-active': isBurgerActive }"
         role="button"
+        tabindex=0
         class="navbar-burger"
         aria-label="menu"
         aria-expanded="false"
