@@ -5,6 +5,7 @@
       class="button is-fullwidth button-focus"
       :aria-expanded="isOpen"
       :class="{ 'is-success': !filteredModules.length }"
+      type="button"
     >
       <div class="focus-main">
         <span>{{ name }}</span>

@@ -21,15 +21,19 @@ export default {
   props: {
     required: {
       type: Number,
+      required: true,
     },
     earned: {
       type: Number,
+      required: true,
     },
     planned: {
       type: Number,
+      required: true,
     },
     color: {
       type: String,
+      required: true,
     },
   },
   computed: {
