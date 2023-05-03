@@ -37,7 +37,13 @@
       "plugin:vue/vue3-essential",
       "@vue/airbnb"
     ],
-    "rules": {}
+    "rules": {
+      "max-len": [
+        "error",
+        { "code": 120 }
+      ],
+      "vue/multi-word-component-names": "off"
+    }
   },
   "browserslist": [
     "> 1%",

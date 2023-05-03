@@ -39,6 +39,7 @@
 </template>
 
 <script>
+/* eslint-disable max-len */
 export default {
   name: 'Navigation',
   data() {
