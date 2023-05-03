@@ -4,26 +4,32 @@
       <router-link class="navbar-item" to="/">
         <img src="../assets/logo.png" class="logo-nav">
       </router-link>
-      <a v-on:click="onBurgerClick" v-bind:class="{'is-active': isBurgerActive}"
-         role="button" class="navbar-burger" aria-label="menu"
-         aria-expanded="false" data-target="navbarBasicExample">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
+      <a
+        v-on:click="onBurgerClick"
+        v-bind:class="{ 'is-active': isBurgerActive }"
+        role="button"
+        class="navbar-burger"
+        aria-label="menu"
+        aria-expanded="false"
+        data-target="navbarBasicExample">
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
       </a>
     </div>
-    <div class="navbar-menu" v-bind:class="{'is-active': isBurgerActive}">
+    <div class="navbar-menu" v-bind:class="{ 'is-active': isBurgerActive }">
       <div class="navbar-start">
         <template v-for="category in categories" v-bind:key="category.title">
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link" v-text="category.title" />
             <div class="navbar-dropdown">
-              <a class="navbar-item"
-                 v-for="plan in category.plans"
-                 v-bind:key="plan.title"
-                 v-bind:href="'#/plan/' + plan.path"
-                 v-text="plan.title"
-                 @click="onBurgerClick" />
+              <a
+                class="navbar-item"
+                v-for="plan in category.plans"
+                v-bind:key="plan.title"
+                v-bind:href="'#/plan/' + plan.path"
+                v-text="plan.title"
+                @click="onBurgerClick" />
             </div>
           </div>
         </template>

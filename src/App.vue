@@ -1,9 +1,9 @@
 <template>
-  <Navigation></Navigation>
+  <Navigation />
   <div class="p-5 custom-container">
-    <router-view/>
+    <router-view />
   </div>
-  <Footer></Footer>
+  <Footer />
 </template>
 
 <style>
