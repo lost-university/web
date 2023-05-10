@@ -1,20 +1,20 @@
 <template>
-  <Navigation></Navigation>
+  <Navigation />
   <div class="p-5 custom-container">
-    <router-view/>
+    <router-view />
   </div>
-  <Footer></Footer>
+  <PageFooter />
 </template>
 
 <style>
 </style>
 <script>
 import Navigation from './components/Navigation.vue';
-import Footer from './components/Footer.vue';
+import PageFooter from './components/PageFooter.vue';
 
 export default {
   components: {
-    Footer,
+    PageFooter,
     Navigation,
   },
 };

@@ -1,16 +1,18 @@
 <template>
-<div class="container">
-  <p class="ratio-label">{{earned}} / {{required}}</p>
-  <p class="planned-label" v-if="planned > 0">{{planned}} noch geplant</p>
+  <div class="container">
+    <p class="ratio-label">{{earned}} / {{required}}</p>
+    <p class="planned-label" v-if="planned > 0">{{planned}} noch geplant</p>
 
-  <div class="progress-container">
-    <div class="planned-progress" v-bind:style="{ 'width': plannedProgress }"></div>
-    <div class="earned-progress" v-bind:style="{
-      'width': earnedProgress,
-      'background-color': color,
-    }"></div>
+    <div class="progress-container">
+      <div class="planned-progress" v-bind:style="{ width: plannedProgress }" />
+      <div
+        class="earned-progress"
+        v-bind:style="{
+          width: earnedProgress,
+          'background-color': color,
+        }" />
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -19,15 +21,19 @@ export default {
   props: {
     required: {
       type: Number,
+      required: true,
     },
     earned: {
       type: Number,
+      required: true,
     },
     planned: {
       type: Number,
+      required: true,
     },
     color: {
       type: String,
+      required: true,
     },
   },
   computed: {

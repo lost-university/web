@@ -3,21 +3,21 @@
     <div class="column">
       <h1 class="title">Plane deine Module</h1>
       <div class="is-flex is-align-content-space-evenly is-justify-content-left">
-        <label class="is-flex is-flex-direction-column is-justify-content-center">
+        <label class="is-flex is-flex-direction-column is-justify-content-center" for="last-semester-select">
           <p>Letztes erfolgreich abgeschlossenes Semester</p>
         </label>
-          <div class="select pl-2">
-            <select v-model="lastSemesterNumber">
-              <option
-                v-for="semester in semesters"
-                :key="semester.number">
-                {{ semester.number }}
-              </option>
-            </select>
-          </div>
+        <div class="select pl-2">
+          <select v-model="lastSemesterNumber" id="last-semester-select">
+            <option
+              v-for="semester in semesters"
+              :key="semester.number">
+              {{ semester.number }}
+            </option>
+          </select>
         </div>
       </div>
-      <div class="column is-narrow">
+    </div>
+    <div class="column is-narrow">
       <Transition>
         <div v-if="errorMsg" class="notification is-danger">
           <span>- {{ errorMsg }}</span>
@@ -33,8 +33,9 @@
               {{ unknown.moduleId }}
             </li>
           </ul>
-          <button class="button" v-on:click="removeUnknownModulesFromUrl">
-            Remove all from URL</button>
+          <button class="button" v-on:click="removeUnknownModulesFromUrl" type="button">
+            Remove all from URL
+          </button>
         </div>
       </Transition>
     </div>
@@ -48,10 +49,10 @@
         :number="semester.number"
         v-model:modules="semester.modules"
         :all-modules="modules"
-      ></Semester>
+      />
     </div>
     <div class="column add-semester">
-      <button class="add-semester-btn button is-dark is-fullwidth" v-on:click="addSemester">
+      <button class="add-semester-btn button is-dark is-fullwidth" v-on:click="addSemester" type="button">
         +
       </button>
     </div>
@@ -62,35 +63,35 @@
         <h2 class="subtitle">Übersicht der ECTS Punkte</h2>
         <table>
           <tbody>
-          <tr
-            v-for="category in mappedCategories"
-            :key="category.name"
-            v-bind:class="category.categoryClass">
-            <td style="vertical-align:bottom;padding-right:1em;text-align:end">
-              {{ category.name }}
-            </td>
-            <td style="padding-top:8px">
-              <BeautifulProgressIndicator
-              :required=category.required_ects
-              :earned=category.earnedCredits
-              :planned=category.plannedCredits
-              :color="category.color"
-              ></BeautifulProgressIndicator>
-            </td>
-          </tr>
-          <tr>
-            <td style="vertical-align:bottom;padding-right:1em;text-align:end">
-              Total
-            </td>
-            <td style="padding-top:8px">
-              <BeautifulProgressIndicator
-              :required=180
-              :earned="totalEarnedEcts"
-              :planned="totalPlannedEcts"
-              :color="`orange`"
-              ></BeautifulProgressIndicator>
-            </td>
-          </tr>
+            <tr
+              v-for="category in mappedCategories"
+              :key="category.name"
+              v-bind:class="category.categoryClass">
+              <td style="vertical-align:bottom;padding-right:1em;text-align:end">
+                {{ category.name }}
+              </td>
+              <td style="padding-top:8px">
+                <BeautifulProgressIndicator
+                  :required=category.required_ects
+                  :earned=category.earnedCredits
+                  :planned=category.plannedCredits
+                  :color="category.color"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align:bottom;padding-right:1em;text-align:end">
+                Total
+              </td>
+              <td style="padding-top:8px">
+                <BeautifulProgressIndicator
+                  :required=180
+                  :earned="totalEarnedEcts"
+                  :planned="totalPlannedEcts"
+                  :color="`orange`"
+                />
+              </td>
+            </tr>
           </tbody>
         </table>
       </article>
@@ -99,19 +100,21 @@
       <article>
         <h2 class="subtitle">Vertiefungen</h2>
         <div class="columns is-multiline mt-5">
-          <div v-for="focus in mappedFocuses"
-            :key="focus.name" class="column is-full">
+          <div
+            v-for="focus in mappedFocuses"
+            :key="focus.name"
+            class="column is-full">
             <Focus
               :name="focus.name"
               :allModules="focus.modules"
               :filteredModules="focus.filteredModules"
-            ></Focus>
+            />
           </div>
         </div>
       </article>
     </div>
     <div class="column">
-      <img src="../assets/this_is_fine.jpg">
+      <img src="../assets/this_is_fine.jpg" alt="Well known 'this is fine' meme with a dog in a room on fire">
     </div>
   </div>
 </template>
@@ -162,7 +165,7 @@ export default {
         .flatMap((semester) => semester.modules);
     },
     mappedFocuses() {
-      const plannedModuleNames = this.plannedModules.map(module => module.id);
+      const plannedModuleNames = this.plannedModules.map((module) => module.id);
       return this.focuses.map((focus) => ({
         ...focus,
         filteredModules: focus.modules
@@ -243,7 +246,7 @@ export default {
     },
     getPlannedSemesterForModule(moduleName) {
       return this.semesters.find(
-        (semester) => semester.modules.some(module => module.name === moduleName),
+        (semester) => semester.modules.some((module) => module.name === moduleName),
       )?.number;
     },
     getEarnedCredits(category = undefined) {
