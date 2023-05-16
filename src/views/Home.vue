@@ -221,7 +221,7 @@ export default {
               .filter((id) => !(isNullOrWhitespace(id)))
               .map((moduleId) => {
                 const newModule = this.modules.find((module) => module.id === moduleId);
-                if (newModule === null) {
+                if (!newModule) {
                   this.showUnknownModulesError(index + 1, moduleId);
                 }
                 return newModule;
