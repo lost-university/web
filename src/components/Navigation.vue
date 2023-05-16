@@ -43,7 +43,6 @@
 <script>
 /* eslint-disable max-len,vue/max-len */
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
   name: 'Navigation',
   data() {
     return {

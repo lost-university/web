@@ -3,109 +3,109 @@
     <div class="column">
       <h1 class="title">Plane deine Module</h1>
       <div class="is-flex is-align-content-space-evenly is-justify-content-left">
-          <label class="is-flex is-flex-direction-column is-justify-content-center" for="last-semester-select">
-            <p>Letztes erfolgreich abgeschlossenes Semester</p>
-          </label>
-          <div class="select pl-2">
-            <select v-model="lastSemesterNumber" id="last-semester-select">
-              <option v-for="semester in semesters" :key="semester.number">
-                {{ semester.number }}
-              </option>
-            </select>
-          </div>
+        <label class="is-flex is-flex-direction-column is-justify-content-center" for="last-semester-select">
+          <p>Letztes erfolgreich abgeschlossenes Semester</p>
+        </label>
+        <div class="select pl-2">
+          <select v-model="lastSemesterNumber" id="last-semester-select">
+            <option v-for="semester in semesters" :key="semester.number">
+              {{ semester.number }}
+            </option>
+          </select>
         </div>
       </div>
-      <div class="column is-narrow">
-        <Transition>
-          <div v-if="errorMsg" class="notification is-danger">
-            <span>- {{ errorMsg }}</span>
-          </div>
-        </Transition>
-      </div>
-      <div class="column is-narrow">
-        <Transition>
-          <div v-if="unknownModules?.length" class="notification is-danger">
-            Following modules could not be restored:
-            <ul>
-              <li v-for="unknown in unknownModules" :key="unknown.moduleId">
-                {{ unknown.moduleId }} in semester {{ unknown.semesterNumber }}
-              </li>
-            </ul>
-            <button class="button" v-on:click="removeUnknownModulesFromUrl" type="button">
-              Remove all from URL</button>
-          </div>
-        </Transition>
-      </div>
     </div>
-    <div class="columns schedule">
-      <div class="column semester" v-for="semester in semesters" :key="semester.name">
-        <Semester
-          @on-module-deleted="(moduleId) => onModuleDeleted(semester.number, moduleId)"
-          @on-add-module="addModule"
-          @on-remove-semester="removeSemester"
-          :number="semester.number"
-          v-model:modules="semester.modules"
-          :all-modules="modules" />
-      </div>
-      <div class="column add-semester">
-        <button class="add-semester-btn button is-dark is-fullwidth" v-on:click="addSemester" type="button">
-          +
-        </button>
-      </div>
+    <div class="column is-narrow">
+      <Transition>
+        <div v-if="errorMsg" class="notification is-danger">
+          <span>- {{ errorMsg }}</span>
+        </div>
+      </Transition>
     </div>
-    <div class="columns desktop-ml-6 desktop-mt-6">
-      <div class="column">
-        <article>
-          <h2 class="subtitle">Übersicht der ECTS Punkte</h2>
-          <table>
-            <tbody>
-              <tr v-for="category in mappedCategories" :key="category.name" v-bind:class="category.categoryClass">
-                <td style="vertical-align:bottom;padding-right:1em;text-align:end">
-                  {{ category.name }}
-                </td>
-                <td style="padding-top:8px">
-                  <BeautifulProgressIndicator
-                    :required=category.required_ects
-                    :earned=category.earnedCredits
-                    :planned=category.plannedCredits
-                    :color="category.color" />
-                </td>
-              </tr>
-              <tr>
-                <td style="vertical-align:bottom;padding-right:1em;text-align:end">
-                  Total
-                </td>
-                <td style="padding-top:8px">
-                  <BeautifulProgressIndicator
-                    :required=180
-                    :earned="totalEarnedEcts"
-                    :planned="totalPlannedEcts"
-                    :color="`orange`" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </article>
-      </div>
-      <div class="column">
-        <article>
-          <h2 class="subtitle">Vertiefungen</h2>
-          <div class="columns is-multiline mt-5">
-            <div
-              v-for="focus in mappedFocuses"
-              :key="focus.name"
-              class="column is-full">
-              <Focus
-                :name="focus.name"
-                :allModules="focus.modules"
-                :filteredModuleNames="focus.filteredModuleNames"
-              />
-            </div>
+    <div class="column is-narrow">
+      <Transition>
+        <div v-if="unknownModules?.length" class="notification is-danger">
+          Following modules could not be restored:
+          <ul>
+            <li v-for="unknown in unknownModules" :key="unknown.moduleId">
+              {{ unknown.moduleId }} in semester {{ unknown.semesterNumber }}
+            </li>
+          </ul>
+          <button class="button" v-on:click="removeUnknownModulesFromUrl" type="button">
+            Remove all from URL</button>
+        </div>
+      </Transition>
+    </div>
+  </div>
+  <div class="columns schedule">
+    <div class="column semester" v-for="semester in semesters" :key="semester.name">
+      <Semester
+        @on-module-deleted="(moduleId) => onModuleDeleted(semester.number, moduleId)"
+        @on-add-module="addModule"
+        @on-remove-semester="removeSemester"
+        :number="semester.number"
+        v-model:modules="semester.modules"
+        :all-modules="modules" />
+    </div>
+    <div class="column add-semester">
+      <button class="add-semester-btn button is-dark is-fullwidth" v-on:click="addSemester" type="button">
+        +
+      </button>
+    </div>
+  </div>
+  <div class="columns desktop-ml-6 desktop-mt-6">
+    <div class="column">
+      <article>
+        <h2 class="subtitle">Übersicht der ECTS Punkte</h2>
+        <table>
+          <tbody>
+            <tr v-for="category in mappedCategories" :key="category.name" v-bind:class="category.categoryClass">
+              <td style="vertical-align:bottom;padding-right:1em;text-align:end">
+                {{ category.name }}
+              </td>
+              <td style="padding-top:8px">
+                <BeautifulProgressIndicator
+                  :required=category.required_ects
+                  :earned=category.earnedCredits
+                  :planned=category.plannedCredits
+                  :color="category.color" />
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align:bottom;padding-right:1em;text-align:end">
+                Total
+              </td>
+              <td style="padding-top:8px">
+                <BeautifulProgressIndicator
+                  :required=180
+                  :earned="totalEarnedEcts"
+                  :planned="totalPlannedEcts"
+                  :color="`orange`" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+    </div>
+    <div class="column">
+      <article>
+        <h2 class="subtitle">Vertiefungen</h2>
+        <div class="columns is-multiline mt-5">
+          <div
+            v-for="focus in mappedFocuses"
+            :key="focus.name"
+            class="column is-full">
+            <Focus
+              :name="focus.name"
+              :allModules="focus.modules"
+              :filteredModuleNames="focus.filteredModuleNames"
+            />
           </div>
-        </article>
-      </div>
-      <div class="column">
-        <img src="../assets/this_is_fine.jpg" alt="Well known 'this is fine' meme with a dog in a room on fire">
+        </div>
+      </article>
+    </div>
+    <div class="column">
+      <img src="../assets/this_is_fine.jpg" alt="Well known 'this is fine' meme with a dog in a room on fire">
     </div>
   </div>
 </template>
