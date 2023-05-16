@@ -209,7 +209,7 @@ export default {
 
       if (path.startsWith(planIndicator)) {
         // This ensures backwards compatability.
-        // Removing it after about 6 months should be fine (so around October 2023)
+        // Removing it after about 6 months should be fine (so around January 2024)
         const newPath = path.replace('FunProg', 'FP').replace('BAI14', 'BAI21');
         const planData = newPath
           .slice(planIndicator.length)
