@@ -116,7 +116,7 @@ import Focus from '../components/Focus.vue';
 import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
 import { getColorForCategoryId } from '../helpers/color-helper';
 
-const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.0/data';
+const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.1/data';
 const ROUTE_MODULES = '/modules.json';
 const ROUTE_CATEGORIES = '/categories.json';
 const ROUTE_FOCUSES = '/focuses.json';
@@ -214,7 +214,9 @@ export default {
           .replace('FunProg', 'FP')
           .replace('BAI14', 'BAI21')
           .replace('SE1', 'SEP1')
-          .replace('SE2', 'SEP2');
+          .replace('SE2', 'SEP2')
+          .replace('NISec', 'NIoSec')
+          .replace('PFSec', 'PlFSec');
 
         const planData = newPath
           .slice(planIndicator.length)
