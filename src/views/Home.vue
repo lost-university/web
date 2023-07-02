@@ -208,9 +208,14 @@ export default {
       }
 
       if (path.startsWith(planIndicator)) {
-        // This ensures backwards compatability.
-        // Removing it after about 6 months should be fine (so around January 2024)
-        const newPath = path.replace('FunProg', 'FP').replace('BAI14', 'BAI21');
+        // This ensures backwards compatability. Removing it after everyone who started before 2022
+        // has finished their studies, so about 2026, is guaranteed to be fine.
+        const newPath = path
+          .replace('FunProg', 'FP')
+          .replace('BAI14', 'BAI21')
+          .replace('SE1', 'SEP1')
+          .replace('SE2', 'SEP2');
+
         const planData = newPath
           .slice(planIndicator.length)
           .split(semesterSeparator)
