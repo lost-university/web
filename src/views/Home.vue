@@ -235,7 +235,7 @@ export default {
           }));
 
         if (newPath !== path) {
-          window.location.hash = newPath.replace('#/', '');
+          window.location.hash = newPath;
         }
 
         this.savePlanInLocalStorage(newPath);
