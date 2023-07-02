@@ -40,9 +40,11 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Focus',
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  name: 'FocusComponent',
   props: {
     name: {
       required: true,
@@ -72,5 +74,5 @@ export default {
       this.isOpen = !this.isOpen;
     },
   },
-};
+});
 </script>

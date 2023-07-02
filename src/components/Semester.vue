@@ -51,12 +51,13 @@
   </draggable>
 </template>
 
-<script>
+<script lang="ts">
 import draggable from 'vuedraggable';
 import Module from './Module.vue';
+import { defineComponent } from 'vue';
 
-export default {
-  name: 'Semester',
+export default defineComponent({
+  name: 'SemesterComponent',
   emits: ['on-module-deleted', 'on-add-module', 'on-remove-semester'],
   props: {
     number: {
@@ -118,5 +119,5 @@ export default {
       this.$parent.updateUrlFragment();
     },
   },
-};
+});
 </script>

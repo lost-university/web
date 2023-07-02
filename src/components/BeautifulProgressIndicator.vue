@@ -15,8 +15,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   name: 'BeautifulProgressIndicator',
   props: {
     required: {
@@ -44,5 +46,5 @@ export default {
       return `${Math.min(100, (100 * (this.planned + this.earned)) / this.required)}%`;
     },
   },
-};
+});
 </script>

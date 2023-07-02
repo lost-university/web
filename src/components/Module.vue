@@ -9,11 +9,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
 import { getCategoryColorForModule } from '../helpers/color-helper';
 
-export default {
-  name: 'Module',
+export default defineComponent({
+  name: 'ModuleComponent',
   emits: ['on-delete'],
   props: {
     semesterNumber: {
@@ -28,5 +29,5 @@ export default {
   methods: {
     getCategoryColorForModule,
   },
-};
+});
 </script>

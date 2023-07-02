@@ -38,7 +38,7 @@
     </div>
   </div>
   <div class="columns schedule">
-    <div class="column semester" v-for="semester in semesters" :key="semester.name">
+    <div class="column semester" v-for="semester in semesters" :key="semester.number">
       <Semester
         @on-module-deleted="(moduleId) => onModuleDeleted(semester.number, moduleId)"
         @on-add-module="addModule"
@@ -110,11 +110,12 @@
   </div>
 </template>
 
-<script>
-import Semester from '../components/Semester.vue';
-import Focus from '../components/Focus.vue';
+<script lang="ts">
+import SemesterComponent from '../components/Semester.vue';
+import FocusComponent from '../components/Focus.vue';
 import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
 import { getColorForCategoryId } from '../helpers/color-helper';
+import { Module, Category, Focus, UnknownModule, Semester } from '../helpers/types';
 
 const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.1/data';
 const ROUTE_MODULES = '/modules.json';
@@ -126,14 +127,14 @@ export default {
   name: 'Home',
   data() {
     return {
-      semesters: [],
-      modules: [],
-      categories: [],
-      focuses: [],
+      semesters: [] as Semester[],
+      modules: [] as Module[],
+      categories: [] as Category[],
+      focuses: [] as Focus[],
       lastSemesterNumber: 0,
       errorMsg: null,
       errorTimer: null,
-      unknownModules: [],
+      unknownModules: [] as UnknownModule[],
     };
   },
   watch: {
@@ -172,25 +173,25 @@ export default {
       return this.getEarnedCredits();
     },
   },
-  components: { Semester, Focus, BeautifulProgressIndicator },
+  components: { SemesterComponent, FocusComponent, BeautifulProgressIndicator },
   methods: {
     sumCredits: (previousTotal, module) => previousTotal + module.ects,
-    getColorForCategoryId(categoryId) {
+    getColorForCategoryId(categoryId: string): string {
       return getColorForCategoryId(categoryId);
     },
-    async getModules() {
+    async getModules(): Promise<Module> {
       const response = await fetch(`${BASE_URL}${ROUTE_MODULES}`);
       return response.json();
     },
-    async getCategories() {
+    async getCategories(): Promise<Category[]> {
       const response = await fetch(`${BASE_URL}${ROUTE_CATEGORIES}`);
       return (await response.json()).map((c) => ({ ...c, required_ects: Number(c.required_ects) }));
     },
-    async getFocuses() {
+    async getFocuses(): Promise<Focus[]> {
       const response = await fetch(`${BASE_URL}${ROUTE_FOCUSES}`);
       return response.ok ? response.json() : [];
     },
-    getPlanDataFromUrl() {
+    getPlanDataFromUrl(): Semester[] {
       let path = window.location.hash;
       const planIndicator = '#/plan/';
       const moduleSeparator = '_';
@@ -261,19 +262,19 @@ export default {
     savePlanInLocalStorage(path) {
       localStorage.setItem('plan', path);
     },
-    getPlannedSemesterForModule(moduleName) {
+    getPlannedSemesterForModule(moduleName: string): number {
       return this.semesters.find(
         (semester) => semester.modules.some((module) => module.name === moduleName),
       )?.number;
     },
-    getEarnedCredits(category = undefined) {
+    getEarnedCredits(category = undefined): number {
       return this.semesters
         .filter((semester) => semester.number <= this.lastSemesterNumber)
         .flatMap((semester) => semester.modules)
         .filter((module) => !category || category.modules.some((m) => m.id === module.id))
         .reduce(this.sumCredits, 0);
     },
-    getPlannedCredits(category = undefined) {
+    getPlannedCredits(category = undefined): number {
       return this.semesters
         .filter((semester) => semester.number > this.lastSemesterNumber)
         .flatMap((semester) => semester.modules)

@@ -40,9 +40,11 @@
   </nav>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
+
 /* eslint-disable max-len,vue/max-len */
-export default {
+export default defineComponent({
   name: 'Navigation',
   data() {
     return {
@@ -78,5 +80,5 @@ export default {
       this.isBurgerActive = !this.isBurgerActive;
     },
   },
-};
+});
 </script>

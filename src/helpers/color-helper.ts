@@ -15,9 +15,6 @@ const CATEGORY_COLOR_MAP = {
   Fallback: '#737373',
 };
 
-// eslint-disable-next-line vue/max-len
-const getColorForCategoryId = (categoryId) => CATEGORY_COLOR_MAP[categoryId] || CATEGORY_COLOR_MAP.Fallback;
-
 const getCategoryColorForModule = (module) => {
   const prioritzedCategory = module.categories
     .map((category) => ({ id: category.id, priority: CATEGORY_COLOR_PRIORITIES[category.id] ?? 0 }))
@@ -25,6 +22,10 @@ const getCategoryColorForModule = (module) => {
 
   return prioritzedCategory ? getColorForCategoryId(prioritzedCategory.id) : CATEGORY_COLOR_MAP.Fallback;
 };
+type ColorCategoryKey = keyof typeof CATEGORY_COLOR_MAP;
+
+// eslint-disable-next-line max-len
+const getColorForCategoryId = (categoryId: ColorCategoryKey) => CATEGORY_COLOR_MAP[categoryId] || CATEGORY_COLOR_MAP.Fallback;
 
 export {
   // eslint-disable-next-line import/prefer-default-export
