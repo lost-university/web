@@ -42,9 +42,10 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import type { Module } from '../helpers/types';
 
 export default defineComponent({
-  name: 'FocusComponent',
+  name: 'Focus',
   props: {
     name: {
       required: true,
@@ -53,12 +54,12 @@ export default defineComponent({
     },
     allModules: {
       required: true,
-      type: Array,
+      type: Array<Module>,
       default: () => [],
     },
     filteredModuleNames: {
       required: true,
-      type: Array,
+      type: Array<string>,
       default: () => [],
     },
   },

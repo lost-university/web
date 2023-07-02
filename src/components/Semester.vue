@@ -16,7 +16,7 @@
       </div>
     </template>
     <template #item="{ element }">
-      <Module
+      <ModuleComponent
         @on-delete="$emit('on-module-deleted', $event)"
         :module="element"
         :semesterNumber="number" />
@@ -34,30 +34,31 @@
           ref="addModuleInput"
           type="text"
           list="allModules"
-          @change="addModule($event.target.value)">
-        <datalist id="allModules">
-          <option
-            v-for="selectableModule in allModules"
-            :key="selectableModule.name"
-            v-bind:value="selectableModule.name">
-            {{selectableModule.name}}
-          </option>
-        </datalist>
-      </div>
-      <div class="column semester-footer">
-        <p>Total ECTS: {{ getTotalEcts }}</p>
-      </div>
-    </template>
-  </draggable>
+              @change="addModule($event)">
+            <datalist id="allModules">
+              <option
+                v-for="selectableModule in allModules"
+                :key="selectableModule.name"
+                v-bind:value="selectableModule.name">
+                {{ selectableModule.name }}
+              </option>
+            </datalist>
+          </div>
+          <div class="column semester-footer">
+            <p>Total ECTS: {{ getTotalEcts }}</p>
+          </div>
+        </template>
+      </draggable>
 </template>
 
 <script lang="ts">
 import draggable from 'vuedraggable';
-import Module from './Module.vue';
+import ModuleComponent from './Module.vue';
 import { defineComponent } from 'vue';
+import type { Module } from '../helpers/types';
 
 export default defineComponent({
-  name: 'SemesterComponent',
+  name: 'Semester',
   emits: ['on-module-deleted', 'on-add-module', 'on-remove-semester'],
   props: {
     number: {
@@ -65,20 +66,20 @@ export default defineComponent({
       required: true,
     },
     modules: {
-      type: Array,
+      type: Array<Module>,
       required: true,
     },
     allModules: {
-      type: Array,
+      type: Array<Module>,
       required: true,
     },
   },
   components: {
-    Module,
+    ModuleComponent,
     draggable,
   },
   computed: {
-    getTotalEcts() {
+    getTotalEcts(): number {
       return this.countTotalEcts();
     },
   },
@@ -91,11 +92,12 @@ export default defineComponent({
       },
     },
     isAddingNewModule(newValue) {
+      // todo: can this be improved?
       if (newValue === false) {
-        this.$refs.addModuleInput.value = null;
+        (<HTMLInputElement>this.$refs.addModuleInput).value = '';
       } else {
         this.$nextTick(() => {
-          this.$refs.addModuleInput.focus();
+          (<HTMLInputElement>this.$refs.addModuleInput).focus();
         });
       }
     },
@@ -106,17 +108,18 @@ export default defineComponent({
     };
   },
   methods: {
-    addModule(moduleName) {
-      this.$emit('on-add-module', moduleName, this.number);
+    addModule(event: Event) {
+      this.$emit('on-add-module', (<HTMLInputElement>event.currentTarget).value, this.number);
     },
     removeSemester() {
       this.$emit('on-remove-semester', this.number);
     },
-    countTotalEcts() {
+    countTotalEcts(): number {
       return this.modules.reduce((previousValue, module) => previousValue + module.ects, 0);
     },
     onDropEnd() {
-      this.$parent.updateUrlFragment();
+      // todo: can this be improved?
+      (<{ updateUrlFragment: () => {} }><unknown>this.$parent).updateUrlFragment();
     },
   },
 });

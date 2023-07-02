@@ -39,10 +39,10 @@ export default defineComponent({
     },
   },
   computed: {
-    earnedProgress() {
+    earnedProgress(): string {
       return `${Math.min(100, (100 * this.earned) / this.required)}%`;
     },
-    plannedProgress() {
+    plannedProgress(): string {
       return `${Math.min(100, (100 * (this.planned + this.earned)) / this.required)}%`;
     },
   },

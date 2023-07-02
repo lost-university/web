@@ -39,13 +39,13 @@
   </div>
   <div class="columns schedule">
     <div class="column semester" v-for="semester in semesters" :key="semester.number">
-      <Semester
-        @on-module-deleted="(moduleId) => onModuleDeleted(semester.number, moduleId)"
-        @on-add-module="addModule"
-        @on-remove-semester="removeSemester"
-        :number="semester.number"
-        v-model:modules="semester.modules"
-        :all-modules="modules" />
+      <SemesterComponent
+          @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
+          @on-add-module="addModule"
+          @on-remove-semester="removeSemester"
+          :number="semester.number"
+          v-model:modules="semester.modules"
+          :all-modules="modules" />
     </div>
     <div class="column add-semester">
       <button class="add-semester-btn button is-dark is-fullwidth" v-on:click="addSemester" type="button">
@@ -59,7 +59,8 @@
         <h2 class="subtitle">Übersicht der ECTS Punkte</h2>
         <table>
           <tbody>
-            <tr v-for="category in mappedCategories" :key="category.name" v-bind:class="category.categoryClass">
+            <!-- <tr v-for="category in mappedCategories" :key="category.name" v-bind:class="category.categoryClass"> -->
+            <tr v-for="category in mappedCategories" :key="category.name">
               <td style="vertical-align:bottom;padding-right:1em;text-align:end">
                 {{ category.name }}
               </td>
@@ -95,7 +96,7 @@
             v-for="focus in mappedFocuses"
             :key="focus.name"
             class="column is-full">
-            <Focus
+            <FocusComponent
               :name="focus.name"
               :allModules="focus.modules"
               :filteredModuleNames="focus.filteredModuleNames"
@@ -111,18 +112,19 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
 import SemesterComponent from '../components/Semester.vue';
 import FocusComponent from '../components/Focus.vue';
 import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
 import { getColorForCategoryId } from '../helpers/color-helper';
-import { Module, Category, Focus, UnknownModule, Semester } from '../helpers/types';
+import type { Module, Category, Focus, UnknownModule, Semester } from '../helpers/types';
 
 const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.1/data';
 const ROUTE_MODULES = '/modules.json';
 const ROUTE_CATEGORIES = '/categories.json';
 const ROUTE_FOCUSES = '/focuses.json';
 
-export default {
+export default defineComponent({
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Home',
   data() {
@@ -132,8 +134,8 @@ export default {
       categories: [] as Category[],
       focuses: [] as Focus[],
       lastSemesterNumber: 0,
-      errorMsg: null,
-      errorTimer: null,
+      errorMsg: null as string | null,
+      errorTimer: null as NodeJS.Timeout | null,
       unknownModules: [] as UnknownModule[],
     };
   },
@@ -175,17 +177,17 @@ export default {
   },
   components: { SemesterComponent, FocusComponent, BeautifulProgressIndicator },
   methods: {
-    sumCredits: (previousTotal, module) => previousTotal + module.ects,
+    sumCredits: (previousTotal: number, module: Module) => previousTotal + module.ects,
     getColorForCategoryId(categoryId: string): string {
       return getColorForCategoryId(categoryId);
     },
-    async getModules(): Promise<Module> {
+    async getModules(): Promise<Module[]> {
       const response = await fetch(`${BASE_URL}${ROUTE_MODULES}`);
       return response.json();
     },
     async getCategories(): Promise<Category[]> {
       const response = await fetch(`${BASE_URL}${ROUTE_CATEGORIES}`);
-      return (await response.json()).map((c) => ({ ...c, required_ects: Number(c.required_ects) }));
+      return (await response.json()).map((c: Category) => ({ ...c, required_ects: Number(c.required_ects) }));
     },
     async getFocuses(): Promise<Focus[]> {
       const response = await fetch(`${BASE_URL}${ROUTE_FOCUSES}`);
@@ -196,7 +198,7 @@ export default {
       const planIndicator = '#/plan/';
       const moduleSeparator = '_';
       const semesterSeparator = '-';
-      function isNullOrWhitespace(input) {
+      function isNullOrWhitespace(input: string) {
         return !input || !input.trim();
       }
 
@@ -232,7 +234,7 @@ export default {
                 if (!newModule) {
                   this.showUnknownModulesError(index + 1, moduleId);
                 }
-                return newModule;
+                return newModule!;
               })
               .filter((module) => module),
           }));
@@ -259,29 +261,29 @@ export default {
         this.savePlanInLocalStorage(window.location.hash);
       }
     },
-    savePlanInLocalStorage(path) {
+    savePlanInLocalStorage(path: string) {
       localStorage.setItem('plan', path);
     },
-    getPlannedSemesterForModule(moduleName: string): number {
+    getPlannedSemesterForModule(moduleName: string): number | undefined {
       return this.semesters.find(
         (semester) => semester.modules.some((module) => module.name === moduleName),
       )?.number;
     },
-    getEarnedCredits(category = undefined): number {
+    getEarnedCredits(category?: Category): number {
       return this.semesters
         .filter((semester) => semester.number <= this.lastSemesterNumber)
         .flatMap((semester) => semester.modules)
         .filter((module) => !category || category.modules.some((m) => m.id === module.id))
         .reduce(this.sumCredits, 0);
     },
-    getPlannedCredits(category = undefined): number {
+    getPlannedCredits(category?: Category): number {
       return this.semesters
         .filter((semester) => semester.number > this.lastSemesterNumber)
         .flatMap((semester) => semester.modules)
         .filter((module) => !category || category.modules.some((m) => m.id === module.id))
         .reduce(this.sumCredits, 0);
     },
-    addModule(moduleName, semesterNumber) {
+    addModule(moduleName: string, semesterNumber: number) {
       const blockingSemesterNumber = this.getPlannedSemesterForModule(moduleName);
       if (blockingSemesterNumber) {
         const text = `Module ${moduleName} is already in semester ${blockingSemesterNumber}`;
@@ -301,7 +303,7 @@ export default {
       this.semesters[semesterNumber - 1].modules.push(module);
       this.updateUrlFragment();
     },
-    removeModule(semesterNumber, moduleId) {
+    removeModule(semesterNumber: number, moduleId: string) {
       this.semesters[semesterNumber - 1].modules = this.semesters[semesterNumber - 1].modules
         .filter((module) => module.id !== moduleId);
       this.unknownModules = this.unknownModules.filter((f) => f.moduleId !== moduleId);
@@ -314,12 +316,12 @@ export default {
         modules: [],
       });
     },
-    removeSemester(semesterNumber) {
+    removeSemester(semesterNumber: number) {
       this.semesters = this.semesters.filter((semester) => semester.number !== semesterNumber);
       this.unknownModules = this.unknownModules.filter((f) => f.semesterNumber !== semesterNumber);
       this.updateUrlFragment();
     },
-    showErrorMsg(text) {
+    showErrorMsg(text: string) {
       if (this.errorTimer !== null) {
         clearTimeout(this.errorTimer);
       }
@@ -328,7 +330,7 @@ export default {
         this.errorMsg = null;
       }, 3000);
     },
-    showUnknownModulesError(semesterNumber, moduleId) {
+    showUnknownModulesError(semesterNumber: number, moduleId: string) {
       if (this.unknownModules.find((f) => f.moduleId === moduleId)) return;
       this.unknownModules.push({ semesterNumber, moduleId });
     },
@@ -336,7 +338,7 @@ export default {
       this.unknownModules = [];
       this.updateUrlFragment();
     },
-    onModuleDeleted(semesterNumber, moduleId) {
+    onModuleDeleted(semesterNumber: number, moduleId: string) {
       this.removeModule(semesterNumber, moduleId);
     },
   },
@@ -346,5 +348,5 @@ export default {
     this.categories = await this.getCategories();
     this.focuses = await this.getFocuses();
   },
-};
+});
 </script>
