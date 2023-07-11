@@ -5,50 +5,70 @@
     group="semester"
     item-key="id"
     :animation="200"
-    @end="onDropEnd"
-    :delayOnTouchOnly="true"
+    :delay-on-touch-only="true"
     :delay="500"
-    class="columns is-flex is-flex-direction-column has-text-centered">
+    class="columns is-flex is-flex-direction-column has-text-centered"
+    @end="onDropEnd"
+  >
     <template #header>
       <div class="semester-header">
-        <h2 class="subtitle pl-3 mb-2">Semester {{ number }}</h2>
-        <button class="delete-button delete is-medium" @click="removeSemester()" type="button" />
+        <h2 class="subtitle pl-3 mb-2">
+          Semester {{ number }}
+        </h2>
+        <button
+          class="delete-button delete is-medium"
+          type="button"
+          @click="removeSemester()"
+        />
       </div>
     </template>
     <template #item="{ element }">
       <ModuleComponent
-        @on-delete="$emit('on-module-deleted', $event)"
         :module="element"
-        :semesterNumber="number" />
+        :semester-number="number"
+        @on-delete="$emit('on-module-deleted', $event)"
+      />
     </template>
     <template #footer>
-      <div class="column semester-footer" v-bind:class="{ 'is-hidden': isAddingNewModule }">
-        <button class="button is-dark button-add is-fullwidth" @click="isAddingNewModule = true" type="button">
+      <div
+        class="column semester-footer"
+        :class="{ 'is-hidden': isAddingNewModule }"
+      >
+        <button
+          class="button is-dark button-add is-fullwidth"
+          type="button"
+          @click="isAddingNewModule = true"
+        >
           +
         </button>
       </div>
-      <div class="column" v-bind:class="{ 'is-hidden': !isAddingNewModule }">
+      <div
+        class="column"
+        :class="{ 'is-hidden': !isAddingNewModule }"
+      >
         <label for="additionalModule">Select additional module</label>
         <input
           id="additionalModule"
           ref="addModuleInput"
           type="text"
           list="allModules"
-              @change="addModule($event)">
-            <datalist id="allModules">
-              <option
-                v-for="selectableModule in allModules"
-                :key="selectableModule.name"
-                v-bind:value="selectableModule.name">
-                {{ selectableModule.name }}
-              </option>
-            </datalist>
-          </div>
-          <div class="column semester-footer">
-            <p>Total ECTS: {{ getTotalEcts }}</p>
-          </div>
-        </template>
-      </draggable>
+          @change="addModule($event)"
+        >
+        <datalist id="allModules">
+          <option
+            v-for="selectableModule in allModules"
+            :key="selectableModule.name"
+            :value="selectableModule.name"
+          >
+            {{ selectableModule.name }}
+          </option>
+        </datalist>
+      </div>
+      <div class="column semester-footer">
+        <p>Total ECTS: {{ getTotalEcts }}</p>
+      </div>
+    </template>
+  </draggable>
 </template>
 
 <script lang="ts">
@@ -78,6 +98,11 @@ export default defineComponent({
     ModuleComponent,
     draggable,
   },
+  data() {
+    return {
+      isAddingNewModule: false,
+    };
+  },
   computed: {
     getTotalEcts(): number {
       return this.countTotalEcts();
@@ -102,13 +127,8 @@ export default defineComponent({
       }
     },
   },
-  data() {
-    return {
-      isAddingNewModule: false,
-    };
-  },
   methods: {
-    addModule(event: Event) {
+    addModule(event) {
       this.$emit('on-add-module', (<HTMLInputElement>event.currentTarget).value, this.number);
     },
     removeSemester() {

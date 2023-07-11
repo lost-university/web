@@ -1,14 +1,25 @@
 <template>
   <div class="columns">
     <div class="column">
-      <h1 class="title">Plane deine Module</h1>
+      <h1 class="title">
+        Plane deine Module
+      </h1>
       <div class="is-flex is-align-content-space-evenly is-justify-content-left">
-        <label class="is-flex is-flex-direction-column is-justify-content-center" for="last-semester-select">
+        <label
+          class="is-flex is-flex-direction-column is-justify-content-center"
+          for="last-semester-select"
+        >
           <p>Letztes erfolgreich abgeschlossenes Semester</p>
         </label>
         <div class="select pl-2">
-          <select v-model="lastSemesterNumber" id="last-semester-select">
-            <option v-for="semester in semesters" :key="semester.number">
+          <select
+            id="last-semester-select"
+            v-model="lastSemesterNumber"
+          >
+            <option
+              v-for="semester in semesters"
+              :key="semester.number"
+            >
               {{ semester.number }}
             </option>
           </select>
@@ -17,38 +28,61 @@
     </div>
     <div class="column is-narrow">
       <Transition>
-        <div v-if="errorMsg" class="notification is-danger">
+        <div
+          v-if="errorMsg"
+          class="notification is-danger"
+        >
           <span>- {{ errorMsg }}</span>
         </div>
       </Transition>
     </div>
     <div class="column is-narrow">
       <Transition>
-        <div v-if="unknownModules?.length" class="notification is-danger">
+        <div
+          v-if="unknownModules?.length"
+          class="notification is-danger"
+        >
           Following modules could not be restored:
           <ul>
-            <li v-for="unknown in unknownModules" :key="unknown.moduleId">
+            <li
+              v-for="unknown in unknownModules"
+              :key="unknown.moduleId"
+            >
               {{ unknown.moduleId }} in semester {{ unknown.semesterNumber }}
             </li>
           </ul>
-          <button class="button" v-on:click="removeUnknownModulesFromUrl" type="button">
-            Remove all from URL</button>
+          <button
+            class="button"
+            type="button"
+            @click="removeUnknownModulesFromUrl"
+          >
+            Remove all from URL
+          </button>
         </div>
       </Transition>
     </div>
   </div>
   <div class="columns schedule">
-    <div class="column semester" v-for="semester in semesters" :key="semester.number">
+    <div
+      v-for="semester in semesters"
+      :key="semester.number"
+      class="column semester"
+    >
       <SemesterComponent
-          @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
-          @on-add-module="addModule"
-          @on-remove-semester="removeSemester"
-          :number="semester.number"
-          v-model:modules="semester.modules"
-          :all-modules="modules" />
+        v-model:modules="semester.modules"
+        :number="semester.number"
+        :all-modules="modules"
+        @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
+        @on-add-module="addModule"
+        @on-remove-semester="removeSemester"
+      />
     </div>
     <div class="column add-semester">
-      <button class="add-semester-btn button is-dark is-fullwidth" v-on:click="addSemester" type="button">
+      <button
+        class="add-semester-btn button is-dark is-fullwidth"
+        type="button"
+        @click="addSemester"
+      >
         +
       </button>
     </div>
@@ -56,20 +90,26 @@
   <div class="columns desktop-ml-6 desktop-mt-6">
     <div class="column">
       <article>
-        <h2 class="subtitle">Übersicht der ECTS Punkte</h2>
+        <h2 class="subtitle">
+          Übersicht der ECTS Punkte
+        </h2>
         <table>
           <tbody>
             <!-- <tr v-for="category in mappedCategories" :key="category.name" v-bind:class="category.categoryClass"> -->
-            <tr v-for="category in mappedCategories" :key="category.name">
+            <tr
+              v-for="category in mappedCategories"
+              :key="category.name"
+            >
               <td style="vertical-align:bottom;padding-right:1em;text-align:end">
                 {{ category.name }}
               </td>
               <td style="padding-top:8px">
                 <BeautifulProgressIndicator
-                  :required=category.required_ects
-                  :earned=category.earnedCredits
-                  :planned=category.plannedCredits
-                  :color="category.color" />
+                  :required="category.required_ects"
+                  :earned="category.earnedCredits"
+                  :planned="category.plannedCredits"
+                  :color="category.color"
+                />
               </td>
             </tr>
             <tr>
@@ -78,10 +118,11 @@
               </td>
               <td style="padding-top:8px">
                 <BeautifulProgressIndicator
-                  :required=180
+                  :required="180"
                   :earned="totalEarnedEcts"
                   :planned="totalPlannedEcts"
-                  :color="`orange`" />
+                  :color="`orange`"
+                />
               </td>
             </tr>
           </tbody>
@@ -90,23 +131,29 @@
     </div>
     <div class="column">
       <article>
-        <h2 class="subtitle">Vertiefungen</h2>
+        <h2 class="subtitle">
+          Vertiefungen
+        </h2>
         <div class="columns is-multiline mt-5">
           <div
             v-for="focus in mappedFocuses"
             :key="focus.name"
-            class="column is-full">
+            class="column is-full"
+          >
             <FocusComponent
               :name="focus.name"
-              :allModules="focus.modules"
-              :filteredModuleNames="focus.filteredModuleNames"
+              :all-modules="focus.modules"
+              :filtered-module-names="focus.filteredModuleNames"
             />
           </div>
         </div>
       </article>
     </div>
     <div class="column">
-      <img src="../assets/this_is_fine.jpg" alt="Well known 'this is fine' meme with a dog in a room on fire">
+      <img
+        src="../assets/this_is_fine.jpg"
+        alt="Well known 'this is fine' meme with a dog in a room on fire"
+      >
     </div>
   </div>
 </template>
@@ -127,6 +174,7 @@ const ROUTE_FOCUSES = '/focuses.json';
 export default defineComponent({
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Home',
+  components: { SemesterComponent, FocusComponent, BeautifulProgressIndicator },
   data() {
     return {
       semesters: [] as Semester[],
@@ -138,13 +186,6 @@ export default defineComponent({
       errorTimer: null as NodeJS.Timeout | null,
       unknownModules: [] as UnknownModule[],
     };
-  },
-  watch: {
-    $route: {
-      handler() {
-        this.semesters = this.getPlanDataFromUrl();
-      },
-    },
   },
   computed: {
     mappedCategories() {
@@ -175,7 +216,19 @@ export default defineComponent({
       return this.getEarnedCredits();
     },
   },
-  components: { SemesterComponent, FocusComponent, BeautifulProgressIndicator },
+  watch: {
+    $route: {
+      handler() {
+        this.semesters = this.getPlanDataFromUrl();
+      },
+    },
+  },
+  async mounted() {
+    this.modules = await this.getModules();
+    this.semesters = this.getPlanDataFromUrl();
+    this.categories = await this.getCategories();
+    this.focuses = await this.getFocuses();
+  },
   methods: {
     sumCredits: (previousTotal: number, module: Module) => previousTotal + module.ects,
     getColorForCategoryId(categoryId: string): string {
@@ -341,12 +394,6 @@ export default defineComponent({
     onModuleDeleted(semesterNumber: number, moduleId: string) {
       this.removeModule(semesterNumber, moduleId);
     },
-  },
-  async mounted() {
-    this.modules = await this.getModules();
-    this.semesters = this.getPlanDataFromUrl();
-    this.categories = await this.getCategories();
-    this.focuses = await this.getFocuses();
   },
 });
 </script>

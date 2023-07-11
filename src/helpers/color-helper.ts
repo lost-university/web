@@ -19,7 +19,6 @@ const CATEGORY_COLOR_PRIORITIES: { [key: ColorCategoryKey]: number } = {
   Inf: -1,
 };
 
-// eslint-disable-next-line vue/max-len
 const getColorForCategoryId = (categoryId: ColorCategoryKey) => CATEGORY_COLOR_MAP[categoryId] || CATEGORY_COLOR_MAP.Fallback;
 
 const getCategoryColorForModule = (module: Module) => {
@@ -31,7 +30,6 @@ const getCategoryColorForModule = (module: Module) => {
 };
 
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getColorForCategoryId,
   getCategoryColorForModule,
 };

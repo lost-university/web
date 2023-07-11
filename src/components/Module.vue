@@ -1,11 +1,18 @@
 <template>
   <div
-    class="column module mt-1"
     :key="module.name"
-    :style="{ 'background-color': getCategoryColorForModule(module) }">
-    <button class="delete-button delete is-pulled-right" @click="$emit('on-delete', module.id)" type="button" />
-    <h3 class="has-text-weight-bold">{{module.name}}</h3>
-    <p>{{module.ects}} ECTS</p>
+    class="column module mt-1"
+    :style="{ 'background-color': getCategoryColorForModule(module) }"
+  >
+    <button
+      class="delete-button delete is-pulled-right"
+      type="button"
+      @click="$emit('on-delete', module.id)"
+    />
+    <h3 class="has-text-weight-bold">
+      {{ module.name }}
+    </h3>
+    <p>{{ module.ects }} ECTS</p>
   </div>
 </template>
 
@@ -16,7 +23,6 @@ import type { Module } from '../helpers/types';
 
 export default defineComponent({
   name: 'Module',
-  emits: ['on-delete'],
   props: {
     semesterNumber: {
       type: Number,
@@ -27,6 +33,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ['on-delete'],
   methods: {
     getCategoryColorForModule,
   },
