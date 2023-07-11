@@ -8,9 +8,7 @@
         </label>
         <div class="select pl-2">
           <select v-model="lastSemesterNumber" id="last-semester-select">
-            <option
-              v-for="semester in semesters"
-              :key="semester.number">
+            <option v-for="semester in semesters" :key="semester.number">
               {{ semester.number }}
             </option>
           </select>
@@ -30,12 +28,11 @@
           Following modules could not be restored:
           <ul>
             <li v-for="unknown in unknownModules" :key="unknown.moduleId">
-              {{ unknown.moduleId }}
+              {{ unknown.moduleId }} in semester {{ unknown.semesterNumber }}
             </li>
           </ul>
           <button class="button" v-on:click="removeUnknownModulesFromUrl" type="button">
-            Remove all from URL
-          </button>
+            Remove all from URL</button>
         </div>
       </Transition>
     </div>
@@ -48,8 +45,7 @@
         @on-remove-semester="removeSemester"
         :number="semester.number"
         v-model:modules="semester.modules"
-        :all-modules="modules"
-      />
+        :all-modules="modules" />
     </div>
     <div class="column add-semester">
       <button class="add-semester-btn button is-dark is-fullwidth" v-on:click="addSemester" type="button">
@@ -63,10 +59,7 @@
         <h2 class="subtitle">Übersicht der ECTS Punkte</h2>
         <table>
           <tbody>
-            <tr
-              v-for="category in mappedCategories"
-              :key="category.name"
-              v-bind:class="category.categoryClass">
+            <tr v-for="category in mappedCategories" :key="category.name" v-bind:class="category.categoryClass">
               <td style="vertical-align:bottom;padding-right:1em;text-align:end">
                 {{ category.name }}
               </td>
@@ -75,8 +68,7 @@
                   :required=category.required_ects
                   :earned=category.earnedCredits
                   :planned=category.plannedCredits
-                  :color="category.color"
-                />
+                  :color="category.color" />
               </td>
             </tr>
             <tr>
@@ -88,8 +80,7 @@
                   :required=180
                   :earned="totalEarnedEcts"
                   :planned="totalPlannedEcts"
-                  :color="`orange`"
-                />
+                  :color="`orange`" />
               </td>
             </tr>
           </tbody>
@@ -107,7 +98,7 @@
             <Focus
               :name="focus.name"
               :allModules="focus.modules"
-              :filteredModules="focus.filteredModules"
+              :filteredModuleNames="focus.filteredModuleNames"
             />
           </div>
         </div>
@@ -123,14 +114,15 @@
 import Semester from '../components/Semester.vue';
 import Focus from '../components/Focus.vue';
 import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
-import { getColorForCategory } from '../helpers/color-helper';
+import { getColorForCategoryId } from '../helpers/color-helper';
 
-const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/2.5/data';
+const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.1/data';
 const ROUTE_MODULES = '/modules.json';
 const ROUTE_CATEGORIES = '/categories.json';
 const ROUTE_FOCUSES = '/focuses.json';
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: 'Home',
   data() {
     return {
@@ -156,7 +148,7 @@ export default {
       return this.categories.map((category) => ({
         earnedCredits: this.getEarnedCredits(category),
         plannedCredits: this.getPlannedCredits(category),
-        color: getColorForCategory(category.id),
+        color: getColorForCategoryId(category.id),
         ...category,
       }));
     },
@@ -165,12 +157,12 @@ export default {
         .flatMap((semester) => semester.modules);
     },
     mappedFocuses() {
-      const plannedModuleNames = this.plannedModules.map((module) => module.id);
+      const plannedModuleIds = this.plannedModules.map((module) => module.id);
       return this.focuses.map((focus) => ({
         ...focus,
-        filteredModules: focus.modules
-          .filter((moduleId) => !plannedModuleNames.includes(moduleId))
-          .map((moduleId) => this.modules.find((module) => module.id === moduleId).name),
+        filteredModuleNames: focus.modules
+          .filter((module) => !plannedModuleIds.includes(module.id))
+          .map((module) => module.name),
       }));
     },
     totalPlannedEcts() {
@@ -183,8 +175,8 @@ export default {
   components: { Semester, Focus, BeautifulProgressIndicator },
   methods: {
     sumCredits: (previousTotal, module) => previousTotal + module.ects,
-    getColorForCategory(categoryId) {
-      return getColorForCategory(categoryId);
+    getColorForCategoryId(categoryId) {
+      return getColorForCategoryId(categoryId);
     },
     async getModules() {
       const response = await fetch(`${BASE_URL}${ROUTE_MODULES}`);
@@ -199,15 +191,34 @@ export default {
       return response.ok ? response.json() : [];
     },
     getPlanDataFromUrl() {
-      const path = window.location.hash;
+      let path = window.location.hash;
       const planIndicator = '#/plan/';
       const moduleSeparator = '_';
       const semesterSeparator = '-';
       function isNullOrWhitespace(input) {
         return !input || !input.trim();
       }
+
+      if (!path.startsWith(planIndicator)) {
+        const cachedPlan = localStorage.getItem('plan');
+        if (cachedPlan) {
+          window.location.hash = cachedPlan;
+          path = cachedPlan;
+        }
+      }
+
       if (path.startsWith(planIndicator)) {
-        return path
+        // This ensures backwards compatability. Removing it after everyone who started before 2022
+        // has finished their studies, so about 2026, is guaranteed to be fine.
+        const newPath = path
+          .replace('FunProg', 'FP')
+          .replace('BAI14', 'BAI21')
+          .replace('SE1', 'SEP1')
+          .replace('SE2', 'SEP2')
+          .replace('NISec', 'NIoSec')
+          .replace('PFSec', 'PlFSec');
+
+        const planData = newPath
           .slice(planIndicator.length)
           .split(semesterSeparator)
           .map((semesterPart, index) => ({
@@ -217,18 +228,21 @@ export default {
               .filter((id) => !(isNullOrWhitespace(id)))
               .map((moduleId) => {
                 const newModule = this.modules.find((module) => module.id === moduleId);
-                if (newModule == null) {
+                if (!newModule) {
                   this.showUnknownModulesError(index + 1, moduleId);
                 }
                 return newModule;
               })
               .filter((module) => module),
           }));
-      }
 
-      const cachedPlan = localStorage.getItem('plan');
-      if (cachedPlan != null) {
-        window.location.hash = cachedPlan;
+        if (newPath !== path) {
+          window.location.hash = newPath;
+        }
+
+        this.savePlanInLocalStorage(newPath);
+
+        return planData;
       }
 
       return [];
@@ -240,9 +254,12 @@ export default {
 
       window.location.hash = `plan/${encodedPlan}`;
 
-      if (encodedPlan !== []) {
-        localStorage.setItem('plan', window.location.hash);
+      if (encodedPlan) {
+        this.savePlanInLocalStorage(window.location.hash);
       }
+    },
+    savePlanInLocalStorage(path) {
+      localStorage.setItem('plan', path);
     },
     getPlannedSemesterForModule(moduleName) {
       return this.semesters.find(
@@ -253,14 +270,14 @@ export default {
       return this.semesters
         .filter((semester) => semester.number <= this.lastSemesterNumber)
         .flatMap((semester) => semester.modules)
-        .filter((module) => category === undefined || category.modules.includes(module.id))
+        .filter((module) => !category || category.modules.some((m) => m.id === module.id))
         .reduce(this.sumCredits, 0);
     },
     getPlannedCredits(category = undefined) {
       return this.semesters
         .filter((semester) => semester.number > this.lastSemesterNumber)
         .flatMap((semester) => semester.modules)
-        .filter((module) => category === undefined || category.modules.includes(module.id))
+        .filter((module) => !category || category.modules.some((m) => m.id === module.id))
         .reduce(this.sumCredits, 0);
     },
     addModule(moduleName, semesterNumber) {

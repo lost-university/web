@@ -4,15 +4,15 @@
       @click="toggleFocus()"
       class="button is-fullwidth button-focus"
       :aria-expanded="isOpen"
-      :class="{ 'is-success': !filteredModules.length }"
+      :class="{ 'is-success': !filteredModuleNames.length }"
       type="button"
     >
       <div class="focus-main">
         <span>{{ name }}</span>
-        <span v-if="filteredModules.length" class="tag is-info is-light">
-          {{filteredModules.length}} Module werden noch benötigt
+        <span v-if="filteredModuleNames.length" class="tag is-info is-light">
+          {{filteredModuleNames.length}} Module werden noch benötigt
         </span>
-        <span v-if="!filteredModules.length" class="tag is-success is-light">
+        <span v-if="!filteredModuleNames.length" class="tag is-success is-light">
           Vertiefung geplant
         </span>
       </div>
@@ -24,22 +24,22 @@
     </button>
     <div v-show="isOpen" class="column is-full column-focus">
       <div class="box box-focus">
-        <p v-if="!filteredModules.length">
+        <p v-if="!filteredModuleNames.length">
           Alle benötigten Module sind bestanden/geplant.
         </p>
-        <p v-if="filteredModules.length">
+        <p v-if="filteredModuleNames.length">
           Für die Vertiefung müssen folgende Module noch geplant werden:
         </p>
         <ul class="focus-missing-modules-list">
           <li
-            v-for="filteredModule in filteredModules"
-            :key="filteredModule">{{filteredModule}}</li>
+            v-for="filteredModuleName in filteredModuleNames"
+            :key="filteredModuleName">{{filteredModuleName}}</li>
         </ul>
-
       </div>
     </div>
   </div>
 </template>
+
 <script>
 export default {
   name: 'Focus',
@@ -47,14 +47,17 @@ export default {
     name: {
       required: true,
       type: String,
+      default: '',
     },
     allModules: {
       required: true,
       type: Array,
+      default: () => [],
     },
-    filteredModules: {
+    filteredModuleNames: {
       required: true,
       type: Array,
+      default: () => [],
     },
   },
   data() {
