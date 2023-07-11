@@ -172,7 +172,6 @@ const ROUTE_CATEGORIES = '/categories.json';
 const ROUTE_FOCUSES = '/focuses.json';
 
 export default defineComponent({
-  // eslint-disable-next-line vue/multi-word-component-names
   name: 'Home',
   components: { SemesterComponent, FocusComponent, BeautifulProgressIndicator },
   data() {
@@ -183,7 +182,7 @@ export default defineComponent({
       focuses: [] as Focus[],
       lastSemesterNumber: 0,
       errorMsg: null as string | null,
-      errorTimer: null as NodeJS.Timeout | null,
+      errorTimer: null as ReturnType<typeof setTimeout> | null,
       unknownModules: [] as UnknownModule[],
     };
   },

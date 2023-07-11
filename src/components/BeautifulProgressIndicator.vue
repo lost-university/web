@@ -9,7 +9,6 @@
     >
       {{ planned }} noch geplant
     </p>
-    <div v-if />
 
     <div class="progress-container">
       <div

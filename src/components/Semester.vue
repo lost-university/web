@@ -79,7 +79,10 @@ import type { Module } from '../helpers/types';
 
 export default defineComponent({
   name: 'Semester',
-  emits: ['on-module-deleted', 'on-add-module', 'on-remove-semester'],
+  components: {
+    ModuleComponent,
+    draggable,
+  },
   props: {
     number: {
       type: Number,
@@ -94,10 +97,7 @@ export default defineComponent({
       required: true,
     },
   },
-  components: {
-    ModuleComponent,
-    draggable,
-  },
+  emits: ['on-module-deleted', 'on-add-module', 'on-remove-semester'],
   data() {
     return {
       isAddingNewModule: false,
@@ -128,7 +128,7 @@ export default defineComponent({
     },
   },
   methods: {
-    addModule(event) {
+    addModule(event: Event) {
       this.$emit('on-add-module', (<HTMLInputElement>event.currentTarget).value, this.number);
     },
     removeSemester() {
@@ -139,7 +139,7 @@ export default defineComponent({
     },
     onDropEnd() {
       // todo: can this be improved?
-      (<{ updateUrlFragment: () => {} }><unknown>this.$parent).updateUrlFragment();
+      (<{ updateUrlFragment: () => void }><unknown>this.$parent).updateUrlFragment();
     },
   },
 });
