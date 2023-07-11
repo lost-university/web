@@ -3,12 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build2": "vue-tsc --noEmit && vite build",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint --ext .js,.vue src --ignore-path .gitignore --max-warnings 0",
-    "lint-fix": "eslint --ext .js,.vue src --ignore-path .gitignore --max-warnings 0 --fix"
+    "lint": "eslint --ext .ts,.vue src",
+    "lint-fix": "eslint --ext .ts,.vue src --fix"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
@@ -22,11 +21,13 @@
   },
   "devDependencies": {
     "@types/node": "^20.3.3",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vue/eslint-config-airbnb": "^7.0.0",
     "@vue/tsconfig": "^0.4.0",
-    "eslint": "^8.39.0",
-    "eslint-plugin-vue": "^9.11.0",
+    "eslint": "^8.44.0",
+    "eslint-plugin-vue": "^9.15.1",
     "sass": "^1.62.1",
     "typescript": "^5.1.6",
     "vite": "^4.3.3",
