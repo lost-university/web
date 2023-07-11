@@ -22,10 +22,13 @@ const CATEGORY_COLOR_PRIORITIES: { [key: ColorCategoryKey]: number } = {
 // eslint-disable-next-line vue/max-len
 const getColorForCategoryId = (categoryId: ColorCategoryKey) => CATEGORY_COLOR_MAP[categoryId] || CATEGORY_COLOR_MAP.Fallback;
 
-const getCategoryColorForModule = (module: Module) => module.categories
-  .sort((a, b) => CATEGORY_COLOR_PRIORITIES[b.id] ?? 0 - CATEGORY_COLOR_PRIORITIES[a.id] ?? 0)
-  .map((category) => category.id)
-  .map(getColorForCategoryId)[0] ?? CATEGORY_COLOR_MAP.Fallback;
+const getCategoryColorForModule = (module: Module) => {
+  const prioritzedCategory = module.categories
+    .map((category) => ({ id: category.id, priority: CATEGORY_COLOR_PRIORITIES[category.id] ?? 0 }))
+    .sort((a, b) => b.priority - a.priority)[0];
+
+  return prioritzedCategory ? getColorForCategoryId(prioritzedCategory.id) : CATEGORY_COLOR_MAP.Fallback;
+};
 
 export {
   // eslint-disable-next-line import/prefer-default-export
