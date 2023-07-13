@@ -1,6 +1,6 @@
 # web
 
-[![Build](https://github.com/lost-university/web/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/lost-university/web/actions/workflows/build.yml)
+[![Build](https://github.com/lost-university/web/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/lost-university/web/actions/workflows/ci.yml)
 
 This project is a tool to plan your semesters at OST Rapperswil. The params in the URL will be updated automatically so you can save your data by copying the current URL.
 
