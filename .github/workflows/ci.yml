@@ -1,0 +1,41 @@
+name: CI
+on: push
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    outputs:
+      dist: ${{ steps.step1.outputs.test }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with: { node-version: 16 }
+      - name: Install Dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Lint
+        run: npm run lint
+      - name: Upload Artifacts
+        uses: actions/upload-pages-artifact@v1
+        with: { path: 'dist' }
+
+  deploy:
+    name: Deploy
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: build
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
