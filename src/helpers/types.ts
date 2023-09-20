@@ -1,12 +1,6 @@
 export type Module = {
   id: string,
   name: string,
-  url: string,
-
-  isThesis: boolean,
-  isRequired: boolean,
-  recommendedSemester: number,
-  focuses: ModuleFocus[],
   categories: ModuleCategory[],
   ects: number,
 };
@@ -14,7 +8,6 @@ export type Module = {
 export type Focus = {
   id: string,
   name: string,
-  url: string,
   modules: Module[],
 };
 
@@ -22,7 +15,6 @@ export type Category = {
   id: string,
   name: string,
   required_ects: number,
-  total_ects: number,
   modules: Module[],
 };
 
@@ -34,12 +26,6 @@ export type Semester = {
 export type UnknownModule = {
   id: string,
   semesterNumber: number,
-};
-
-type ModuleFocus = {
-  id: string,
-  name: string,
-  url: string,
 };
 
 type ModuleCategory = {
