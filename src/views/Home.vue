@@ -75,6 +75,7 @@
         @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
         @on-add-module="addModule"
         @on-remove-semester="removeSemester"
+        @on-drop-end="updateUrlFragment"
       />
     </div>
     <div class="column add-semester">
