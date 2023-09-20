@@ -18,9 +18,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-</style>
-
-<style scoped>
-</style>
