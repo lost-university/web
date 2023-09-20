@@ -32,7 +32,8 @@ export type Semester = {
 };
 
 export type UnknownModule = {
-  moduleId: string, semesterNumber: number,
+  id: string,
+  semesterNumber: number,
 };
 
 type ModuleFocus = {

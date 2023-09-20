@@ -46,9 +46,9 @@
           <ul>
             <li
               v-for="unknown in unknownModules"
-              :key="unknown.moduleId"
+              :key="unknown.id"
             >
-              {{ unknown.moduleId }} in semester {{ unknown.semesterNumber }}
+              {{ unknown.id }} in semester {{ unknown.semesterNumber }}
             </li>
           </ul>
           <button
@@ -359,7 +359,7 @@ export default defineComponent({
     removeModule(semesterNumber: number, moduleId: string) {
       this.semesters[semesterNumber - 1].modules = this.semesters[semesterNumber - 1].modules
         .filter((module) => module.id !== moduleId);
-      this.unknownModules = this.unknownModules.filter((f) => f.moduleId !== moduleId);
+      this.unknownModules = this.unknownModules.filter((f) => f.id !== moduleId);
 
       this.updateUrlFragment();
     },
@@ -384,8 +384,8 @@ export default defineComponent({
       }, 3000);
     },
     showUnknownModulesError(semesterNumber: number, moduleId: string) {
-      if (this.unknownModules.find((f) => f.moduleId === moduleId)) return;
-      this.unknownModules.push({ semesterNumber, moduleId });
+      if (this.unknownModules.find((f) => f.id === moduleId)) return;
+      this.unknownModules.push({ semesterNumber, id: moduleId });
     },
     removeUnknownModulesFromUrl() {
       this.unknownModules = [];
