@@ -19,7 +19,8 @@ const CATEGORY_COLOR_PRIORITIES: { [key: ColorCategoryKey]: number } = {
   Inf: -1,
 };
 
-const getColorForCategoryId = (categoryId: ColorCategoryKey) => CATEGORY_COLOR_MAP[categoryId] || CATEGORY_COLOR_MAP.Fallback;
+const getColorForCategoryId = (categoryId: ColorCategoryKey) =>
+  CATEGORY_COLOR_MAP[categoryId] || CATEGORY_COLOR_MAP.Fallback;
 
 const getCategoryColorForModule = (module: Module) => {
   const prioritzedCategory = module.categories

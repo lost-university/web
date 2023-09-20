@@ -11,6 +11,8 @@ module.exports = {
     parser: "@typescript-eslint/parser",
   },
   rules: {
-    'vue/multi-word-component-names': 'off'
+    'vue/multi-word-component-names': 'off',
+    'vuejs-accessibility/anchor-has-content': 'off',
+    'max-len': ['error', { "code": 120 }]
   }
 };

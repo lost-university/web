@@ -5,7 +5,6 @@
       <div class="column is-11">
         <p>
           © 2023
-          <!-- eslint-disable max-len,vue/max-len -->
           <a
             class="contributor-link"
             href="https://github.com/jeremystucki"

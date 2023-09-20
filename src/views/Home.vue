@@ -96,7 +96,6 @@
         </h2>
         <table>
           <tbody>
-            <!-- <tr v-for="category in mappedCategories" :key="category.name" v-bind:class="category.categoryClass"> -->
             <tr
               v-for="category in mappedCategories"
               :key="category.name"
@@ -340,7 +339,6 @@ export default defineComponent({
       const blockingSemesterNumber = this.getPlannedSemesterForModule(moduleName);
       if (blockingSemesterNumber) {
         const text = `Module ${moduleName} is already in semester ${blockingSemesterNumber}`;
-        // eslint-disable-next-line no-console
         console.warn(text);
         this.showErrorMsg(text);
         return;

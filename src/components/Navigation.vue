@@ -65,6 +65,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+/* eslint-disable max-len */
 export default defineComponent({
   name: 'Navigation',
   data() {
