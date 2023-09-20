@@ -118,9 +118,6 @@ export default defineComponent({
     },
     isAddingNewModule(newValue: boolean) {
       const addModuleInput = ref<HTMLInputElement | null>(null);
-      if (!addModuleInput.value) {
-        return;
-      }
       if (newValue === false) {
         addModuleInput.value?.setAttribute('value', '');
       } else {
