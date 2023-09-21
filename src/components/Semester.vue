@@ -5,42 +5,62 @@
     group="semester"
     item-key="id"
     :animation="200"
-    @end="onDropEnd"
-    :delayOnTouchOnly="true"
+    :delay-on-touch-only="true"
     :delay="500"
-    class="columns is-flex is-flex-direction-column has-text-centered">
+    class="columns is-flex is-flex-direction-column has-text-centered"
+    @end="onDropEnd"
+  >
     <template #header>
       <div class="semester-header">
-        <h2 class="subtitle pl-3 mb-2">Semester {{ number }}</h2>
-        <button class="delete-button delete is-medium" @click="removeSemester()" type="button" />
+        <h2 class="subtitle pl-3 mb-2">
+          Semester {{ number }}
+        </h2>
+        <button
+          class="delete-button delete is-medium"
+          type="button"
+          @click="removeSemester()"
+        />
       </div>
     </template>
     <template #item="{ element }">
-      <Module
-        @on-delete="$emit('on-module-deleted', $event)"
+      <ModuleComponent
         :module="element"
-        :semesterNumber="number" />
+        :semester-number="number"
+        @on-delete="$emit('on-module-deleted', $event)"
+      />
     </template>
     <template #footer>
-      <div class="column semester-footer" v-bind:class="{ 'is-hidden': isAddingNewModule }">
-        <button class="button is-dark button-add is-fullwidth" @click="isAddingNewModule = true" type="button">
+      <div
+        class="column semester-footer"
+        :class="{ 'is-hidden': isAddingNewModule }"
+      >
+        <button
+          class="button is-dark button-add is-fullwidth"
+          type="button"
+          @click="isAddingNewModule = true"
+        >
           +
         </button>
       </div>
-      <div class="column" v-bind:class="{ 'is-hidden': !isAddingNewModule }">
+      <div
+        class="column"
+        :class="{ 'is-hidden': !isAddingNewModule }"
+      >
         <label for="additionalModule">Select additional module</label>
         <input
           id="additionalModule"
           ref="addModuleInput"
           type="text"
           list="allModules"
-          @change="addModule($event.target.value)">
+          @change="addModule($event)"
+        >
         <datalist id="allModules">
           <option
             v-for="selectableModule in allModules"
             :key="selectableModule.name"
-            v-bind:value="selectableModule.name">
-            {{selectableModule.name}}
+            :value="selectableModule.name"
+          >
+            {{ selectableModule.name }}
           </option>
         </datalist>
       </div>
@@ -51,33 +71,40 @@
   </draggable>
 </template>
 
-<script>
+<script lang="ts">
 import draggable from 'vuedraggable';
-import Module from './Module.vue';
+import ModuleComponent from './Module.vue';
+import { defineComponent, ref } from 'vue';
+import type { Module } from '../helpers/types';
 
-export default {
+export default defineComponent({
   name: 'Semester',
-  emits: ['on-module-deleted', 'on-add-module', 'on-remove-semester'],
+  components: {
+    ModuleComponent,
+    draggable,
+  },
   props: {
     number: {
       type: Number,
       required: true,
     },
     modules: {
-      type: Array,
+      type: Array<Module>,
       required: true,
     },
     allModules: {
-      type: Array,
+      type: Array<Module>,
       required: true,
     },
   },
-  components: {
-    Module,
-    draggable,
+  emits: ['on-module-deleted', 'on-add-module', 'on-remove-semester', 'on-drop-end'],
+  data() {
+    return {
+      isAddingNewModule: false,
+    };
   },
   computed: {
-    getTotalEcts() {
+    getTotalEcts(): number {
       return this.countTotalEcts();
     },
   },
@@ -89,34 +116,30 @@ export default {
         this.isAddingNewModule = false;
       },
     },
-    isAddingNewModule(newValue) {
+    isAddingNewModule(newValue: boolean) {
+      const addModuleInput = ref<HTMLInputElement | null>(null);
       if (newValue === false) {
-        this.$refs.addModuleInput.value = null;
+        addModuleInput.value?.setAttribute('value', '');
       } else {
         this.$nextTick(() => {
-          this.$refs.addModuleInput.focus();
+          addModuleInput.value?.focus();
         });
       }
     },
   },
-  data() {
-    return {
-      isAddingNewModule: false,
-    };
-  },
   methods: {
-    addModule(moduleName) {
-      this.$emit('on-add-module', moduleName, this.number);
+    addModule(event: Event) {
+      this.$emit('on-add-module', (<HTMLInputElement>event.currentTarget).value, this.number);
     },
     removeSemester() {
       this.$emit('on-remove-semester', this.number);
     },
-    countTotalEcts() {
+    countTotalEcts(): number {
       return this.modules.reduce((previousValue, module) => previousValue + module.ects, 0);
     },
     onDropEnd() {
-      this.$parent.updateUrlFragment();
+      this.$emit('on-drop-end');
     },
   },
-};
+});
 </script>

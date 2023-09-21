@@ -6,18 +6,15 @@
   <PageFooter />
 </template>
 
-<style>
-</style>
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
 import Navigation from './components/Navigation.vue';
 import PageFooter from './components/PageFooter.vue';
 
-export default {
+export default defineComponent({
   components: {
     PageFooter,
     Navigation,
   },
-};
+});
 </script>
-<style scoped>
-</style>

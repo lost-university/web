@@ -1,14 +1,25 @@
 <template>
   <div class="columns">
     <div class="column">
-      <h1 class="title">Plane deine Module</h1>
+      <h1 class="title">
+        Plane deine Module
+      </h1>
       <div class="is-flex is-align-content-space-evenly is-justify-content-left">
-        <label class="is-flex is-flex-direction-column is-justify-content-center" for="last-semester-select">
+        <label
+          class="is-flex is-flex-direction-column is-justify-content-center"
+          for="last-semester-select"
+        >
           <p>Letztes erfolgreich abgeschlossenes Semester</p>
         </label>
         <div class="select pl-2">
-          <select v-model="lastSemesterNumber" id="last-semester-select">
-            <option v-for="semester in semesters" :key="semester.number">
+          <select
+            id="last-semester-select"
+            v-model="lastSemesterNumber"
+          >
+            <option
+              v-for="semester in semesters"
+              :key="semester.number"
+            >
               {{ semester.number }}
             </option>
           </select>
@@ -17,38 +28,62 @@
     </div>
     <div class="column is-narrow">
       <Transition>
-        <div v-if="errorMsg" class="notification is-danger">
+        <div
+          v-if="errorMsg"
+          class="notification is-danger"
+        >
           <span>- {{ errorMsg }}</span>
         </div>
       </Transition>
     </div>
     <div class="column is-narrow">
       <Transition>
-        <div v-if="unknownModules?.length" class="notification is-danger">
+        <div
+          v-if="unknownModules?.length"
+          class="notification is-danger"
+        >
           Following modules could not be restored:
           <ul>
-            <li v-for="unknown in unknownModules" :key="unknown.moduleId">
-              {{ unknown.moduleId }} in semester {{ unknown.semesterNumber }}
+            <li
+              v-for="unknown in unknownModules"
+              :key="unknown.id"
+            >
+              {{ unknown.id }} in semester {{ unknown.semesterNumber }}
             </li>
           </ul>
-          <button class="button" v-on:click="removeUnknownModulesFromUrl" type="button">
-            Remove all from URL</button>
+          <button
+            class="button"
+            type="button"
+            @click="removeUnknownModulesFromUrl"
+          >
+            Remove all from URL
+          </button>
         </div>
       </Transition>
     </div>
   </div>
   <div class="columns schedule">
-    <div class="column semester" v-for="semester in semesters" :key="semester.name">
-      <Semester
-        @on-module-deleted="(moduleId) => onModuleDeleted(semester.number, moduleId)"
+    <div
+      v-for="semester in semesters"
+      :key="semester.number"
+      class="column semester"
+    >
+      <SemesterComponent
+        v-model:modules="semester.modules"
+        :number="semester.number"
+        :all-modules="modules"
+        @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
         @on-add-module="addModule"
         @on-remove-semester="removeSemester"
-        :number="semester.number"
-        v-model:modules="semester.modules"
-        :all-modules="modules" />
+        @on-drop-end="updateUrlFragment"
+      />
     </div>
     <div class="column add-semester">
-      <button class="add-semester-btn button is-dark is-fullwidth" v-on:click="addSemester" type="button">
+      <button
+        class="add-semester-btn button is-dark is-fullwidth"
+        type="button"
+        @click="addSemester"
+      >
         +
       </button>
     </div>
@@ -56,19 +91,25 @@
   <div class="columns desktop-ml-6 desktop-mt-6">
     <div class="column">
       <article>
-        <h2 class="subtitle">Übersicht der ECTS Punkte</h2>
+        <h2 class="subtitle">
+          Übersicht der ECTS Punkte
+        </h2>
         <table>
           <tbody>
-            <tr v-for="category in mappedCategories" :key="category.name" v-bind:class="category.categoryClass">
+            <tr
+              v-for="category in mappedCategories"
+              :key="category.name"
+            >
               <td style="vertical-align:bottom;padding-right:1em;text-align:end">
                 {{ category.name }}
               </td>
               <td style="padding-top:8px">
                 <BeautifulProgressIndicator
-                  :required=category.required_ects
-                  :earned=category.earnedCredits
-                  :planned=category.plannedCredits
-                  :color="category.color" />
+                  :required="category.required_ects"
+                  :earned="category.earnedCredits"
+                  :planned="category.plannedCredits"
+                  :color="category.color"
+                />
               </td>
             </tr>
             <tr>
@@ -77,10 +118,11 @@
               </td>
               <td style="padding-top:8px">
                 <BeautifulProgressIndicator
-                  :required=180
+                  :required="180"
                   :earned="totalEarnedEcts"
                   :planned="totalPlannedEcts"
-                  :color="`orange`" />
+                  :color="`orange`"
+                />
               </td>
             </tr>
           </tbody>
@@ -89,59 +131,60 @@
     </div>
     <div class="column">
       <article>
-        <h2 class="subtitle">Vertiefungen</h2>
+        <h2 class="subtitle">
+          Vertiefungen
+        </h2>
         <div class="columns is-multiline mt-5">
           <div
             v-for="focus in mappedFocuses"
             :key="focus.name"
-            class="column is-full">
-            <Focus
+            class="column is-full"
+          >
+            <FocusComponent
               :name="focus.name"
-              :allModules="focus.modules"
-              :filteredModuleNames="focus.filteredModuleNames"
+              :all-modules="focus.modules"
+              :filtered-module-names="focus.filteredModuleNames"
             />
           </div>
         </div>
       </article>
     </div>
     <div class="column">
-      <img src="../assets/this_is_fine.jpg" alt="Well known 'this is fine' meme with a dog in a room on fire">
+      <img
+        src="../assets/this_is_fine.jpg"
+        alt="Well known 'this is fine' meme with a dog in a room on fire"
+      >
     </div>
   </div>
 </template>
 
-<script>
-import Semester from '../components/Semester.vue';
-import Focus from '../components/Focus.vue';
+<script lang="ts">
+import { defineComponent } from 'vue';
+import SemesterComponent from '../components/Semester.vue';
+import FocusComponent from '../components/Focus.vue';
 import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
 import { getColorForCategoryId } from '../helpers/color-helper';
+import type { Module, Category, Focus, UnknownModule, Semester } from '../helpers/types';
 
 const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.1/data';
 const ROUTE_MODULES = '/modules.json';
 const ROUTE_CATEGORIES = '/categories.json';
 const ROUTE_FOCUSES = '/focuses.json';
 
-export default {
-  // eslint-disable-next-line vue/multi-word-component-names
+export default defineComponent({
   name: 'Home',
+  components: { SemesterComponent, FocusComponent, BeautifulProgressIndicator },
   data() {
     return {
-      semesters: [],
-      modules: [],
-      categories: [],
-      focuses: [],
+      semesters: [] as Semester[],
+      modules: [] as Module[],
+      categories: [] as Category[],
+      focuses: [] as Focus[],
       lastSemesterNumber: 0,
-      errorMsg: null,
-      errorTimer: null,
-      unknownModules: [],
+      errorMsg: null as string | null,
+      errorTimer: null as ReturnType<typeof setTimeout> | null,
+      unknownModules: [] as UnknownModule[],
     };
-  },
-  watch: {
-    $route: {
-      handler() {
-        this.semesters = this.getPlanDataFromUrl();
-      },
-    },
   },
   computed: {
     mappedCategories() {
@@ -172,30 +215,42 @@ export default {
       return this.getEarnedCredits();
     },
   },
-  components: { Semester, Focus, BeautifulProgressIndicator },
+  watch: {
+    $route: {
+      handler() {
+        this.semesters = this.getPlanDataFromUrl();
+      },
+    },
+  },
+  async mounted() {
+    this.modules = await this.getModules();
+    this.semesters = this.getPlanDataFromUrl();
+    this.categories = await this.getCategories();
+    this.focuses = await this.getFocuses();
+  },
   methods: {
-    sumCredits: (previousTotal, module) => previousTotal + module.ects,
-    getColorForCategoryId(categoryId) {
+    sumCredits: (previousTotal: number, module: Module) => previousTotal + module.ects,
+    getColorForCategoryId(categoryId: string): string {
       return getColorForCategoryId(categoryId);
     },
-    async getModules() {
+    async getModules(): Promise<Module[]> {
       const response = await fetch(`${BASE_URL}${ROUTE_MODULES}`);
       return response.json();
     },
-    async getCategories() {
+    async getCategories(): Promise<Category[]> {
       const response = await fetch(`${BASE_URL}${ROUTE_CATEGORIES}`);
-      return (await response.json()).map((c) => ({ ...c, required_ects: Number(c.required_ects) }));
+      return (await response.json()).map((c: Category) => ({ ...c, required_ects: Number(c.required_ects) }));
     },
-    async getFocuses() {
+    async getFocuses(): Promise<Focus[]> {
       const response = await fetch(`${BASE_URL}${ROUTE_FOCUSES}`);
       return response.ok ? response.json() : [];
     },
-    getPlanDataFromUrl() {
+    getPlanDataFromUrl(): Semester[] {
       let path = window.location.hash;
       const planIndicator = '#/plan/';
       const moduleSeparator = '_';
       const semesterSeparator = '-';
-      function isNullOrWhitespace(input) {
+      function isNullOrWhitespace(input: string) {
         return !input || !input.trim();
       }
 
@@ -231,7 +286,7 @@ export default {
                 if (!newModule) {
                   this.showUnknownModulesError(index + 1, moduleId);
                 }
-                return newModule;
+                return newModule!;
               })
               .filter((module) => module),
           }));
@@ -258,33 +313,32 @@ export default {
         this.savePlanInLocalStorage(window.location.hash);
       }
     },
-    savePlanInLocalStorage(path) {
+    savePlanInLocalStorage(path: string) {
       localStorage.setItem('plan', path);
     },
-    getPlannedSemesterForModule(moduleName) {
+    getPlannedSemesterForModule(moduleName: string): number | undefined {
       return this.semesters.find(
         (semester) => semester.modules.some((module) => module.name === moduleName),
       )?.number;
     },
-    getEarnedCredits(category = undefined) {
+    getEarnedCredits(category?: Category): number {
       return this.semesters
         .filter((semester) => semester.number <= this.lastSemesterNumber)
         .flatMap((semester) => semester.modules)
         .filter((module) => !category || category.modules.some((m) => m.id === module.id))
         .reduce(this.sumCredits, 0);
     },
-    getPlannedCredits(category = undefined) {
+    getPlannedCredits(category?: Category): number {
       return this.semesters
         .filter((semester) => semester.number > this.lastSemesterNumber)
         .flatMap((semester) => semester.modules)
         .filter((module) => !category || category.modules.some((m) => m.id === module.id))
         .reduce(this.sumCredits, 0);
     },
-    addModule(moduleName, semesterNumber) {
+    addModule(moduleName: string, semesterNumber: number) {
       const blockingSemesterNumber = this.getPlannedSemesterForModule(moduleName);
       if (blockingSemesterNumber) {
         const text = `Module ${moduleName} is already in semester ${blockingSemesterNumber}`;
-        // eslint-disable-next-line no-console
         console.warn(text);
         this.showErrorMsg(text);
         return;
@@ -300,10 +354,10 @@ export default {
       this.semesters[semesterNumber - 1].modules.push(module);
       this.updateUrlFragment();
     },
-    removeModule(semesterNumber, moduleId) {
+    removeModule(semesterNumber: number, moduleId: string) {
       this.semesters[semesterNumber - 1].modules = this.semesters[semesterNumber - 1].modules
         .filter((module) => module.id !== moduleId);
-      this.unknownModules = this.unknownModules.filter((f) => f.moduleId !== moduleId);
+      this.unknownModules = this.unknownModules.filter((f) => f.id !== moduleId);
 
       this.updateUrlFragment();
     },
@@ -313,12 +367,12 @@ export default {
         modules: [],
       });
     },
-    removeSemester(semesterNumber) {
+    removeSemester(semesterNumber: number) {
       this.semesters = this.semesters.filter((semester) => semester.number !== semesterNumber);
       this.unknownModules = this.unknownModules.filter((f) => f.semesterNumber !== semesterNumber);
       this.updateUrlFragment();
     },
-    showErrorMsg(text) {
+    showErrorMsg(text: string) {
       if (this.errorTimer !== null) {
         clearTimeout(this.errorTimer);
       }
@@ -327,23 +381,17 @@ export default {
         this.errorMsg = null;
       }, 3000);
     },
-    showUnknownModulesError(semesterNumber, moduleId) {
-      if (this.unknownModules.find((f) => f.moduleId === moduleId)) return;
-      this.unknownModules.push({ semesterNumber, moduleId });
+    showUnknownModulesError(semesterNumber: number, moduleId: string) {
+      if (this.unknownModules.find((f) => f.id === moduleId)) return;
+      this.unknownModules.push({ semesterNumber, id: moduleId });
     },
     removeUnknownModulesFromUrl() {
       this.unknownModules = [];
       this.updateUrlFragment();
     },
-    onModuleDeleted(semesterNumber, moduleId) {
+    onModuleDeleted(semesterNumber: number, moduleId: string) {
       this.removeModule(semesterNumber, moduleId);
     },
   },
-  async mounted() {
-    this.modules = await this.getModules();
-    this.semesters = this.getPlanDataFromUrl();
-    this.categories = await this.getCategories();
-    this.focuses = await this.getFocuses();
-  },
-};
+});
 </script>

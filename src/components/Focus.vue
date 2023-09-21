@@ -1,18 +1,24 @@
 <template>
   <div class="columns is-multiline">
     <button
-      @click="toggleFocus()"
       class="button is-fullwidth button-focus"
       :aria-expanded="isOpen"
       :class="{ 'is-success': !filteredModuleNames.length }"
       type="button"
+      @click="toggleFocus()"
     >
       <div class="focus-main">
         <span>{{ name }}</span>
-        <span v-if="filteredModuleNames.length" class="tag is-info is-light">
-          {{filteredModuleNames.length}} Module werden noch benötigt
+        <span
+          v-if="filteredModuleNames.length"
+          class="tag is-info is-light"
+        >
+          {{ filteredModuleNames.length }} Module werden noch benötigt
         </span>
-        <span v-if="!filteredModuleNames.length" class="tag is-success is-light">
+        <span
+          v-if="!filteredModuleNames.length"
+          class="tag is-success is-light"
+        >
           Vertiefung geplant
         </span>
       </div>
@@ -22,7 +28,10 @@
         </span>
       </div>
     </button>
-    <div v-show="isOpen" class="column is-full column-focus">
+    <div
+      v-show="isOpen"
+      class="column is-full column-focus"
+    >
       <div class="box box-focus">
         <p v-if="!filteredModuleNames.length">
           Alle benötigten Module sind bestanden/geplant.
@@ -33,15 +42,21 @@
         <ul class="focus-missing-modules-list">
           <li
             v-for="filteredModuleName in filteredModuleNames"
-            :key="filteredModuleName">{{filteredModuleName}}</li>
+            :key="filteredModuleName"
+          >
+            {{ filteredModuleName }}
+          </li>
         </ul>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+import type { Module } from '../helpers/types';
+
+export default defineComponent({
   name: 'Focus',
   props: {
     name: {
@@ -51,12 +66,12 @@ export default {
     },
     allModules: {
       required: true,
-      type: Array,
+      type: Array<Module>,
       default: () => [],
     },
     filteredModuleNames: {
       required: true,
-      type: Array,
+      type: Array<string>,
       default: () => [],
     },
   },
@@ -72,5 +87,5 @@ export default {
       this.isOpen = !this.isOpen;
     },
   },
-};
+});
 </script>
