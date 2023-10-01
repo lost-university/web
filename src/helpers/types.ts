@@ -1,6 +1,7 @@
 export type Module = {
   id: string,
   name: string,
+  url: string,
   categories: ModuleCategory[],
   ects: number,
 };
