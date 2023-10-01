@@ -4,27 +4,6 @@
       <h1 class="title">
         Plane deine Module
       </h1>
-      <div class="is-flex is-align-content-space-evenly is-justify-content-left">
-        <label
-          class="is-flex is-flex-direction-column is-justify-content-center"
-          for="last-semester-select"
-        >
-          <p>Letztes erfolgreich abgeschlossenes Semester</p>
-        </label>
-        <div class="select pl-2">
-          <select
-            id="last-semester-select"
-            v-model="lastSemesterNumber"
-          >
-            <option
-              v-for="semester in semesters"
-              :key="semester.number"
-            >
-              {{ semester.number }}
-            </option>
-          </select>
-        </div>
-      </div>
     </div>
     <div class="column is-narrow">
       <Transition>
@@ -94,6 +73,27 @@
         <h2 class="subtitle">
           Übersicht der ECTS Punkte
         </h2>
+        <div class="is-flex is-align-content-space-evenly is-justify-content-left">
+          <label
+            class="is-flex is-flex-direction-column is-justify-content-center"
+            for="last-semester-select"
+          >
+            <p>Letztes erfolgreich abgeschlossenes Semester:</p>
+          </label>
+          <div class="select pl-2">
+            <select
+              id="last-semester-select"
+              v-model="lastSemesterNumber"
+            >
+              <option
+                v-for="semester in semesters"
+                :key="semester.number"
+              >
+                {{ semester.number }}
+              </option>
+            </select>
+          </div>
+        </div>
         <table>
           <tbody>
             <tr
