@@ -40,7 +40,13 @@
             href="https://github.com/StefanieJaeger"
             target="_blank"
             rel="noopener noreferrer"
-          >Stefanie Jäger</a>
+          >Stefanie Jäger</a>,
+          <a
+            class="contributor-link"
+            href="https://github.com/Venyla"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Vina Zahnd</a>
         </p>
       </div>
       <div class="column is-1 ml-auto">
