@@ -1,6 +1,4 @@
 import { createApp } from 'vue';
-import '@fortawesome/fontawesome-free/css/all.css';
-import '@fortawesome/fontawesome-free/js/all.js';
 import '../styles/main.scss';
 
 // import Font Awesome as Vue Component: Dynamic Icon Change does not work without it.
