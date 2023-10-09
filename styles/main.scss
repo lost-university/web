@@ -81,6 +81,15 @@
   margin-right: -0.5rem;
 }
 
+.module a {
+  text-decoration: none;
+  color: white;
+}
+
+.module a:hover {
+  text-decoration: underline;
+}
+
 @include desktop {
   .module .delete-button {
     visibility: hidden;

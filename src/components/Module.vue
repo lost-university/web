@@ -10,7 +10,7 @@
       @click="$emit('on-delete', module.id)"
     />
     <h3 class="has-text-weight-bold">
-      {{ module.name }}
+      <a :href="'https://studien.rj.ost.ch/' + module.url.replace('.json', '.html')">{{ module.name }}</a>
     </h3>
     <p>{{ module.ects }} ECTS</p>
   </div>
