@@ -1,11 +1,18 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import Home from '../views/Home.vue';
+import ModuleDependencyGraph from '../components/ModuleDependencyGraph.vue';
 
 const routes = [
+  // {
+  //   path: '/:catchAll(.*)',
+  //   name: 'Home',
+  //   component: Home,
+  // },
   {
+    // path: '/graph',
     path: '/:catchAll(.*)',
-    name: 'Home',
-    component: Home,
+    name: 'Graph',
+    component: ModuleDependencyGraph
   },
 ];
 

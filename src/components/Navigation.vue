@@ -15,6 +15,9 @@
           alt="Home"
         >
       </router-link>
+        <router-link class="navbar-item" to="/graph">
+  GRAPH, LET'S GO!
+        </router-link>
       <a
         :class="{ 'is-active': isBurgerActive }"
         role="button"
