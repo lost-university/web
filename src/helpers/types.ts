@@ -3,6 +3,7 @@ export type Module = {
   name: string,
   categories: ModuleCategory[],
   ects: number,
+  recommendedModuleIds: string[]
 };
 
 export type Focus = {

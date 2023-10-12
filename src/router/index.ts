@@ -1,13 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
-import ModuleDependencyGraph from '../components/ModuleDependencyGraph.vue';
+import ModuleDependencyPage from '../components/module-dependency-graph/ModuleDependencyPage.vue';
 
 const routes = [
   {
-    // path: '/:catchAll(.*)',
     path: '/:graph',
     name: 'Graph',
-    component: ModuleDependencyGraph,
+    component: ModuleDependencyPage,
   },
   {
     path: '/:catchAll(.*)',
