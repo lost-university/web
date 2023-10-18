@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { Chart, LinearScale, PointElement } from 'chart.js/auto';
+import { Chart, LinearScale, PointElement, type ChartOptions, type ChartTypeRegistry, type ChartConfiguration } from 'chart.js/auto';
 import { defineComponent } from 'vue';
 import { ForceDirectedGraphController, EdgeLine } from 'chartjs-chart-graph';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -14,6 +14,35 @@ type Link = { source: string, target: string };
 
 Chart.register(ForceDirectedGraphController, EdgeLine, LinearScale, PointElement, ChartDataLabels);
 
+const chartOptions: ChartOptions<'forceDirectedGraph' | ChartDataLabels> = {
+  tree: { orientation: 'radial' },
+  layout: { padding: 40 },
+  plugins: {
+    // todo: need to display labels more clearly
+    // todo: no animation
+    // todo: an keep things closer together, way too spaced
+    datalabels: {
+      display: (_: ChartDataLabels.Context) => {
+        return true;
+      },
+      align: (context: ChartDataLabels.Context) => {
+        const index = context.dataIndex;
+        const value = context.dataset.data[index] as { angle: number };
+        return (-value.angle / Math.PI) * 180;
+      },
+      rotation: (context: ChartDataLabels.Context) => {
+        const index = context.dataIndex;
+        const value = context.dataset.data[index] as { angle: number };
+        return (-value.angle / Math.PI) * 180;
+      },
+      backgroundColor: 'white',
+      formatter: (value: { displayName: string }) => {
+        return value.displayName;
+      },
+    },
+  },
+};
+
 export default defineComponent({
   name: 'ModuleDependencyGraph',
   props: {
@@ -22,23 +51,34 @@ export default defineComponent({
       required: true,
     },
   },
+  data() {
+    return {
+      chart: null as any | null,
+    };
+  },
   watch: {
     modules: {
       deep: true,
       immediate: false,
-      handler() {
-        const nodes = this.modules.map(module => ({ id: module.id, displayName: module.name }));
-        const links = this.modules.flatMap(module => module.recommendedModuleIds?.map(recommendedId => ({ source: recommendedId, target: module.id })) ?? []);
+      handler(newValue: Module[]) {
+        const nodes = [...newValue.map(module => ({ id: module.id, displayName: module.name }))];
+        // todo: improve this algo
+        let links = [...newValue.flatMap(module => module.recommendedModuleIds.map(recommendedId => ({ source: recommendedId, target: module.id })) ?? [])];
+        links = links.filter(link => nodes.some(node => node.id === link.source) && nodes.some(node => node.id === link.target));
 
-        // todo: update chart!
+        console.log({ nodes, links });
+
         this.createChart(nodes, links);
       },
     },
   },
   methods: {
     createChart(nodes: Node[], links: Link[]) {
-      const canvas = document.getElementById('chart') as HTMLCanvasElement;
-      const options = {
+      if (this.chart) {
+        this.chart.destroy();
+      }
+      const canvas = (document.getElementById('chart') as HTMLCanvasElement).getContext('2d') as CanvasRenderingContext2D;
+      const config: ChartConfiguration<'forceDirectedGraph' | ChartDataLabels> = {
         type: ForceDirectedGraphController.id,
         data: {
           labels: nodes.map((d) => d.id),
@@ -50,36 +90,12 @@ export default defineComponent({
             edges: links,
           }]
         },
-        options: {
-          tree: { orientation: 'radial' },
-          layout: { padding: 40 },
-          plugins: {
-            // todo: need to display labels more clearly
-            datalabels: {
-              display: (_: ChartDataLabels.Context) => {
-                return true;
-              },
-              align: (context: ChartDataLabels.Context) => {
-                const index = context.dataIndex;
-                const value = context.dataset.data[index] as { angle: number };
-                return (-value.angle / Math.PI) * 180;
-              },
-              rotation: (context: ChartDataLabels.Context) => {
-                const index = context.dataIndex;
-                const value = context.dataset.data[index] as { angle: number };
-                return (-value.angle / Math.PI) * 180;
-              },
-              backgroundColor: 'white',
-              formatter: (value: { displayName: string }) => {
-                return value.displayName;
-              },
-            },
-          },
-        },
+        options: chartOptions,
         plugins: [ChartDataLabels],
       };
-      new Chart(canvas, <any>options);
-    }
-  }
+      this.chart = new Chart(canvas, config);
+      console.log('chart', this.chart);
+    },
+  },
 });
 </script>
