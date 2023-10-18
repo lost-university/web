@@ -52,7 +52,7 @@ export default defineComponent({
       deep: true,
       immediate: false,
       handler() {
-        this.unselectedModules = this.allModules;
+        this.unselectedModules = this.allModules.sort((a, b) => a.name > b.name ? 1 : -1);
       },
     },
   },
@@ -64,7 +64,7 @@ export default defineComponent({
         return;
       }
       console.log('module', module);
-      this.selectedModules.push(module);
+      this.selectedModules = [...this.selectedModules, module].sort((a, b) => a.name > b.name ? 1 : -1);
       this.unselectedModules = this.unselectedModules.filter(f => f.id !== moduleId);
       this.$emit('on-modules-selection-changed', this.selectedModules);
     },
@@ -73,7 +73,7 @@ export default defineComponent({
       if (!module) {
         return;
       }
-      this.unselectedModules.push(module);
+      this.unselectedModules = [...this.unselectedModules, module].sort((a, b) => a.name > b.name ? 1 : -1);
       this.selectedModules = this.selectedModules.filter(f => f.id !== moduleId);
       this.$emit('on-modules-selection-changed', this.selectedModules);
     }
