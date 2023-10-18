@@ -14,13 +14,14 @@ type Link = { source: string, target: string };
 
 Chart.register(ForceDirectedGraphController, EdgeLine, LinearScale, PointElement, ChartDataLabels);
 
+// todo: labels (should not hide arrow)
+// todo: no animation (faster render)
+// todo: keep things closer together (way too speard apart)
+
 const chartOptions: ChartOptions<'forceDirectedGraph' | ChartDataLabels> = {
   tree: { orientation: 'radial' },
-  layout: { padding: 40 },
+  layout: { padding: 20 },
   plugins: {
-    // todo: need to display labels more clearly
-    // todo: no animation
-    // todo: an keep things closer together, way too spaced
     datalabels: {
       display: (_: ChartDataLabels.Context) => {
         return true;
@@ -62,7 +63,6 @@ export default defineComponent({
       immediate: false,
       handler(newValue: Module[]) {
         const nodes = [...newValue.map(module => ({ id: module.id, displayName: module.name }))];
-        // todo: improve this algo
         let links = [...newValue.flatMap(module => module.recommendedModuleIds.map(recommendedId => ({ source: recommendedId, target: module.id })) ?? [])];
         links = links.filter(link => nodes.some(node => node.id === link.source) && nodes.some(node => node.id === link.target));
 
@@ -94,7 +94,6 @@ export default defineComponent({
         plugins: [ChartDataLabels],
       };
       this.chart = new Chart(canvas, config);
-      console.log('chart', this.chart);
     },
   },
 });
