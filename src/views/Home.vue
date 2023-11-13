@@ -151,8 +151,8 @@
     </div>
     <div class="column">
       <img
-        src="../assets/this_is_fine.jpg"
-        alt="Well known 'this is fine' meme with a dog in a room on fire"
+        src="../assets/this_is_fine_winter.jpg"
+        alt="Alternative version of the well known 'this is fine' meme with a dog in a room full of snow"
       >
     </div>
   </div>
