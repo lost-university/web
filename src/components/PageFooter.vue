@@ -47,6 +47,12 @@
             target="_blank"
             rel="noopener noreferrer"
           >Vina Zahnd</a>
+          <a
+            class="contributor-link"
+            href="https://github.com/CHLinusch"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Linus Flury</a>
         </p>
       </div>
       <div class="column is-1 ml-auto">
