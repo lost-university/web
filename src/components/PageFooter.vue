@@ -46,7 +46,7 @@
             href="https://github.com/Venyla"
             target="_blank"
             rel="noopener noreferrer"
-          >Vina Zahnd</a>
+          >Vina Zahnd</a>,
           <a
             class="contributor-link"
             href="https://github.com/CHLinusch"
