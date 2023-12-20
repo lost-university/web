@@ -36,3 +36,12 @@ npm run lint-fix
 
 ### Customize configuration
 See [Configuration Reference](https://vitejs.dev/config/).
+
+## Stefi
+
+- [ ] Label of selected modules in graph different color
+- [ ] Popover on node click (select/unselect and adunis)
+- [ ] Maybe position selected modules differently in graph
+- [ ] Maybe style nodes differently. Rounded square with text, like planner?
+- [ ] Spread nodes, so no nodes, labels or edges overlap in weird way
+- [ ] Maybe get edges to not overlap when connecting to node (confusing)

@@ -53,11 +53,13 @@ export default defineComponent({
       }
 
       const recommending = <Module[]>[];
+      const recommended2 = <Module[]>[];
       for (const module of selectedModules) {
         this.getRecommendingModulesForModule(module, recommending);
+        this.getRecommendedModulesForModule(module, recommended2);
       }
 
-      this.modulesForGraph = [...selectedModules, ...recommended, ...recommending].filter((value, index, array) => array.indexOf(value) === index);
+      this.modulesForGraph = [...recommended, ...recommended2, ...selectedModules, ...recommending].filter((value, index, array) => array.indexOf(value) === index);
       this.selectedModules = selectedModules;
     },
     getRecommendedModulesForModule(module: Module, visited: Module[]): Module[] {

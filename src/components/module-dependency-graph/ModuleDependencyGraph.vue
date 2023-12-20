@@ -57,13 +57,19 @@ export default defineComponent({
   },
   methods: {
     buildData(): { nodes: {  data: Node }[], edges:  { data: Edge }[] } {
-      const nodes: { data: Node }[] = [...this.modulesToDisplay.map(module => ({
+      const nodes1: { data: Node }[] = [...this.modulesToDisplay.map(module => ({
         data: {
           id: module.id,
           label: module.name,
           categoryColor: getCategoryColorForModule(module),
         }
       }))];
+      const nodes = nodes1.map(m => {
+        if(this.selectedModules.some(s => s.id === m.data.id)) {
+          m.data.labelColor = 'red';
+        }
+        return m;
+      });
       let edges = [...this.modulesToDisplay.flatMap(module =>
         module.recommendedModuleIds.map(recId =>
           ({ data: { source: recId, target: module.id } })
@@ -95,6 +101,17 @@ export default defineComponent({
             }
           },
           {
+            selector: "node[labelColor]",
+            style: {
+              "color": "data(labelColor)"
+            }
+          },
+          //   {selector: 'node[label][isSelectedModule]',
+          //   style: {
+          //     'color': 'pink',
+          //   }
+          // },
+          {
             selector: "edge[label]",
             style: {
               "label": "data(label)",
@@ -125,6 +142,7 @@ type Node = {
   id: string,
   label: string,
   categoryColor: string,
+  labelColor?: string,
 };
 
 type Edge = {
