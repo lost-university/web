@@ -1,12 +1,4 @@
 <template>
-  <!-- <div class="has-dropdown is-hoverable">
-    <a>Module</a>
-    <div class="navbar-dropdown">
-      <a v-for="module in unselectedModules" :key="module.id" class="navbar-item" @click="onModuleSelected(module.id)"
-        v-text="module.name" />
-    </div>
-  </div> -->
-
   <div class="is-flex is-align-content-space-evenly is-justify-content-left">
     <label class="is-flex is-flex-direction-column is-justify-content-center" for="modules-select">
       <p>Module</p>
@@ -20,17 +12,30 @@
     </div>
   </div>
 
-  <div>
+  <div class="is-flex mt-2">
     <template v-for="module in selectedModules" :key="module.id">
-      <div style="background-color: pink; margin-right: 1em;">{{ module.name }} <button
-          @click="onModuleDeselected(module.id)">X</button></div>
+      <div class="selected-module p-2" :style="{ 'background-color': getCategoryColorForModule(module), 'margin-right': '1em' }">
+        {{ module.name }}
+        <button
+          class="delete-button delete is-pulled-right ml-1"
+          type="button"
+          @click="onModuleDeselected(module.id)">X</button>
+      </div>
     </template>
   </div>
 </template>
 
+<style>
+.selected-module {
+  color: white;
+  border-radius: 5px;
+}
+</style>
+
 <script lang="ts">
 import { defineComponent } from 'vue';
 import type { Module } from '../../helpers/types';
+import { getCategoryColorForModule } from '../../helpers/color-helper';
 
 export default defineComponent({
   name: 'ModuleDependencyDropdown',
@@ -57,6 +62,7 @@ export default defineComponent({
     },
   },
   methods: {
+    getCategoryColorForModule,
     onModuleSelected(moduleId: string) {
       console.log('onModuleSelected', moduleId);
       const module = this.unselectedModules.find(f => f.id === moduleId);

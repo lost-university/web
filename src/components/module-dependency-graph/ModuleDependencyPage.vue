@@ -11,7 +11,7 @@
   </div>
   <div class="columns">
     <div class="column">
-          <ModuleDependencyGraph :modules="modulesForGraph"></ModuleDependencyGraph>
+          <ModuleDependencyGraph :selectedModules="selectedModules" :modulesToDisplay="modulesForGraph"></ModuleDependencyGraph>
         </div>
       </div>
 </template>
@@ -35,6 +35,7 @@ export default defineComponent({
     return {
       modulesForGraph: [] as Module[],
       allModules: [] as Module[],
+      selectedModules: [] as Module[],
     }
   },
   async mounted() {
@@ -57,6 +58,7 @@ export default defineComponent({
       }
 
       this.modulesForGraph = [...selectedModules, ...recommended, ...recommending].filter((value, index, array) => array.indexOf(value) === index);
+      this.selectedModules = selectedModules;
     },
     getRecommendedModulesForModule(module: Module, visited: Module[]): Module[] {
       const recommended = module.recommendedModuleIds.map(m => this.allModules.find(f => f.id === m));
