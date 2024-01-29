@@ -166,7 +166,7 @@ import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator
 import { getColorForCategoryId } from '../helpers/color-helper';
 import type { Module, Category, Focus, UnknownModule, Semester } from '../helpers/types';
 
-const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.2/data';
+const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.3/data';
 const ROUTE_MODULES = '/modules.json';
 const ROUTE_CATEGORIES = '/categories.json';
 const ROUTE_FOCUSES = '/focuses.json';
@@ -266,6 +266,8 @@ export default defineComponent({
         // This ensures backwards compatability. Removing it after everyone who started before 2022
         // has finished their studies, so about 2026, is guaranteed to be fine.
         const newPath = path
+          .replace('BuPro', 'WI2')
+          .replace('RheKI', 'RheKoI')
           .replace('SDW', 'IBN')
           .replace('FunProg', 'FP')
           .replace('BAI14', 'BAI21')
