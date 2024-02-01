@@ -60,7 +60,11 @@
           class="mr-4 is-inline-block"
           href="https://github.com/lost-university"
         >
-          <i class="fab fa-github fa-2x social" />
+          <font-awesome-icon
+            :icon="['fab', 'github']"
+            size="2x"
+            class="social"
+          />
         </a>
       </div>
     </div>
