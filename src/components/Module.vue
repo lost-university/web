@@ -12,7 +12,8 @@
     <h3 class="has-text-weight-bold">
       <a
         target="_blank"
-        :href="'https://studien.rj.ost.ch/' + module.url.replace('.json', '.html')">{{ module.name }}
+        :href="'https://studien.rj.ost.ch/' + module.url.replace('.json', '.html')"
+      >{{ module.name }}
       </a>
     </h3>
     <p>{{ module.ects }} ECTS</p>

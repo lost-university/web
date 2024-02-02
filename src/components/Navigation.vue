@@ -1,63 +1,52 @@
 <template>
   <nav
-    class="navbar is-fixed-top"
+    class="flex m-2"
     role="navigation"
     aria-label="main navigation"
   >
-    <div class="navbar-brand">
-      <router-link
-        class="navbar-item"
-        to="/"
-      >
-        <img
-          src="../assets/logo.png"
-          class="logo-nav"
-          alt="Home"
-        >
-      </router-link>
-      <a
-        :class="{ 'is-active': isBurgerActive }"
-        role="button"
+    <div>
+<!--      <router-link to="/">-->
+<!--        <img-->
+<!--          src="../assets/logo.png"-->
+<!--          class="logo-nav"-->
+<!--          alt="Home"-->
+<!--        >-->
+<!--      </router-link>-->
+      <button
+        class="sm:hidden"
         tabindex="0"
-        class="navbar-burger"
         aria-label="menu"
         aria-expanded="false"
-        data-target="navbarBasicExample"
         @click="onBurgerClick"
-        @keypress="onBurgerClick"
       >
-        <span aria-hidden="true" />
-        <span aria-hidden="true" />
-        <span aria-hidden="true" />
-      </a>
+        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+      </button>
     </div>
     <div
-      class="navbar-menu"
-      :class="{ 'is-active': isBurgerActive }"
+      class="w-full sm:inline-flex space-x-2"
+      :class="{ 'hidden': !isBurgerActive }"
     >
-      <div class="navbar-start">
-        <template
-          v-for="category in categories"
-          :key="category.title"
-        >
-          <div class="navbar-item has-dropdown is-hoverable">
+      <template
+        v-for="category in categories"
+        :key="category.title"
+      >
+        <div>
+          <button
+            class="peer bg-green-200 p-4"
+            v-text="category.title"
+          />
+          <div class="hidden rounded shadow-2xl bg-white flex-col peer-hover:flex hover:flex fixed">
             <a
-              class="navbar-link"
-              v-text="category.title"
+              class="p-2 hover:bg-gray-100 rounded"
+              v-for="plan in category.plans"
+              :key="plan.title"
+              :href="'#/plan/' + plan.path"
+              @click="onBurgerClick"
+              v-text="plan.title"
             />
-            <div class="navbar-dropdown">
-              <a
-                v-for="plan in category.plans"
-                :key="plan.title"
-                class="navbar-item"
-                :href="'#/plan/' + plan.path"
-                @click="onBurgerClick"
-                v-text="plan.title"
-              />
-            </div>
           </div>
-        </template>
-      </div>
+        </div>
+      </template>
     </div>
   </nav>
 </template>
