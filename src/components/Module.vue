@@ -1,21 +1,20 @@
 <template>
   <div
     :key="module.name"
-    class="column module mt-1"
+    class="rounded group/module relative p-2 flex flex-col items-center text-center text-white w-full"
     :style="{ 'background-color': getCategoryColorForModule(module) }"
   >
     <button
-      class="delete-button delete is-pulled-right"
       type="button"
+      class="absolute invisible group-hover/module:visible right-0"
       @click="$emit('on-delete', module.id)"
-    />
-    <h3 class="has-text-weight-bold">
-      <a
-        target="_blank"
-        :href="'https://studien.rj.ost.ch/' + module.url.replace('.json', '.html')"
-      >{{ module.name }}
-      </a>
-    </h3>
+    >Delete</button>
+    <a
+      class="font-bold hover:underline"
+      target="_blank"
+      :href="'https://studien.rj.ost.ch/' + module.url.replace('.json', '.html')"
+    >{{ module.name }}
+    </a>
     <p>{{ module.ects }} ECTS</p>
   </div>
 </template>

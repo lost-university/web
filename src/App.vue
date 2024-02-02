@@ -1,6 +1,6 @@
 <template>
   <Navigation />
-  <div class="p-5 custom-container">
+  <div class="p-2 bg-gray-400">
     <router-view />
   </div>
   <PageFooter />

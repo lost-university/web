@@ -35,7 +35,7 @@
             class="peer bg-green-200 p-4"
             v-text="category.title"
           />
-          <div class="hidden rounded shadow-2xl bg-white flex-col peer-hover:flex hover:flex fixed">
+          <div class="hidden rounded shadow-2xl bg-white flex-col peer-hover:flex hover:flex fixed z-10">
             <a
               class="p-2 hover:bg-gray-100 rounded"
               v-for="plan in category.plans"

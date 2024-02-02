@@ -1,11 +1,11 @@
 <template>
-  <div class="columns">
-    <div class="column">
-      <h1 class="title">
+  <div>
+    <div>
+      <h1>
         Plane deine Module
       </h1>
     </div>
-    <div class="column is-narrow">
+    <div>
       <Transition>
         <div
           v-if="errorMsg"
@@ -41,11 +41,11 @@
       </Transition>
     </div>
   </div>
-  <div class="columns schedule">
+  <div class="flex space-x-2 overflow-auto">
     <div
       v-for="semester in semesters"
       :key="semester.number"
-      class="column semester"
+      class="bg-gray-300 rounded p-2 group/semester"
     >
       <SemesterComponent
         v-model:modules="semester.modules"
@@ -165,6 +165,7 @@ import FocusComponent from '../components/Focus.vue';
 import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
 import { getColorForCategoryId } from '../helpers/color-helper';
 import type { Module, Category, Focus, UnknownModule, Semester } from '../helpers/types';
+import draggable from "vuedraggable";
 
 const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.3/data';
 const ROUTE_MODULES = '/modules.json';
@@ -173,7 +174,7 @@ const ROUTE_FOCUSES = '/focuses.json';
 
 export default defineComponent({
   name: 'Home',
-  components: { SemesterComponent, FocusComponent, BeautifulProgressIndicator },
+  components: {draggable, SemesterComponent, FocusComponent, BeautifulProgressIndicator },
   data() {
     return {
       semesters: [] as Semester[],

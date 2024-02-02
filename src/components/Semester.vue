@@ -1,25 +1,25 @@
 <template>
   <!-- eslint-disable-next-line vue/no-mutating-props -->
   <draggable
+    class="space-y-1 flex flex-col items-center"
     :list="modules"
     group="semester"
     item-key="id"
     :animation="200"
     :delay-on-touch-only="true"
     :delay="500"
-    class="columns is-flex is-flex-direction-column has-text-centered"
     @end="onDropEnd"
   >
     <template #header>
-      <div class="semester-header">
-        <h2 class="subtitle pl-3 mb-2">
+      <div class="flex justify-between">
+        <span class="text-xl p-0.5">
           Semester {{ number }}
-        </h2>
+        </span>
         <button
-          class="delete-button delete is-medium"
+          class="hidden group-hover/semester:block"
           type="button"
           @click="removeSemester()"
-        />
+        >Delete</button>
       </div>
     </template>
     <template #item="{ element }">
@@ -30,21 +30,16 @@
       />
     </template>
     <template #footer>
-      <div
-        class="column semester-footer"
-        :class="{ 'is-hidden': isAddingNewModule }"
+      <button
+        class="bg-gray-800 text-white w-2/3 py-1 rounded"
+        type="button"
+        :class="{ 'invisible': isAddingNewModule }"
+        @click="isAddingNewModule = true"
       >
-        <button
-          class="button is-dark button-add is-fullwidth"
-          type="button"
-          @click="isAddingNewModule = true"
-        >
-          +
-        </button>
-      </div>
+        +
+      </button>
       <div
-        class="column"
-        :class="{ 'is-hidden': !isAddingNewModule }"
+        :class="{ 'invisible': !isAddingNewModule }"
       >
         <label for="additionalModule">Select additional module</label>
         <input
