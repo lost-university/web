@@ -99,45 +99,6 @@
   }
 }
 
-/* Beautiful Progress Indicator */
-.container {
-  width: 12em;
-}
-
-.progress-container {
-  position: relative;
-  background-color: lightgray;
-}
-
-.planned-progress {
-  background-color: #A0A0A0;
-}
-
-.earned-progress, .planned-progress {
-  position: absolute;
-  transition: width 1s ease-in-out;
-}
-
-.progress-container, .earned-progress, .planned-progress {
-  height: 20px;
-  border-radius: 10px;
-}
-
-.ratio-label, .planned-label {
-  display: inline;
-  vertical-align: text-bottom;
-
-  font-size: 0.75em;
-
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-.planned-label {
-  float: right;
-  color: gray;
-}
-
 /* Focus */
 .focus-missing-modules-list {
   padding: 1rem;

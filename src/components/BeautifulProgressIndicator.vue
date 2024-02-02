@@ -1,28 +1,28 @@
+<link rel="stylesheet" href="../../styles/main.scss">
 <template>
-  <div class="container">
-    <p class="ratio-label">
-      {{ earned }} / {{ required }}
-    </p>
-    <p
+  <div class="text-xs flex justify-between px-1 py-0.5">
+    <span>{{ earned }} / {{ required }}</span>
+    <span
       v-if="planned > 0"
-      class="planned-label"
+      class="text-gray-400"
     >
       {{ planned }} noch geplant
-    </p>
+    </span>
+  </div>
 
-    <div class="progress-container">
-      <div
-        class="planned-progress"
-        :style="{ width: plannedProgress }"
-      />
-      <div
-        class="earned-progress"
-        :style="{
-          width: earnedProgress,
-          'background-color': color,
-        }"
-      />
-    </div>
+  <div class="bg-gray-200 relative h-5 w-48 rounded-full">
+    <div
+      class="bg-gray-300 h-full absolute rounded-full"
+      :style="{ width: plannedProgress }"
+    />
+    <div
+      class="h-full absolute transition-all duration-1000 rounded-full"
+      :class="{ 'opacity-0': earnedProgress == '0%'}"
+      :style="{
+        width: earnedProgress,
+        'background-color': color,
+      }"
+    />
   </div>
 </template>
 
