@@ -19,7 +19,11 @@
         aria-expanded="false"
         @click="onBurgerClick"
       >
-        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+        <font-awesome-icon
+          :icon="['fa', 'bars']"
+          size="2x"
+          class="peer"
+        />
       </button>
     </div>
     <div
@@ -32,8 +36,12 @@
       >
         <div>
           <button
-            class="peer bg-green-200 p-4"
+            class="p-4 peer hover:cursor-auto"
             v-text="category.title"
+          />
+          <font-awesome-icon
+            :icon="['fa', 'chevron-down']"
+            class="peer"
           />
           <div class="hidden rounded shadow-2xl bg-white flex-col peer-hover:flex hover:flex fixed z-10">
             <a

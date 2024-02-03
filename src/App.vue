@@ -1,9 +1,9 @@
 <template>
-  <Navigation />
   <div class="p-2">
+    <Navigation />
     <router-view />
+    <PageFooter />
   </div>
-  <PageFooter />
 </template>
 
 <script lang="ts">

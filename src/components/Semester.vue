@@ -11,8 +11,8 @@
     @end="onDropEnd"
   >
     <template #header>
-      <div class="flex justify-between">
-        <span class="text-xl p-0.5">
+      <div class="flex justify-between w-full py-0.5 px-1">
+        <span class="text-xl">
           Semester {{ number }}
         </span>
         <button

@@ -12,7 +12,7 @@
 
   <div class="bg-gray-200 relative h-5 w-48 rounded-full">
     <div
-      class="bg-gray-300 h-full absolute rounded-full"
+      class="bg-gray-300 h-full absolute rounded-full transition-all duration-1000"
       :style="{ width: plannedProgress }"
     />
     <div

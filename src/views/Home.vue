@@ -1,11 +1,6 @@
 <template>
   <div>
     <div>
-      <h1>
-        Plane deine Module
-      </h1>
-    </div>
-    <div>
       <Transition>
         <div
           v-if="errorMsg"
@@ -42,119 +37,105 @@
     </div>
   </div>
   <div class="flex space-x-2 overflow-auto">
-    <div
+    <SemesterComponent
       v-for="semester in semesters"
       :key="semester.number"
-      class="bg-gray-300 rounded p-2 group/semester"
+      v-model:modules="semester.modules"
+      class="bg-gray-200 rounded p-2 group/semester w-64"
+      :number="semester.number"
+      :all-modules="modules"
+      @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
+      @on-add-module="addModule"
+      @on-remove-semester="removeSemester"
+      @on-drop-end="updateUrlFragment"
+    />
+    <button
+      class="add-semester-btn button is-dark is-fullwidth"
+      type="button"
+      @click="addSemester"
     >
-      <SemesterComponent
-        v-model:modules="semester.modules"
-        :number="semester.number"
-        :all-modules="modules"
-        @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
-        @on-add-module="addModule"
-        @on-remove-semester="removeSemester"
-        @on-drop-end="updateUrlFragment"
-      />
-    </div>
-    <div class="column add-semester">
-      <button
-        class="add-semester-btn button is-dark is-fullwidth"
-        type="button"
-        @click="addSemester"
-      >
-        +
-      </button>
-    </div>
+      +
+    </button>
   </div>
-  <div class="columns desktop-ml-6 desktop-mt-6">
-    <div class="column">
-      <article>
-        <h2 class="subtitle">
-          Übersicht der ECTS Punkte
-        </h2>
-        <div class="is-flex is-align-content-space-evenly is-justify-content-left">
-          <label
-            class="is-flex is-flex-direction-column is-justify-content-center"
-            for="last-semester-select"
+  <div class="mt-4 sm:flex flex-wrap">
+    <article class="lg:w-1/2 2xl:w-1/3 shrink-0">
+      <span class="text-xl">
+        Übersicht der ECTS Punkte
+      </span>
+      <div class="my-2">
+        <label for="last-semester-select">
+          Letztes erfolgreich abgeschlossenes Semester:
+        </label>
+        <select
+          class="ml-2 px-3 py-2 rounded"
+          id="last-semester-select"
+          v-model="lastSemesterNumber"
+        >
+          <option
+            v-for="semester in semesters"
+            :key="semester.number"
           >
-            <p>Letztes erfolgreich abgeschlossenes Semester:</p>
-          </label>
-          <div class="select pl-2">
-            <select
-              id="last-semester-select"
-              v-model="lastSemesterNumber"
-            >
-              <option
-                v-for="semester in semesters"
-                :key="semester.number"
-              >
-                {{ semester.number }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <table>
-          <tbody>
-            <tr
-              v-for="category in mappedCategories"
-              :key="category.name"
-            >
-              <td style="vertical-align:bottom;padding-right:1em;text-align:end">
-                {{ category.name }}
-              </td>
-              <td style="padding-top:8px">
-                <BeautifulProgressIndicator
-                  :required="category.required_ects"
-                  :earned="category.earnedCredits"
-                  :planned="category.plannedCredits"
-                  :color="category.color"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td style="vertical-align:bottom;padding-right:1em;text-align:end">
-                Total
-              </td>
-              <td style="padding-top:8px">
-                <BeautifulProgressIndicator
-                  :required="180"
-                  :earned="totalEarnedEcts"
-                  :planned="totalPlannedEcts"
-                  :color="`orange`"
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </article>
-    </div>
-    <div class="column">
-      <article>
-        <h2 class="subtitle">
-          Vertiefungen
-        </h2>
-        <div class="columns is-multiline mt-5">
-          <div
-            v-for="focus in mappedFocuses"
-            :key="focus.name"
-            class="column is-full"
+            {{ semester.number }}
+          </option>
+        </select>
+      </div>
+      <table>
+        <tbody>
+          <tr
+            v-for="category in mappedCategories"
+            :key="category.name"
           >
-            <FocusComponent
-              :name="focus.name"
-              :all-modules="focus.modules"
-              :filtered-module-names="focus.filteredModuleNames"
-            />
-          </div>
+            <td style="vertical-align:bottom;padding-right:1em;text-align:end">
+              {{ category.name }}
+            </td>
+            <td style="padding-top:8px">
+              <BeautifulProgressIndicator
+                :required="category.required_ects"
+                :earned="category.earnedCredits"
+                :planned="category.plannedCredits"
+                :color="category.color"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align:bottom;padding-right:1em;text-align:end">
+              Total
+            </td>
+            <td style="padding-top:8px">
+              <BeautifulProgressIndicator
+                :required="180"
+                :earned="totalEarnedEcts"
+                :planned="totalPlannedEcts"
+                :color="`orange`"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </article>
+    <article class="lg:w-1/2 2xl:w-1/3 shrink-0">
+      <h2 class="text-xl">
+        Vertiefungen
+      </h2>
+      <div class="columns is-multiline mt-5">
+        <div
+          v-for="focus in mappedFocuses"
+          :key="focus.name"
+          class="column is-full"
+        >
+          <FocusComponent
+            :name="focus.name"
+            :all-modules="focus.modules"
+            :filtered-module-names="focus.filteredModuleNames"
+          />
         </div>
-      </article>
-    </div>
-    <div class="column">
-      <img
-        src="../assets/this_is_fine_winter.jpg"
-        alt="Alternative version of the well known 'this is fine' meme with a dog in a room full of snow"
-      >
-    </div>
+      </div>
+    </article>
+    <img
+      class="lg:w-1/2 2xl:w-1/3 shrink-0"
+      src="../assets/this_is_fine_winter.jpg"
+      alt="Alternative version of the well known 'this is fine' meme with a dog in a room full of snow"
+    >
   </div>
 </template>
 

@@ -4,10 +4,11 @@ import { createApp } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library, type IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue';
 import router from './router';
 
+library.add(faBars as IconDefinition);
 library.add(faChevronUp as IconDefinition);
 library.add(faChevronDown as IconDefinition);
 library.add(faGithub as IconDefinition);
