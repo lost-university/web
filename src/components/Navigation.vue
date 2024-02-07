@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="flex m-2"
+    class="flex"
     role="navigation"
     aria-label="main navigation"
   >
@@ -36,7 +36,7 @@
       >
         <div>
           <button
-            class="p-4 peer hover:cursor-auto"
+            class="py-6 px-4 peer hover:cursor-auto"
             v-text="category.title"
           />
           <font-awesome-icon

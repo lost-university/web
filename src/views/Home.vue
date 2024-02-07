@@ -10,7 +10,7 @@
         </div>
       </Transition>
     </div>
-    <div class="column is-narrow">
+    <div>
       <Transition>
         <div
           v-if="unknownModules?.length"
@@ -36,7 +36,7 @@
       </Transition>
     </div>
   </div>
-  <div class="flex space-x-2 overflow-auto">
+  <div class="flex space-x-2 overflow-auto before:m-auto after:m-auto">
     <SemesterComponent
       v-for="semester in semesters"
       :key="semester.number"
@@ -57,8 +57,8 @@
       +
     </button>
   </div>
-  <div class="mt-4 sm:flex flex-wrap">
-    <article class="lg:w-1/2 2xl:w-1/3 shrink-0">
+  <div class="my-16 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 lg:justify-items-center gap-y-16">
+    <article>
       <span class="text-xl">
         Übersicht der ECTS Punkte
       </span>
@@ -113,7 +113,7 @@
         </tbody>
       </table>
     </article>
-    <article class="lg:w-1/2 2xl:w-1/3 shrink-0">
+    <article>
       <h2 class="text-xl">
         Vertiefungen
       </h2>
@@ -132,7 +132,7 @@
       </div>
     </article>
     <img
-      class="lg:w-1/2 2xl:w-1/3 shrink-0"
+      class="lg:col-span-2 2xl:col-span-1"
       src="../assets/this_is_fine_winter.jpg"
       alt="Alternative version of the well known 'this is fine' meme with a dog in a room full of snow"
     >
