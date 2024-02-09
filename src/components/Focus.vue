@@ -3,20 +3,20 @@
     <button
       class="button is-fullwidth button-focus"
       :aria-expanded="isOpen"
-      :class="{ 'is-success': !filteredModuleNames.length }"
+      :class="{ 'is-success': !filteredModules.length }"
       type="button"
       @click="toggleFocus()"
     >
       <div class="focus-main">
         <span>{{ name }}</span>
         <span
-          v-if="filteredModuleNames.length"
+          v-if="filteredModules.length"
           class="tag is-info is-light"
         >
-          {{ filteredModuleNames.length }} Module werden noch benötigt
+          {{ filteredModules.length }} Module werden noch benötigt
         </span>
         <span
-          v-if="!filteredModuleNames.length"
+          v-if="!filteredModules.length"
           class="tag is-success is-light"
         >
           Vertiefung geplant
@@ -33,18 +33,22 @@
       class="column is-full column-focus"
     >
       <div class="box box-focus">
-        <p v-if="!filteredModuleNames.length">
+        <p v-if="!filteredModules.length">
           Alle benötigten Module sind bestanden/geplant.
         </p>
-        <p v-if="filteredModuleNames.length">
+        <p v-if="filteredModules.length">
           Für die Vertiefung müssen folgende Module noch geplant werden:
         </p>
         <ul class="focus-missing-modules-list">
           <li
-            v-for="filteredModuleName in filteredModuleNames"
-            :key="filteredModuleName"
+            v-for="module in filteredModules"
+            :key="module.id"
           >
-            {{ filteredModuleName }}
+            <a
+              target="_blank"
+              :href="'https://studien.rj.ost.ch/' + module.url.replace('.json', '.html')"
+            >{{ module.name }}
+            </a>
           </li>
         </ul>
       </div>
@@ -69,9 +73,9 @@ export default defineComponent({
       type: Array<Module>,
       default: () => [],
     },
-    filteredModuleNames: {
+    filteredModules: {
       required: true,
-      type: Array<string>,
+      type: Array<Module>,
       default: () => [],
     },
   },

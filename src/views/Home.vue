@@ -143,7 +143,7 @@
             <FocusComponent
               :name="focus.name"
               :all-modules="focus.modules"
-              :filtered-module-names="focus.filteredModuleNames"
+              :filtered-modules="focus.filteredModules"
             />
           </div>
         </div>
@@ -203,9 +203,8 @@ export default defineComponent({
       const plannedModuleIds = this.plannedModules.map((module) => module.id);
       return this.focuses.map((focus) => ({
         ...focus,
-        filteredModuleNames: focus.modules
-          .filter((module) => !plannedModuleIds.includes(module.id))
-          .map((module) => module.name),
+        filteredModules: focus.modules
+          .filter((module) => !plannedModuleIds.includes(module.id)),
       }));
     },
     totalPlannedEcts() {
