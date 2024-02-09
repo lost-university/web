@@ -1,5 +1,5 @@
 <template>
-  <div class="m-4">
+  <div>
     <Navigation />
     <router-view />
     <PageFooter />

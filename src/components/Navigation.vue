@@ -1,19 +1,19 @@
 <template>
   <nav
-    class="flex"
+    class="flex sm:mx-4 items-center flex-wrap sm:flex-nowrap"
     role="navigation"
     aria-label="main navigation"
   >
-    <div>
-<!--      <router-link to="/">-->
-<!--        <img-->
-<!--          src="../assets/logo.png"-->
-<!--          class="logo-nav"-->
-<!--          alt="Home"-->
-<!--        >-->
-<!--      </router-link>-->
+    <div class="flex items-center justify-between sm:justify-normal w-full sm:w-auto">
+      <router-link to="/">
+        <img
+          src="../assets/logo.png"
+          class="size-24 pb-4 object-contain"
+          alt="Home"
+        >
+      </router-link>
       <button
-        class="sm:hidden"
+        class="sm:hidden p-4"
         tabindex="0"
         aria-label="menu"
         aria-expanded="false"
@@ -22,12 +22,11 @@
         <font-awesome-icon
           :icon="['fa', 'bars']"
           size="2x"
-          class="peer"
         />
       </button>
     </div>
     <div
-      class="w-full sm:inline-flex space-x-2"
+      class="w-full sm:inline-flex basis-full"
       :class="{ 'hidden': !isBurgerActive }"
     >
       <template
@@ -35,15 +34,17 @@
         :key="category.title"
       >
         <div>
-          <button
-            class="py-6 px-4 peer hover:cursor-auto"
-            v-text="category.title"
-          />
-          <font-awesome-icon
-            :icon="['fa', 'chevron-down']"
-            class="peer"
-          />
-          <div class="hidden rounded shadow-2xl bg-white flex-col peer-hover:flex hover:flex fixed z-10">
+          <div class="px-2 sm:px-4 pt-4 pb-2 sm:py-6 peer">
+            <button
+              class="hover:cursor-auto mr-2 text-lg font-bold sm:text-md sm:font-normal"
+              v-text="category.title"
+            />
+            <font-awesome-icon
+              :icon="['fa', 'chevron-down']"
+              class="peer invisible sm:visible"
+            />
+          </div>
+          <div class="sm:hidden peer-hover:flex hover:flex flex rounded sm:shadow-2xl bg-white flex-col sm:fixed z-10">
             <a
               class="p-2 hover:bg-gray-100 rounded"
               v-for="plan in category.plans"

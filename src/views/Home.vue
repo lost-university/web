@@ -36,7 +36,7 @@
       </Transition>
     </div>
   </div>
-  <div class="flex space-x-2 overflow-auto before:m-auto after:m-auto">
+  <div class="flex space-x-2 overflow-auto before:m-auto after:m-auto p-4">
     <SemesterComponent
       v-for="semester in semesters"
       :key="semester.number"
@@ -58,7 +58,7 @@
     </button>
   </div>
   <div class="my-16 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 lg:justify-items-center gap-y-16">
-    <article>
+    <article class="mx-4">
       <span class="text-xl">
         Übersicht der ECTS Punkte
       </span>
@@ -113,15 +113,14 @@
         </tbody>
       </table>
     </article>
-    <article>
+    <article class="mx-4">
       <h2 class="text-xl">
         Vertiefungen
       </h2>
-      <div class="columns is-multiline mt-5">
+      <div class="mt-5">
         <div
           v-for="focus in mappedFocuses"
           :key="focus.name"
-          class="column is-full"
         >
           <FocusComponent
             :name="focus.name"
@@ -132,7 +131,7 @@
       </div>
     </article>
     <img
-      class="lg:col-span-2 2xl:col-span-1"
+      class="lg:col-span-2 2xl:col-span-1 justify-self-center"
       src="../assets/this_is_fine_winter.jpg"
       alt="Alternative version of the well known 'this is fine' meme with a dog in a room full of snow"
     >

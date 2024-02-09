@@ -1,54 +1,41 @@
 <template>
-  <div class="columns is-multiline">
-    <button
-      class="button is-fullwidth button-focus"
-      :aria-expanded="isOpen"
-      :class="{ 'is-success': !filteredModuleNames.length }"
-      type="button"
-      @click="toggleFocus()"
+  <div
+    class="hover:cursor-pointer border border-gray-300 hover:border-gray-600 flex items-center space-x-2 p-2"
+    :aria-expanded="isOpen"
+    :class="{ 'bg-green-200': !filteredModuleNames.length }"
+    type="button"
+    @click="toggleFocus()"
+  >
+    <span class="grow">{{ name }}</span>
+    <span
+      v-if="filteredModuleNames.length"
+      class="shrink-0 text-xs py-1 px-2 rounded bg-blue-50"
     >
-      <div class="focus-main">
-        <span>{{ name }}</span>
-        <span
-          v-if="filteredModuleNames.length"
-          class="tag is-info is-light"
-        >
-          {{ filteredModuleNames.length }} Module werden noch benötigt
-        </span>
-        <span
-          v-if="!filteredModuleNames.length"
-          class="tag is-success is-light"
-        >
-          Vertiefung geplant
-        </span>
-      </div>
-      <div class="focus-aside">
-        <span class="icon">
-          <font-awesome-icon :icon="isOpen ? openIconClass : closedIconClass" />
-        </span>
-      </div>
-    </button>
-    <div
-      v-show="isOpen"
-      class="column is-full column-focus"
+      {{ filteredModuleNames.length }} Module werden noch benötigt
+    </span>
+    <span
+      v-if="!filteredModuleNames.length"
+      class="shrink-0 text-xs py-1 px-2 rounded bg-green-100"
     >
-      <div class="box box-focus">
-        <p v-if="!filteredModuleNames.length">
-          Alle benötigten Module sind bestanden/geplant.
-        </p>
-        <p v-if="filteredModuleNames.length">
-          Für die Vertiefung müssen folgende Module noch geplant werden:
-        </p>
-        <ul class="focus-missing-modules-list">
-          <li
-            v-for="filteredModuleName in filteredModuleNames"
-            :key="filteredModuleName"
-          >
-            {{ filteredModuleName }}
-          </li>
-        </ul>
-      </div>
-    </div>
+      Vertiefung geplant
+    </span>
+    <font-awesome-icon :icon="isOpen ? openIconClass : closedIconClass" />
+  </div>
+  <div v-show="isOpen" class="p-4 shadow-lg mb-4">
+    <p v-if="!filteredModuleNames.length">
+      Alle benötigten Module sind bestanden/geplant.
+    </p>
+    <p v-if="filteredModuleNames.length">
+      Für die Vertiefung müssen folgende Module noch geplant werden:
+    </p>
+    <ul class="list-disc list-inside text-sm mt-1">
+      <li
+        v-for="filteredModuleName in filteredModuleNames"
+        :key="filteredModuleName"
+      >
+        {{ filteredModuleName }}
+      </li>
+    </ul>
   </div>
 </template>
 
