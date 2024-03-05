@@ -4,7 +4,7 @@
     <div class="columns">
       <div class="column is-11">
         <p>
-          © 2023
+          © 2024
           <a
             class="contributor-link"
             href="https://github.com/jeremystucki"
