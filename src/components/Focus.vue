@@ -37,6 +37,7 @@
         :key="module.id"
       >
         <a
+          class="hover:underline"
           target="_blank"
           :href="'https://studien.rj.ost.ch/' + module.url.replace('.json', '.html')"
         >{{ module.name }}
