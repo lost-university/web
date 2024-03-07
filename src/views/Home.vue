@@ -145,7 +145,6 @@ import FocusComponent from '../components/Focus.vue';
 import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
 import { getColorForCategoryId } from '../helpers/color-helper';
 import type { Module, Category, Focus, UnknownModule, Semester } from '../helpers/types';
-import draggable from "vuedraggable";
 
 const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.3/data';
 const ROUTE_MODULES = '/modules.json';
