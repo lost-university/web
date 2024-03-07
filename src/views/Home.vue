@@ -154,7 +154,7 @@ const ROUTE_FOCUSES = '/focuses.json';
 
 export default defineComponent({
   name: 'Home',
-  components: {draggable, SemesterComponent, FocusComponent, BeautifulProgressIndicator },
+  components: {SemesterComponent, FocusComponent, BeautifulProgressIndicator },
   data() {
     return {
       semesters: [] as Semester[],
