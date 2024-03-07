@@ -85,10 +85,10 @@
             v-for="category in mappedCategories"
             :key="category.name"
           >
-            <td style="vertical-align:bottom;padding-right:1em;text-align:end">
+            <td class="align-bottom pr-4 text-end">
               {{ category.name }}
             </td>
-            <td style="padding-top:8px">
+            <td class="pt-3">
               <BeautifulProgressIndicator
                 :required="category.required_ects"
                 :earned="category.earnedCredits"
@@ -98,10 +98,10 @@
             </td>
           </tr>
           <tr>
-            <td style="vertical-align:bottom;padding-right:1em;text-align:end">
+            <td class="align-bottom pr-4 text-end">
               Total
             </td>
-            <td style="padding-top:8px">
+            <td class="pt-3">
               <BeautifulProgressIndicator
                 :required="180"
                 :earned="totalEarnedEcts"
