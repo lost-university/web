@@ -50,7 +50,7 @@
       @on-drop-end="updateUrlFragment"
     />
     <button
-      class="add-semester-btn button is-dark is-fullwidth"
+      class="bg-gray-500 hover:bg-gray-800 transition-colors text-white w-8 px-2 rounded"
       type="button"
       @click="addSemester"
     >
