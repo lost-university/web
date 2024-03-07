@@ -1,7 +1,7 @@
 <template>
   <!-- eslint-disable-next-line vue/no-mutating-props -->
   <draggable
-    class="space-y-1 flex flex-col items-center"
+    class="gap-y-1 flex flex-col items-center"
     :list="modules"
     group="semester"
     item-key="id"
@@ -35,20 +35,22 @@
       <button
         class="bg-gray-800 text-white w-2/3 py-1 rounded"
         type="button"
-        :class="{ 'invisible': isAddingNewModule }"
+        :class="{ 'collapse': isAddingNewModule }"
         @click="isAddingNewModule = true"
       >
         +
       </button>
       <div
-        :class="{ 'invisible': !isAddingNewModule }"
+        :class="{ 'collapse': !isAddingNewModule }"
       >
-        <label for="additionalModule">Select additional module</label>
+        <label for="additionalModule">Modulsuche</label>
         <input
           id="additionalModule"
+          class="w-full"
           ref="addModuleInput"
           type="text"
           list="allModules"
+          @input="addModule($event)"
           @change="addModule($event)"
         >
         <datalist id="allModules">
@@ -61,8 +63,8 @@
           </option>
         </datalist>
       </div>
-      <div class="column semester-footer">
-        <p>Total ECTS: {{ getTotalEcts }}</p>
+      <div class="mt-auto p-2">
+        <p>{{ getTotalEcts }} ECTS</p>
       </div>
     </template>
   </draggable>
