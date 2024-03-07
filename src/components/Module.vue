@@ -6,7 +6,7 @@
   >
     <button
       type="button"
-      class="absolute invisible group-hover/module:visible right-0"
+      class="absolute invisible group-hover/module:visible right-2"
       @click="$emit('on-delete', module.id)"
     >
       Delete

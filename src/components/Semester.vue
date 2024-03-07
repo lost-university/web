@@ -16,11 +16,14 @@
           Semester {{ number }}
         </span>
         <button
-          class="hidden group-hover/semester:block"
+          class="opacity-25 md:opacity-0 group-hover/semester:opacity-25 hover:!opacity-75 transition-opacity duration-75"
           type="button"
           @click="removeSemester()"
         >
-          Delete
+          <font-awesome-icon
+            :icon="['fa', 'circle-xmark']"
+            size="lg"
+          />
         </button>
       </div>
     </template>
