@@ -41,7 +41,7 @@
       v-for="semester in semesters"
       :key="semester.number"
       v-model:modules="semester.modules"
-      class="bg-gray-200 rounded p-2 group/semester w-64"
+      class="bg-gray-200 rounded p-2 group/semester w-64 min-w-64"
       :number="semester.number"
       :all-modules="modules"
       @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
