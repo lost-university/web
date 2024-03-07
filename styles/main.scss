@@ -86,8 +86,14 @@
   color: white;
 }
 
-.module a:hover {
-  text-decoration: underline;
+.focus-missing-modules-list a {
+  color: inherit;
+}
+
+.module, .focus-missing-modules-list {
+  a:hover {
+    text-decoration: underline;
+  }
 }
 
 @include desktop {
