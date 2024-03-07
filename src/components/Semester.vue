@@ -19,7 +19,9 @@
           class="hidden group-hover/semester:block"
           type="button"
           @click="removeSemester()"
-        >Delete</button>
+        >
+          Delete
+        </button>
       </div>
     </template>
     <template #item="{ element }">

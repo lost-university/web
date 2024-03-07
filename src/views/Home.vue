@@ -67,9 +67,9 @@
           Letztes erfolgreich abgeschlossenes Semester:
         </label>
         <select
-          class="ml-2 px-3 py-2 rounded"
           id="last-semester-select"
           v-model="lastSemesterNumber"
+          class="ml-2 px-3 py-2 rounded"
         >
           <option
             v-for="semester in semesters"

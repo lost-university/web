@@ -8,7 +8,9 @@
       type="button"
       class="absolute invisible group-hover/module:visible right-0"
       @click="$emit('on-delete', module.id)"
-    >Delete</button>
+    >
+      Delete
+    </button>
     <a
       class="font-bold hover:underline"
       target="_blank"

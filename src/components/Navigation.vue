@@ -46,9 +46,9 @@
           </div>
           <div class="sm:hidden peer-hover:flex hover:flex flex rounded sm:shadow-2xl bg-white flex-col sm:fixed z-10">
             <a
-              class="p-2 hover:bg-gray-100 rounded"
               v-for="plan in category.plans"
               :key="plan.title"
+              class="p-2 hover:bg-gray-100 rounded"
               :href="'#/plan/' + plan.path"
               @click="onBurgerClick"
               v-text="plan.title"

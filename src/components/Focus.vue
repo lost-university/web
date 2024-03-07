@@ -21,7 +21,10 @@
     </span>
     <font-awesome-icon :icon="isOpen ? openIconClass : closedIconClass" />
   </div>
-  <div v-show="isOpen" class="p-4 shadow-lg mb-4">
+  <div
+    v-show="isOpen"
+    class="p-4 shadow-lg mb-4"
+  >
     <p v-if="!filteredModules.length">
       Alle benötigten Module sind bestanden/geplant.
     </p>
