@@ -1,40 +1,7 @@
 <template>
-  <div>
-    <div>
-      <Transition>
-        <div
-          v-if="errorMsg"
-          class="notification is-danger"
-        >
-          <span>- {{ errorMsg }}</span>
-        </div>
-      </Transition>
-    </div>
-    <div>
-      <Transition>
-        <div
-          v-if="unknownModules?.length"
-          class="notification is-danger"
-        >
-          Following modules could not be restored:
-          <ul>
-            <li
-              v-for="unknown in unknownModules"
-              :key="unknown.id"
-            >
-              {{ unknown.id }} in semester {{ unknown.semesterNumber }}
-            </li>
-          </ul>
-          <button
-            class="button"
-            type="button"
-            @click="removeUnknownModulesFromUrl"
-          >
-            Remove all from URL
-          </button>
-        </div>
-      </Transition>
-    </div>
+  <div class="fixed top-2 right-2 z-50 w-1/4">
+    <ToastNoficiation :text="errorMsg || ''" :showToast="!!errorMsg" :duration="3000"></ToastNoficiation>
+    <ToastNoficiation :text="'Following modules could not be restored'" :showToast="unknownModules?.length != 0" :listItems="unknownModules.map(u => `- ${u.id} in semester ${u.semesterNumber}`)" :dismiss-button-text="'Remove all from URL'" @on-dismiss="removeUnknownModulesFromUrl"></ToastNoficiation>
   </div>
   <div class="flex space-x-2 overflow-auto before:m-auto after:m-auto p-4">
     <SemesterComponent
@@ -143,6 +110,7 @@ import { defineComponent } from 'vue';
 import SemesterComponent from '../components/Semester.vue';
 import FocusComponent from '../components/Focus.vue';
 import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
+import ToastNoficiation from '../components/ToastNotification.vue';
 import { getColorForCategoryId } from '../helpers/color-helper';
 import type { Module, Category, Focus, UnknownModule, Semester } from '../helpers/types';
 import draggable from "vuedraggable";
@@ -154,7 +122,7 @@ const ROUTE_FOCUSES = '/focuses.json';
 
 export default defineComponent({
   name: 'Home',
-  components: {draggable, SemesterComponent, FocusComponent, BeautifulProgressIndicator },
+  components: { draggable, SemesterComponent, FocusComponent, BeautifulProgressIndicator, ToastNoficiation },
   data() {
     return {
       semesters: [] as Semester[],
@@ -163,7 +131,6 @@ export default defineComponent({
       focuses: [] as Focus[],
       lastSemesterNumber: 0,
       errorMsg: null as string | null,
-      errorTimer: null as ReturnType<typeof setTimeout> | null,
       unknownModules: [] as UnknownModule[],
     };
   },
@@ -357,13 +324,7 @@ export default defineComponent({
       this.updateUrlFragment();
     },
     showErrorMsg(text: string) {
-      if (this.errorTimer !== null) {
-        clearTimeout(this.errorTimer);
-      }
       this.errorMsg = text;
-      this.errorTimer = setTimeout(() => {
-        this.errorMsg = null;
-      }, 3000);
     },
     showUnknownModulesError(semesterNumber: number, moduleId: string) {
       if (this.unknownModules.find((f) => f.id === moduleId)) return;
