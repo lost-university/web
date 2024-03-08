@@ -1,14 +1,19 @@
 <template>
   <div
     :key="module.name"
-    class="rounded group/module relative p-2 flex flex-col items-center text-center text-white w-full"
+    class="rounded group/module relative p-2 px-8 flex flex-col items-center text-center text-white w-full"
     :style="{ 'background-color': getCategoryColorForModule(module) }"
   >
     <button
+      class="absolute opacity-75 md:opacity-0 group-hover/module:opacity-75 hover:!opacity-100 right-2 transition-opacity duration-75"
       type="button"
-      class="absolute invisible group-hover/module:visible right-0"
       @click="$emit('on-delete', module.id)"
-    >Delete</button>
+    >
+      <font-awesome-icon
+        :icon="['fa', 'circle-xmark']"
+        size="lg"
+      />
+    </button>
     <a
       class="font-bold hover:underline"
       target="_blank"

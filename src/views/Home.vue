@@ -8,7 +8,7 @@
       v-for="semester in semesters"
       :key="semester.number"
       v-model:modules="semester.modules"
-      class="bg-gray-200 rounded p-2 group/semester w-64"
+      class="bg-gray-200 rounded p-2 group/semester w-64 min-w-64"
       :number="semester.number"
       :all-modules="modules"
       @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
@@ -17,7 +17,7 @@
       @on-drop-end="updateUrlFragment"
     />
     <button
-      class="add-semester-btn button is-dark is-fullwidth"
+      class="bg-gray-500 hover:bg-gray-800 transition-colors text-white w-8 px-2 rounded"
       type="button"
       @click="addSemester"
     >
@@ -34,9 +34,9 @@
           Letztes erfolgreich abgeschlossenes Semester:
         </label>
         <select
-          class="ml-2 px-3 py-2 rounded"
           id="last-semester-select"
           v-model="lastSemesterNumber"
+          class="ml-2 px-3 py-2 rounded"
         >
           <option
             v-for="semester in semesters"
@@ -52,10 +52,10 @@
             v-for="category in mappedCategories"
             :key="category.name"
           >
-            <td style="vertical-align:bottom;padding-right:1em;text-align:end">
+            <td class="align-bottom pr-4 text-end">
               {{ category.name }}
             </td>
-            <td style="padding-top:8px">
+            <td class="pt-3">
               <BeautifulProgressIndicator
                 :required="category.required_ects"
                 :earned="category.earnedCredits"
@@ -65,10 +65,10 @@
             </td>
           </tr>
           <tr>
-            <td style="vertical-align:bottom;padding-right:1em;text-align:end">
+            <td class="align-bottom pr-4 text-end">
               Total
             </td>
-            <td style="padding-top:8px">
+            <td class="pt-3">
               <BeautifulProgressIndicator
                 :required="180"
                 :earned="totalEarnedEcts"
@@ -92,7 +92,7 @@
           <FocusComponent
             :name="focus.name"
             :all-modules="focus.modules"
-            :filtered-module-names="focus.filteredModuleNames"
+            :filtered-modules="focus.filteredModules"
           />
         </div>
       </div>
@@ -113,7 +113,6 @@ import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator
 import ToastNoficiation from '../components/ToastNotification.vue';
 import { getColorForCategoryId } from '../helpers/color-helper';
 import type { Module, Category, Focus, UnknownModule, Semester } from '../helpers/types';
-import draggable from "vuedraggable";
 
 const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.3/data';
 const ROUTE_MODULES = '/modules.json';
@@ -122,7 +121,7 @@ const ROUTE_FOCUSES = '/focuses.json';
 
 export default defineComponent({
   name: 'Home',
-  components: { draggable, SemesterComponent, FocusComponent, BeautifulProgressIndicator, ToastNoficiation },
+  components: {SemesterComponent, FocusComponent, BeautifulProgressIndicator, ToastNoficiation },
   data() {
     return {
       semesters: [] as Semester[],
@@ -151,9 +150,8 @@ export default defineComponent({
       const plannedModuleIds = this.plannedModules.map((module) => module.id);
       return this.focuses.map((focus) => ({
         ...focus,
-        filteredModuleNames: focus.modules
-          .filter((module) => !plannedModuleIds.includes(module.id))
-          .map((module) => module.name),
+        filteredModules: focus.modules
+          .filter((module) => !plannedModuleIds.includes(module.id)),
       }));
     },
     totalPlannedEcts() {

@@ -2,7 +2,7 @@
   <hr>
   <footer class="flex items-center p-4 justify-between">
     <div class="text-sm">
-      <span>© 2023 </span>
+      <span>© 2024 </span>
       <span
         v-for="(contributor, index) in contributors"
         :key="contributor.githubHandle"

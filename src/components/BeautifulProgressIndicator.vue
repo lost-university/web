@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="../../styles/main.scss">
 <template>
   <div class="text-xs flex justify-between px-1 py-0.5">
     <span>{{ earned }} / {{ required }}</span>
