@@ -3,18 +3,28 @@
     enter-active-class="duration-500 ease"
     enter-from-class="transform opacity-0"
     leave-active-class="duration-500 ease"
-    leave-to-class="transform opacity-0">
-    <div v-if="isActive" class="rounded p-4 mb-2 bg-red-500 text-white">
+    leave-to-class="transform opacity-0"
+  >
+    <div
+      v-if="isActive"
+      class="rounded p-4 mb-2 bg-red-500 text-white"
+    >
       <span>{{ text }}</span>
       <ul v-if="listItems?.length">
-        <li v-for="item in listItems">{{ item }}</li>
+        <li
+          v-for="item in listItems"
+          :key="item"
+        >
+          {{ item }}
+        </li>
       </ul>
       <button
+        v-if="dismissButtonText"
         class="block rounded bg-slate-200/50 py-1 px-2 mt-2"
         type="button"
-          v-if="dismissButtonText"
-          @click="$emit('on-dismiss')">
-          {{ dismissButtonText }}
+        @click="$emit('on-dismiss')"
+      >
+        {{ dismissButtonText }}
       </button>
     </div>
   </transition>
@@ -35,11 +45,12 @@ export default defineComponent({
       required: true,
     },
     listItems: {
-      type: Array<String>,
+      type: Array<string>,
       default: () => [],
     },
     dismissButtonText: {
       type: String,
+      default: null,
     },
     showToast: {
       type: Boolean

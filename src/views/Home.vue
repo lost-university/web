@@ -1,7 +1,17 @@
 <template>
   <div class="fixed top-2 right-2 z-50 w-1/4">
-    <ToastNoficiation :text="errorMsg || ''" :showToast="!!errorMsg" :duration="3000"></ToastNoficiation>
-    <ToastNoficiation :text="'Folgende Module konnten nicht wiederhergestellt werden'" :showToast="unknownModules?.length != 0" :listItems="unknownModules.map(u => `- ${u.id} in semester ${u.semesterNumber}`)" :dismiss-button-text="'Alle aus URL entfernen'" @on-dismiss="removeUnknownModulesFromUrl"></ToastNoficiation>
+    <ToastNoficiation
+      :text="errorMsg || ''"
+      :show-toast="!!errorMsg"
+      :duration="3000"
+    />
+    <ToastNoficiation
+      :text="'Folgende Module konnten nicht wiederhergestellt werden'"
+      :show-toast="unknownModules?.length != 0"
+      :list-items="unknownModules.map(u => `- ${u.id} in semester ${u.semesterNumber}`)"
+      :dismiss-button-text="'Alle aus URL entfernen'"
+      @on-dismiss="removeUnknownModulesFromUrl"
+    />
   </div>
   <div class="flex space-x-2 overflow-auto before:m-auto after:m-auto p-4">
     <SemesterComponent

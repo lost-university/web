@@ -49,8 +49,8 @@
         <label for="additionalModule">Modulsuche</label>
         <input
           id="additionalModule"
-          class="w-full"
           ref="addModuleInput"
+          class="w-full"
           type="text"
           list="allModules"
           @input="addModule($event)"
