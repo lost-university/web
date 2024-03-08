@@ -20,7 +20,7 @@
       </ul>
       <button
         v-if="dismissButtonText"
-        class="block rounded bg-slate-200/50 py-1 px-2 mt-2"
+        class="block rounded bg-slate-200/50 py-1 px-2 mt-2 hover:bg-slate-300/50 transition-colors duration-75"
         type="button"
         @click="$emit('on-dismiss')"
       >
