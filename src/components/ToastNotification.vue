@@ -65,13 +65,13 @@ export default defineComponent({
   watch: {
     showToast: {
       handler() {
-      this.isActive = this.showToast;
-      if (this.duration != 0) {
-        setTimeout(() => {
-          this.isActive = false;
-        }, this.duration);
+        this.isActive = this.showToast;
+        if (this.duration !== 0 && this.isActive) {
+          setTimeout(() => {
+            this.isActive = false;
+          }, this.duration);
+        }
       }
-    }
     }
   },
 });
