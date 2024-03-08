@@ -1,7 +1,10 @@
 <template>
-    <!-- todo: animations -->
-    <transition>
-      <div v-if="isActive" class="rounded p-4 mb-2 bg-red-300">
+  <transition
+    enter-active-class="duration-500 ease"
+    enter-from-class="transform opacity-0"
+    leave-active-class="duration-500 ease"
+    leave-to-class="transform opacity-0">
+    <div v-if="isActive" class="rounded p-4 mb-2 bg-red-500 text-white">
       <span>{{ text }}</span>
       <ul v-if="listItems?.length">
         <li v-for="item in listItems">{{ item }}</li>

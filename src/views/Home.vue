@@ -1,7 +1,7 @@
 <template>
   <div class="fixed top-2 right-2 z-50 w-1/4">
     <ToastNoficiation :text="errorMsg || ''" :showToast="!!errorMsg" :duration="3000"></ToastNoficiation>
-    <ToastNoficiation :text="'Following modules could not be restored'" :showToast="unknownModules?.length != 0" :listItems="unknownModules.map(u => `- ${u.id} in semester ${u.semesterNumber}`)" :dismiss-button-text="'Remove all from URL'" @on-dismiss="removeUnknownModulesFromUrl"></ToastNoficiation>
+    <ToastNoficiation :text="'Folgende Module konnten nicht wiederhergestellt werden'" :showToast="unknownModules?.length != 0" :listItems="unknownModules.map(u => `- ${u.id} in semester ${u.semesterNumber}`)" :dismiss-button-text="'Alle aus URL entfernen'" @on-dismiss="removeUnknownModulesFromUrl"></ToastNoficiation>
   </div>
   <div class="flex space-x-2 overflow-auto before:m-auto after:m-auto p-4">
     <SemesterComponent
@@ -289,7 +289,7 @@ export default defineComponent({
     addModule(moduleName: string, semesterNumber: number) {
       const blockingSemesterNumber = this.getPlannedSemesterForModule(moduleName);
       if (blockingSemesterNumber) {
-        const text = `Module ${moduleName} is already in semester ${blockingSemesterNumber}`;
+        const text = `Modul ${moduleName} ist bereits im Semester ${blockingSemesterNumber}`;
         console.warn(text);
         this.showErrorMsg(text);
         return;
@@ -298,7 +298,7 @@ export default defineComponent({
       const module = this.modules.find((item) => item.name === moduleName);
 
       if (module === undefined) {
-        this.showErrorMsg(`Module '${moduleName}' does not exist`);
+        this.showErrorMsg(`Modul '${moduleName}' existiert nicht`);
         return;
       }
 
