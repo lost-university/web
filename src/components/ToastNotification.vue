@@ -66,14 +66,18 @@ export default defineComponent({
     showToast: {
       handler() {
         this.isActive = this.showToast;
-        if (this.duration !== 0 && this.isActive) {
+        if (this.isActive) {
+          return;
+        }
+        if (this.duration !== 0) {
           setTimeout(() => {
             this.isActive = false;
           }, this.duration);
         }
-      }
+      },
+      immediate: true,
     }
-  },
+  }
 });
 
 </script>

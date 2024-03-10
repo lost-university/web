@@ -1,9 +1,11 @@
 <template>
-  <div class="fixed top-2 right-2 z-50 w-1/4">
+  <div class="fixed top-2 right-2 z-50">
     <ToastNoficiation
-      :text="errorMsg || ''"
-      :show-toast="!!errorMsg"
-      :duration="3000"
+      v-for="message in errorMessages"
+      :key="message"
+      :duration="4500"
+      :show-toast="true"
+      :text="message"
     />
     <ToastNoficiation
       :text="'Folgende Module konnten nicht wiederhergestellt werden'"
@@ -139,7 +141,7 @@ export default defineComponent({
       categories: [] as Category[],
       focuses: [] as Focus[],
       lastSemesterNumber: 0,
-      errorMsg: null as string | null,
+      errorMessages: [] as string[],
       unknownModules: [] as UnknownModule[],
     };
   },
@@ -332,7 +334,11 @@ export default defineComponent({
       this.updateUrlFragment();
     },
     showErrorMsg(text: string) {
-      this.errorMsg = text;
+      this.errorMessages.push(text);
+      setTimeout(() => {
+        this.errorMessages.shift();
+        // clean up error messages after a minute
+      }, 60000);
     },
     showUnknownModulesError(semesterNumber: number, moduleId: string) {
       if (this.unknownModules.find((f) => f.id === moduleId)) return;
