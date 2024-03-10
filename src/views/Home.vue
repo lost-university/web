@@ -36,12 +36,12 @@
       +
     </button>
   </div>
-  <div class="my-16 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 lg:justify-items-center gap-y-16">
+  <div class="my-16 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 justify-items-center gap-y-16">
     <article class="mx-4">
       <span class="text-xl">
         Übersicht der ECTS Punkte
       </span>
-      <div class="my-2">
+      <div class="my-2 flex items-center">
         <label for="last-semester-select">
           Letztes erfolgreich abgeschlossenes Semester:
         </label>
@@ -110,7 +110,7 @@
       </div>
     </article>
     <img
-      class="lg:col-span-2 2xl:col-span-1 justify-self-center"
+      class="lg:col-span-2 2xl:col-span-1 justify-self-center px-4"
       src="../assets/this_is_fine_winter.jpg"
       alt="Alternative version of the well known 'this is fine' meme with a dog in a room full of snow"
     >
