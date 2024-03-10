@@ -54,8 +54,8 @@
           class="w-full"
           type="text"
           list="allModules"
-          @input="addModule($event)"
-          @change="addModule($event)"
+          @input="handleModuleInputEvent($event as InputEvent)"
+          @keydown="handleModuleInputKeyDownEvent($event)"
         >
         <datalist id="allModules">
           <option
@@ -131,8 +131,19 @@ export default defineComponent({
     },
   },
   methods: {
+    handleModuleInputEvent(event: InputEvent) {
+      if (event.inputType === 'insertReplacementText') {
+        this.addModule(event);
+      }
+    },
+    handleModuleInputKeyDownEvent(event: KeyboardEvent) {
+      if (event.key === "Enter") {
+        this.addModule(event);
+      }
+    },
     addModule(event: Event) {
-      this.$emit('on-add-module', (<HTMLInputElement>event.currentTarget).value, this.number);
+      const name = (<HTMLInputElement> event.currentTarget).value;
+      this.$emit('on-add-module', name, this.number);
     },
     removeSemester() {
       this.$emit('on-remove-semester', this.number);
