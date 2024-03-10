@@ -5,7 +5,7 @@
     :style="{ 'background-color': getCategoryColorForModule(module) }"
   >
     <button
-      class="absolute opacity-75 md:opacity-0 group-hover/module:opacity-75 hover:!opacity-100 right-2 transition-opacity duration-75"
+      class="absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75 hover:!opacity-100 right-2 transition-opacity duration-75"
       type="button"
       @click="$emit('on-delete', module.id)"
     >
