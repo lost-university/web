@@ -1,40 +1,19 @@
 <template>
-  <div>
-    <div>
-      <Transition>
-        <div
-          v-if="errorMsg"
-          class="notification is-danger"
-        >
-          <span>- {{ errorMsg }}</span>
-        </div>
-      </Transition>
-    </div>
-    <div>
-      <Transition>
-        <div
-          v-if="unknownModules?.length"
-          class="notification is-danger"
-        >
-          Following modules could not be restored:
-          <ul>
-            <li
-              v-for="unknown in unknownModules"
-              :key="unknown.id"
-            >
-              {{ unknown.id }} in semester {{ unknown.semesterNumber }}
-            </li>
-          </ul>
-          <button
-            class="button"
-            type="button"
-            @click="removeUnknownModulesFromUrl"
-          >
-            Remove all from URL
-          </button>
-        </div>
-      </Transition>
-    </div>
+  <div class="fixed top-2 right-2 z-50">
+    <ToastNoficiation
+      v-for="message in errorMessages"
+      :key="message"
+      :duration="4500"
+      :show-toast="true"
+      :text="message"
+    />
+    <ToastNoficiation
+      :text="'Folgende Module konnten nicht wiederhergestellt werden'"
+      :show-toast="unknownModules?.length != 0"
+      :list-items="unknownModules.map(u => `- ${u.id} in semester ${u.semesterNumber}`)"
+      :dismiss-button-text="'Alle aus URL entfernen'"
+      @on-dismiss="removeUnknownModulesFromUrl"
+    />
   </div>
   <div class="flex space-x-2 overflow-auto before:m-auto after:m-auto p-4">
     <SemesterComponent
@@ -143,6 +122,7 @@ import { defineComponent } from 'vue';
 import SemesterComponent from '../components/Semester.vue';
 import FocusComponent from '../components/Focus.vue';
 import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
+import ToastNoficiation from '../components/ToastNotification.vue';
 import { getColorForCategoryId } from '../helpers/color-helper';
 import type { Module, Category, Focus, UnknownModule, Semester } from '../helpers/types';
 
@@ -153,7 +133,7 @@ const ROUTE_FOCUSES = '/focuses.json';
 
 export default defineComponent({
   name: 'Home',
-  components: {SemesterComponent, FocusComponent, BeautifulProgressIndicator },
+  components: {SemesterComponent, FocusComponent, BeautifulProgressIndicator, ToastNoficiation },
   data() {
     return {
       semesters: [] as Semester[],
@@ -161,8 +141,7 @@ export default defineComponent({
       categories: [] as Category[],
       focuses: [] as Focus[],
       lastSemesterNumber: 0,
-      errorMsg: null as string | null,
-      errorTimer: null as ReturnType<typeof setTimeout> | null,
+      errorMessages: [] as string[],
       unknownModules: [] as UnknownModule[],
     };
   },
@@ -320,7 +299,7 @@ export default defineComponent({
     addModule(moduleName: string, semesterNumber: number) {
       const blockingSemesterNumber = this.getPlannedSemesterForModule(moduleName);
       if (blockingSemesterNumber) {
-        const text = `Module ${moduleName} is already in semester ${blockingSemesterNumber}`;
+        const text = `Modul ${moduleName} ist bereits im Semester ${blockingSemesterNumber}`;
         console.warn(text);
         this.showErrorMsg(text);
         return;
@@ -329,7 +308,7 @@ export default defineComponent({
       const module = this.modules.find((item) => item.name === moduleName);
 
       if (module === undefined) {
-        this.showErrorMsg(`Module '${moduleName}' does not exist`);
+        this.showErrorMsg(`Modul '${moduleName}' existiert nicht`);
         return;
       }
 
@@ -355,13 +334,11 @@ export default defineComponent({
       this.updateUrlFragment();
     },
     showErrorMsg(text: string) {
-      if (this.errorTimer !== null) {
-        clearTimeout(this.errorTimer);
-      }
-      this.errorMsg = text;
-      this.errorTimer = setTimeout(() => {
-        this.errorMsg = null;
-      }, 3000);
+      this.errorMessages.push(text);
+      setTimeout(() => {
+        this.errorMessages.shift();
+        // clean up error messages after a minute
+      }, 60000);
     },
     showUnknownModulesError(semesterNumber: number, moduleId: string) {
       if (this.unknownModules.find((f) => f.id === moduleId)) return;
