@@ -166,7 +166,7 @@ import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator
 import { getColorForCategoryId } from '../helpers/color-helper';
 import type { Module, Category, Focus, UnknownModule, Semester } from '../helpers/types';
 
-const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.3/data';
+const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.4/data';
 const ROUTE_MODULES = '/modules.json';
 const ROUTE_CATEGORIES = '/categories.json';
 const ROUTE_FOCUSES = '/focuses.json';
