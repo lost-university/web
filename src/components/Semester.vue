@@ -1,25 +1,31 @@
 <template>
   <!-- eslint-disable-next-line vue/no-mutating-props -->
   <draggable
+    class="gap-y-1 flex flex-col items-center"
     :list="modules"
     group="semester"
     item-key="id"
     :animation="200"
     :delay-on-touch-only="true"
     :delay="500"
-    class="columns is-flex is-flex-direction-column has-text-centered"
     @end="onDropEnd"
   >
     <template #header>
-      <div class="semester-header">
-        <h2 class="subtitle pl-3 mb-2">
+      <div class="flex justify-between w-full py-0.5 px-1">
+        <span class="text-xl">
           Semester {{ number }}
-        </h2>
+        </span>
         <button
-          class="delete-button delete is-medium"
+          class="opacity-0 touch-only:opacity-25 group-hover/semester:opacity-25 hover:!opacity-75
+                 transition-opacity duration-75"
           type="button"
           @click="removeSemester()"
-        />
+        >
+          <font-awesome-icon
+            :icon="['fa', 'circle-xmark']"
+            size="lg"
+          />
+        </button>
       </div>
     </template>
     <template #item="{ element }">
@@ -30,29 +36,26 @@
       />
     </template>
     <template #footer>
-      <div
-        class="column semester-footer"
-        :class="{ 'is-hidden': isAddingNewModule }"
+      <button
+        class="bg-gray-800 text-white w-2/3 py-1 rounded"
+        type="button"
+        :class="{ 'collapse': isAddingNewModule }"
+        @click="isAddingNewModule = true"
       >
-        <button
-          class="button is-dark button-add is-fullwidth"
-          type="button"
-          @click="isAddingNewModule = true"
-        >
-          +
-        </button>
-      </div>
+        +
+      </button>
       <div
-        class="column"
-        :class="{ 'is-hidden': !isAddingNewModule }"
+        :class="{ 'collapse': !isAddingNewModule }"
       >
-        <label for="additionalModule">Select additional module</label>
+        <label for="additionalModule">Modulsuche</label>
         <input
           id="additionalModule"
           ref="addModuleInput"
+          class="w-full"
           type="text"
           list="allModules"
-          @change="addModule($event)"
+          @input="handleModuleInputEvent($event as InputEvent)"
+          @keydown="handleModuleInputKeyDownEvent($event)"
         >
         <datalist id="allModules">
           <option
@@ -64,8 +67,8 @@
           </option>
         </datalist>
       </div>
-      <div class="column semester-footer">
-        <p>Total ECTS: {{ getTotalEcts }}</p>
+      <div class="mt-auto p-2">
+        <p>{{ getTotalEcts }} ECTS</p>
       </div>
     </template>
   </draggable>
@@ -128,8 +131,19 @@ export default defineComponent({
     },
   },
   methods: {
+    handleModuleInputEvent(event: InputEvent) {
+      if (event.inputType === 'insertReplacementText') {
+        this.addModule(event);
+      }
+    },
+    handleModuleInputKeyDownEvent(event: KeyboardEvent) {
+      if (event.key === "Enter") {
+        this.addModule(event);
+      }
+    },
     addModule(event: Event) {
-      this.$emit('on-add-module', (<HTMLInputElement>event.currentTarget).value, this.number);
+      const name = (<HTMLInputElement> event.currentTarget).value;
+      this.$emit('on-add-module', name, this.number);
     },
     removeSemester() {
       this.$emit('on-remove-semester', this.number);

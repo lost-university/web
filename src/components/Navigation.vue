@@ -1,63 +1,61 @@
 <template>
   <nav
-    class="navbar is-fixed-top"
+    class="flex sm:mx-4 items-center flex-wrap sm:flex-nowrap"
     role="navigation"
     aria-label="main navigation"
   >
-    <div class="navbar-brand">
-      <router-link
-        class="navbar-item"
-        to="/"
-      >
+    <div class="flex items-center justify-between sm:justify-normal w-full sm:w-auto">
+      <router-link to="/">
         <img
           src="../assets/logo.png"
-          class="logo-nav"
+          class="size-24 pb-4 object-contain"
           alt="Home"
         >
       </router-link>
-      <a
-        :class="{ 'is-active': isBurgerActive }"
-        role="button"
+      <button
+        class="sm:hidden p-4"
         tabindex="0"
-        class="navbar-burger"
         aria-label="menu"
         aria-expanded="false"
-        data-target="navbarBasicExample"
         @click="onBurgerClick"
-        @keypress="onBurgerClick"
       >
-        <span aria-hidden="true" />
-        <span aria-hidden="true" />
-        <span aria-hidden="true" />
-      </a>
+        <font-awesome-icon
+          :icon="['fa', 'bars']"
+          size="2x"
+        />
+      </button>
     </div>
     <div
-      class="navbar-menu"
-      :class="{ 'is-active': isBurgerActive }"
+      class="w-full sm:inline-flex basis-full"
+      :class="{ 'hidden': !isBurgerActive }"
     >
-      <div class="navbar-start">
-        <template
-          v-for="category in categories"
-          :key="category.title"
-        >
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a
-              class="navbar-link"
+      <template
+        v-for="category in categories"
+        :key="category.title"
+      >
+        <div>
+          <div class="px-2 sm:px-4 pt-4 pb-2 sm:py-6 peer">
+            <button
+              class="hover:cursor-auto mr-2 text-lg font-bold sm:text-md sm:font-normal"
               v-text="category.title"
             />
-            <div class="navbar-dropdown">
-              <a
-                v-for="plan in category.plans"
-                :key="plan.title"
-                class="navbar-item"
-                :href="'#/plan/' + plan.path"
-                @click="onBurgerClick"
-                v-text="plan.title"
-              />
-            </div>
+            <font-awesome-icon
+              :icon="['fa', 'chevron-down']"
+              class="peer invisible sm:visible"
+            />
           </div>
-        </template>
-      </div>
+          <div class="sm:hidden peer-hover:flex hover:flex flex rounded sm:shadow-2xl bg-white flex-col sm:fixed z-10">
+            <a
+              v-for="plan in category.plans"
+              :key="plan.title"
+              class="p-2 hover:bg-gray-100 rounded"
+              :href="'#/plan/' + plan.path"
+              @click="onBurgerClick"
+              v-text="plan.title"
+            />
+          </div>
+        </div>
+      </template>
     </div>
   </nav>
 </template>

@@ -1,20 +1,26 @@
 <template>
   <div
     :key="module.name"
-    class="column module mt-1"
+    class="rounded group/module relative p-2 px-8 flex flex-col items-center text-center text-white w-full"
     :style="{ 'background-color': getCategoryColorForModule(module) }"
   >
     <button
-      class="delete-button delete is-pulled-right"
+      class="absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
+             hover:!opacity-100 right-2 transition-opacity duration-75"
       type="button"
       @click="$emit('on-delete', module.id)"
-    />
-    <h3 class="has-text-weight-bold">
-      <a
-        target="_blank"
-        :href="'https://studien.rj.ost.ch/' + module.url.replace('.json', '.html')">{{ module.name }}
-      </a>
-    </h3>
+    >
+      <font-awesome-icon
+        :icon="['fa', 'circle-xmark']"
+        size="lg"
+      />
+    </button>
+    <a
+      class="font-bold hover:underline"
+      target="_blank"
+      :href="'https://studien.rj.ost.ch/' + module.url.replace('.json', '.html')"
+    >{{ module.name }}
+    </a>
     <p>{{ module.ects }} ECTS</p>
   </div>
 </template>

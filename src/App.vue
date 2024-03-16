@@ -1,9 +1,9 @@
 <template>
-  <Navigation />
-  <div class="p-5 custom-container">
+  <div>
+    <Navigation />
     <router-view />
+    <PageFooter />
   </div>
-  <PageFooter />
 </template>
 
 <script lang="ts">

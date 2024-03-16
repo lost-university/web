@@ -34,3 +34,8 @@ type ModuleCategory = {
   name: string,
   ects: number,
 };
+
+export type Contributor = {
+  name: string,
+  githubHandle: string,
+};

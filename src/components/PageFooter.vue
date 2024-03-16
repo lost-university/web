@@ -1,80 +1,53 @@
 <template>
-  <footer class="section rab-footer">
-    <div class="pt-5 divider" />
-    <div class="columns">
-      <div class="column is-11">
-        <p>
-          © 2024
-          <a
-            class="contributor-link"
-            href="https://github.com/jeremystucki"
-            target="_blank"
-            rel="noopener noreferrer"
-          >Jeremy Stucki</a>,
-          <a
-            class="contributor-link"
-            href="https://github.com/unkelhoebbi"
-            target="_blank"
-            rel="noopener noreferrer"
-          >Gregor Stuber</a>,
-          <a
-            class="contributor-link"
-            href="https://github.com/joshuabeny1999"
-            target="_blank"
-            rel="noopener noreferrer"
-          >Joshua Hürzeler</a>,
-          <a
-            class="contributor-link"
-            href="https://github.com/Mafii"
-            target="_blank"
-            rel="noopener noreferrer"
-          >Mathias Fischler</a>,
-          <a
-            class="contributor-link"
-            href="https://github.com/lzkndg"
-            target="_blank"
-            rel="noopener noreferrer"
-          >Luzia Kündig</a>,
-          <a
-            class="contributor-link"
-            href="https://github.com/StefanieJaeger"
-            target="_blank"
-            rel="noopener noreferrer"
-          >Stefanie Jäger</a>,
-          <a
-            class="contributor-link"
-            href="https://github.com/Venyla"
-            target="_blank"
-            rel="noopener noreferrer"
-          >Vina Zahnd</a>,
-          <a
-            class="contributor-link"
-            href="https://github.com/CHLinusch"
-            target="_blank"
-            rel="noopener noreferrer"
-          >Linus Flury</a>
-        </p>
-      </div>
-      <div class="column is-1 ml-auto">
+  <hr>
+  <footer class="flex items-center p-4 justify-between">
+    <div class="text-sm">
+      <span>© 2024 </span>
+      <span
+        v-for="(contributor, index) in contributors"
+        :key="contributor.githubHandle"
+      >
         <a
-          class="mr-4 is-inline-block"
-          href="https://github.com/lost-university"
-        >
-          <font-awesome-icon
-            :icon="['fab', 'github']"
-            size="2x"
-            class="social"
-          />
-        </a>
-      </div>
+          :href="'https://github.com/' + contributor.githubHandle"
+          class="hover:text-purple-800"
+          target="_blank"
+          rel="noopener noreferrer"
+        >{{ contributor.name }}</a>
+        <span>{{ index != contributors.length - 1 ? ', ' : '' }}</span>
+      </span>
     </div>
+    <a
+      class="hover:text-purple-800"
+      href="https://github.com/lost-university"
+    >
+      <font-awesome-icon
+        :icon="['fab', 'github']"
+        size="2x"
+      />
+    </a>
   </footer>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import type { Contributor } from "../helpers/types";
 
 export default defineComponent({
   name: 'PageFooter',
+  props: {
+    contributors: {
+      type: Array<Contributor>,
+      default: () => [
+        { name: "Jeremy Stucki", githubHandle: "jeremystucki" },
+        { name: "Gregor Stuber", githubHandle: "unkelhoebbi" },
+        { name: "Joshua Hürzeler", githubHandle: "joshuabeny1999" },
+        { name: "Mathias Fischler", githubHandle: "Mafii" },
+        { name: "Luzia Kündig", githubHandle: "lzkndg" },
+        { name: "Stefanie Jäger", githubHandle: "StefanieJaeger" },
+        { name: "Vina Zahnd", githubHandle: "Venyla" },
+        { name: "Linus Flury", githubHandle: "CHLinusch" },
+      ],
+    },
+  },
 });
 </script>

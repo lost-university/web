@@ -1,160 +1,119 @@
 <template>
-  <div class="columns">
-    <div class="column">
-      <h1 class="title">
-        Plane deine Module
-      </h1>
-    </div>
-    <div class="column is-narrow">
-      <Transition>
-        <div
-          v-if="errorMsg"
-          class="notification is-danger"
-        >
-          <span>- {{ errorMsg }}</span>
-        </div>
-      </Transition>
-    </div>
-    <div class="column is-narrow">
-      <Transition>
-        <div
-          v-if="unknownModules?.length"
-          class="notification is-danger"
-        >
-          Following modules could not be restored:
-          <ul>
-            <li
-              v-for="unknown in unknownModules"
-              :key="unknown.id"
-            >
-              {{ unknown.id }} in semester {{ unknown.semesterNumber }}
-            </li>
-          </ul>
-          <button
-            class="button"
-            type="button"
-            @click="removeUnknownModulesFromUrl"
-          >
-            Remove all from URL
-          </button>
-        </div>
-      </Transition>
-    </div>
+  <div class="fixed top-2 right-2 z-50">
+    <ToastNoficiation
+      v-for="message in errorMessages"
+      :key="message"
+      :duration="4500"
+      :show-toast="true"
+      :text="message"
+    />
+    <ToastNoficiation
+      :text="'Folgende Module konnten nicht wiederhergestellt werden'"
+      :show-toast="unknownModules?.length != 0"
+      :list-items="unknownModules.map(u => `- ${u.id} in semester ${u.semesterNumber}`)"
+      :dismiss-button-text="'Alle aus URL entfernen'"
+      @on-dismiss="removeUnknownModulesFromUrl"
+    />
   </div>
-  <div class="columns schedule">
-    <div
+  <div class="flex space-x-2 overflow-auto before:m-auto after:m-auto p-4">
+    <SemesterComponent
       v-for="semester in semesters"
       :key="semester.number"
-      class="column semester"
+      v-model:modules="semester.modules"
+      class="bg-gray-200 rounded p-2 group/semester w-64 min-w-64"
+      :number="semester.number"
+      :all-modules="modules"
+      @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
+      @on-add-module="addModule"
+      @on-remove-semester="removeSemester"
+      @on-drop-end="updateUrlFragment"
+    />
+    <button
+      class="bg-gray-500 hover:bg-gray-800 transition-colors text-white w-8 px-2 rounded"
+      type="button"
+      @click="addSemester"
     >
-      <SemesterComponent
-        v-model:modules="semester.modules"
-        :number="semester.number"
-        :all-modules="modules"
-        @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
-        @on-add-module="addModule"
-        @on-remove-semester="removeSemester"
-        @on-drop-end="updateUrlFragment"
-      />
-    </div>
-    <div class="column add-semester">
-      <button
-        class="add-semester-btn button is-dark is-fullwidth"
-        type="button"
-        @click="addSemester"
-      >
-        +
-      </button>
-    </div>
+      +
+    </button>
   </div>
-  <div class="columns desktop-ml-6 desktop-mt-6">
-    <div class="column">
-      <article>
-        <h2 class="subtitle">
-          Übersicht der ECTS Punkte
-        </h2>
-        <div class="is-flex is-align-content-space-evenly is-justify-content-left">
-          <label
-            class="is-flex is-flex-direction-column is-justify-content-center"
-            for="last-semester-select"
+  <div class="my-16 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 justify-items-center gap-y-16">
+    <article class="mx-4">
+      <span class="text-xl">
+        Übersicht der ECTS Punkte
+      </span>
+      <div class="my-2 flex items-center">
+        <label for="last-semester-select">
+          Letztes erfolgreich abgeschlossenes Semester:
+        </label>
+        <select
+          id="last-semester-select"
+          v-model="lastSemesterNumber"
+          class="ml-2 px-3 py-2 rounded"
+        >
+          <option
+            v-for="semester in semesters"
+            :key="semester.number"
           >
-            <p>Letztes erfolgreich abgeschlossenes Semester:</p>
-          </label>
-          <div class="select pl-2">
-            <select
-              id="last-semester-select"
-              v-model="lastSemesterNumber"
-            >
-              <option
-                v-for="semester in semesters"
-                :key="semester.number"
-              >
-                {{ semester.number }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <table>
-          <tbody>
-            <tr
-              v-for="category in mappedCategories"
-              :key="category.name"
-            >
-              <td style="vertical-align:bottom;padding-right:1em;text-align:end">
-                {{ category.name }}
-              </td>
-              <td style="padding-top:8px">
-                <BeautifulProgressIndicator
-                  :required="category.required_ects"
-                  :earned="category.earnedCredits"
-                  :planned="category.plannedCredits"
-                  :color="category.color"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td style="vertical-align:bottom;padding-right:1em;text-align:end">
-                Total
-              </td>
-              <td style="padding-top:8px">
-                <BeautifulProgressIndicator
-                  :required="180"
-                  :earned="totalEarnedEcts"
-                  :planned="totalPlannedEcts"
-                  :color="`orange`"
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </article>
-    </div>
-    <div class="column">
-      <article>
-        <h2 class="subtitle">
-          Vertiefungen
-        </h2>
-        <div class="columns is-multiline mt-5">
-          <div
-            v-for="focus in mappedFocuses"
-            :key="focus.name"
-            class="column is-full"
+            {{ semester.number }}
+          </option>
+        </select>
+      </div>
+      <table>
+        <tbody>
+          <tr
+            v-for="category in mappedCategories"
+            :key="category.name"
           >
-            <FocusComponent
-              :name="focus.name"
-              :all-modules="focus.modules"
-              :filtered-modules="focus.filteredModules"
-            />
-          </div>
+            <td class="align-bottom pr-4 text-end">
+              {{ category.name }}
+            </td>
+            <td class="pt-3">
+              <BeautifulProgressIndicator
+                :required="category.required_ects"
+                :earned="category.earnedCredits"
+                :planned="category.plannedCredits"
+                :color="category.color"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td class="align-bottom pr-4 text-end">
+              Total
+            </td>
+            <td class="pt-3">
+              <BeautifulProgressIndicator
+                :required="180"
+                :earned="totalEarnedEcts"
+                :planned="totalPlannedEcts"
+                :color="`orange`"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </article>
+    <article class="mx-4">
+      <h2 class="text-xl">
+        Vertiefungen
+      </h2>
+      <div class="mt-5">
+        <div
+          v-for="focus in mappedFocuses"
+          :key="focus.name"
+        >
+          <FocusComponent
+            :name="focus.name"
+            :all-modules="focus.modules"
+            :filtered-modules="focus.filteredModules"
+          />
         </div>
-      </article>
-    </div>
-    <div class="column">
-      <img
-        src="../assets/this_is_fine_winter.jpg"
-        alt="Alternative version of the well known 'this is fine' meme with a dog in a room full of snow"
-      >
-    </div>
+      </div>
+    </article>
+    <img
+      class="lg:col-span-2 2xl:col-span-1 justify-self-center px-4"
+      src="../assets/this_is_fine_winter.jpg"
+      alt="Alternative version of the well known 'this is fine' meme with a dog in a room full of snow"
+    >
   </div>
 </template>
 
@@ -163,6 +122,7 @@ import { defineComponent } from 'vue';
 import SemesterComponent from '../components/Semester.vue';
 import FocusComponent from '../components/Focus.vue';
 import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
+import ToastNoficiation from '../components/ToastNotification.vue';
 import { getColorForCategoryId } from '../helpers/color-helper';
 import type { Module, Category, Focus, UnknownModule, Semester } from '../helpers/types';
 
@@ -173,7 +133,7 @@ const ROUTE_FOCUSES = '/focuses.json';
 
 export default defineComponent({
   name: 'Home',
-  components: { SemesterComponent, FocusComponent, BeautifulProgressIndicator },
+  components: {SemesterComponent, FocusComponent, BeautifulProgressIndicator, ToastNoficiation },
   data() {
     return {
       semesters: [] as Semester[],
@@ -181,8 +141,7 @@ export default defineComponent({
       categories: [] as Category[],
       focuses: [] as Focus[],
       lastSemesterNumber: 0,
-      errorMsg: null as string | null,
-      errorTimer: null as ReturnType<typeof setTimeout> | null,
+      errorMessages: [] as string[],
       unknownModules: [] as UnknownModule[],
     };
   },
@@ -340,7 +299,7 @@ export default defineComponent({
     addModule(moduleName: string, semesterNumber: number) {
       const blockingSemesterNumber = this.getPlannedSemesterForModule(moduleName);
       if (blockingSemesterNumber) {
-        const text = `Module ${moduleName} is already in semester ${blockingSemesterNumber}`;
+        const text = `Modul ${moduleName} ist bereits im Semester ${blockingSemesterNumber}`;
         console.warn(text);
         this.showErrorMsg(text);
         return;
@@ -349,7 +308,7 @@ export default defineComponent({
       const module = this.modules.find((item) => item.name === moduleName);
 
       if (module === undefined) {
-        this.showErrorMsg(`Module '${moduleName}' does not exist`);
+        this.showErrorMsg(`Modul '${moduleName}' existiert nicht`);
         return;
       }
 
@@ -375,13 +334,11 @@ export default defineComponent({
       this.updateUrlFragment();
     },
     showErrorMsg(text: string) {
-      if (this.errorTimer !== null) {
-        clearTimeout(this.errorTimer);
-      }
-      this.errorMsg = text;
-      this.errorTimer = setTimeout(() => {
-        this.errorMsg = null;
-      }, 3000);
+      this.errorMessages.push(text);
+      setTimeout(() => {
+        this.errorMessages.shift();
+        // clean up error messages after a minute
+      }, 60000);
     },
     showUnknownModulesError(semesterNumber: number, moduleId: string) {
       if (this.unknownModules.find((f) => f.id === moduleId)) return;
