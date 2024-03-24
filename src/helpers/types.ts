@@ -1,3 +1,5 @@
+import type {SemesterInfo} from "./semester";
+
 export type Module = {
   id: string,
   name: string,
@@ -24,11 +26,6 @@ export type Semester = {
   number: number,
   modules: Module[],
 };
-
-export type SemesterInfo = {
-  springSemester: boolean,
-  year: number,
-}
 
 export type UnknownModule = {
   id: string,

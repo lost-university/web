@@ -21,7 +21,7 @@
       :key="semester.number"
       v-model:modules="semester.modules"
       class="bg-gray-200 rounded p-2 group/semester w-64 min-w-64"
-      :title="semester.info === undefined ? `${semester.number}` : formatSemesterInfo(semester.info)"
+      :title="semester.info === undefined ? `${semester.number}` : semester.info.toString()"
       :number="semester.number"
       :all-modules="modules"
       @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
@@ -48,14 +48,15 @@
         </label>
         <select
           id="last-semester-select"
-          v-model="lastSemesterNumber"
+          v-model="startSemester"
           class="ml-2 px-3 py-2 rounded"
         >
           <option
-            v-for="semester in semesters"
-            :key="semester.number"
+            v-for="semester in selectableStartSemesters"
+            :key="semester.toString()"
+            :value="semester"
           >
-            {{ semester.number }}
+            {{ semester.toString() }}
           </option>
         </select>
       </div>
@@ -119,26 +120,47 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent} from 'vue';
 import SemesterComponent from '../components/Semester.vue';
 import FocusComponent from '../components/Focus.vue';
 import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
 import ToastNoficiation from '../components/ToastNotification.vue';
-import { getColorForCategoryId } from '../helpers/color-helper';
-import type {Module, Category, Focus, UnknownModule, Semester, SemesterInfo} from '../helpers/types';
+import {getColorForCategoryId} from '../helpers/color-helper';
+import type {Category, Focus, Module, Semester, UnknownModule} from '../helpers/types';
 import {parseQuery} from "vue-router";
-import {addSemesters, formatSemesterInfo, parseSemesterInfo} from "../helpers/semester";
+import {SemesterInfo} from "../helpers/semester";
 
 const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.4/data';
 const ROUTE_MODULES = '/modules.json';
 const ROUTE_CATEGORIES = '/categories.json';
 const ROUTE_FOCUSES = '/focuses.json';
 
+const currentSemester = SemesterInfo.now();
+
 export default defineComponent({
   name: 'Home',
   components: {SemesterComponent, FocusComponent, BeautifulProgressIndicator, ToastNoficiation },
   data() {
     return {
+      startSemester: undefined as SemesterInfo | undefined,
+      selectableStartSemesters: [
+        currentSemester.removeSemesters(14),
+        currentSemester.removeSemesters(13),
+        currentSemester.removeSemesters(12),
+        currentSemester.removeSemesters(11),
+        currentSemester.removeSemesters(10),
+        currentSemester.removeSemesters(9),
+        currentSemester.removeSemesters(8),
+        currentSemester.removeSemesters(7),
+        currentSemester.removeSemesters(6),
+        currentSemester.removeSemesters(5),
+        currentSemester.removeSemesters(4),
+        currentSemester.removeSemesters(3),
+        currentSemester.removeSemesters(2),
+        currentSemester.removeSemesters(1),
+        currentSemester,
+        currentSemester.addSemesters(1),
+      ] as SemesterInfo[],
       semesters: [] as Semester[],
       modules: [] as Module[],
       categories: [] as Category[],
@@ -181,15 +203,23 @@ export default defineComponent({
         this.semesters = this.getPlanDataFromUrl();
       },
     },
+    startSemester: {
+      immediate: true,
+      handler () {
+        this.updateUrlFragment()
+      }
+    }
   },
   async mounted() {
     this.modules = await this.getModules();
-    this.semesters = this.getPlanDataFromUrl();
     this.categories = await this.getCategories();
     this.focuses = await this.getFocuses();
+
+    const planData = this.getPlanDataFromUrl();
+    this.semesters = planData;
+    this.startSemester = planData[0].info;
   },
   methods: {
-    formatSemesterInfo,
     sumCredits: (previousTotal: number, module: Module) => previousTotal + module.ects,
     getColorForCategoryId(categoryId: string): string {
       return getColorForCategoryId(categoryId);
@@ -246,7 +276,7 @@ export default defineComponent({
           const startSemesterQueryParameter = queryParameters["startSemester"];
 
           if (typeof startSemesterQueryParameter === 'string') {
-            startSemester = parseSemesterInfo(startSemesterQueryParameter);
+            startSemester = SemesterInfo.parse(startSemesterQueryParameter);
           }
         }
 
@@ -254,7 +284,7 @@ export default defineComponent({
           .slice(planIndicator.length)
           .split(semesterSeparator)
           .map((semesterPart, index) => ({
-            info: startSemester === null ? undefined : addSemesters(startSemester, index),
+            info: startSemester === null ? undefined : startSemester.addSemesters(index),
             number: index + 1,
             modules: semesterPart
               .split(moduleSeparator)
@@ -286,7 +316,7 @@ export default defineComponent({
         .join('-');
 
       if (this.semesters.length !== 0 && this.semesters[0].info !== undefined) {
-        encodedPlan += `?startSemester=${formatSemesterInfo(this.semesters[0].info)}`
+        encodedPlan += `?startSemester=${this.semesters[0].info.toString()}`
       }
 
       window.location.hash = `plan/${encodedPlan}`;
@@ -303,16 +333,25 @@ export default defineComponent({
         (semester) => semester.modules.some((module) => module.name === moduleName),
       )?.number;
     },
+    getNumberOfPreviousSemester(): number {
+      const previousSemester = (this.startSemester ?? currentSemester).removeSemesters(1);
+      const indexOfPreviousSemester = this.semesters.findIndex((semester) => previousSemester.equals(semester.info));
+      return indexOfPreviousSemester + 1;
+    },
     getEarnedCredits(category?: Category): number {
+      const numberOfPreviousSemester = this.getNumberOfPreviousSemester();
+
       return this.semesters
-        .filter((semester) => semester.number <= this.lastSemesterNumber)
+        .filter((semester) => semester.number <= numberOfPreviousSemester)
         .flatMap((semester) => semester.modules)
         .filter((module) => !category || category.modules.some((m) => m.id === module.id))
         .reduce(this.sumCredits, 0);
     },
     getPlannedCredits(category?: Category): number {
+      const numberOfPreviousSemester = this.getNumberOfPreviousSemester();
+
       return this.semesters
-        .filter((semester) => semester.number > this.lastSemesterNumber)
+        .filter((semester) => semester.number > numberOfPreviousSemester)
         .flatMap((semester) => semester.modules)
         .filter((module) => !category || category.modules.some((m) => m.id === module.id))
         .reduce(this.sumCredits, 0);

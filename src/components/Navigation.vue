@@ -62,7 +62,10 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { currentSemesterInfo, formatSemesterInfo } from "../helpers/semester";
+import {SemesterInfo} from "../helpers/semester";
+
+const currentSemester = SemesterInfo.now();
+const defaultStartSemester = currentSemester.springSemester ? currentSemester.removeSemesters(1) : currentSemester;
 
 /* eslint-disable max-len */
 export default defineComponent({
@@ -70,7 +73,7 @@ export default defineComponent({
   data() {
     return {
       isBurgerActive: false,
-      startSemesterName: formatSemesterInfo(currentSemesterInfo),
+      startSemesterName: defaultStartSemester.toString(),
       categories: [
         {
           title: 'Musterpläne Teilzeit',
