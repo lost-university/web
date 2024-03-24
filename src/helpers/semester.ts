@@ -79,4 +79,16 @@ export class SemesterInfo {
 
     return false;
   }
+
+  difference(other: SemesterInfo) {
+    const years = this.year - other.year;
+
+    if (this.springSemester && other.springSemester) {
+      return years * 2;
+    } else if (this.springSemester && !other.springSemester) {
+      return years * 2 - 1;
+    } else {
+      return years * 2 + 1;
+    }
+  }
 }

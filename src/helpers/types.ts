@@ -1,5 +1,3 @@
-import type {SemesterInfo} from "./semester";
-
 export type Module = {
   id: string,
   name: string,
@@ -22,7 +20,6 @@ export type Category = {
 };
 
 export type Semester = {
-  info: SemesterInfo | undefined,
   number: number,
   modules: Module[],
 };
