@@ -20,9 +20,15 @@ export type Category = {
 };
 
 export type Semester = {
+  info: SemesterInfo | undefined,
   number: number,
   modules: Module[],
 };
+
+export type SemesterInfo = {
+  springSemester: boolean,
+  year: number,
+}
 
 export type UnknownModule = {
   id: string,

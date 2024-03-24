@@ -13,7 +13,7 @@
     <template #header>
       <div class="flex justify-between w-full py-0.5 px-1">
         <span class="text-xl">
-          Semester {{ number }}
+          Semester {{ title }}
         </span>
         <button
           class="opacity-0 touch-only:opacity-25 group-hover/semester:opacity-25 hover:!opacity-75
@@ -87,6 +87,10 @@ export default defineComponent({
     draggable,
   },
   props: {
+    title: {
+      type: String,
+      required: true,
+    },
     number: {
       type: Number,
       required: true,

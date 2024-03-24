@@ -21,6 +21,7 @@
       :key="semester.number"
       v-model:modules="semester.modules"
       class="bg-gray-200 rounded p-2 group/semester w-64 min-w-64"
+      :title="semester.info === undefined ? `${semester.number}` : formatSemesterInfo(semester.info)"
       :number="semester.number"
       :all-modules="modules"
       @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
@@ -124,7 +125,9 @@ import FocusComponent from '../components/Focus.vue';
 import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
 import ToastNoficiation from '../components/ToastNotification.vue';
 import { getColorForCategoryId } from '../helpers/color-helper';
-import type { Module, Category, Focus, UnknownModule, Semester } from '../helpers/types';
+import type {Module, Category, Focus, UnknownModule, Semester, SemesterInfo} from '../helpers/types';
+import {parseQuery} from "vue-router";
+import {addSemesters, formatSemesterInfo, parseSemesterInfo} from "../helpers/semester";
 
 const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.4/data';
 const ROUTE_MODULES = '/modules.json';
@@ -140,7 +143,6 @@ export default defineComponent({
       modules: [] as Module[],
       categories: [] as Category[],
       focuses: [] as Focus[],
-      lastSemesterNumber: 0,
       errorMessages: [] as string[],
       unknownModules: [] as UnknownModule[],
     };
@@ -187,6 +189,7 @@ export default defineComponent({
     this.focuses = await this.getFocuses();
   },
   methods: {
+    formatSemesterInfo,
     sumCredits: (previousTotal: number, module: Module) => previousTotal + module.ects,
     getColorForCategoryId(categoryId: string): string {
       return getColorForCategoryId(categoryId);
@@ -234,10 +237,24 @@ export default defineComponent({
           .replace('NISec', 'NIoSec')
           .replace('PFSec', 'PlFSec');
 
-        const planData = newPath
+        const [ hash, query ] = newPath.split('?');
+
+        let startSemester: SemesterInfo | null = null;
+
+        if (query != undefined) {
+          const queryParameters = parseQuery(query);
+          const startSemesterQueryParameter = queryParameters["startSemester"];
+
+          if (typeof startSemesterQueryParameter === 'string') {
+            startSemester = parseSemesterInfo(startSemesterQueryParameter);
+          }
+        }
+
+        const planData = hash
           .slice(planIndicator.length)
           .split(semesterSeparator)
           .map((semesterPart, index) => ({
+            info: startSemester === null ? undefined : addSemesters(startSemester, index),
             number: index + 1,
             modules: semesterPart
               .split(moduleSeparator)
@@ -264,9 +281,13 @@ export default defineComponent({
       return [];
     },
     updateUrlFragment() {
-      const encodedPlan = this.semesters
+      let encodedPlan = this.semesters
         .map((semester) => semester.modules.map((module) => module.id).join('_'))
         .join('-');
+
+      if (this.semesters.length !== 0 && this.semesters[0].info !== undefined) {
+        encodedPlan += `?startSemester=${formatSemesterInfo(this.semesters[0].info)}`
+      }
 
       window.location.hash = `plan/${encodedPlan}`;
 
