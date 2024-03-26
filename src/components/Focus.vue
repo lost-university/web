@@ -8,10 +8,10 @@
   >
     <span class="grow">{{ name }}</span>
     <span
-      v-if="filteredModules.length"
+      v-if="numberOfMissingModules != 0"
       class="shrink-0 text-xs py-1 px-2 rounded bg-blue-50"
     >
-      {{ filteredModules.length }} Module werden noch benötigt
+      {{ numberOfMissingModules }} Module werden noch benötigt
     </span>
     <span
       v-if="!filteredModules.length"
@@ -69,6 +69,10 @@ export default defineComponent({
       type: Array<Module>,
       default: () => [],
     },
+    numberOfMissingModules: {
+      required: true,
+      type: Number,
+    }
   },
   data() {
     return {
