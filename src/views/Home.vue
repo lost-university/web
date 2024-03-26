@@ -21,6 +21,8 @@
       :key="semester.number"
       v-model:modules="semester.modules"
       class="bg-gray-200 rounded p-2 group/semester w-64 min-w-64"
+      :title="startSemester === undefined
+        ? `${semester.number}` : startSemester.plus(semester.number - 1).toString()"
       :number="semester.number"
       :all-modules="modules"
       @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
@@ -43,18 +45,19 @@
       </span>
       <div class="my-2 flex items-center">
         <label for="last-semester-select">
-          Letztes erfolgreich abgeschlossenes Semester:
+          Erstes Semester:
         </label>
         <select
           id="last-semester-select"
-          v-model="lastSemesterNumber"
+          v-model="startSemester"
           class="ml-2 px-3 py-2 rounded"
         >
           <option
-            v-for="semester in semesters"
-            :key="semester.number"
+            v-for="semester in selectableStartSemesters"
+            :key="semester.toString()"
+            :value="semester"
           >
-            {{ semester.number }}
+            {{ semester.toString() }}
           </option>
         </select>
       </div>
@@ -118,29 +121,51 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent} from 'vue';
 import SemesterComponent from '../components/Semester.vue';
 import FocusComponent from '../components/Focus.vue';
 import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
 import ToastNoficiation from '../components/ToastNotification.vue';
-import { getColorForCategoryId } from '../helpers/color-helper';
-import type { Module, Category, Focus, UnknownModule, Semester } from '../helpers/types';
+import {getColorForCategoryId} from '../helpers/color-helper';
+import type {Category, Focus, Module, Semester, UnknownModule} from '../helpers/types';
+import {parseQuery} from "vue-router";
+import {SemesterInfo} from "../helpers/semester-info";
 
 const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.4/data';
 const ROUTE_MODULES = '/modules.json';
 const ROUTE_CATEGORIES = '/categories.json';
 const ROUTE_FOCUSES = '/focuses.json';
 
+const currentSemester = SemesterInfo.now();
+
 export default defineComponent({
   name: 'Home',
   components: {SemesterComponent, FocusComponent, BeautifulProgressIndicator, ToastNoficiation },
   data() {
     return {
+      startSemester: undefined as SemesterInfo | undefined,
+      selectableStartSemesters: [
+        currentSemester.minus(14),
+        currentSemester.minus(13),
+        currentSemester.minus(12),
+        currentSemester.minus(11),
+        currentSemester.minus(10),
+        currentSemester.minus(9),
+        currentSemester.minus(8),
+        currentSemester.minus(7),
+        currentSemester.minus(6),
+        currentSemester.minus(5),
+        currentSemester.minus(4),
+        currentSemester.minus(3),
+        currentSemester.minus(2),
+        currentSemester.minus(1),
+        currentSemester,
+        currentSemester.plus(1),
+      ] as SemesterInfo[],
       semesters: [] as Semester[],
       modules: [] as Module[],
       categories: [] as Category[],
       focuses: [] as Focus[],
-      lastSemesterNumber: 0,
       errorMessages: [] as string[],
       unknownModules: [] as UnknownModule[],
     };
@@ -179,6 +204,11 @@ export default defineComponent({
         this.semesters = this.getPlanDataFromUrl();
       },
     },
+    startSemester: {
+      handler () {
+        this.updateUrlFragment()
+      }
+    }
   },
   async mounted() {
     this.modules = await this.getModules();
@@ -234,7 +264,22 @@ export default defineComponent({
           .replace('NISec', 'NIoSec')
           .replace('PFSec', 'PlFSec');
 
-        const planData = newPath
+        const [ hash, query ] = newPath.split('?');
+
+        let newStartSemester = undefined;
+
+        if (query != undefined) {
+          const queryParameters = parseQuery(query);
+          const startSemesterQueryParameter = queryParameters["startSemester"];
+
+          if (typeof startSemesterQueryParameter === 'string') {
+            newStartSemester = SemesterInfo.parse(startSemesterQueryParameter) ?? undefined;
+          }
+        }
+
+        this.startSemester = newStartSemester;
+
+        const planData = hash
           .slice(planIndicator.length)
           .split(semesterSeparator)
           .map((semesterPart, index) => ({
@@ -264,11 +309,15 @@ export default defineComponent({
       return [];
     },
     updateUrlFragment() {
-      const encodedPlan = this.semesters
+      let encodedPlan = this.semesters
         .map((semester) => semester.modules.map((module) => module.id).join('_'))
         .join('-');
 
-      window.location.hash = `plan/${encodedPlan}`;
+      if (this.startSemester !== undefined) {
+        encodedPlan += `?startSemester=${this.startSemester.toString()}`
+      }
+
+      window.location.hash = `/plan/${encodedPlan}`;
 
       if (encodedPlan) {
         this.savePlanInLocalStorage(window.location.hash);
@@ -283,15 +332,35 @@ export default defineComponent({
       )?.number;
     },
     getEarnedCredits(category?: Category): number {
+      if (this.startSemester === undefined) {
+        return 0;
+      }
+
+      const indexOfLastCompletedSemester = currentSemester.difference(this.startSemester);
+
+      if (indexOfLastCompletedSemester < 0) {
+        return 0;
+      }
+
       return this.semesters
-        .filter((semester) => semester.number <= this.lastSemesterNumber)
+        .slice(0, indexOfLastCompletedSemester)
         .flatMap((semester) => semester.modules)
         .filter((module) => !category || category.modules.some((m) => m.id === module.id))
         .reduce(this.sumCredits, 0);
     },
     getPlannedCredits(category?: Category): number {
-      return this.semesters
-        .filter((semester) => semester.number > this.lastSemesterNumber)
+      if (this.startSemester === undefined) {
+        return 0;
+      }
+
+      let semestersToConsider = this.semesters;
+      const indexOfLastCompletedSemester = currentSemester.difference(this.startSemester);
+
+      if (indexOfLastCompletedSemester >= 0) {
+        semestersToConsider = semestersToConsider.slice(indexOfLastCompletedSemester)
+      }
+
+      return semestersToConsider
         .flatMap((semester) => semester.modules)
         .filter((module) => !category || category.modules.some((m) => m.id === module.id))
         .reduce(this.sumCredits, 0);
