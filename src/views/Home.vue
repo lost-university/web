@@ -108,6 +108,7 @@
             :name="focus.name"
             :all-modules="focus.modules"
             :filtered-modules="focus.filteredModules"
+            :number-of-missing-modules="focus.numberOfMissingModules"
           />
         </div>
       </div>
@@ -131,7 +132,7 @@ import type {Category, Focus, Module, Semester, UnknownModule} from '../helpers/
 import {parseQuery} from "vue-router";
 import {SemesterInfo} from "../helpers/semester-info";
 
-const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/3.4/data';
+const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/4.0/data';
 const ROUTE_MODULES = '/modules.json';
 const ROUTE_CATEGORIES = '/categories.json';
 const ROUTE_FOCUSES = '/focuses.json';
@@ -144,6 +145,7 @@ export default defineComponent({
   data() {
     return {
       startSemester: undefined as SemesterInfo | undefined,
+      studienordnung: '21' as '21' | '23',
       selectableStartSemesters: [
         currentSemester.minus(14),
         currentSemester.minus(13),
@@ -185,8 +187,12 @@ export default defineComponent({
     },
     mappedFocuses() {
       const plannedModuleIds = this.plannedModules.map((module) => module.id);
+      const numberOfModulesRequiredToGetFocus = 8;
       return this.focuses.map((focus) => ({
         ...focus,
+        numberOfMissingModules: Math.max(0, numberOfModulesRequiredToGetFocus - focus.modules
+          .filter((module) => plannedModuleIds.includes(module.id))
+          .length),
         filteredModules: focus.modules
           .filter((module) => !plannedModuleIds.includes(module.id)),
       }));
@@ -205,16 +211,31 @@ export default defineComponent({
       },
     },
     startSemester: {
-      handler () {
+      handler (newStartSemester) {
         this.updateUrlFragment()
+
+        if (newStartSemester === undefined) {
+          return
+        }
+
+        if (newStartSemester.year > 2023 || (newStartSemester.year === 2023 && !newStartSemester.isSpringSemester)) {
+          this.studienordnung = '23';
+        } else {
+          this.studienordnung = '21';
+        }
       }
-    }
+    },
+    studienordnung: {
+      async handler() {
+        this.categories = await this.getCategories();
+        this.focuses = await this.getFocuses();
+      },
+      immediate: true,
+    },
   },
   async mounted() {
     this.modules = await this.getModules();
     this.semesters = this.getPlanDataFromUrl();
-    this.categories = await this.getCategories();
-    this.focuses = await this.getFocuses();
   },
   methods: {
     sumCredits: (previousTotal: number, module: Module) => previousTotal + module.ects,
@@ -226,11 +247,11 @@ export default defineComponent({
       return response.json();
     },
     async getCategories(): Promise<Category[]> {
-      const response = await fetch(`${BASE_URL}${ROUTE_CATEGORIES}`);
+      const response = await fetch(`${BASE_URL}${this.studienordnung}${ROUTE_CATEGORIES}`);
       return (await response.json()).map((c: Category) => ({ ...c, required_ects: Number(c.required_ects) }));
     },
     async getFocuses(): Promise<Focus[]> {
-      const response = await fetch(`${BASE_URL}${ROUTE_FOCUSES}`);
+      const response = await fetch(`${BASE_URL}${this.studienordnung}${ROUTE_FOCUSES}`);
       return response.ok ? response.json() : [];
     },
     getPlanDataFromUrl(): Semester[] {

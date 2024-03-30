@@ -2,7 +2,7 @@ export type Module = {
   id: string,
   name: string,
   url: string,
-  categories: ModuleCategory[],
+  categories_for_coloring: string[],
   ects: number,
 };
 
@@ -27,12 +27,6 @@ export type Semester = {
 export type UnknownModule = {
   id: string,
   semesterNumber: number,
-};
-
-type ModuleCategory = {
-  id: string,
-  name: string,
-  ects: number,
 };
 
 export type Contributor = {
