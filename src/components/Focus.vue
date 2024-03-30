@@ -14,7 +14,7 @@
       {{ numberOfMissingModules }} Module werden noch benötigt
     </span>
     <span
-      v-if="!filteredModules.length"
+      v-if="numberOfMissingModules == 0"
       class="shrink-0 text-xs py-1 px-2 rounded bg-green-100"
     >
       Vertiefung geplant
