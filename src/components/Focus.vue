@@ -29,7 +29,7 @@
       Alle benötigten Module sind bestanden/geplant.
     </p>
     <p v-if="filteredModules.length">
-      Für die Vertiefung müssen folgende Module noch geplant werden:
+      Für die Vertiefung können noch folgende Module geplant werden:
     </p>
     <ul class="list-disc list-inside text-sm mt-1">
       <li
