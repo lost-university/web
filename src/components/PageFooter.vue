@@ -46,6 +46,7 @@ export default defineComponent({
         { name: "Stefanie Jäger", githubHandle: "StefanieJaeger" },
         { name: "Vina Zahnd", githubHandle: "Venyla" },
         { name: "Linus Flury", githubHandle: "CHLinusch" },
+        { name: "Marco Schneider", githubHandle: "marcoschneider" },
       ],
     },
   },
