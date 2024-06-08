@@ -132,7 +132,7 @@ import type {Category, Focus, Module, Semester, UnknownModule} from '../helpers/
 import {parseQuery} from "vue-router";
 import {SemesterInfo} from "../helpers/semester-info";
 
-const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/4.1/data';
+const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/4.2/data';
 const ROUTE_MODULES = '/modules.json';
 const ROUTE_CATEGORIES = '/categories.json';
 const ROUTE_FOCUSES = '/focuses.json';
@@ -283,7 +283,8 @@ export default defineComponent({
           .replace('SE1', 'SEP1')
           .replace('SE2', 'SEP2')
           .replace('NISec', 'NIoSec')
-          .replace('PFSec', 'PlFSec');
+          .replace('PFSec', 'PlFSec')
+          .replace('WIoT', 'WsoT');
 
         const [ hash, query ] = newPath.split('?');
 
