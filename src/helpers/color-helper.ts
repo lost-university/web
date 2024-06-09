@@ -1,7 +1,7 @@
 import type { Module } from '../helpers/types';
 
 const CATEGORY_COLOR_MAP: { [key: string]: string } = {
-  Auf: '#f368e0',
+  Auf: '#737373',
   MaPh: '#ee5253',
   KomEng: '#0abde3',
   gwr: '#10ac84',
@@ -10,7 +10,7 @@ const CATEGORY_COLOR_MAP: { [key: string]: string } = {
   SaBa: '#222f3e',
   EP: '#222f3e',
   RA: '#ff9f43',
-  Fallback: '#737373',
+  Fallback: '#f368e0',
 };
 
 type ColorCategoryKey = keyof typeof CATEGORY_COLOR_MAP;
