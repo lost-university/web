@@ -33,3 +33,8 @@ export type Contributor = {
   name: string,
   githubHandle: string,
 };
+
+export type Category = {
+  id: string,
+  name: string,
+};

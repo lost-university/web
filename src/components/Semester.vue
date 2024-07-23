@@ -47,6 +47,21 @@
       <div
         :class="{ 'collapse': !isAddingNewModule }"
       >
+        <label for="categoryFilter">Kategorie</label>
+        <select
+          id="categoryFilter"
+          v-model="selectedCategory"
+          class="w-full"
+        >
+          <option value="">Alle Kategorien</option>
+          <option
+            v-for="category in categories"
+            :key="category.id"
+            :value="category.id"
+          >
+            {{ category.name }}
+          </option>
+        </select>
         <label for="additionalModule">Modulsuche</label>
         <input
           id="additionalModule"
@@ -59,11 +74,11 @@
         >
         <datalist id="allModules">
           <option
-            v-for="selectableModule in allModules"
+            v-for="selectableModule in filteredModules"
             :key="selectableModule.name"
             :value="selectableModule.name"
           >
-            {{ selectableModule.name }}
+            {{ selectableModule.name }} ({{ selectableModule.category }}) - {{ selectableModule.ects }} ECTS
           </option>
         </datalist>
       </div>
@@ -77,8 +92,9 @@
 <script lang="ts">
 import draggable from 'vuedraggable';
 import ModuleComponent from './Module.vue';
-import { defineComponent, ref } from 'vue';
-import type { Module } from '../helpers/types';
+import { defineComponent, ref, computed } from 'vue';
+import type { Module, Category } from '../helpers/types';
+import { getCategoryColorForModule } from '../helpers/color-helper';
 
 export default defineComponent({
   name: 'Semester',
@@ -103,16 +119,27 @@ export default defineComponent({
       type: Array<Module>,
       required: true,
     },
+    categories: {
+      type: Array<Category>,
+      required: true,
+    },
   },
   emits: ['on-module-deleted', 'on-add-module', 'on-remove-semester', 'on-drop-end'],
   data() {
     return {
       isAddingNewModule: false,
+      selectedCategory: '',
     };
   },
   computed: {
     getTotalEcts(): number {
       return this.countTotalEcts();
+    },
+    filteredModules(): Module[] {
+      if (!this.selectedCategory) {
+        return this.allModules;
+      }
+      return this.allModules.filter(module => module.categories_for_coloring.includes(this.selectedCategory));
     },
   },
   watch: {

@@ -34,4 +34,5 @@ const getCategoryColorForModule = (module: Module) => {
 export {
   getColorForCategoryId,
   getCategoryColorForModule,
+  CATEGORY_COLOR_MAP,
 };

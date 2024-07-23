@@ -25,6 +25,7 @@
         ? `${semester.number}` : startSemester.plus(semester.number - 1).toString()"
       :number="semester.number"
       :all-modules="modules"
+      :categories="categories"
       @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
       @on-add-module="addModule"
       @on-remove-semester="removeSemester"
