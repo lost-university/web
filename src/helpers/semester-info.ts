@@ -93,7 +93,7 @@ export class SemesterInfo {
   difference(other: SemesterInfo) {
     const years = this.year - other.year;
 
-    if (this.isSpringSemester && other.isSpringSemester) {
+    if (this.isSpringSemester == other.isSpringSemester) {
       return years * 2;
     } else if (this.isSpringSemester && !other.isSpringSemester) {
       return years * 2 - 1;
