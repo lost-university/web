@@ -115,7 +115,7 @@
     </article>
     <img
       class="lg:col-span-2 2xl:col-span-1 justify-self-center px-4"
-      src="../assets/this_is_fine_summer.jpg"
+      src="../assets/this_is_fine.jpg"
       alt="The well known 'this is fine' meme with a dog in a room full of fire"
     >
   </div>
