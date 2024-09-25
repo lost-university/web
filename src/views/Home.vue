@@ -1,13 +1,13 @@
 <template>
   <div class="fixed top-2 right-2 z-50">
-    <ToastNoficiation
+    <ToastNotification
       v-for="message in errorMessages"
       :key="message"
       :duration="4500"
       :show-toast="true"
       :text="message"
     />
-    <ToastNoficiation
+    <ToastNotification
       :text="'Folgende Module konnten nicht wiederhergestellt werden'"
       :show-toast="unknownModules?.length != 0"
       :list-items="unknownModules.map(u => `- ${u.id} in semester ${u.semesterNumber}`)"
@@ -126,7 +126,7 @@ import {defineComponent} from 'vue';
 import SemesterComponent from '../components/Semester.vue';
 import FocusComponent from '../components/Focus.vue';
 import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
-import ToastNoficiation from '../components/ToastNotification.vue';
+import ToastNotification from '../components/ToastNotification.vue';
 import {getColorForCategoryId} from '../helpers/color-helper';
 import type {Category, Focus, Module, Semester, UnknownModule} from '../helpers/types';
 import {parseQuery} from "vue-router";
@@ -141,7 +141,7 @@ const currentSemester = SemesterInfo.now();
 
 export default defineComponent({
   name: 'Home',
-  components: {SemesterComponent, FocusComponent, BeautifulProgressIndicator, ToastNoficiation },
+  components: { SemesterComponent, FocusComponent, BeautifulProgressIndicator, ToastNotification },
   data() {
     return {
       startSemester: undefined as SemesterInfo | undefined,
