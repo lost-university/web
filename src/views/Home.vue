@@ -1,19 +1,22 @@
 <template>
   <div class="fixed top-2 right-2 z-50">
-    <ToastNoficiation
+    <ToastNotification
       v-for="message in errorMessages"
       :key="message"
       :duration="4500"
       :show-toast="true"
       :text="message"
     />
-    <ToastNoficiation
+    <ToastNotification
       :text="'Folgende Module konnten nicht wiederhergestellt werden'"
       :show-toast="unknownModules?.length != 0"
       :list-items="unknownModules.map(u => `- ${u.id} in semester ${u.semesterNumber}`)"
       :dismiss-button-text="'Alle aus URL entfernen'"
       @on-dismiss="removeUnknownModulesFromUrl"
     />
+  </div>
+  <div class="fixed top-2 right-2 ml-2 z-50 md:w-1/4">
+    <SAToastNotification />
   </div>
   <div class="flex space-x-2 overflow-auto before:m-auto after:m-auto p-4">
     <SemesterComponent
@@ -126,7 +129,8 @@ import {defineComponent} from 'vue';
 import SemesterComponent from '../components/Semester.vue';
 import FocusComponent from '../components/Focus.vue';
 import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
-import ToastNoficiation from '../components/ToastNotification.vue';
+import ToastNotification from '../components/ToastNotification.vue';
+import SAToastNotification from '../components/SAToastNotification.vue';
 import {getColorForCategoryId} from '../helpers/color-helper';
 import type {Category, Focus, Module, Semester, UnknownModule} from '../helpers/types';
 import {parseQuery} from "vue-router";
@@ -141,7 +145,7 @@ const currentSemester = SemesterInfo.now();
 
 export default defineComponent({
   name: 'Home',
-  components: {SemesterComponent, FocusComponent, BeautifulProgressIndicator, ToastNoficiation },
+  components: { SemesterComponent, FocusComponent, BeautifulProgressIndicator, ToastNotification, SAToastNotification },
   data() {
     return {
       startSemester: undefined as SemesterInfo | undefined,
