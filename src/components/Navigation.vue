@@ -70,7 +70,7 @@ export default defineComponent({
   data() {
     return {
       isBurgerActive: false,
-      startSemesterName: SemesterInfo.lastSpringSemester().toString(),
+      startSemesterName: SemesterInfo.lastAutumnSemester().toString(),
       categories: [
         {
           title: 'Musterpläne Teilzeit',
