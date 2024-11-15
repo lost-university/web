@@ -27,6 +27,16 @@ export class SemesterInfo {
     return currentSemester.minus(1);
   }
 
+  static lastAutumnSemester() {
+    const currentSemester = SemesterInfo.now();
+
+    if (!currentSemester.isSpringSemester) {
+      return currentSemester;
+    }
+
+    return currentSemester.minus(1);
+  }
+
   static parse(text: string) {
     if (text.length !== 4) return null;
 
