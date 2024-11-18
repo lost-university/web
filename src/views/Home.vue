@@ -22,7 +22,7 @@
       v-model:modules="semester.modules"
       class="bg-gray-200 rounded p-2 group/semester w-64 min-w-64"
       :title="startSemester === undefined
-        ? `${semester.number}` : startSemester.plus(semester.number - 1).toString()"
+        ? `` : startSemester.plus(semester.number - 1).toString()"
       :number="semester.number"
       :all-modules="modules"
       @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
