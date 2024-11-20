@@ -60,6 +60,11 @@
             {{ semester.toString() }}
           </option>
         </select>
+        <a
+          class="ml-3 underline"
+          target="_blank"
+          :href="studienOrdnungToUrlMap[studienordnung]"
+        >Studienordnung</a>
       </div>
       <table>
         <tbody>
@@ -145,7 +150,11 @@ export default defineComponent({
   data() {
     return {
       startSemester: undefined as SemesterInfo | undefined,
-      studienordnung: '21' as '21' | '23',
+      studienordnung: '23' as '21' | '23',
+      studienOrdnungToUrlMap: {
+        '21': 'https://studien.ost.ch/allStudies/10191_I.html',
+        '23': 'https://studien.ost.ch/allStudies/10246_I.html'
+      },
       selectableStartSemesters: [
         currentSemester.minus(14),
         currentSemester.minus(13),
