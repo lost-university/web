@@ -24,7 +24,7 @@ const getColorClassForCategoryId = (categoryId: ColorClassCategoryKey) =>
   CATEGORY_COLOR_CLASS_MAP[categoryId] || CATEGORY_COLOR_CLASS_MAP.Fallback;
 
 const getCategoryColorClassForModule = (module: Module) => {
-  const prioritzedCategory = module.categories_for_coloring
+  const prioritzedCategory = module.categoriesForColoring
     .map((categoryId) => ({ id: categoryId, priority: CATEGORY_COLOR_PRIORITIES[categoryId] ?? 0 }))
     .sort((a, b) => b.priority - a.priority)[0];
 

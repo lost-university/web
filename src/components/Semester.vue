@@ -36,37 +36,12 @@
       />
     </template>
     <template #footer>
-      <button
-        class="bg-gray-800 text-white w-2/3 py-1 rounded"
-        type="button"
-        :class="{ 'collapse': isAddingNewModule }"
-        @click="isAddingNewModule = true"
-      >
-        +
-      </button>
-      <div
-        :class="{ 'collapse': !isAddingNewModule }"
-      >
-        <label for="additionalModule">Modulsuche</label>
-        <input
-          id="additionalModule"
-          ref="addModuleInput"
-          class="w-full"
-          type="text"
-          list="allModules"
-          @input="handleModuleInputEvent($event as InputEvent)"
-          @keydown="handleModuleInputKeyDownEvent($event)"
-        >
-        <datalist id="allModules">
-          <option
-            v-for="selectableModule in allModules"
-            :key="selectableModule.name"
-            :value="selectableModule.name"
-          >
-            {{ selectableModule.name }}
-          </option>
-        </datalist>
-      </div>
+      <ModuleSearch
+        :modules="allModules"
+        :show-next-possible-semester="false"
+        :width-class="{'w-2/3': true}"
+        @on-module-selected="(name: string) => addModule(name)"
+      />
       <div class="mt-auto p-2">
         <p>{{ getTotalEcts }} ECTS</p>
       </div>
@@ -77,14 +52,16 @@
 <script lang="ts">
 import draggable from 'vuedraggable';
 import ModuleComponent from './Module.vue';
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import type { Module } from '../helpers/types';
+import ModuleSearch from './ModuleSearch.vue';
 
 export default defineComponent({
   name: 'Semester',
   components: {
     ModuleComponent,
     draggable,
+    ModuleSearch,
   },
   props: {
     title: {
@@ -105,48 +82,13 @@ export default defineComponent({
     },
   },
   emits: ['on-module-deleted', 'on-add-module', 'on-remove-semester', 'on-drop-end'],
-  data() {
-    return {
-      isAddingNewModule: false,
-    };
-  },
   computed: {
     getTotalEcts(): number {
       return this.countTotalEcts();
     },
   },
-  watch: {
-    modules: {
-      deep: true,
-      immediate: false,
-      handler() {
-        this.isAddingNewModule = false;
-      },
-    },
-    isAddingNewModule(newValue: boolean) {
-      const addModuleInput = ref<HTMLInputElement | null>(null);
-      if (newValue === false) {
-        addModuleInput.value?.setAttribute('value', '');
-      } else {
-        this.$nextTick(() => {
-          addModuleInput.value?.focus();
-        });
-      }
-    },
-  },
   methods: {
-    handleModuleInputEvent(event: InputEvent) {
-      if (event.inputType === 'insertReplacementText') {
-        this.addModule(event);
-      }
-    },
-    handleModuleInputKeyDownEvent(event: KeyboardEvent) {
-      if (event.key === "Enter") {
-        this.addModule(event);
-      }
-    },
-    addModule(event: Event) {
-      const name = (<HTMLInputElement> event.currentTarget).value;
+    addModule(name: string) {
       this.$emit('on-add-module', name, this.number);
     },
     removeSemester() {

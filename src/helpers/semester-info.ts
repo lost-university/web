@@ -6,6 +6,8 @@ const isSpringSemester = (date: Date) => {
 export class SemesterInfo {
   readonly isSpringSemester: boolean;
   readonly year: number;
+  static readonly maxNumberOfAllowedSemesters = 14;
+  static readonly selectableStartSemesters = [...Array(16)].map((_, i) => SemesterInfo.now().minus(14 - i));
 
   constructor(springSemester: boolean, year: number) {
     this.isSpringSemester = springSemester;
@@ -17,7 +19,7 @@ export class SemesterInfo {
     return new SemesterInfo(isSpringSemester(now), now.getFullYear());
   }
 
-  static lastSpringSemester() {
+  static latestSpringSemester() {
     const currentSemester = SemesterInfo.now();
 
     if (currentSemester.isSpringSemester) {
@@ -27,7 +29,7 @@ export class SemesterInfo {
     return currentSemester.minus(1);
   }
 
-  static lastAutumnSemester() {
+  static latestAutumnSemester() {
     const currentSemester = SemesterInfo.now();
 
     if (!currentSemester.isSpringSemester) {
@@ -35,6 +37,15 @@ export class SemesterInfo {
     }
 
     return currentSemester.minus(1);
+  }
+
+  static nextSpringSemester() {
+    return new SemesterInfo(true, new Date().getFullYear() + 1);
+  }
+
+  static nextAutumSemester() {
+    const now = new Date();
+    return new SemesterInfo(false, isSpringSemester(now) ? now.getFullYear() : now.getFullYear() + 1);
   }
 
   static parse(text: string) {
@@ -56,6 +67,17 @@ export class SemesterInfo {
       default:
         return null;
     }
+  }
+
+  static getNextPossibleSemesterForModule(term: 'FS' | 'HS', startSemester: SemesterInfo | undefined): SemesterInfo {
+    if(!startSemester) {
+      return undefined;
+    }
+    const next = term === 'FS' ? SemesterInfo.nextSpringSemester() : SemesterInfo.nextAutumSemester();
+    if(next.difference(startSemester) >= SemesterInfo.maxNumberOfAllowedSemesters) {
+      return undefined;
+    }
+    return next;
   }
 
   toString() {
