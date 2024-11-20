@@ -80,7 +80,7 @@
                 :required="category.required_ects"
                 :earned="category.earnedCredits"
                 :planned="category.plannedCredits"
-                :color="category.color"
+                :color-class="category.colorClass"
               />
             </td>
           </tr>
@@ -93,7 +93,7 @@
                 :required="180"
                 :earned="totalEarnedEcts"
                 :planned="totalPlannedEcts"
-                :color="`orange`"
+                :color-class="'bg-amber-600'"
               />
             </td>
           </tr>
@@ -132,7 +132,7 @@ import SemesterComponent from '../components/Semester.vue';
 import FocusComponent from '../components/Focus.vue';
 import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
 import ToastNotification from '../components/ToastNotification.vue';
-import {getColorForCategoryId} from '../helpers/color-helper';
+import {getColorClassForCategoryId} from '../helpers/color-helper';
 import type {Category, Focus, Module, Semester, UnknownModule} from '../helpers/types';
 import {parseQuery} from "vue-router";
 import {SemesterInfo} from "../helpers/semester-info";
@@ -186,7 +186,7 @@ export default defineComponent({
       return this.categories.map((category) => ({
         earnedCredits: this.getEarnedCredits(category),
         plannedCredits: this.getPlannedCredits(category),
-        color: getColorForCategoryId(category.id),
+        colorClass: getColorClassForCategoryId(category.id),
         ...category,
       }));
     },
@@ -248,9 +248,7 @@ export default defineComponent({
   },
   methods: {
     sumCredits: (previousTotal: number, module: Module) => previousTotal + module.ects,
-    getColorForCategoryId(categoryId: string): string {
-      return getColorForCategoryId(categoryId);
-    },
+    getColorClassForCategoryId,
     async getModules(): Promise<Module[]> {
       const response = await fetch(`${BASE_URL}${ROUTE_MODULES}`);
       return response.json();
