@@ -161,6 +161,7 @@ export default defineComponent({
   computed: {
     ...mapGetters([
       'modules',
+      'accreditedModules',
       'enrichedFocuses',
       'enrichedSemesters',
       'startSemester',
@@ -196,6 +197,7 @@ export default defineComponent({
     getPlanDataFromUrl() {
       const [
         semesters,
+        accreditedModules,
         startSemester,
         validationEnabled
       ] = StorageHelper.getDataFromUrlHash(
@@ -204,10 +206,11 @@ export default defineComponent({
       );
       store.commit('setValidationEnabled', validationEnabled);
       store.commit('setSemesters', semesters);
+      store.commit('setAccreditedModules', accreditedModules);
       store.dispatch('setStartSemester', startSemester).then(() => this.updateUrlFragment());
     },
     updateUrlFragment() {
-      StorageHelper.updateUrlFragment(this.enrichedSemesters, this.startSemester, this.validationEnabled);
+      StorageHelper.updateUrlFragment(this.enrichedSemesters, this.accreditedModules, this.startSemester, this.validationEnabled);
     },
     getPlannedSemesterForModule(moduleName: string): number | undefined {
       return this.enrichedSemesters.find(

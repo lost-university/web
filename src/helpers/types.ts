@@ -3,6 +3,20 @@ import { ValidationHelper, type ModuleValidationInfo } from "./validation-helper
 
 export type Term = 'FS' | 'HS' | 'both' | undefined;
 
+export class AccreditedModule {
+  // todo: what should maxLength of name be?
+  // what is longest module name?
+  name: string;
+  ects: number;
+  categoryIds: string[];
+
+  constructor(name: string, ects: number, categoryIds: string[]) {
+    this.name = name;
+    this.ects = ects;
+    this.categoryIds = categoryIds;
+  }
+}
+
 export class Module {
   id: string;
   name: string;

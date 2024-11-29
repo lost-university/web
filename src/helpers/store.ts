@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import { Category, Focus, Module, Semester } from './types';
+import { AccreditedModule, Category, Focus, Module, Semester } from './types';
 import { SemesterInfo } from './semester-info';
 import { getColorClassForCategoryId } from '../helpers/color-helper';
 
@@ -12,6 +12,7 @@ export const store = createStore({
   state () {
     return {
       modules: [] as Module[],
+      accreditedModules: [] as AccreditedModule[],
       categories: [] as Category[],
       semesters: [] as Semester[],
       focuses: [] as Focus[],
@@ -22,6 +23,7 @@ export const store = createStore({
   },
   getters: {
     modules: state => state.modules,
+    accreditedModules: state => state.accreditedModules,
     semesters: state => state.semesters,
     modulesByIds: state => moduleIds =>
       moduleIds.map((id) => state.modules.find((module) => module.id === id)).filter(f => f),
@@ -87,6 +89,9 @@ export const store = createStore({
     },
     setValidationEnabled(state, validationEnabled: boolean) {
       state.validationEnabled = validationEnabled;
+    },
+    setAccreditedModules(state, accreditedModules: AccreditedModule[]) {
+      state.accreditedModules = accreditedModules;
     },
 
     addSemester(state) {

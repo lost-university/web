@@ -1,6 +1,6 @@
 import { parseQuery } from "vue-router";
 import { SemesterInfo } from "./semester-info";
-import { Semester } from "./types";
+import { AccreditedModule, Semester } from "./types";
 import { store } from "./store";
 
 export class StorageHelper {
@@ -10,14 +10,16 @@ export class StorageHelper {
   private static readonly URL_SEMESTER_SEPARATOR = '-';
   private static readonly URL_START_SEMESTER_KEY = 'startSemester';
   private static readonly URL_VALIDATION_ENABLED_KEY = 'validation';
+  private static readonly URL_PLAN_INDICATOR = `#/${this.URL_PLAN_KEY}/`;
+
+  // http://localhost:5173/#/plan/EnglHTw-AppArch_BlCh/DigiCamp.3.Inf?startSemester=HS23
 
   static getDataFromUrlHash(
     urlHash: string,
     unknownModuleCallback: (semesterNumber: number, moduleId: string) => void
-  ): [Semester[], SemesterInfo | undefined, boolean] {
-      const planIndicator = `#/${this.URL_PLAN_KEY}/`;
+  ): [Semester[], AccreditedModule[], SemesterInfo | undefined, boolean] {
 
-      if (!urlHash.startsWith(planIndicator)) {
+      if (!urlHash.startsWith(this.URL_PLAN_INDICATOR)) {
         const cachedPlan = localStorage.getItem(this.LOCALSTORAGE_PLAN_KEY);
         if (cachedPlan) {
           window.location.hash = cachedPlan;
@@ -25,48 +27,29 @@ export class StorageHelper {
         }
       }
 
-      if (urlHash.startsWith(planIndicator)) {
-        const [ hash, query ] = urlHash.split('?');
+      if (urlHash.startsWith(this.URL_PLAN_INDICATOR)) {
+        const [newSemesters, accreditedModules, newStartSemester, validation] = this.getPlanDataFromUrlHash(urlHash, unknownModuleCallback);
 
-        let newStartSemester = undefined;
-        let validation = true;
-
-        if (query != undefined) {
-          const queryParameters = parseQuery(query);
-          const startSemesterQueryParameter = queryParameters[this.URL_START_SEMESTER_KEY];
-          const validationQueryParameter = queryParameters[this.URL_VALIDATION_ENABLED_KEY];
-
-          if (typeof startSemesterQueryParameter === 'string') {
-            newStartSemester = SemesterInfo.parse(startSemesterQueryParameter) ?? undefined;
-          }
-          validation = validationQueryParameter === 'false' ? false : true;
-        }
-
-        const newSemesters = hash
-          .slice(planIndicator.length)
-          .split(this.URL_SEMESTER_SEPARATOR)
-          .map((semesterPart, index) =>
-            new Semester(
-              index + 1,
-              this.getModuleIdsFromSemesterPart(semesterPart, unknownModuleCallback)
-            ).setName(newStartSemester)
-          );
-
-        const hashFromNewSemesters = this.turnPlanDataIntoUrlHash(newSemesters, newStartSemester, validation);
-        const newestHash = `${planIndicator}${hashFromNewSemesters}`;
+        const hashFromNewSemesters = this.getUrlHashFromPlanData(newSemesters, accreditedModules, newStartSemester, validation);
+        const newestHash = `${this.URL_PLAN_INDICATOR}${hashFromNewSemesters}`;
         if (urlHash !== newestHash) {
           window.location.hash = newestHash;
         }
 
         this.savePlanInLocalStorage(newestHash);
 
-        return [newSemesters, newStartSemester, validation];
+        return [newSemesters, accreditedModules, newStartSemester, validation];
       }
-      return [[], undefined, true];
+      return [[], [], undefined, true];
   }
 
-  static updateUrlFragment(semesters: Semester[], startSemester: SemesterInfo, validationEnabled: boolean) {
-    const plan = this.turnPlanDataIntoUrlHash(semesters, startSemester, validationEnabled);
+  static updateUrlFragment(
+    semesters: Semester[],
+    accreditedModules: AccreditedModule[],
+    startSemester: SemesterInfo,
+    validationEnabled: boolean
+  ) {
+    const plan = this.getUrlHashFromPlanData(semesters, accreditedModules, startSemester, validationEnabled);
 
     window.location.hash = `/${this.URL_PLAN_KEY}/${plan}`;
 
@@ -75,14 +58,20 @@ export class StorageHelper {
     }
   }
 
-  private static turnPlanDataIntoUrlHash(
+  private static getUrlHashFromPlanData(
     semesters: Semester[],
+    accreditedModules: AccreditedModule[],
     startSemester: SemesterInfo | undefined,
     validationEnabled: boolean
   ): string {
     let plan = semesters
       .map((semester) => semester.moduleIds.join(this.URL_MODULE_SEPARATOR))
       .join(this.URL_SEMESTER_SEPARATOR);
+
+    if(accreditedModules.length > 0) {
+      // todo: should we url encode name?
+      plan = plan + '/' + accreditedModules.map(m => `${m.name}.${m.ects}.${m.categoryIds.join('~')}`).join(this.URL_MODULE_SEPARATOR);
+    }
 
     const query = [];
     if (startSemester !== undefined) {
@@ -127,4 +116,60 @@ export class StorageHelper {
       return moduleId;
     }).filter(f => f).map(m => m!);
   }
+
+  private static getPlanDataFromUrlHash(urlHash: string, unknownModuleCallback: (semesterNumber: number, moduleId: string) => void): [Semester[], AccreditedModule[], SemesterInfo | undefined, boolean]{
+    const [ hash, query ] = urlHash.split('?');
+
+    let newStartSemester = undefined;
+    let validation = true;
+
+    if (query != undefined) {
+      const queryParameters = parseQuery(query);
+      const startSemesterQueryParameter = queryParameters[this.URL_START_SEMESTER_KEY];
+      const validationQueryParameter = queryParameters[this.URL_VALIDATION_ENABLED_KEY];
+
+      if (typeof startSemesterQueryParameter === 'string') {
+        newStartSemester = SemesterInfo.parse(startSemesterQueryParameter) ?? undefined;
+      }
+      validation = validationQueryParameter === 'false' ? false : true;
+    }
+
+    const splitHash = hash.slice(this.URL_PLAN_INDICATOR.length).split('/');
+
+    const newSemesters = splitHash[0].split(this.URL_SEMESTER_SEPARATOR)
+      .map((semesterPart, index) =>
+        new Semester(
+          index + 1,
+          this.getModuleIdsFromSemesterPart(semesterPart, unknownModuleCallback)
+        ).setName(newStartSemester)
+      );
+    const accreditedModules = splitHash.length > 1 ? this.getAccreditedModulesFromAccreditedHashPart(splitHash[1]) : [];
+
+    return [newSemesters, accreditedModules, newStartSemester, validation];
+  }
+
+  private static getAccreditedModulesFromAccreditedHashPart(accreditedHashPart: string): AccreditedModule[] {
+    const modulesInfo = accreditedHashPart
+      .split(this.URL_MODULE_SEPARATOR)
+      .filter(modulesInfo => !this.isNullOrWhitespace(modulesInfo))
+      .map(modulesInfo => modulesInfo.split('.').filter(modulesInfo => !this.isNullOrWhitespace(modulesInfo)));
+
+    const accreditedModules = modulesInfo.map(moduleInfo => {
+      // if(moduleInfo.length === 1) {
+      //   // todo: get info from module!!
+      //   return new AccreditedModule('', 4, []);
+      // }
+      if(moduleInfo.length === 3) {
+        const name = moduleInfo[0];
+        const ects = moduleInfo[1];
+        const categoryIds = moduleInfo[2].split(`~`).filter(categoryId => !this.isNullOrWhitespace(categoryId));
+        return new AccreditedModule(name, Number(ects), categoryIds);
+      }
+      return null;
+    });
+
+    return accreditedModules.filter(accreditedModule => accreditedModule).map(accreditedModule => accreditedModule!);
+  }
+
+
 }
