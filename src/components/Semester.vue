@@ -36,7 +36,6 @@
     </template>
     <template #footer>
       <ModuleSearch
-        :modules="allModules"
         :show-next-possible-semester="false"
         :width-class="{'w-2/3': true}"
         :term-for-which-to-search="term"
@@ -57,7 +56,6 @@ import type { Module, Semester, Term } from '../helpers/types';
 import ModuleSearch from './ModuleSearch.vue';
 import { store } from '../helpers/store';
 import { SemesterInfo } from '../helpers/semester-info';
-import { mapGetters } from 'vuex';
 
 export default defineComponent({
   name: 'Semester',
@@ -77,7 +75,6 @@ export default defineComponent({
     getTotalEcts(): number {
       return this.countTotalEcts();
     },
-    ...mapGetters({'allModules': 'modules'}),
     modules: {
       get() {
         return this.semester.modules;

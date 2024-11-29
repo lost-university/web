@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed top-2 right-2 z-40 flex items-start pt-3 w-1/3">
+  <div class="absolute top-2 right-2 z-40 flex items-start pt-3 w-1/3">
     <SwitchGroup class="pt-2 ml-auto">
       <div class="flex items-center">
         <SwitchLabel class="mr-4">
