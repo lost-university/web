@@ -12,7 +12,7 @@ export class StorageHelper {
   private static readonly URL_VALIDATION_ENABLED_KEY = 'validation';
   private static readonly URL_PLAN_INDICATOR = `#/${this.URL_PLAN_KEY}/`;
 
-  // http://localhost:5173/#/plan/EnglHTw-AppArch_BlCh/DigiCamp.3.Inf?startSemester=HS23
+  // http://localhost:5173/#/plan/EnglHTw-AppArch_BlCh/DigiCamp.3.Inf~Auf-ExEv.4.Inf?startSemester=HS23
 
   static getDataFromUrlHash(
     urlHash: string,
@@ -44,11 +44,15 @@ export class StorageHelper {
   }
 
   static updateUrlFragment(
-    semesters: Semester[],
-    accreditedModules: AccreditedModule[],
-    startSemester: SemesterInfo,
-    validationEnabled: boolean
+    // semesters: Semester[],
+    // accreditedModules: AccreditedModule[],
+    // startSemester: SemesterInfo,
+    // validationEnabled: boolean
   ) {
+    const semesters = store.getters.enrichedSemesters;
+    const accreditedModules = store.getters.accreditedModules;
+    const startSemester = store.getters.startSemester;
+    const validationEnabled = store.getters.validationEnabled;
     const plan = this.getUrlHashFromPlanData(semesters, accreditedModules, startSemester, validationEnabled);
 
     window.location.hash = `/${this.URL_PLAN_KEY}/${plan}`;

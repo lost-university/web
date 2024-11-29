@@ -21,7 +21,7 @@
             <ModuleSearch
               :category-id="category.id"
               :show-next-possible-semester="true"
-              :width-class="{'w-10': true}"
+              :width-class="'w-10'"
               @on-module-selected="(name: string) => addModule(name)"
             />
           </div>

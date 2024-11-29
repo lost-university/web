@@ -124,6 +124,13 @@ export const store = createStore({
       } else {
         state.modules.forEach(module => module.validationInfo = null);
       }
+    },
+    addAccreditedModules(state, accreditedModules: AccreditedModule[]) {
+      state.accreditedModules.push(...accreditedModules);
+    },
+    removeAccreditedModule(state, accreditedModuleName: string) {
+      // todo: should we check for all attrs?
+      state.accreditedModules.splice(state.accreditedModules.findIndex(a => a.name === accreditedModuleName), 1);
     }
   },
   actions: {
