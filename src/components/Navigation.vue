@@ -62,7 +62,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import {SemesterInfo} from "../helpers/semester-info";
+import { SemesterInfo } from "../helpers/semester-info";
 
 /* eslint-disable max-len */
 export default defineComponent({

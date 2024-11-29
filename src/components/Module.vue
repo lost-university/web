@@ -4,6 +4,20 @@
     class="rounded group/module relative p-2 px-8 flex flex-col items-center text-center text-white w-full"
     :class="computedClasses"
   >
+    <div class="absolute left-2">
+      <span
+        v-if="module.validationInfo && module.validationInfo.severity === 'soft'"
+        :title="module.validationInfo.tooltip"
+      >
+        <font-awesome-icon :icon="['fa', 'info-circle']" />
+      </span>
+      <span
+        v-if="module.validationInfo && module.validationInfo.severity === 'hard'"
+        :title="module.validationInfo.tooltip"
+      >
+        <font-awesome-icon :icon="['fa', 'circle-exclamation']" />
+      </span>
+    </div>
     <button
       class="absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
              hover:!opacity-100 right-2 transition-opacity duration-75"
@@ -33,20 +47,20 @@ import type { Module } from '../helpers/types';
 export default defineComponent({
   name: 'Module',
   props: {
-    semesterNumber: {
-      type: Number,
-      required: true,
-    },
     module: {
       type: Object as PropType<Module>,
       required: true,
-    },
+    }
   },
   emits: ['on-delete'],
   computed: {
     computedClasses() {
       const classesObj = { };
       classesObj[this.getCategoryColorClassForModule(this.module)] = true;
+      if (this.module.validationInfo?.severity === 'hard') {
+        classesObj['border-red-500'] = true;
+        classesObj['border-4'] = true;
+      }
       return classesObj;
     }
   },

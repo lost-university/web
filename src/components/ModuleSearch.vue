@@ -22,13 +22,25 @@
       </option>
       <option
         v-for="selectableModule in modules"
-        :key="selectableModule.name"
+        :key="selectableModule.id"
         :value="selectableModule.name"
+        :disabled="
+          moduleIsInPlan(selectableModule) ||
+          moduleHasWrongTerm(selectableModule) ||
+          (showNextPossibleSemester && !selectableModule.nextPossibleSemester)"
       >
         {{ selectableModule.name }}
-        <span v-if="showNextPossibleSemester && selectableModule.nextPossibleSemester">
-          ({{ selectableModule.nextPossibleSemester }})
+        <span v-if="moduleIsInPlan(selectableModule)">
+          bereits eingeplant
         </span>
+        <div v-if="!moduleIsInPlan(selectableModule)">
+          <span v-if="showNextPossibleSemester && selectableModule.nextPossibleSemester">
+            ({{ selectableModule.nextPossibleSemester }})
+          </span>
+          <span v-if="moduleHasWrongTerm(selectableModule)">
+            nur im {{ selectableModule.term }}
+          </span>
+        </div>
       </option>
     </select>
   </div>
@@ -36,7 +48,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import type { Module } from '../helpers/types';
+import type { Module, Term } from '../helpers/types';
+import { store } from '../helpers/store';
 
 export default defineComponent({
   name: 'ModuleSearch',
@@ -52,6 +65,11 @@ export default defineComponent({
     widthClass: {
       type: Object,
       required: true
+    },
+    termForWhichToSearch: {
+      type: String as () => Term,
+      required: false,
+      default: 'both'
     }
   },
   emits: ['on-module-selected'],
@@ -76,6 +94,15 @@ export default defineComponent({
       this.$emit('on-module-selected', el.value);
       el.value = '';
       this.isSearching = false;
+    },
+    moduleIsInPlan(module: Module): boolean {
+      return store.getters.plannedModuleIds.includes(module.id);
+    },
+    moduleHasWrongTerm(module: Module): boolean {
+      if(this.termForWhichToSearch !== 'both' && module.term !== 'both') {
+        return this.termForWhichToSearch !== module.term;
+      }
+      return false;
     }
   },
 });

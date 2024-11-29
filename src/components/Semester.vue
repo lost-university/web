@@ -1,8 +1,7 @@
 <template>
-  <!-- eslint-disable-next-line vue/no-mutating-props -->
   <draggable
+    v-model="modules"
     class="gap-y-1 flex flex-col items-center"
-    :list="modules"
     group="semester"
     item-key="id"
     :animation="200"
@@ -13,7 +12,7 @@
     <template #header>
       <div class="flex justify-between w-full py-0.5 px-1">
         <span class="text-xl">
-          {{ number }}. Semester {{ title }}
+          {{ semester.number }}. Semester {{ semester.name }}
         </span>
         <button
           class="opacity-0 touch-only:opacity-25 group-hover/semester:opacity-25 hover:!opacity-75
@@ -31,7 +30,7 @@
     <template #item="{ element }">
       <ModuleComponent
         :module="element"
-        :semester-number="number"
+        :semester="semester"
         @on-delete="$emit('on-module-deleted', $event)"
       />
     </template>
@@ -40,6 +39,7 @@
         :modules="allModules"
         :show-next-possible-semester="false"
         :width-class="{'w-2/3': true}"
+        :term-for-which-to-search="term"
         @on-module-selected="(name: string) => addModule(name)"
       />
       <div class="mt-auto p-2">
@@ -52,9 +52,12 @@
 <script lang="ts">
 import draggable from 'vuedraggable';
 import ModuleComponent from './Module.vue';
-import { defineComponent } from 'vue';
-import type { Module } from '../helpers/types';
+import { type PropType, defineComponent } from 'vue';
+import type { Module, Semester, Term } from '../helpers/types';
 import ModuleSearch from './ModuleSearch.vue';
+import { store } from '../helpers/store';
+import { SemesterInfo } from '../helpers/semester-info';
+import { mapGetters } from 'vuex';
 
 export default defineComponent({
   name: 'Semester',
@@ -64,21 +67,9 @@ export default defineComponent({
     ModuleSearch,
   },
   props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    number: {
-      type: Number,
-      required: true,
-    },
-    modules: {
-      type: Array<Module>,
-      required: true,
-    },
-    allModules: {
-      type: Array<Module>,
-      required: true,
+    semester: {
+      type: Object as PropType<Semester>,
+      required: true
     },
   },
   emits: ['on-module-deleted', 'on-add-module', 'on-remove-semester', 'on-drop-end'],
@@ -86,16 +77,31 @@ export default defineComponent({
     getTotalEcts(): number {
       return this.countTotalEcts();
     },
+    ...mapGetters({'allModules': 'modules'}),
+    modules: {
+      get() {
+        return this.semester.modules;
+      },
+      set(modules: Module[]) {
+        store.commit('setModuleIdsForSemester', {
+          semesterNumber: this.semester.number,
+          moduleIds: modules.map(m => m.id)
+        });
+      }
+    },
+    term(): Term {
+      return SemesterInfo.parse(this.semester.name)?.isSpringSemester ? 'FS' : 'HS';
+    }
   },
   methods: {
     addModule(name: string) {
-      this.$emit('on-add-module', name, this.number);
+      this.$emit('on-add-module', name, this.semester.number);
     },
     removeSemester() {
-      this.$emit('on-remove-semester', this.number);
+      this.$emit('on-remove-semester', this.semester.number);
     },
     countTotalEcts(): number {
-      return this.modules.reduce((previousValue, module) => previousValue + module.ects, 0);
+      return this.semester.modules.reduce((previousValue, module) => previousValue + module.ects, 0);
     },
     onDropEnd() {
       this.$emit('on-drop-end');

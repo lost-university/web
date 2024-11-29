@@ -1,6 +1,7 @@
 import { SemesterInfo } from "./semester-info";
+import { ValidationHelper, type ModuleValidationInfo } from "./validation-helper";
 
-export type Term = 'FS' | 'HS';
+export type Term = 'FS' | 'HS' | 'both' | undefined;
 
 export class Module {
   id: string;
@@ -8,23 +9,51 @@ export class Module {
   url: string;
   categoriesForColoring: string[];
   ects: number;
+  isDeactivated: boolean;
   term: Term;
+  successorModuleId: string | undefined;
+  predecessorModuleId: string | undefined;
+  recommendedModuleIds: string[];
+  dependentModuleIds: string[];
+  validationInfo: ModuleValidationInfo | null;
 
-  // undefined means there cannot be a next semester for this module (reached max semesters)
-  nextPossibleSemester: SemesterInfo | undefined;
+  // null means there cannot be a next semester for this module (reached max semesters)
+  nextPossibleSemester: SemesterInfo | null;
 
-  constructor(id: string, name: string, url: string, categoriesForColoring: string[], ects: number, term: Term) {
+  constructor(
+    id: string,
+    name: string,
+    url: string,
+    categoriesForColoring: string[],
+    ects: number,
+    term: Term,
+    recommendedModuleIds: string[],
+    dependentModuleIds: string[],
+    successorModuleId: string,
+    predecessorModuleId: string,
+    isDeactivated: boolean
+  ) {
     this.id = id;
     this.name = name;
     this.url = url;
     this.categoriesForColoring = categoriesForColoring;
     this.ects = ects;
     this.term = term;
+    this.recommendedModuleIds = recommendedModuleIds;
+    this.dependentModuleIds = dependentModuleIds;
+    this.successorModuleId = successorModuleId;
+    this. predecessorModuleId = predecessorModuleId;
+    this.isDeactivated = isDeactivated;
+    this.validationInfo = null;
+    this.nextPossibleSemester = null;
   }
 
-  calculateNextPossibleSemester(startSemester: SemesterInfo): Module {
-    this.nextPossibleSemester = SemesterInfo.getNextPossibleSemesterForModule(this.term, startSemester);
-    return this;
+  calculateNextPossibleSemester(startSemester: SemesterInfo) {
+    this.nextPossibleSemester = SemesterInfo.getNextPossibleSemesterForTerm(this.term, startSemester);
+  }
+
+  validateModule(allSemesters: Semester[]) {
+    this.validationInfo = ValidationHelper.getValidationInfoForModule(this, allSemesters);
   }
 }
 
@@ -32,11 +61,13 @@ export class Focus {
   id: string;
   name: string;
   modules: Module[];
+  moduleIds: string[]
 
-  constructor(id: string, name: string, modules: Module[]) {
+  constructor(id: string, name: string, moduleIds: string[]) {
     this.id = id;
     this.name = name;
-    this.modules = modules;
+    this.moduleIds = moduleIds;
+    this.modules = [];
   }
 }
 
@@ -44,13 +75,21 @@ export class Category {
   id: string;
   name: string;
   requiredEcts: number;
+  earnedEcts: number;
+  plannedEcts: number;
+  colorClass: string;
   modules: Module[];
+  moduleIds: string[];
 
-  constructor(id: string, name: string, requiredEcts: number, modules: Module[]) {
+  constructor(id: string, name: string, requiredEcts: number, moduleIds: string[]) {
     this.id = id;
     this.name = name;
     this.requiredEcts = requiredEcts;
-    this.modules = modules;
+    this.earnedEcts = 0;
+    this.plannedEcts = 0;
+    this.colorClass = '';
+    this.moduleIds = moduleIds;
+    this.modules = [];
   }
 }
 
@@ -58,10 +97,12 @@ export class Semester {
   number: number;
   name: string | undefined;
   modules: Module[];
+  moduleIds: string[]
 
-  constructor(number: number, modules: Module[]) {
+  constructor(number: number, moduleIds: string[]) {
     this.number = number;
-    this.modules = modules;
+    this.moduleIds = moduleIds;
+    this.modules = [];
   }
 
   setName(startSemester: SemesterInfo | undefined): Semester {
@@ -71,11 +112,11 @@ export class Semester {
 }
 
 export class UnknownModule {
-  id: string;
-  semesterNumber: number;
+  id!: string;
+  semesterNumber!: number;
 }
 
 export class Contributor {
-  name: string;
-  githubHandle: string;
+  name!: string;
+  githubHandle!: string;
 }
