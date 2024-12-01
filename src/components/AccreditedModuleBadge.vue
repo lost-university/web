@@ -39,7 +39,7 @@ export default defineComponent({
   methods: {
     getColorClassForPrioritizedCategory,
     removeModule() {
-      store.commit('removeAccreditedModule', this.accreditedModule.name);
+      store.commit('removeAccreditedModule', this.accreditedModule);
       StorageHelper.updateUrlFragment();
     }
   }

@@ -23,8 +23,9 @@ export const store = createStore({
   },
   getters: {
     modules: state => state.modules,
-    accreditedModules: state => state.accreditedModules,
     semesters: state => state.semesters,
+    categories: state => state.categories,
+    accreditedModules: state => state.accreditedModules,
     modulesByIds: state => moduleIds =>
       moduleIds.map((id) => state.modules.find((module) => module.id === id)).filter(f => f),
     totalPlannedEcts: () => getPlannedEcts(),
@@ -103,7 +104,7 @@ export const store = createStore({
     },
     removeModuleFromSemester(state, data: {semesterNumber: number, moduleId: string}) {
       const semester = state.semesters.find(s => s.number === data.semesterNumber);
-      const index = semester.moduleIds.findIndex(moduleId => moduleId === data.moduleId);
+      const index = semester.moduleIds.indexOf(data.moduleId);
       semester.moduleIds.splice(index, 1);
     },
     addModuleToSemester(state, data: {semesterNumber: number, moduleId: string}) {
@@ -128,9 +129,8 @@ export const store = createStore({
     addAccreditedModules(state, accreditedModules: AccreditedModule[]) {
       state.accreditedModules.push(...accreditedModules);
     },
-    removeAccreditedModule(state, accreditedModuleName: string) {
-      // todo: should we check for all attrs?
-      state.accreditedModules.splice(state.accreditedModules.findIndex(a => a.name === accreditedModuleName), 1);
+    removeAccreditedModule(state, accreditedModule: AccreditedModule) {
+      state.accreditedModules.splice(state.accreditedModules.indexOf(accreditedModule), 1);
     }
   },
   actions: {
@@ -188,6 +188,7 @@ export const store = createStore({
   }
 });
 
+// todo: include accredited?
 function getEarnedEcts(category?: Category): number {
   if (store.getters.startSemester === undefined) {
     return 0;
@@ -205,6 +206,7 @@ function getEarnedEcts(category?: Category): number {
     .reduce((previousTotal, module) => previousTotal + module.ects, 0);
 }
 
+// todo: include accredited?
 function getPlannedEcts(category?: Category): number {
   if (store.getters.startSemester === undefined) {
     return 0;

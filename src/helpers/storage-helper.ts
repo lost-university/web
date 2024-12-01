@@ -12,7 +12,7 @@ export class StorageHelper {
   private static readonly URL_VALIDATION_ENABLED_KEY = 'validation';
   private static readonly URL_PLAN_INDICATOR = `#/${this.URL_PLAN_KEY}/`;
 
-  // http://localhost:5173/#/plan/EnglHTw-AppArch_BlCh/DigiCamp.3.Inf~Auf-ExEv.4.Inf?startSemester=HS23
+  // http://localhost:5173/#/plan/EnglHTw-AppArch_BlCh/DigiCamp.3.Inf~Auf_ExEv?startSemester=HS23
 
   static getDataFromUrlHash(
     urlHash: string,
@@ -43,13 +43,8 @@ export class StorageHelper {
       return [[], [], undefined, true];
   }
 
-  static updateUrlFragment(
-    // semesters: Semester[],
-    // accreditedModules: AccreditedModule[],
-    // startSemester: SemesterInfo,
-    // validationEnabled: boolean
-  ) {
-    const semesters = store.getters.enrichedSemesters;
+  static updateUrlFragment() {
+    const semesters = store.getters.semesters;
     const accreditedModules = store.getters.accreditedModules;
     const startSemester = store.getters.startSemester;
     const validationEnabled = store.getters.validationEnabled;
@@ -73,8 +68,7 @@ export class StorageHelper {
       .join(this.URL_SEMESTER_SEPARATOR);
 
     if(accreditedModules.length > 0) {
-      // todo: should we url encode name?
-      plan = plan + '/' + accreditedModules.map(m => `${m.name}.${m.ects}.${m.categoryIds.join('~')}`).join(this.URL_MODULE_SEPARATOR);
+      plan = plan + '/' + accreditedModules.map(m => m.moduleId ? m.moduleId : encodeURIComponent(`${m.name}.${m.ects}.${m.categoryIds.join('~')}`)).join(this.URL_MODULE_SEPARATOR);
     }
 
     const query = [];
@@ -153,21 +147,21 @@ export class StorageHelper {
   }
 
   private static getAccreditedModulesFromAccreditedHashPart(accreditedHashPart: string): AccreditedModule[] {
-    const modulesInfo = accreditedHashPart
+    const modulesInfo = decodeURIComponent(accreditedHashPart)
       .split(this.URL_MODULE_SEPARATOR)
       .filter(modulesInfo => !this.isNullOrWhitespace(modulesInfo))
       .map(modulesInfo => modulesInfo.split('.').filter(modulesInfo => !this.isNullOrWhitespace(modulesInfo)));
 
     const accreditedModules = modulesInfo.map(moduleInfo => {
-      // if(moduleInfo.length === 1) {
-      //   // todo: get info from module!!
-      //   return new AccreditedModule('', 4, []);
-      // }
       if(moduleInfo.length === 3) {
         const name = moduleInfo[0];
         const ects = moduleInfo[1];
         const categoryIds = moduleInfo[2].split(`~`).filter(categoryId => !this.isNullOrWhitespace(categoryId));
-        return new AccreditedModule(name, Number(ects), categoryIds);
+        return AccreditedModule.createFromExternalData(name, Number(ects), categoryIds);
+      }
+      if (moduleInfo.length === 1) {
+        const module = store.getters.modules.find(m => m.id === moduleInfo[0]);
+        return AccreditedModule.createFromExistingModule(module);
       }
       return null;
     });

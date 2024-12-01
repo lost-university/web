@@ -1,7 +1,6 @@
 <template>
   <button class="h-6 w-16 bg-gray-800 text-white text-sm rounded" type="button" @click="openModal">+</button>
 
-  <!-- todo: performance? -->
   <Dialog class="relative z-10" @close="closeModal" :open="modalIsOpen">
     <div class="fixed inset-0">
       <div class="flex h-full items-center justify-center">
@@ -20,7 +19,7 @@
 
               <TabPanels class="bg-white p-2">
                 <TabPanel>
-                  <div class="grid grid-rows-3">
+                  <div class="grid grid-flow-row">
                     <div>
                       <ModuleSearch :width-class="'w-16'" :show-next-possible-semester="false" @on-module-selected="moduleName => onModuleSelected(moduleName)"/>
                     </div>
@@ -37,20 +36,26 @@
                   </div>
                 </TabPanel>
                 <TabPanel>
-                  <div class="grid grid-rows-2 grid-cols-2">
+                  <div class="grid grid-rows-2 grid-cols-2 gap-2">
                     <div>
                       <label for="external-name" class="mr-1">Name</label>
-                      <input id="external-name" class="border rounded" v-model="externalName">
+                      <input id="external-name" class="border rounded" v-model="externalName" required maxlength="30">
                     </div>
                     <div>
                       <label for="external-ects" class="mr-1">ECTS</label>
-                      <input id="external-ects" class="border rounded" v-model="externalEcts" type="number">
+                      <input id="external-ects" class="border rounded" v-model="externalEcts" type="number" required min="1">
                     </div>
                     <div>
-                      <label class="mr-1">Kategorien</label>
-                      Dropdown
+                      <label for="external-categories" class="mr-1">Kategorien</label>
+                      <select
+                        id="external-categories"
+                        class="w-1/6"
+                      >
+                        <option value="" disabled selected hidden></option>
+                        <option v-for="category in selectableCategories" :key="category.id" @click="onCategoryClicked(category)">{{ category.name }}</option>
+                      </select>
                     </div>
-                  </div>
+                  </div>                   <span>{{ externalCategories.map(c => c.name).join(', ') }}</span>
                   <div class="flex justify-end">
                     <button class="bg-gray-800 text-white py-1 px-2 rounded" type="button" @click="addExternalEcts">hinzufügen</button>
                   </div>
@@ -59,14 +64,14 @@
             </TabGroup>
           </div>
 
-          <div class="mt-4" v-if="accreditedModules.length">
+          <div class="m-4" v-if="accreditedModules.length">
             <div>
               <span>Ausgewählte Module:</span>
-              <ul>
-                <li v-for="accreditedModule in accreditedModules">
-                  <AccreditedModuleBadge :accredited-module="accreditedModule"></AccreditedModuleBadge>
-                </li>
-              </ul>
+              <div class="flex flex-wrap ml-1">
+              <div v-for="accreditedModule in accreditedModules" class="m-1">
+                <AccreditedModuleBadge :accredited-module="accreditedModule"></AccreditedModuleBadge>
+              </div>
+            </div>
             </div>
 
             <button class="bg-gray-800 text-white py-1 px-2 rounded" type="button" @click="saveChanges">speichern</button>
@@ -88,7 +93,7 @@ import {
   TabPanels,
   TabPanel
 } from '@headlessui/vue';
-import { AccreditedModule, Module } from '../helpers/types';
+import { AccreditedModule, Category, Module } from '../helpers/types';
 import ModuleSearch from './ModuleSearch.vue';
 import { store } from '../helpers/store';
 import { StorageHelper } from '../helpers/storage-helper';
@@ -109,13 +114,18 @@ export default defineComponent({
   },
   data() {
     return {
-      modalIsOpen: true,
+      modalIsOpen: false,
       accreditedModules: [] as AccreditedModule[],
       externalName: '',
       externalEcts: 0,
-      externalCategoryIds: [] as string[],
+      externalCategories: [] as Category[],
       selectedModules: [] as Module[],
     };
+  },
+  computed: {
+    selectableCategories(): Category[] {
+      return store.getters.categories;
+    }
   },
   methods: {
     openModal() {
@@ -130,21 +140,33 @@ export default defineComponent({
         this.selectedModules.push(module);
       }
     },
+    onCategoryClicked(category: Category) {
+      if(this.externalCategories.includes(category)){
+        this.externalCategories = this.externalCategories.filter(c => c.id !== category.id);
+      } else {
+        this.externalCategories.push(category);
+      }
+    },
     addExistingModule() {
-      this.accreditedModules.push(...this.selectedModules.map(m => new AccreditedModule(m.name, m.ects, m.categoriesForColoring)));
+      this.accreditedModules.push(...this.selectedModules.map(m => AccreditedModule.createFromExistingModule(m)));
       this.selectedModules = [];
     },
     addExternalEcts() {
-      console.log(this.externalName, this.externalEcts, this.externalCategoryIds);
-      this.accreditedModules.push(new AccreditedModule(this.externalName, this.externalEcts, this.externalCategoryIds))
-      this.externalName = '';
-      this.externalEcts = 0;
-      this.externalCategoryIds = [];
+      if(this.externalName && this.externalEcts && this.externalCategories.length) {
+        this.accreditedModules.push(AccreditedModule.createFromExternalData(this.externalName, this.externalEcts, this.externalCategories.map(c => c.id)));
+        this.externalName = '';
+        this.externalEcts = 0;
+        this.externalCategories = [];
+      }
     },
     saveChanges() {
-      // todo: validate, that no duplicates?
+      if(!this.accreditedModules.length) {
+        return;
+      }
+
       store.commit('addAccreditedModules', this.accreditedModules);
       StorageHelper.updateUrlFragment()
+      this.accreditedModules = [];
       this.closeModal();
     },
   }
