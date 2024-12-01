@@ -1,16 +1,16 @@
 import type { Module } from '../helpers/types';
 
 const CATEGORY_COLOR_MAP: { [key: string]: string } = {
-  Auf: '#737373',
-  MaPh: '#ee5253',
-  KomEng: '#0abde3',
+  Auf: '#888888',
+  MaPh: '#cb0b57',
+  KomEng: '#0aadd0',
   gwr: '#10ac84',
-  GWRIKTS: '#2cd5ab',
-  Inf: '#576574',
-  SaBa: '#222f3e',
-  EP: '#222f3e',
-  RA: '#ff9f43',
-  Fallback: '#f368e0',
+  GWRIKTS: '#057760',
+  Inf: '#3957d7',
+  SaBa: '#231c4a',
+  EP: '#4332a1',
+  RA: '#fe7b11',
+  Fallback: '#262c40',
 };
 
 type ColorCategoryKey = keyof typeof CATEGORY_COLOR_MAP;
