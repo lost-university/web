@@ -16,11 +16,12 @@
       :model-value="modelValue"
       by="id"
       @update:model-value="value => selectModule(value)"
+      nullable
     >
       <div class="relative w-full h-8 overflow-hidden rounded-t-lg shadow-md flex items-center" >
         <ComboboxInput
           class="relative w-full border-none text-sm py-2 pl-3 pr-10 bg-gray-100"
-          :display-value="(e) => e.id"
+          :display-value="(e) => e?.id"
           @change="query = $event.target.value"
         />
         <ComboboxButton as="template">
@@ -149,7 +150,7 @@ export default defineComponent({
     return {
       isSearching: false,
       searchId: Math.random(),
-      modelValue: {},
+      modelValue: null,
       query: '',
       groupedModules: [] as GroupedModule[],
     };
@@ -170,7 +171,10 @@ export default defineComponent({
       return false;
     },
     selectModule(moduleName: string) {
-      this.$emit('on-module-selected', moduleName);
+      if (moduleName) {
+        // can be null, if Combobox is closed through blur
+        this.$emit('on-module-selected', moduleName);
+      }
       this.isSearching = false;
     },
     startSearching() {
