@@ -22,7 +22,7 @@
               :category-id="category.id"
               :show-next-possible-semester="true"
               :button-width-class="'w-10'"
-              @on-module-selected="(name: string) => addModule(name)"
+              @on-module-selected="(moduleId) => addModule(moduleId)"
             />
           </div>
         </td>
@@ -58,8 +58,8 @@ export default defineComponent({
     ...mapGetters(['enrichedCategories', 'totalPlannedEcts', 'totalEarnedEcts']),
   },
   methods: {
-    addModule(name: string) {
-      this.$emit('on-add-module', name);
+    addModule(moduleId: string) {
+      this.$emit('on-add-module', moduleId);
     },
   },
 });

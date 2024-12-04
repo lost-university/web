@@ -49,7 +49,7 @@
                       <ModuleSearch
                         :button-width-class="'w-16'"
                         :show-next-possible-semester="false"
-                        @on-module-selected="moduleName => onModuleSelected(moduleName)"
+                        @on-module-selected="moduleId => onModuleSelected(moduleId)"
                       />
                     </div>
                     <div>
@@ -250,8 +250,8 @@ export default defineComponent({
     closeModal() {
       this.modalIsOpen = false;
     },
-    onModuleSelected(moduleName: string) {
-      const module = store.getters.modules.find(m => m.name === moduleName);
+    onModuleSelected(moduleId: string) {
+      const module = store.getters.modules.find(m => m.id === moduleId);
       if(module) {
         this.selectedModules.push(module);
       }

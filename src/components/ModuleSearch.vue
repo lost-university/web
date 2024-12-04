@@ -66,7 +66,7 @@
             v-for="module in filteredModulesByGroup(group.id)"
             v-show="group.isOpen"
             :key="module.id"
-            :value="module.name"
+            :value="module.id"
             as="template"
             :disabled="moduleIsDisabled(module)"
           >
@@ -192,10 +192,10 @@ export default defineComponent({
       }
       return false;
     },
-    selectModule(moduleName: string) {
-      if (moduleName) {
+    selectModule(moduleId: string) {
+      if (moduleId) {
         // can be null, if Combobox is closed through blur
-        this.$emit('on-module-selected', moduleName);
+        this.$emit('on-module-selected', moduleId);
       }
       this.isSearching = false;
     },

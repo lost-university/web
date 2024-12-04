@@ -42,7 +42,7 @@
         :container-bound="true"
         :term-for-which-to-search="term"
         :disable-based-on-term="!isInPast"
-        @on-module-selected="(name: string) => addModule(name)"
+        @on-module-selected="(moduleId) => addModule(moduleId)"
       />
       <div class="mt-auto p-2">
         <p>{{ getTotalEcts }} ECTS</p>
@@ -97,8 +97,8 @@ export default defineComponent({
     }
   },
   methods: {
-    addModule(name: string) {
-      this.$emit('on-add-module', name, this.semester.number);
+    addModule(moduleId: string) {
+      this.$emit('on-add-module', moduleId, this.semester.number);
     },
     removeSemester() {
       this.$emit('on-remove-semester', this.semester.number);
