@@ -135,10 +135,7 @@ export default defineComponent({
       this.updateUrlFragment();
     },
     updateUrlFragment() {
-      StorageHelper.updateUrlFragment(
-        store.getters.enrichedSemesters,
-        store.getters.startSemester,
-        store.getters.validationEnabled);
+      StorageHelper.updateUrlFragment();
     },
   }
 });

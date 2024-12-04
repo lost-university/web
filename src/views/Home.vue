@@ -62,6 +62,11 @@
       +
     </button>
   </div>
+
+  <div class="mx-8 my-4">
+    <AccreditedModules />
+  </div>
+
   <div class="my-16 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 justify-items-center gap-y-16">
     <article class="mx-4">
       <span class="text-xl">
@@ -134,6 +139,7 @@ import { Switch as HeadlessSwitch, SwitchGroup, SwitchLabel } from '@headlessui/
 import { store } from '../helpers/store';
 import { mapGetters } from 'vuex';
 import GlobalValidationInfo from '../components/GlobalValidationInfo.vue';
+import AccreditedModules from '../components/AccreditedModules.vue';
 
 export default defineComponent({
   name: 'Home',
@@ -145,7 +151,8 @@ export default defineComponent({
     HeadlessSwitch,
     SwitchGroup,
     SwitchLabel,
-    GlobalValidationInfo
+    GlobalValidationInfo,
+    AccreditedModules
   },
   data() {
     return {
@@ -196,6 +203,7 @@ export default defineComponent({
     getPlanDataFromUrl() {
       const [
         semesters,
+        accreditedModules,
         startSemester,
         validationEnabled
       ] = StorageHelper.getDataFromUrlHash(
@@ -204,10 +212,11 @@ export default defineComponent({
       );
       store.commit('setValidationEnabled', validationEnabled);
       store.commit('setSemesters', semesters);
+      store.commit('setAccreditedModules', accreditedModules);
       store.dispatch('setStartSemester', startSemester).then(() => this.updateUrlFragment());
     },
     updateUrlFragment() {
-      StorageHelper.updateUrlFragment(this.enrichedSemesters, this.startSemester, this.validationEnabled);
+      StorageHelper.updateUrlFragment();
     },
     getPlannedSemesterForModule(moduleName: string): number | undefined {
       return this.enrichedSemesters.find(

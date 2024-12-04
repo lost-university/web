@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import { Category, Focus, Module, Semester } from './types';
+import { AccreditedModule, Category, Focus, Module, Semester } from './types';
 import { SemesterInfo } from './semester-info';
 import { getColorClassForCategoryId } from '../helpers/color-helper';
 
@@ -12,6 +12,7 @@ export const store = createStore({
   state () {
     return {
       modules: [] as Module[],
+      accreditedModules: [] as AccreditedModule[],
       categories: [] as Category[],
       semesters: [] as Semester[],
       focuses: [] as Focus[],
@@ -23,11 +24,16 @@ export const store = createStore({
   getters: {
     modules: state => state.modules,
     semesters: state => state.semesters,
+    categories: state => state.categories,
+    accreditedModules: state => state.accreditedModules,
     modulesByIds: state => moduleIds =>
       moduleIds.map((id) => state.modules.find((module) => module.id === id)).filter(f => f),
     totalPlannedEcts: () => getPlannedEcts(),
     totalEarnedEcts: () => getEarnedEcts(),
-    plannedModuleIds: state => state.semesters.flatMap(semester => semester.moduleIds),
+    allPlannedModuleIds: state => state.semesters
+      .flatMap(semester => semester.moduleIds)
+      .concat(state.accreditedModules.map(m => m.moduleId))
+      .filter(id => id),
     startSemester: state => state.startSemester,
     studienordnung: state => state.studienordnung,
     validationEnabled: state => state.validationEnabled,
@@ -44,7 +50,7 @@ export const store = createStore({
         modules: getters.modulesByIds(category.moduleIds),
       })),
     enrichedFocuses: (state, getters) => {
-      const plannedModuleIds = getters.plannedModuleIds;
+      const plannedModuleIds = getters.allPlannedModuleIds;
       const numberOfModulesRequiredToGetFocus = 8;
       return state.focuses.map(focus => ({
         ...focus,
@@ -88,6 +94,9 @@ export const store = createStore({
     setValidationEnabled(state, validationEnabled: boolean) {
       state.validationEnabled = validationEnabled;
     },
+    setAccreditedModules(state, accreditedModules: AccreditedModule[]) {
+      state.accreditedModules = accreditedModules;
+    },
 
     addSemester(state) {
       const newSemester = new Semester(state.semesters.length + 1, []).setName(state.startSemester);
@@ -98,7 +107,7 @@ export const store = createStore({
     },
     removeModuleFromSemester(state, data: {semesterNumber: number, moduleId: string}) {
       const semester = state.semesters.find(s => s.number === data.semesterNumber);
-      const index = semester.moduleIds.findIndex(moduleId => moduleId === data.moduleId);
+      const index = semester.moduleIds.indexOf(data.moduleId);
       semester.moduleIds.splice(index, 1);
     },
     addModuleToSemester(state, data: {semesterNumber: number, moduleId: string}) {
@@ -115,10 +124,18 @@ export const store = createStore({
     },
     updateValidationInfoOfAllModules(state, enrichedSemesters: Semester[]) {
       if(state.validationEnabled) {
-        state.modules.forEach(module => module.validateModule(enrichedSemesters));
+        state.modules.forEach(module => module.validateModule(enrichedSemesters, state.accreditedModules));
+        state.accreditedModules.forEach(module => module.validateModule(enrichedSemesters, state.accreditedModules));
       } else {
         state.modules.forEach(module => module.validationInfo = null);
+        state.accreditedModules.forEach(module => module.validationInfo = null);
       }
+    },
+    addAccreditedModules(state, accreditedModules: AccreditedModule[]) {
+      state.accreditedModules.push(...accreditedModules);
+    },
+    removeAccreditedModule(state, accreditedModule: AccreditedModule) {
+      state.accreditedModules.splice(state.accreditedModules.indexOf(accreditedModule), 1);
     }
   },
   actions: {
@@ -175,7 +192,6 @@ export const store = createStore({
     },
   }
 });
-
 function getEarnedEcts(category?: Category): number {
   if (store.getters.startSemester === undefined) {
     return 0;
@@ -186,11 +202,15 @@ function getEarnedEcts(category?: Category): number {
     return 0;
   }
 
-  return store.getters.enrichedSemesters
+  const ectsInSemesters = store.getters.enrichedSemesters
     .slice(0, indexOfLastCompletedSemester)
     .flatMap((semester) => semester.modules)
     .filter((module) => !category || category.moduleIds.includes(module.id))
     .reduce((previousTotal, module) => previousTotal + module.ects, 0);
+  const accreditedEcts = store.getters.accreditedModules
+    .filter(module => !category || module.categoryIds.includes(category.id))
+    .reduce((previousTotal, module) => previousTotal + module.ects, 0);
+  return ectsInSemesters + accreditedEcts;
 }
 
 function getPlannedEcts(category?: Category): number {

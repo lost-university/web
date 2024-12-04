@@ -41,7 +41,7 @@
 
 <script lang="ts">
 import { type PropType, defineComponent } from 'vue';
-import { getCategoryColorClassForModule } from '../helpers/color-helper';
+import { getColorClassForPrioritizedCategory } from '../helpers/color-helper';
 import type { Module } from '../helpers/types';
 
 export default defineComponent({
@@ -55,17 +55,15 @@ export default defineComponent({
   emits: ['on-delete'],
   computed: {
     computedClasses() {
-      const classesObj = { };
-      classesObj[this.getCategoryColorClassForModule(this.module)] = true;
-      if (this.module.validationInfo?.severity === 'hard') {
-        classesObj['border-red-500'] = true;
-        classesObj['border-4'] = true;
+      const classes = [this.getColorClassForPrioritizedCategory(this.module.categoriesForColoring)];
+      if(this.module.validationInfo?.severity === 'hard') {
+        classes.push(...['border-red-500', 'border-4']);
       }
-      return classesObj;
+      return classes;
     }
   },
   methods: {
-    getCategoryColorClassForModule,
+    getColorClassForPrioritizedCategory,
   }
 });
 </script>

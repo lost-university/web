@@ -1,5 +1,3 @@
-import type { Module } from '../helpers/types';
-
 const CATEGORY_COLOR_CLASS_MAP: { [key: string]: string } = {
   Auf: 'bg-neutral-500',
   MaPh: 'bg-sky-700',
@@ -23,15 +21,15 @@ const CATEGORY_COLOR_PRIORITIES: { [key: ColorClassCategoryKey]: number } = {
 const getColorClassForCategoryId = (categoryId: ColorClassCategoryKey) =>
   CATEGORY_COLOR_CLASS_MAP[categoryId] || CATEGORY_COLOR_CLASS_MAP.Fallback;
 
-const getCategoryColorClassForModule = (module: Module) => {
-  const prioritzedCategory = module.categoriesForColoring
+const getColorClassForPrioritizedCategory = (categoryIds: string[]) => {
+  const prioritzedCategory = categoryIds
     .map((categoryId) => ({ id: categoryId, priority: CATEGORY_COLOR_PRIORITIES[categoryId] ?? 0 }))
-    .sort((a, b) => b.priority - a.priority)[0];
+    .sort((a, b) => b.priority === a.priority ? (a.id > b.id ? 1 : -1) : b.priority - a.priority)[0];
 
   return prioritzedCategory ? getColorClassForCategoryId(prioritzedCategory.id) : CATEGORY_COLOR_CLASS_MAP.Fallback;
 };
 
 export {
   getColorClassForCategoryId,
-  getCategoryColorClassForModule,
+  getColorClassForPrioritizedCategory,
 };

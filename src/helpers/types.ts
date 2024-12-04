@@ -3,6 +3,37 @@ import { ValidationHelper, type ModuleValidationInfo } from "./validation-helper
 
 export type Term = 'FS' | 'HS' | 'both' | undefined;
 
+export class AccreditedModule {
+  moduleId: string | undefined;
+  name: string;
+  ects: number;
+  categoryIds: string[];
+  validationInfo: ModuleValidationInfo | null;
+
+  private constructor(moduleId: string | undefined, name: string, ects: number, categoryIds: string[]) {
+    this.name = name;
+    this.ects = ects;
+    this.categoryIds = categoryIds;
+    this.moduleId = moduleId;
+    this.validationInfo = null;
+  }
+
+  static createFromExistingModule(module: Module): AccreditedModule {
+    return new AccreditedModule(module.id, module.name, module.ects, module.categoriesForColoring);
+  }
+
+  static createFromExternalData(name: string, ects: number, categoryIds: string[]): AccreditedModule {
+    return new AccreditedModule(undefined, name, ects, categoryIds);
+  }
+
+  validateModule(allSemesters: Semester[], allAccreditedModules: AccreditedModule[]) {
+    this.validationInfo = ValidationHelper.getValidationInfoForAccreditedModule(
+      this, allSemesters,
+      allAccreditedModules
+    );
+  }
+}
+
 export class Module {
   id: string;
   name: string;
@@ -52,8 +83,8 @@ export class Module {
     this.nextPossibleSemester = SemesterInfo.getNextPossibleSemesterForTerm(this.term, startSemester);
   }
 
-  validateModule(allSemesters: Semester[]) {
-    this.validationInfo = ValidationHelper.getValidationInfoForModule(this, allSemesters);
+  validateModule(allSemesters: Semester[], allAccreditedModules: AccreditedModule[]) {
+    this.validationInfo = ValidationHelper.getValidationInfoForModule(this, allSemesters, allAccreditedModules);
   }
 }
 

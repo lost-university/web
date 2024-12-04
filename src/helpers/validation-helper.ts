@@ -1,4 +1,4 @@
-import type { Module, Semester } from '../helpers/types';
+import type { AccreditedModule, Module, Semester } from '../helpers/types';
 import { SemesterInfo } from './semester-info';
 import { store } from './store';
 
@@ -21,14 +21,19 @@ export type ModuleValidationGlobalInfo =
   ModuleValidationInfo_Duplicate |
   ModuleValidationInfo_WrongTerm |
   ModuleValidationInfo_Inactive |
-  {type: 'beforeRecommended'};
+  {type: 'beforeRecommended'} |
+  {type: 'duplicateAccredited'};
 
 export type ModuleValidationInfo = {
   severity: 'soft' | 'hard', tooltip: string
 } & ModuleValidationGlobalInfo;
 
 export class ValidationHelper {
-  static getValidationInfoForModule(module: Module, allSemesters: Semester[]): ModuleValidationInfo | null {
+  static getValidationInfoForModule(
+    module: Module,
+    allSemesters: Semester[],
+    allAccreditedModules: AccreditedModule[]
+  ): ModuleValidationInfo | null {
     const alreadyInPlanValidationInfo = this.getValidationInfoForModuleAlreadyInPlan(module.id, allSemesters);
     if (alreadyInPlanValidationInfo) {
       return alreadyInPlanValidationInfo;
@@ -96,13 +101,32 @@ export class ValidationHelper {
     const beforeRecommendedValidationInfo = this.getValidationInfoForModuleBeforeRecommendedModules(
       module,
       semesterForModule.number,
-      allSemesters
+      allSemesters,
+      allAccreditedModules
     );
     if(beforeRecommendedValidationInfo) {
       return beforeRecommendedValidationInfo;
     }
 
     return null;
+  }
+
+  static getValidationInfoForAccreditedModule(
+    accreditedModule: AccreditedModule,
+    allSemesters: Semester[],
+    allAccreditedModules: AccreditedModule[]
+  ): ModuleValidationInfo | null {
+    if (accreditedModule.moduleId) {
+      return this.getValidationInfoForModuleAlreadyInPlan(accreditedModule.moduleId, allSemesters, false);
+    }
+    if (allAccreditedModules.filter(m => m.name === accreditedModule.name).length <= 1) {
+      return null;
+    }
+    return {
+      type: 'duplicateAccredited',
+      severity: 'hard',
+      tooltip: `Übertrittsmodul ist bereits erfasst`
+    };
   }
 
   private static isSemesterInThePast(semesterInfo: SemesterInfo) {
@@ -125,7 +149,8 @@ export class ValidationHelper {
 
   private static getValidationInfoForModuleAlreadyInPlan(
     moduleId: string,
-    allSemesters: Semester[]
+    allSemesters: Semester[],
+    moduleItselfIsAlsoInPlan: boolean = true,
   ): ModuleValidationInfo | null {
     const plannedModules = allSemesters.reduce(
       (modules, sem) =>
@@ -133,11 +158,10 @@ export class ValidationHelper {
       [] as {module: Module, semester: Semester}[]
     );
     const occurences = plannedModules.filter(m => m.module.id === moduleId);
-    if(occurences.length <= 1) {
+    if(moduleItselfIsAlsoInPlan ? occurences.length <= 1 : occurences.length <= 0) {
       return null;
     }
-    const semesterNumbers = occurences.map(m => m.semester.number);
-    const semesterNumbersToRemoveFrom = semesterNumbers.slice(1);
+    const semesterNumbersToRemoveFrom = occurences.map(m => m.semester.number).slice(1);
     const distinctSemesterNames = occurences.reduce(
       (distinct, occ) =>
         distinct.includes(occ.semester.name!) ? distinct : [...distinct, occ.semester.name!],
@@ -147,7 +171,7 @@ export class ValidationHelper {
       type: 'duplicate',
       semesterNumbersToRemoveFrom,
       severity: 'hard',
-      tooltip: `Modul is doppelt im Plan, in Semestern ${distinctSemesterNames}`,
+      tooltip: `Modul ist doppelt im Plan, in Semestern ${distinctSemesterNames}`,
       text: `${moduleId} ist in mehreren Semestern (${distinctSemesterNames})`,
       moduleId
     };
@@ -160,7 +184,8 @@ export class ValidationHelper {
   private static getValidationInfoForModuleBeforeRecommendedModules(
     module: Module,
     semesterNumberForModule: number,
-    allSemesters: Semester[]
+    allSemesters: Semester[],
+    allAccreditedModules: AccreditedModule[]
   ): ModuleValidationInfo | null {
     if(module.recommendedModuleIds.length === 0) {
       return null;
@@ -172,7 +197,8 @@ export class ValidationHelper {
       const {position, moduleIdForPosition} = this.getPositionOfModuleInPlan(
         recommendedModuleId,
         allSemesters,
-        semesterNumberForModule);
+        semesterNumberForModule,
+        allAccreditedModules);
       if (position === 'later') {
         later.push(moduleIdForPosition);
       } else if(position === 'missing') {
@@ -197,7 +223,8 @@ export class ValidationHelper {
   private static getPositionOfModuleInPlan(
     moduleId: string,
     allSemesters: Semester[],
-    referenceSemesterNumber: number
+    referenceSemesterNumber: number,
+    allAccreditedModules: AccreditedModule[]
   ): { position: 'sameOrEarlier' | 'later' | 'missing', moduleIdForPosition: string } {
     const semesterNumberForModule = this.getSemesterNumberForModuleId(moduleId, allSemesters);
     if(semesterNumberForModule) {
@@ -208,12 +235,15 @@ export class ValidationHelper {
         return { position: 'later', moduleIdForPosition: moduleId };
       }
     }
+    if(allAccreditedModules.some(m => m.moduleId === moduleId)) {
+      return { position: 'sameOrEarlier', moduleIdForPosition: moduleId};
+    }
 
     const successor = store.getters.modules.find(m => m.predecessorModuleId === moduleId);
     if(!successor) {
       return { position: 'missing', moduleIdForPosition: moduleId };
     }
-    return this.getPositionOfModuleInPlan(successor.id, allSemesters, referenceSemesterNumber);
+    return this.getPositionOfModuleInPlan(successor.id, allSemesters, referenceSemesterNumber, allAccreditedModules);
   }
 
 
