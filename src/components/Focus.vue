@@ -47,7 +47,7 @@
           v-if="!!module.nextPossibleSemester"
           class="bg-gray-800 text-white text-xs mx-2 px-2 py-1 rounded"
           type="button"
-          @click="$emit('on-add-module-to-next-sem', module.name)"
+          @click="$emit('on-add-module-to-next-sem', module.id)"
         >
           + {{ module.nextPossibleSemester.toString() }}
         </button>

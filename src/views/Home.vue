@@ -218,30 +218,30 @@ export default defineComponent({
     updateUrlFragment() {
       StorageHelper.updateUrlFragment();
     },
-    getPlannedSemesterForModule(moduleName: string): number | undefined {
+    getPlannedSemesterForModule(moduleId: string): number | undefined {
       return this.enrichedSemesters.find(
-        (semester) => semester.modules.some((module) => module.name === moduleName),
+        (semester) => semester.modules.some((module) => module.id === moduleId),
       )?.number;
     },
-    addModule(moduleName: string, semesterNumber?: number) {
-      const blockingSemesterNumber = this.getPlannedSemesterForModule(moduleName);
+    addModule(moduleId: string, semesterNumber?: number) {
+      const module = this.modules.find((item) => item.id === moduleId);
+
+      if (module === undefined) {
+        this.showErrorMsg(`Modul '${moduleId}' existiert nicht`);
+        return;
+      }
+
+      const blockingSemesterNumber = this.getPlannedSemesterForModule(moduleId);
       if (blockingSemesterNumber) {
-        const text = `Modul ${moduleName} ist bereits im Semester ${blockingSemesterNumber}`;
+        const text = `Modul ${module.name} ist bereits im Semester ${blockingSemesterNumber}`;
         console.warn(text);
         this.showErrorMsg(text);
         return;
       }
 
-      const module = this.modules.find((item) => item.name === moduleName);
-
-      if (module === undefined) {
-        this.showErrorMsg(`Modul '${moduleName}' existiert nicht`);
-        return;
-      }
-
       if(!semesterNumber) {
         if(!module.nextPossibleSemester) {
-          this.showErrorMsg(`Kein nächstmögliches Semester für Modul ${moduleName} gefunden`);
+          this.showErrorMsg(`Kein nächstmögliches Semester für Modul ${module.name} gefunden`);
           return;
         }
         let nextSemester = this.enrichedSemesters.find(s => s.name === module.nextPossibleSemester.toString())
@@ -252,7 +252,7 @@ export default defineComponent({
         semesterNumber = nextSemester.number;
       }
 
-      store.commit('addModuleToSemester', {semesterNumber, moduleId: module.id});
+      store.commit('addModuleToSemester', {semesterNumber, moduleId: moduleId});
       this.updateUrlFragment();
     },
     removeModule(semesterNumber: number, moduleId: string) {

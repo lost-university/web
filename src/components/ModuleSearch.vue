@@ -50,12 +50,12 @@
         >
           <div
             class="hover:cursor-pointer px-2 text-white flex justify-between items-center"
-            :class="group.colorClassObject"
+            :class="group.colorClass"
             :aria-expanded="group.isOpen"
             type="button"
             @click="toggleGroup(group.id)"
           >
-            <span>{{ group.id }}</span>
+            <span>{{ group.name }}</span>
             <font-awesome-icon
               :icon="['fa', group.isOpen ? 'chevron-up' : 'chevron-down']"
               class="h-5 w-5 ml-2"
@@ -66,7 +66,7 @@
             v-for="module in filteredModulesByGroup(group.id)"
             v-show="group.isOpen"
             :key="module.id"
-            :value="module.name"
+            :value="module.id"
             as="template"
             :disabled="moduleIsDisabled(module)"
           >
@@ -87,7 +87,7 @@
                 >
                   geplant
                 </span>
-                <span v-else-if="module.isDeactivated && disableBasedOnTerm">
+                <span v-else-if="module.isDeactivated && disableInvalidModules">
                   inaktiv
                 </span>
                 <span v-else>
@@ -99,7 +99,7 @@
                 <span v-if="showNextPossibleSemester && module.nextPossibleSemester">
                   ({{ module.nextPossibleSemester }})
                 </span>
-                <span v-else-if="moduleHasWrongTerm(module) && disableBasedOnTerm">
+                <span v-else-if="moduleHasWrongTerm(module) && disableInvalidModules">
                   nur im {{ module.term }}
                 </span>
                 <span v-else>
@@ -127,7 +127,7 @@ import {
   } from '@headlessui/vue';
 import { getColorClassForCategoryId } from '../helpers/color-helper';
 
-export type GroupedModule = {id: string, name: string, modules: Module[], isOpen: boolean, colorClassObject: object };
+export type GroupedModule = {id: string, name: string, modules: Module[], isOpen: boolean, colorClass: object };
 
 export default defineComponent({
   name: 'ModuleSearch',
@@ -158,7 +158,7 @@ export default defineComponent({
       required: false,
       default: 'both'
     },
-    disableBasedOnTerm: {
+    disableInvalidModules: {
       type: Boolean,
       required: false,
       default: true,
@@ -176,41 +176,45 @@ export default defineComponent({
   },
   methods: {
     moduleIsDisabled(module: Module): boolean {
-      return this.moduleIsInPlan(module) ||
+      return this.moduleIsInPlan(module) || (this.disableInvalidModules && (
         this.moduleHasWrongTerm(module) ||
-        (this.showNextPossibleSemester && !module.nextPossibleSemester);
+        (this.showNextPossibleSemester && !module.nextPossibleSemester)));
     },
     moduleIsInPlan(module: Module): boolean {
       return store.getters.allPlannedModuleIds.includes(module.id);
     },
     moduleHasWrongTerm(module: Module): boolean {
-      if (!this.disableBasedOnTerm) {
-        return false;
-      }
       if (this.termForWhichToSearch !== 'both' && module.term !== 'both') {
         return this.termForWhichToSearch !== module.term;
       }
       return false;
     },
-    selectModule(moduleName: string) {
-      if (moduleName) {
+    selectModule(moduleId: string) {
+      if (moduleId) {
         // can be null, if Combobox is closed through blur
-        this.$emit('on-module-selected', moduleName);
+        this.$emit('on-module-selected', moduleId);
       }
       this.isSearching = false;
     },
     startSearching() {
       if(!this.isSearching) {
-        this.groupedModules = store.getters.enrichedCategories.map(c => {
-          const colorClassObject = {};
-          colorClassObject[getColorClassForCategoryId(c.id)] = true;
+        const groups = store.getters.enrichedCategories.map(c => {
           return {
             id: c.id,
             name: c.name,
             modules: c.modules,
             isOpen: this.categoryId ? this.categoryId === c.id : true,
-            colorClassObject
+            colorClass: getColorClassForCategoryId(c.id),
           };
+        });
+        const modulesInGroups = groups.flatMap(g => g.modules).map(m => m.id);
+        const modulesNotInGroups = store.getters.modules.filter(m => !modulesInGroups.includes(m.id));
+        this.groupedModules =  groups.concat({
+          id: 'none',
+          name: 'Ohne',
+          modules: modulesNotInGroups,
+          isOpen: this.categoryId ? false : true,
+          colorClass: getColorClassForCategoryId('')
         });
       }
       this.query = '';
