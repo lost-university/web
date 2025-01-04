@@ -1,7 +1,10 @@
 <template>
   <div class="grid grid-cols-[min-content_auto] gap-2">
     <div class="grid grid-rows-2">
-      <span>Übertrittsmodule</span>
+      <div class="flex">
+        Übertrittsmodule
+        <font-awesome-icon :icon="['fa', 'circle-question']" class="ml-2" title="Für im SLCM als 'Übertritt' gekennzeichnete Module" />
+      </div>
       <AccreditedModulesModal />
     </div>
     <div

@@ -6,7 +6,8 @@
     :class="[buttonWidthClass]"
     @click="startSearching()"
   >
-    +
+    {{ textForButton }}
+    <font-awesome-icon :icon="'chevron-down'" v-if="showChevron"/>
   </button>
   <div
     v-if="isSearching"
@@ -162,6 +163,14 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: true,
+    },
+    textForButton: {
+      type: String,
+      default: '+'
+    },
+    showChevron: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['on-module-selected'],

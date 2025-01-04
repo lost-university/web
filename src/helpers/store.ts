@@ -131,8 +131,8 @@ export const store = createStore({
         state.accreditedModules.forEach(module => module.validationInfo = null);
       }
     },
-    addAccreditedModules(state, accreditedModules: AccreditedModule[]) {
-      state.accreditedModules.push(...accreditedModules);
+    addAccreditedModule(state, accreditedModule: AccreditedModule) {
+      state.accreditedModules.push(accreditedModule);
     },
     removeAccreditedModule(state, accreditedModule: AccreditedModule) {
       state.accreditedModules.splice(state.accreditedModules.indexOf(accreditedModule), 1);
