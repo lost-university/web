@@ -157,7 +157,8 @@ export class ValidationHelper {
         [...modules, ...sem.modules.flatMap(m =>({semester: sem, module: m}))],
       [] as {module: Module, semester: Semester}[]
     );
-    const occurences = plannedModules.filter(m => m.module.id === moduleId);
+    const predecessorOrSuccessorOccurences = plannedModules.filter(m => m.module.predecessorModuleId === moduleId || m.module.successorModuleId === moduleId);
+    const occurences = plannedModules.filter(m => m.module.id === moduleId).concat(predecessorOrSuccessorOccurences);
     if(moduleItselfIsAlsoInPlan ? occurences.length <= 1 : occurences.length <= 0) {
       return null;
     }
@@ -167,12 +168,26 @@ export class ValidationHelper {
         distinct.includes(occ.semester.name!) ? distinct : [...distinct, occ.semester.name!],
       [] as string[]
     ).join(', ');
+
+    let tooltip = `Modul ist doppelt im Plan, in Semestern ${distinctSemesterNames}`;
+    let text = `${moduleId} ist in mehreren Semestern (${distinctSemesterNames})`;
+    if (predecessorOrSuccessorOccurences.length) {
+      if(predecessorOrSuccessorOccurences.length === occurences.length - 1) {
+        const predecessorOrSuccessorNames = predecessorOrSuccessorOccurences.map(m => m.module.name).reduce((distinct, name) => distinct.includes(name) ? distinct : [...distinct, name], [] as string[]).join(', ');
+        tooltip = `Vorgänger/Nachfolger ${predecessorOrSuccessorNames} ist doppelt im Plan, in Semestern ${distinctSemesterNames}`;
+        text = `Vorgänger/Nachfolger ${predecessorOrSuccessorNames} für ${moduleId} ist in mehreren Semestern (${distinctSemesterNames})`;
+      } else {
+        tooltip = `Modul oder ein Vorgänger/Nachfolger ist doppelt im Plan, in Semestern ${distinctSemesterNames}`;
+        text = `${moduleId} oder ein Vorgänger/Nachfolger ist in mehreren Semestern (${distinctSemesterNames})`;
+      }
+    }
+
     return {
       type: 'duplicate',
       semesterNumbersToRemoveFrom,
       severity: 'hard',
-      tooltip: `Modul ist doppelt im Plan, in Semestern ${distinctSemesterNames}`,
-      text: `${moduleId} ist in mehreren Semestern (${distinctSemesterNames})`,
+      tooltip,
+      text,
       moduleId
     };
   }
