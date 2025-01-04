@@ -129,22 +129,23 @@ export class ValidationHelper {
     };
   }
 
-  private static isSemesterInThePast(semesterInfo: SemesterInfo) {
-    return semesterInfo.difference(SemesterInfo.now()) < 0;
-  }
-
-  private static isModuleInWrongTerm(module: Module, semesterInfo: SemesterInfo): boolean {
+  static isModuleInWrongTerm(module: Module, semesterInfo: SemesterInfo): boolean {
     switch (module.term) {
       case 'FS':
         return !semesterInfo.isSpringSemester;
       case 'HS':
         return semesterInfo.isSpringSemester;
       case 'both':
+      case '':
         return false;
       default:
         console.error(`Invalid term ${module.term} for module ${module.id}`);
         return true;
     }
+  }
+
+  private static isSemesterInThePast(semesterInfo: SemesterInfo) {
+    return semesterInfo.difference(SemesterInfo.now()) < 0;
   }
 
   private static getValidationInfoForModuleAlreadyInPlan(

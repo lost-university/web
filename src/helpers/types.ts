@@ -1,7 +1,7 @@
 import { SemesterInfo } from "./semester-info";
 import { ValidationHelper, type ModuleValidationInfo } from "./validation-helper";
 
-export type Term = 'FS' | 'HS' | 'both' | undefined;
+export type Term = 'FS' | 'HS' | 'both' | '' | undefined;
 
 export class AccreditedModule {
   moduleId: string | undefined;
@@ -85,6 +85,15 @@ export class Module {
 
   validateModule(allSemesters: Semester[], allAccreditedModules: AccreditedModule[]) {
     this.validationInfo = ValidationHelper.getValidationInfoForModule(this, allSemesters, allAccreditedModules);
+  }
+
+  getDisplayTextForTerm() {
+    if(this.term === 'both') {
+      return 'beide';
+    } else if (this.term === '') {
+      return '-';
+    }
+    return this.term;
   }
 }
 

@@ -104,7 +104,7 @@
                   nur im {{ module.term }}
                 </span>
                 <span v-else>
-                  {{ module.term }}
+                  {{ module.getDisplayTextForTerm() }}
                 </span>
               </div>
             </li>
@@ -127,6 +127,8 @@ import {
   ComboboxButton
   } from '@headlessui/vue';
 import { getColorClassForCategoryId } from '../helpers/color-helper';
+import { ValidationHelper } from '../helpers/validation-helper';
+import { SemesterInfo } from '../helpers/semester-info';
 
 export type GroupedModule = {id: string, name: string, modules: Module[], isOpen: boolean, colorClass: object };
 
@@ -193,10 +195,7 @@ export default defineComponent({
       return store.getters.allPlannedModuleIds.includes(module.id);
     },
     moduleHasWrongTerm(module: Module): boolean {
-      if (this.termForWhichToSearch !== 'both' && module.term !== 'both') {
-        return this.termForWhichToSearch !== module.term;
-      }
-      return false;
+      return ValidationHelper.isModuleInWrongTerm(module, SemesterInfo.nextSemester(this.termForWhichToSearch)!);
     },
     selectModule(moduleId: string) {
       if (moduleId) {
