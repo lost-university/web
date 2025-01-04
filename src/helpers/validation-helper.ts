@@ -82,8 +82,8 @@ export class ValidationHelper {
         type: 'inactive',
         successorModuleId: module.successorModuleId,
         severity: 'hard',
-        tooltip: `Modul ${module.name} wird nicht mehr angeboten`,
-        text: `${module.id} (${semesterForModule.name}) wird nicht mehr angeboten`,
+        tooltip: module.successorModuleId ? `Modul ${module.name} wird nicht mehr angeboten, hat Nachfolger ${module.successorModuleId}` : `Modul ${module.name} wird nicht mehr angeboten`,
+        text: module.successorModuleId ? `${module.id} (${semesterForModule.name}) wird nicht mehr angeboten, hat Nachfolger ${module.successorModuleId}` : `${module.id} (${semesterForModule.name}) wird nicht mehr angeboten`,
         moduleId: module.id
       };
     }
