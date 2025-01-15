@@ -52,19 +52,26 @@ export const store = createStore({
     enrichedFocuses: (state, getters) => {
       const plannedModuleIds = getters.allPlannedModuleIds;
       const numberOfModulesRequiredToGetFocus = 8;
-      return state.focuses.map(focus => ({
-        ...focus,
-        numberOfMissingModules:
-          Math.max(
-            0,
-            numberOfModulesRequiredToGetFocus - focus.moduleIds.filter(moduleId =>
-              plannedModuleIds.includes(moduleId)).length
+      return state.focuses.map(focus => {
+        const allModulesForFocus = getters.modulesByIds(focus.moduleIds);
+        return {
+          ...focus,
+          numberOfMissingModules:
+            Math.max(
+              0,
+              numberOfModulesRequiredToGetFocus - focus.moduleIds.filter(moduleId =>
+                plannedModuleIds.includes(moduleId)).length
+            ),
+            // to only show actually available modules, we filter out predecessors of already planned ones
+          availableModules: getters.modulesByIds(
+            focus.moduleIds.filter(moduleId =>
+              !plannedModuleIds.includes(moduleId) &&
+              !plannedModuleIds.includes(allModulesForFocus.find(module => module.id === moduleId).successorModuleId)
+            )
           ),
-        availableModules: getters.modulesByIds(
-          focus.moduleIds.filter(moduleId => !plannedModuleIds.includes(moduleId))
-        ),
-        modules: getters.modulesByIds(focus.moduleIds),
-      }));
+          modules: allModulesForFocus,
+        };
+      });
     },
     enrichedSemesters: (state, getters) =>
       state.semesters.map(semester => ({
