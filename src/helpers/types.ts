@@ -42,8 +42,8 @@ export class Module {
   ects: number;
   isDeactivated: boolean;
   term: Term;
-  successorModuleId: string | undefined;
-  predecessorModuleId: string | undefined;
+  successorModuleId: string | null;
+  predecessorModuleId: string | null;
   recommendedModuleIds: string[];
   dependentModuleIds: string[];
   validationInfo: ModuleValidationInfo | null;
