@@ -82,8 +82,13 @@ export class ValidationHelper {
         type: 'inactive',
         successorModuleId: module.successorModuleId,
         severity: 'hard',
-        tooltip: module.successorModuleId ? `Modul ${module.name} wird nicht mehr angeboten, hat Nachfolger ${module.successorModuleId}` : `Modul ${module.name} wird nicht mehr angeboten`,
-        text: module.successorModuleId ? `${module.id} (${semesterForModule.name}) wird nicht mehr angeboten, hat Nachfolger ${module.successorModuleId}` : `${module.id} (${semesterForModule.name}) wird nicht mehr angeboten`,
+        tooltip: module.successorModuleId ?
+          `Modul ${module.name} wird nicht mehr angeboten, hat Nachfolger ${module.successorModuleId}` :
+          `Modul ${module.name} wird nicht mehr angeboten`,
+        text: module.successorModuleId ?
+          `${module.id} (${semesterForModule.name}) wird nicht mehr angeboten,
+          hat Nachfolger ${module.successorModuleId}` :
+          `${module.id} (${semesterForModule.name}) wird nicht mehr angeboten`,
         moduleId: module.id
       };
     }
@@ -158,7 +163,9 @@ export class ValidationHelper {
         [...modules, ...sem.modules.flatMap(m =>({semester: sem, module: m}))],
       [] as {module: Module, semester: Semester}[]
     );
-    const predecessorOrSuccessorOccurences = plannedModules.filter(m => m.module.predecessorModuleId === moduleId || m.module.successorModuleId === moduleId);
+    const predecessorOrSuccessorOccurences = plannedModules.filter(m =>
+      m.module.predecessorModuleId === moduleId ||
+      m.module.successorModuleId === moduleId);
     const occurences = plannedModules.filter(m => m.module.id === moduleId).concat(predecessorOrSuccessorOccurences);
     if(moduleItselfIsAlsoInPlan ? occurences.length <= 1 : occurences.length <= 0) {
       return null;
@@ -174,9 +181,14 @@ export class ValidationHelper {
     let text = `${moduleId} ist in mehreren Semestern (${distinctSemesterNames})`;
     if (predecessorOrSuccessorOccurences.length) {
       if(predecessorOrSuccessorOccurences.length === occurences.length - 1) {
-        const predecessorOrSuccessorNames = predecessorOrSuccessorOccurences.map(m => m.module.name).reduce((distinct, name) => distinct.includes(name) ? distinct : [...distinct, name], [] as string[]).join(', ');
-        tooltip = `Vorgänger/Nachfolger ${predecessorOrSuccessorNames} ist doppelt im Plan, in Semestern ${distinctSemesterNames}`;
-        text = `Vorgänger/Nachfolger ${predecessorOrSuccessorNames} für ${moduleId} ist in mehreren Semestern (${distinctSemesterNames})`;
+        const predecessorOrSuccessorNames = predecessorOrSuccessorOccurences
+          .map(m => m.module.name)
+          .reduce((distinct, name) => distinct.includes(name) ? distinct : [...distinct, name], [] as string[])
+          .join(', ');
+        tooltip = `Vorgänger/Nachfolger ${predecessorOrSuccessorNames} ist doppelt im Plan,
+        in Semestern ${distinctSemesterNames}`;
+        text = `Vorgänger/Nachfolger ${predecessorOrSuccessorNames} für ${moduleId}
+        ist in mehreren Semestern (${distinctSemesterNames})`;
       } else {
         tooltip = `Modul oder ein Vorgänger/Nachfolger ist doppelt im Plan, in Semestern ${distinctSemesterNames}`;
         text = `${moduleId} oder ein Vorgänger/Nachfolger ist in mehreren Semestern (${distinctSemesterNames})`;

@@ -3,7 +3,11 @@
     <div class="grid grid-rows-2">
       <div class="flex">
         Übertrittsmodule
-        <font-awesome-icon :icon="['fa', 'circle-question']" class="ml-2" title="Für im SLCM als 'Übertritt' gekennzeichnete Module" />
+        <font-awesome-icon
+          :icon="['fa', 'circle-question']"
+          class="ml-2"
+          title="Für im SLCM als 'Übertritt' gekennzeichnete Module"
+        />
       </div>
       <AccreditedModulesModal />
     </div>

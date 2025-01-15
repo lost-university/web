@@ -7,7 +7,10 @@
     @click="startSearching()"
   >
     {{ textForButton }}
-    <font-awesome-icon :icon="'chevron-down'" v-if="showChevron"/>
+    <font-awesome-icon
+      v-if="showChevron"
+      :icon="'chevron-down'"
+    />
   </button>
   <div
     v-if="isSearching"
