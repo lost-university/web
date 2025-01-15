@@ -1,26 +1,4 @@
 <template>
-  <div class="absolute top-2 right-2 z-40 flex items-start pt-3 w-1/3">
-    <SwitchGroup class="pt-2 ml-auto">
-      <div class="flex items-center">
-        <SwitchLabel class="mr-4">
-          Validierung:
-        </SwitchLabel>
-        <HeadlessSwitch
-          :model-value="validationEnabled"
-          :class="validationEnabled ? 'bg-teal-700' : 'bg-gray-500'"
-          class="relative inline-flex h-6 w-11 items-center rounded-full"
-          @update:model-value="setValidationEnabled"
-        >
-          <span
-            aria-hidden="true"
-            :class="validationEnabled ? 'translate-x-6' : 'translate-x-1'"
-            class="inline-block h-4 w-4 transform rounded-full bg-white transition"
-          />
-        </HeadlessSwitch>
-      </div>
-    </SwitchGroup>
-    <GlobalValidationInfo />
-  </div>
   <div class="fixed top-2 right-2 z-50">
     <ToastNotification
       v-for="message in errorMessages"
@@ -135,10 +113,8 @@ import { UnknownModule} from '../helpers/types';
 import { SemesterInfo } from "../helpers/semester-info";
 import Categories from '../components/Categories.vue';
 import { StorageHelper } from '../helpers/storage-helper';
-import { Switch as HeadlessSwitch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
 import { store } from '../helpers/store';
 import { mapGetters } from 'vuex';
-import GlobalValidationInfo from '../components/GlobalValidationInfo.vue';
 import AccreditedModules from '../components/AccreditedModules.vue';
 
 export default defineComponent({
@@ -148,10 +124,6 @@ export default defineComponent({
     FocusComponent,
     ToastNotification,
     Categories,
-    HeadlessSwitch,
-    SwitchGroup,
-    SwitchLabel,
-    GlobalValidationInfo,
     AccreditedModules
   },
   data() {
@@ -172,7 +144,6 @@ export default defineComponent({
       'enrichedSemesters',
       'startSemester',
       'studienordnung',
-      'validationEnabled'
     ]),
     addingSemesterIsDisabled() {
       return this.enrichedSemesters.length >= SemesterInfo.maxNumberOfAllowedSemesters;
@@ -195,10 +166,6 @@ export default defineComponent({
     setStartSemester(startSemester: string) {
       const newStartSemester = SemesterInfo.parse(startSemester);
       store.dispatch('setStartSemester', newStartSemester).then(() => this.updateUrlFragment());
-    },
-    setValidationEnabled(validationEnabled: boolean) {
-      store.commit('setValidationEnabled', validationEnabled);
-      this.updateUrlFragment();
     },
     getPlanDataFromUrl() {
       const [

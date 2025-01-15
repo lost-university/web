@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="numberOfValidationProblems > 0"
-    class="w-full mx-2 text-sm bg-red-200 rounded"
+    class="w-full ml-2 text-sm bg-red-200 rounded"
   >
     <Disclosure v-slot="{ open }">
       <DisclosureButton
