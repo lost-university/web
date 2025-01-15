@@ -189,6 +189,7 @@ export default defineComponent({
     moduleIsDisabled(module: Module): boolean {
       return this.moduleIsInPlan(module) || (this.disableInvalidModules && (
         this.moduleHasWrongTerm(module) ||
+        module.isDeactivated ||
         (this.showNextPossibleSemester && !module.nextPossibleSemester)));
     },
     moduleIsInPlan(module: Module): boolean {
