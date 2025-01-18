@@ -239,7 +239,7 @@ export class ValidationHelper {
     }
 
     const tooltipForMissing = missing.length ? `Nicht eingeplante, empfohlene Module: ${missing.join(', ')}` : '';
-    const tooltipForLater = later.length ? `Später eingeplante, empfohelen Module: ${later.join(', ')}` : '';
+    const tooltipForLater = later.length ? `Später eingeplante, empfohlene Module: ${later.join(', ')}` : '';
 
     return {
       type: 'beforeRecommended',
