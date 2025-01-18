@@ -48,6 +48,7 @@ export default defineComponent({
         { name: "Linus Flury", githubHandle: "CHLinusch" },
         { name: "Marco Schneider", githubHandle: "marcoschneider" },
         { name: "Jan Untersander", githubHandle: "Untersander" },
+        { name: "Laura Thoma", githubHandle: "captainwuushuu" }
       ],
     },
   },
