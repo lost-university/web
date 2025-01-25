@@ -17,14 +17,12 @@
           />
         </td>
         <td class="align-bottom pl-4">
-          <div class="w-20">
-            <ModuleSearch
-              :category-id="category.id"
-              :show-next-possible-semester="true"
-              :button-width-class="'w-10'"
-              @on-module-selected="(moduleId) => addModule(moduleId)"
-            />
-          </div>
+          <ModuleSearch
+            :category-id="category.id"
+            :show-next-possible-semester="true"
+            :button-width-class="'w-10'"
+            @on-module-selected="(moduleId) => addModule(moduleId)"
+          />
         </td>
       </tr>
       <tr>
