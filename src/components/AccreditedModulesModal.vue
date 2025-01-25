@@ -88,6 +88,7 @@
                   :icon="['fa', 'circle-question']"
                   class="text-gray-500"
                   title="Name darf '.', '-', '_', '~' nicht enthalten und max 30 Zeichen sein"
+                  tabindex="0"
                 />
               </div>
               <input

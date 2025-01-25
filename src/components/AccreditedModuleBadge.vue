@@ -3,6 +3,7 @@
     class="relative flex justify-between px-4 rounded text-white group/module"
     :class="computedClasses"
     :title="tooltip"
+    tabindex="0"
   >
     <div class="grid grid-cols-[minmax(0,_auto)_auto_auto] gap-2">
       <span class="">{{ accreditedModule.name }}</span>

@@ -35,6 +35,7 @@
         'Mehr als 14 Semester können an der OST nicht geplant werden, da sonst eine Exmatrikulation stattfindet' :
         ''
       "
+      tabindex="0"
       @click="addSemester"
     >
       +

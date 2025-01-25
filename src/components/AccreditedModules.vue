@@ -7,6 +7,7 @@
           :icon="['fa', 'circle-question']"
           class="ml-2"
           title="Für im SLCM als 'Übertritt' gekennzeichnete Module"
+          tabindex="0"
         />
       </div>
       <AccreditedModulesModal />
