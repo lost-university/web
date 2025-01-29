@@ -68,7 +68,9 @@
               class="peer invisible sm:visible"
             />
           </div>
-          <div class="sm:hidden peer-hover:flex hover:flex flex rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-10">
+          <div
+            class="sm:hidden peer-hover:flex hover:flex flex rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-10"
+          >
             <a
               v-for="plan in category.plans"
               :key="plan.title"
