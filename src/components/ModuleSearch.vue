@@ -201,7 +201,7 @@ export default defineComponent({
       return store.getters.allPlannedModuleIds.includes(module.id);
     },
     moduleHasWrongTerm(module: Module): boolean {
-      return ValidationHelper.isModuleInWrongTerm(module, SemesterInfo.nextSemester(this.termForWhichToSearch)!);
+      return ValidationHelper.isModuleInWrongTerm(module, this.termForWhichToSearch);
     },
     selectModule(moduleId: string) {
       if (moduleId) {

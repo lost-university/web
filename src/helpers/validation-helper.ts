@@ -1,4 +1,4 @@
-import type { AccreditedModule, Module, Semester } from '../helpers/types';
+import type { AccreditedModule, Module, Semester, Term } from '../helpers/types';
 import { SemesterInfo } from './semester-info';
 import { store } from './store';
 
@@ -63,7 +63,7 @@ export class ValidationHelper {
           };
         }
       }
-      if(this.isModuleInWrongTerm(module, semesterInfoForModule)) {
+      if(this.isModuleInWrongTermForSemester(module, semesterInfoForModule)) {
         const targetSemesterNumber = semesterForModule.number + 1;
         return {
           type: 'wrongTerm',
@@ -92,7 +92,7 @@ export class ValidationHelper {
         moduleId: module.id
       };
     }
-    if(this.isModuleInWrongTerm(module, semesterInfoForModule)) {
+    if(this.isModuleInWrongTermForSemester(module, semesterInfoForModule)) {
       const targetSemesterNumber = semesterForModule.number + 1;
       return {
         type: 'wrongTerm',
@@ -134,19 +134,12 @@ export class ValidationHelper {
     };
   }
 
-  static isModuleInWrongTerm(module: Module, semesterInfo: SemesterInfo): boolean {
-    switch (module.term) {
-      case 'FS':
-        return !semesterInfo.isSpringSemester;
-      case 'HS':
-        return semesterInfo.isSpringSemester;
-      case 'both':
-      case '':
-        return false;
-      default:
-        console.error(`Invalid term ${module.term} for module ${module.id}`);
-        return true;
-    }
+  static isModuleInWrongTerm(module: Module, term: Term): boolean {
+    return term === 'both' ? false : module.term === term;
+  }
+
+  private static isModuleInWrongTermForSemester(module: Module, semesterInfo: SemesterInfo): boolean {
+    return this.isModuleInWrongTerm(module, semesterInfo.isSpringSemester ? 'FS' : 'HS');
   }
 
   private static isSemesterInThePast(semesterInfo: SemesterInfo) {
