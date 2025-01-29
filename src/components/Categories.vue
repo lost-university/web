@@ -7,7 +7,7 @@
         <div class="px-0.5 col-span-2">
           {{ category.name }}
         </div>
-        <div class="pb-4">
+        <div class="pb-2">
           <BeautifulProgressIndicator
             :required="category.requiredEcts"
             :earned="category.earnedEcts"
@@ -15,7 +15,7 @@
             :color-class="category.colorClass"
           />
         </div>
-        <div class="pl-4 pb-2">
+        <div class="pl-4">
           <ModuleSearch
             :category-id="category.id"
             :show-next-possible-semester="true"
