@@ -58,7 +58,7 @@
         <select
           id="last-semester-select"
           :value="startSemester"
-          class="ml-2 px-3 py-2 rounded"
+          class="ml-2 px-3 py-2 rounded bg-gray-200"
           @change="setStartSemester($event.target.value)"
         >
           <option
