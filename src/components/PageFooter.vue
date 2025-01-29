@@ -1,5 +1,5 @@
 <template>
-  <hr>
+  <hr class="border-gray-200">
   <footer class="flex items-center p-4 justify-between">
     <div class="text-sm">
       <span>© 2025 </span>

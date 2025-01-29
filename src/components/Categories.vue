@@ -1,40 +1,40 @@
 <template>
   <div class="grid grid-cols-[auto_min-content]">
-      <template
-        v-for="category in enrichedCategories"
-        :key="category.name"
-      >
-        <div class="px-0.5 col-span-2">
-          {{ category.name }}
-        </div>
-        <div class="pb-2">
-          <BeautifulProgressIndicator
-            :required="category.requiredEcts"
-            :earned="category.earnedEcts"
-            :planned="category.plannedEcts"
-            :color-class="category.colorClass"
-          />
-        </div>
-        <div class="pl-4">
-          <ModuleSearch
-            :category-id="category.id"
-            :show-next-possible-semester="true"
-            :button-width-class="'w-10'"
-            @on-module-selected="(moduleId) => addModule(moduleId)"
-          />
-        </div>
-      </template>
-        <div class="pl-0.5 col-span-2">
-          Total
-        </div>
-        <div>
-          <BeautifulProgressIndicator
-            :required="180"
-            :earned="totalEarnedEcts"
-            :planned="totalPlannedEcts"
-            :color-class="'bg-amber-600'"
-          />
+    <template
+      v-for="category in enrichedCategories"
+      :key="category.name"
+    >
+      <div class="px-0.5 col-span-2">
+        {{ category.name }}
       </div>
+      <div class="pb-2">
+        <BeautifulProgressIndicator
+          :required="category.requiredEcts"
+          :earned="category.earnedEcts"
+          :planned="category.plannedEcts"
+          :color-class="category.colorClass"
+        />
+      </div>
+      <div class="pl-4">
+        <ModuleSearch
+          :category-id="category.id"
+          :show-next-possible-semester="true"
+          :button-width-class="'w-10'"
+          @on-module-selected="(moduleId) => addModule(moduleId)"
+        />
+      </div>
+    </template>
+    <div class="pl-0.5 col-span-2">
+      Total
+    </div>
+    <div>
+      <BeautifulProgressIndicator
+        :required="180"
+        :earned="totalEarnedEcts"
+        :planned="totalPlannedEcts"
+        :color-class="'bg-amber-600'"
+      />
+    </div>
   </div>
 </template>
 

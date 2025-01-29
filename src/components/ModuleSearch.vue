@@ -1,7 +1,7 @@
 <template>
   <button
     v-if="!isSearching"
-    class="bg-gray-800 text-white p-1 rounded"
+    class="bg-gray-800 text-white p-1 rounded-sm"
     type="button"
     :class="[buttonWidthClass]"
     @click="startSearching()"

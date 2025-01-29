@@ -9,13 +9,13 @@
     <span class="grow">{{ name }}</span>
     <span
       v-if="numberOfMissingModules != 0"
-      class="shrink-0 text-xs py-1 px-2 rounded bg-blue-50"
+      class="shrink-0 text-xs py-1 px-2 rounded-sm bg-blue-50"
     >
       {{ numberOfMissingModules }} Module werden noch benötigt
     </span>
     <span
       v-if="numberOfMissingModules == 0"
-      class="shrink-0 text-xs py-1 px-2 rounded bg-green-100"
+      class="shrink-0 text-xs py-1 px-2 rounded-sm bg-green-100"
     >
       Vertiefung geplant
     </span>
@@ -45,7 +45,7 @@
         </a>
         <button
           v-if="!!module.nextPossibleSemester"
-          class="bg-gray-800 text-white text-xs mx-2 px-2 py-1 rounded"
+          class="bg-gray-800 text-white text-xs mx-2 px-2 py-1 rounded-sm"
           type="button"
           @click="$emit('on-add-module-to-next-sem', module.id)"
         >
