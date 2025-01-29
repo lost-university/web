@@ -12,112 +12,113 @@
       :icon="'chevron-down'"
     />
   </button>
-  <div
+  <Combobox
     v-if="isSearching"
-    :class="[listWidthClass]"
+    :model-value="modelValue"
+    by="id"
+    nullable
+    @update:model-value="value => selectModule(value)"
   >
-    <Combobox
-      :model-value="modelValue"
-      by="id"
-      nullable
-      @update:model-value="value => selectModule(value)"
+    <div
+      class="relative w-full h-8 rounded-t-lg shadow-md flex items-center"
     >
-      <div class="relative w-full h-8 overflow-hidden rounded-t-lg shadow-md flex items-center">
+      <div
+        class="absolute flex bg-gray-100 py-2 px-3 space-x-1 rounded-t"
+        :class="[listWidthClass]"
+      >
         <ComboboxInput
           ref="comboboxInput"
-          class="relative w-full border-none text-sm py-2 pl-3 pr-10 bg-gray-100"
+          class="w-full border-none text-sm"
           :display-value="(e) => e?.id"
           @change="query = $event.target.value"
         />
         <ComboboxButton
           ref="buttonForOpening"
-          class="absolute right-0 w-0 h-0"
-        >
-          Button
-        </ComboboxButton>
+          class="w-0 h-0"
+        />
         <button
-          class="absolute right-2 my-auto"
+          class="my-auto"
           type="button"
           @click="isSearching = false"
         >
           <font-awesome-icon :icon="['fa', 'circle-xmark']" />
         </button>
       </div>
-      <ComboboxOptions
-        static
-        :class="[listWidthClass, containerBound ? 'inherit' : 'absolute']"
-        class="max-h-72 overflow-auto rounded-b-md shadow-lg bg-gray-100 z-40"
+    </div>
+    <ComboboxOptions
+      static
+      :class="[listWidthClass, containerBound ? 'inherit' : 'absolute']"
+      class="max-h-72 overflow-auto rounded-b-md shadow-lg bg-gray-100 z-40"
+    >
+      <div
+        v-for="group in groupedModules"
+        :key="group.id"
       >
         <div
-          v-for="group in groupedModules"
-          :key="group.id"
+          class="cursor-pointer px-2 text-white flex justify-between items-center"
+          :class="group.colorClass"
+          :aria-expanded="group.isOpen"
+          type="button"
+          @click="toggleGroup(group.id)"
         >
-          <div
-            class="hover:cursor-pointer px-2 text-white flex justify-between items-center"
-            :class="group.colorClass"
-            :aria-expanded="group.isOpen"
-            type="button"
-            @click="toggleGroup(group.id)"
-          >
-            <span>{{ group.name }}</span>
-            <font-awesome-icon
-              :icon="['fa', group.isOpen ? 'chevron-up' : 'chevron-down']"
-              class="h-5 w-5 ml-2"
-            />
-          </div>
-
-          <ComboboxOption
-            v-for="module in filteredModulesByGroup(group.id)"
-            v-show="group.isOpen"
-            :key="module.id"
-            :value="module.id"
-            as="template"
-            :disabled="moduleIsDisabled(module)"
-          >
-            <li
-              class="pl-3 border-b border-slate-500 flex items-center"
-              :class="moduleIsDisabled(module) ?
-                'text-gray-400 bg-gray-300 cursor-default' :
-                'cursor-pointer hover:bg-gray-200'"
-            >
-              <span
-                class="w-3/5 block break-words font-normal"
-              >
-                {{ module.name }}
-              </span>
-
-              <div class="w-1/5 text-xs">
-                <span
-                  v-if="moduleIsInPlan(module)"
-                  class="italic"
-                >
-                  geplant
-                </span>
-                <span v-else-if="module.isDeactivated && disableInvalidModules">
-                  inaktiv
-                </span>
-                <span v-else>
-                  {{ module.ects }} ECTS
-                </span>
-              </div>
-
-              <div class="w-1/5 text-xs">
-                <span v-if="showNextPossibleSemester && module.nextPossibleSemester">
-                  ({{ module.nextPossibleSemester }})
-                </span>
-                <span v-else-if="moduleHasWrongTerm(module) && disableInvalidModules">
-                  nur im {{ module.term }}
-                </span>
-                <span v-else>
-                  {{ module.getDisplayTextForTerm() }}
-                </span>
-              </div>
-            </li>
-          </ComboboxOption>
+          <span>{{ group.name }}</span>
+          <font-awesome-icon
+            :icon="['fa', group.isOpen ? 'chevron-up' : 'chevron-down']"
+            class="h-5 w-5 ml-2"
+          />
         </div>
-      </ComboboxOptions>
-    </Combobox>
-  </div>
+
+        <ComboboxOption
+          v-for="module in filteredModulesByGroup(group.id)"
+          v-show="group.isOpen"
+          :key="module.id"
+          :value="module.id"
+          as="template"
+          :disabled="moduleIsDisabled(module)"
+        >
+          <li
+            class="pl-3 border-b border-slate-500 flex items-center"
+            :class="moduleIsDisabled(module) ?
+              'text-gray-400 bg-gray-300 cursor-default' :
+              'cursor-pointer hover:bg-gray-200'"
+          >
+            <span
+              class="w-3/5 block break-words font-normal"
+            >
+              {{ module.name }}
+            </span>
+
+            <div class="w-1/5 text-xs">
+              <span
+                v-if="moduleIsInPlan(module)"
+                class="italic"
+              >
+                geplant
+              </span>
+              <span v-else-if="module.isDeactivated && disableInvalidModules">
+                inaktiv
+              </span>
+              <span v-else>
+                {{ module.ects }} ECTS
+              </span>
+            </div>
+
+            <div class="w-1/5 text-xs">
+              <span v-if="showNextPossibleSemester && module.nextPossibleSemester">
+                ({{ module.nextPossibleSemester }})
+              </span>
+              <span v-else-if="moduleHasWrongTerm(module) && disableInvalidModules">
+                nur im {{ module.term }}
+              </span>
+              <span v-else>
+                {{ module.getDisplayTextForTerm() }}
+              </span>
+            </div>
+          </li>
+        </ComboboxOption>
+      </div>
+    </ComboboxOptions>
+  </Combobox>
 </template>
 
 <script lang="ts">
