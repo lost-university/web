@@ -1,6 +1,6 @@
 <template>
   <div
-    class="hover:cursor-pointer border border-gray-300 hover:border-gray-600 flex items-center space-x-2 p-2"
+    class="cursor-pointer border border-gray-300 hover:border-gray-600 flex items-center space-x-2 p-2"
     :aria-expanded="isOpen"
     :class="{ 'bg-green-200': numberOfMissingModules == 0 }"
     type="button"
