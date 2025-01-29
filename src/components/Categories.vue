@@ -4,16 +4,8 @@
         v-for="category in enrichedCategories"
         :key="category.name"
       >
-        <div class="px-0.5">
+        <div class="px-0.5 col-span-2">
           {{ category.name }}
-        </div>
-        <div class="pl-4 pb-2 row-span-2 self-center">
-          <ModuleSearch
-            :category-id="category.id"
-            :show-next-possible-semester="true"
-            :button-width-class="'w-10'"
-            @on-module-selected="(moduleId) => addModule(moduleId)"
-          />
         </div>
         <div class="pb-4">
           <BeautifulProgressIndicator
@@ -21,6 +13,14 @@
             :earned="category.earnedEcts"
             :planned="category.plannedEcts"
             :color-class="category.colorClass"
+          />
+        </div>
+        <div class="pl-4 pb-2">
+          <ModuleSearch
+            :category-id="category.id"
+            :show-next-possible-semester="true"
+            :button-width-class="'w-10'"
+            @on-module-selected="(moduleId) => addModule(moduleId)"
           />
         </div>
       </template>
