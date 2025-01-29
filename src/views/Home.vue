@@ -47,7 +47,7 @@
   </div>
 
   <div class="my-16 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 justify-items-center gap-y-16">
-    <article class="mx-4">
+    <article class="px-4 w-full sm:w-[30rem]">
       <span class="text-xl">
         Übersicht der ECTS Punkte
       </span>
@@ -79,7 +79,7 @@
         @on-add-module="addModule"
       />
     </article>
-    <article class="mx-4">
+    <article class="px-4 w-full sm:w-[30rem]">
       <h2 class="text-xl">
         Vertiefungen
       </h2>

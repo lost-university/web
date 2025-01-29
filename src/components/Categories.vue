@@ -1,45 +1,41 @@
 <template>
-  <table>
-    <tbody>
-      <tr
+  <div class="grid grid-cols-[auto_min-content]">
+      <template
         v-for="category in enrichedCategories"
         :key="category.name"
       >
-        <td class="align-bottom pr-4 text-end">
+        <div class="px-0.5">
           {{ category.name }}
-        </td>
-        <td class="pt-3">
-          <BeautifulProgressIndicator
-            :required="category.requiredEcts"
-            :earned="category.earnedEcts"
-            :planned="category.plannedEcts"
-            :color-class="category.colorClass"
-          />
-        </td>
-        <td class="align-bottom pl-4">
+        </div>
+        <div class="pl-4 pb-2 row-span-2 self-center">
           <ModuleSearch
             :category-id="category.id"
             :show-next-possible-semester="true"
             :button-width-class="'w-10'"
             @on-module-selected="(moduleId) => addModule(moduleId)"
           />
-        </td>
-      </tr>
-      <tr>
-        <td class="align-bottom pr-4 text-end">
+        </div>
+        <div class="pb-4">
+          <BeautifulProgressIndicator
+            :required="category.requiredEcts"
+            :earned="category.earnedEcts"
+            :planned="category.plannedEcts"
+            :color-class="category.colorClass"
+          />
+        </div>
+      </template>
+        <div class="pl-0.5 col-span-2">
           Total
-        </td>
-        <td class="pt-3">
+        </div>
+        <div>
           <BeautifulProgressIndicator
             :required="180"
             :earned="totalEarnedEcts"
             :planned="totalPlannedEcts"
             :color-class="'bg-amber-600'"
           />
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      </div>
+  </div>
 </template>
 
 <script lang="ts">

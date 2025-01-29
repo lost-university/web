@@ -1,4 +1,17 @@
 <template>
+  <div class="bg-gray-200 relative h-5 rounded-full">
+    <div
+      class="bg-gray-300 h-full absolute rounded-full transition-all duration-1000"
+      :style="{ width: plannedProgress }"
+    />
+    <div
+      class="h-full absolute transition-all duration-1000 rounded-full"
+      :class="computedClasses"
+      :style="{
+        width: earnedProgress
+      }"
+    />
+  </div>
   <div class="text-xs flex justify-between px-1 py-0.5">
     <span>{{ earned }} / {{ required }}</span>
     <font-awesome-icon
@@ -11,20 +24,6 @@
     >
       {{ toBePlanned }} zu planen
     </span>
-  </div>
-
-  <div class="bg-gray-200 relative h-5 w-48 rounded-full">
-    <div
-      class="bg-gray-300 h-full absolute rounded-full transition-all duration-1000"
-      :style="{ width: plannedProgress }"
-    />
-    <div
-      class="h-full absolute transition-all duration-1000 rounded-full"
-      :class="computedClasses"
-      :style="{
-        width: earnedProgress
-      }"
-    />
   </div>
 </template>
 
