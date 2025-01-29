@@ -133,7 +133,6 @@ import {
   } from '@headlessui/vue';
 import { getColorClassForCategoryId } from '../helpers/color-helper';
 import { ValidationHelper } from '../helpers/validation-helper';
-import { SemesterInfo } from '../helpers/semester-info';
 
 export type GroupedModule = {id: string, name: string, modules: Module[], isOpen: boolean, colorClass: object };
 
