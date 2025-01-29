@@ -76,7 +76,9 @@
           >
             <li
               class="pl-3 border-b border-slate-500 flex items-center"
-              :class="moduleIsDisabled(module) ? 'text-gray-400 bg-gray-300 cursor-default' : 'cursor-pointer hover:bg-gray-200'"
+              :class="moduleIsDisabled(module) ?
+                'text-gray-400 bg-gray-300 cursor-default' :
+                'cursor-pointer hover:bg-gray-200'"
             >
               <span
                 class="w-3/5 block break-words font-normal"
