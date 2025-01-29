@@ -1,27 +1,29 @@
 <template>
-  <div class="text-xs flex justify-between px-1 py-0.5">
-    <span>{{ earned }} / {{ required }}</span>
-    <span
-      v-if="planned > 0"
-      class="text-gray-400"
-    >
-      {{ planned }} noch geplant
-    </span>
-  </div>
-
-  <div class="bg-gray-200 relative h-5 w-48 rounded-full">
+  <div class="bg-gray-200 relative h-5 rounded-full">
     <div
       class="bg-gray-300 h-full absolute rounded-full transition-all duration-1000"
       :style="{ width: plannedProgress }"
     />
     <div
       class="h-full absolute transition-all duration-1000 rounded-full"
-      :class="{ 'opacity-0': earnedProgress == '0%'}"
+      :class="computedClasses"
       :style="{
-        width: earnedProgress,
-        'background-color': color,
+        width: earnedProgress
       }"
     />
+  </div>
+  <div class="text-xs flex justify-between px-1 py-0.5">
+    <span>{{ earned }} / {{ required }}</span>
+    <font-awesome-icon
+      v-if="earned >= required"
+      :icon="['fa', 'check']"
+    />
+    <span
+      v-if="earned < required"
+      class="text-gray-400"
+    >
+      {{ toBePlanned }} zu planen
+    </span>
   </div>
 </template>
 
@@ -43,10 +45,10 @@ export default defineComponent({
       type: Number,
       required: true,
     },
-    color: {
+    colorClass: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {
     earnedProgress(): string {
@@ -55,6 +57,14 @@ export default defineComponent({
     plannedProgress(): string {
       return `${Math.min(100, (100 * (this.planned + this.earned)) / this.required)}%`;
     },
+    toBePlanned(): number {
+      return Math.max(this.required - this.earned - this.planned, 0);
+    },
+    computedClasses() {
+      const classesObj = { 'opacity-0': this.earnedProgress == '0%' };
+      classesObj[this.colorClass] = true;
+      return classesObj;
+    }
   },
 });
 </script>

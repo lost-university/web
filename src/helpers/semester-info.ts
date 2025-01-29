@@ -1,3 +1,5 @@
+import type { Term } from "./types";
+
 const isSpringSemester = (date: Date) => {
   const month = date.getMonth();
   return month > 1 && month < 8;
@@ -6,6 +8,8 @@ const isSpringSemester = (date: Date) => {
 export class SemesterInfo {
   readonly isSpringSemester: boolean;
   readonly year: number;
+  static readonly maxNumberOfAllowedSemesters = 14;
+  static readonly selectableStartSemesters = [...Array(16)].map((_, i) => SemesterInfo.now().minus(14 - i));
 
   constructor(springSemester: boolean, year: number) {
     this.isSpringSemester = springSemester;
@@ -17,17 +21,22 @@ export class SemesterInfo {
     return new SemesterInfo(isSpringSemester(now), now.getFullYear());
   }
 
-  static lastSpringSemester() {
-    const currentSemester = SemesterInfo.now();
+  static nextSemester(term: Term) {
+    const now = new Date();
 
-    if (currentSemester.isSpringSemester) {
-      return currentSemester;
+    switch (term) {
+      case 'both':
+        return SemesterInfo.now().plus(1);
+      case 'FS':
+        return new SemesterInfo(true, new Date().getFullYear() + 1);
+      case 'HS':
+        return new SemesterInfo(false, isSpringSemester(now) ? now.getFullYear() : now.getFullYear() + 1);
+      default:
+        return null;
     }
-
-    return currentSemester.minus(1);
   }
 
-  static lastAutumnSemester() {
+  static latestAutumnSemester() {
     const currentSemester = SemesterInfo.now();
 
     if (!currentSemester.isSpringSemester) {
@@ -37,8 +46,8 @@ export class SemesterInfo {
     return currentSemester.minus(1);
   }
 
-  static parse(text: string) {
-    if (text.length !== 4) return null;
+  static parse(text: string | undefined) {
+    if (text?.length !== 4) return null;
 
     const prefix = text.substring(0, 2);
     const suffix = text.substring(2);
@@ -56,6 +65,19 @@ export class SemesterInfo {
       default:
         return null;
     }
+  }
+
+  static getNextPossibleSemesterForTerm(term: Term, startSemester: SemesterInfo | undefined): SemesterInfo | null {
+    if(!startSemester) {
+      return null;
+    }
+
+    const next = SemesterInfo.nextSemester(term);
+    if(!next || next.difference(startSemester) >= SemesterInfo.maxNumberOfAllowedSemesters) {
+      return null;
+    }
+
+    return next;
   }
 
   toString() {

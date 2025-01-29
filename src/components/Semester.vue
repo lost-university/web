@@ -1,8 +1,7 @@
 <template>
-  <!-- eslint-disable-next-line vue/no-mutating-props -->
   <draggable
+    v-model="modules"
     class="gap-y-1 flex flex-col items-center"
-    :list="modules"
     group="semester"
     item-key="id"
     :animation="200"
@@ -13,7 +12,7 @@
     <template #header>
       <div class="flex justify-between w-full py-0.5 px-1">
         <span class="text-xl">
-          Semester {{ title }}
+          {{ semester.number }}. Semester {{ semester.name }}
         </span>
         <button
           class="opacity-0 touch-only:opacity-25 group-hover/semester:opacity-25 hover:!opacity-75
@@ -31,42 +30,20 @@
     <template #item="{ element }">
       <ModuleComponent
         :module="element"
-        :semester-number="number"
+        :semester="semester"
         @on-delete="$emit('on-module-deleted', $event)"
       />
     </template>
     <template #footer>
-      <button
-        class="bg-gray-800 text-white w-2/3 py-1 rounded"
-        type="button"
-        :class="{ 'collapse': isAddingNewModule }"
-        @click="isAddingNewModule = true"
-      >
-        +
-      </button>
-      <div
-        :class="{ 'collapse': !isAddingNewModule }"
-      >
-        <label for="additionalModule">Modulsuche</label>
-        <input
-          id="additionalModule"
-          ref="addModuleInput"
-          class="w-full"
-          type="text"
-          list="allModules"
-          @input="handleModuleInputEvent($event as InputEvent)"
-          @keydown="handleModuleInputKeyDownEvent($event)"
-        >
-        <datalist id="allModules">
-          <option
-            v-for="selectableModule in allModules"
-            :key="selectableModule.name"
-            :value="selectableModule.name"
-          >
-            {{ selectableModule.name }}
-          </option>
-        </datalist>
-      </div>
+      <ModuleSearch
+        :show-next-possible-semester="false"
+        :button-width-class="'w-2/3'"
+        :list-width-class="'w-64'"
+        :container-bound="true"
+        :term-for-which-to-search="term"
+        :disable-invalid-modules="!isInPast"
+        @on-module-selected="(moduleId) => addModule(moduleId)"
+      />
       <div class="mt-auto p-2">
         <p>{{ getTotalEcts }} ECTS</p>
       </div>
@@ -77,83 +54,57 @@
 <script lang="ts">
 import draggable from 'vuedraggable';
 import ModuleComponent from './Module.vue';
-import { defineComponent, ref } from 'vue';
-import type { Module } from '../helpers/types';
+import { type PropType, defineComponent } from 'vue';
+import type { Module, Semester, Term } from '../helpers/types';
+import ModuleSearch from './ModuleSearch.vue';
+import { store } from '../helpers/store';
+import { SemesterInfo } from '../helpers/semester-info';
 
 export default defineComponent({
   name: 'Semester',
   components: {
     ModuleComponent,
     draggable,
+    ModuleSearch,
   },
   props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    number: {
-      type: Number,
-      required: true,
-    },
-    modules: {
-      type: Array<Module>,
-      required: true,
-    },
-    allModules: {
-      type: Array<Module>,
-      required: true,
+    semester: {
+      type: Object as PropType<Semester>,
+      required: true
     },
   },
   emits: ['on-module-deleted', 'on-add-module', 'on-remove-semester', 'on-drop-end'],
-  data() {
-    return {
-      isAddingNewModule: false,
-    };
-  },
   computed: {
     getTotalEcts(): number {
       return this.countTotalEcts();
     },
-  },
-  watch: {
     modules: {
-      deep: true,
-      immediate: false,
-      handler() {
-        this.isAddingNewModule = false;
+      get() {
+        return this.semester.modules;
       },
-    },
-    isAddingNewModule(newValue: boolean) {
-      const addModuleInput = ref<HTMLInputElement | null>(null);
-      if (newValue === false) {
-        addModuleInput.value?.setAttribute('value', '');
-      } else {
-        this.$nextTick(() => {
-          addModuleInput.value?.focus();
+      set(modules: Module[]) {
+        store.commit('setModuleIdsForSemester', {
+          semesterNumber: this.semester.number,
+          moduleIds: modules.map(m => m.id)
         });
       }
     },
+    term(): Term {
+      return SemesterInfo.parse(this.semester.name)?.isSpringSemester ? 'FS' : 'HS';
+    },
+    isInPast(): boolean {
+      return SemesterInfo.parse(this.semester.name)?.difference(SemesterInfo.now()) < 0;
+    }
   },
   methods: {
-    handleModuleInputEvent(event: InputEvent) {
-      if (event.inputType === 'insertReplacementText') {
-        this.addModule(event);
-      }
-    },
-    handleModuleInputKeyDownEvent(event: KeyboardEvent) {
-      if (event.key === "Enter") {
-        this.addModule(event);
-      }
-    },
-    addModule(event: Event) {
-      const name = (<HTMLInputElement> event.currentTarget).value;
-      this.$emit('on-add-module', name, this.number);
+    addModule(moduleId: string) {
+      this.$emit('on-add-module', moduleId, this.semester.number);
     },
     removeSemester() {
-      this.$emit('on-remove-semester', this.number);
+      this.$emit('on-remove-semester', this.semester.number);
     },
     countTotalEcts(): number {
-      return this.modules.reduce((previousValue, module) => previousValue + module.ects, 0);
+      return this.semester.modules.reduce((previousValue, module) => previousValue + module.ects, 0);
     },
     onDropEnd() {
       this.$emit('on-drop-end');

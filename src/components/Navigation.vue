@@ -25,6 +25,30 @@
         />
       </button>
     </div>
+    <div class="flex w-full sm:w-1/3 sm:order-last relative mx-2 h-9 sm:h-auto">
+      <div class="flex w-full absolute top-0 right-0 z-40">
+        <SwitchGroup>
+          <div class="flex ml-auto items-start">
+            <SwitchLabel class="mr-4">
+              Validierung:
+            </SwitchLabel>
+            <HeadlessSwitch
+              :model-value="validationEnabled"
+              :class="validationEnabled ? 'bg-teal-700' : 'bg-gray-500'"
+              class="relative inline-flex h-9 w-16 sm:h-6 sm:w-11 items-center rounded-full"
+              @update:model-value="setValidationEnabled"
+            >
+              <span
+                aria-hidden="true"
+                :class="validationEnabled ? 'translate-x-9 sm:translate-x-6' : 'translate-x-1'"
+                class="inline-block h-6 w-6 sm:h-4 sm:w-4 transform rounded-full bg-white transition"
+              />
+            </HeadlessSwitch>
+          </div>
+        </SwitchGroup>
+        <GlobalValidationInfo />
+      </div>
+    </div>
     <div
       class="w-full sm:inline-flex basis-full"
       :class="{ 'hidden': !isBurgerActive }"
@@ -62,15 +86,26 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import {SemesterInfo} from "../helpers/semester-info";
+import { SemesterInfo } from "../helpers/semester-info";
+import { store } from '../helpers/store';
+import GlobalValidationInfo from '../components/GlobalValidationInfo.vue';
+import { Switch as HeadlessSwitch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
+import { StorageHelper } from '../helpers/storage-helper';
+import { mapGetters } from 'vuex';
 
 /* eslint-disable max-len */
 export default defineComponent({
   name: 'Navigation',
+  components: {
+    GlobalValidationInfo,
+    HeadlessSwitch,
+    SwitchGroup,
+    SwitchLabel,
+  },
   data() {
     return {
       isBurgerActive: false,
-      startSemesterName: SemesterInfo.lastAutumnSemester().toString(),
+      startSemesterName: SemesterInfo.latestAutumnSemester().toString(),
       categories: [
         {
           title: 'Musterpläne Teilzeit',
@@ -97,9 +132,18 @@ export default defineComponent({
       ],
     };
   },
+  computed: {
+    ...mapGetters([
+      'validationEnabled'
+    ]),
+  },
   methods: {
     onBurgerClick() {
       this.isBurgerActive = !this.isBurgerActive;
+    },
+    setValidationEnabled(validationEnabled: boolean) {
+      store.commit('setValidationEnabled', validationEnabled);
+      StorageHelper.updateUrlFragment();
     },
   },
 });

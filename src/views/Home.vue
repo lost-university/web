@@ -11,35 +11,43 @@
       :text="'Folgende Module konnten nicht wiederhergestellt werden'"
       :show-toast="unknownModules?.length != 0"
       :list-items="unknownModules.map(u => `- ${u.id} in semester ${u.semesterNumber}`)"
-      :dismiss-button-text="'Alle aus URL entfernen'"
+      :dismiss-button-text="'OK'"
       @on-dismiss="removeUnknownModulesFromUrl"
     />
   </div>
   <div class="flex space-x-2 overflow-auto before:m-auto after:m-auto p-4">
     <SemesterComponent
-      v-for="semester in semesters"
+      v-for="semester in enrichedSemesters"
       :key="semester.number"
-      v-model:modules="semester.modules"
       class="bg-gray-200 rounded p-2 group/semester w-64 min-w-64"
-      :title="startSemester === undefined
-        ? `${semester.number}` : startSemester.plus(semester.number - 1).toString()"
-      :number="semester.number"
-      :all-modules="modules"
-      @on-module-deleted="(moduleId: string) => onModuleDeleted(semester.number, moduleId)"
+      :semester="semester"
+      @on-module-deleted="(moduleId: string) => removeModule(semester.number, moduleId)"
       @on-add-module="addModule"
       @on-remove-semester="removeSemester"
       @on-drop-end="updateUrlFragment"
     />
     <button
-      class="bg-gray-500 hover:bg-gray-800 transition-colors text-white w-8 px-2 rounded"
+      class="transition-colors text-white w-8 px-2 rounded"
+      :class="addingSemesterIsDisabled? 'bg-gray-300' : 'bg-gray-500 hover:bg-gray-800'"
       type="button"
+      :disabled="addingSemesterIsDisabled"
+      :title="addingSemesterIsDisabled ?
+        'Mehr als 14 Semester können an der OST nicht geplant werden, da sonst eine Exmatrikulation stattfindet' :
+        ''
+      "
+      tabindex="0"
       @click="addSemester"
     >
       +
     </button>
   </div>
+
+  <div class="mx-8 my-4">
+    <AccreditedModules />
+  </div>
+
   <div class="my-16 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 justify-items-center gap-y-16">
-    <article class="mx-4">
+    <article class="px-4 w-full sm:w-96">
       <span class="text-xl">
         Übersicht der ECTS Punkte
       </span>
@@ -49,8 +57,9 @@
         </label>
         <select
           id="last-semester-select"
-          v-model="startSemester"
+          :value="startSemester"
           class="ml-2 px-3 py-2 rounded"
+          @change="setStartSemester($event.target.value)"
         >
           <option
             v-for="semester in selectableStartSemesters"
@@ -60,55 +69,30 @@
             {{ semester.toString() }}
           </option>
         </select>
+        <a
+          class="ml-3 underline"
+          target="_blank"
+          :href="studienOrdnungToUrlMap[studienordnung]"
+        >Studienordnung</a>
       </div>
-      <table>
-        <tbody>
-          <tr
-            v-for="category in mappedCategories"
-            :key="category.name"
-          >
-            <td class="align-bottom pr-4 text-end">
-              {{ category.name }}
-            </td>
-            <td class="pt-3">
-              <BeautifulProgressIndicator
-                :required="category.required_ects"
-                :earned="category.earnedCredits"
-                :planned="category.plannedCredits"
-                :color="category.color"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td class="align-bottom pr-4 text-end">
-              Total
-            </td>
-            <td class="pt-3">
-              <BeautifulProgressIndicator
-                :required="180"
-                :earned="totalEarnedEcts"
-                :planned="totalPlannedEcts"
-                :color="`orange`"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <Categories
+        @on-add-module="addModule"
+      />
     </article>
-    <article class="mx-4">
+    <article class="px-4 w-full sm:w-[30rem]">
       <h2 class="text-xl">
         Vertiefungen
       </h2>
       <div class="mt-5">
         <div
-          v-for="focus in mappedFocuses"
+          v-for="focus in enrichedFocuses"
           :key="focus.name"
         >
           <FocusComponent
             :name="focus.name"
-            :all-modules="focus.modules"
-            :filtered-modules="focus.filteredModules"
+            :available-modules-for-focus="focus.availableModules"
             :number-of-missing-modules="focus.numberOfMissingModules"
+            @on-add-module-to-next-sem="addModule"
           />
         </div>
       </div>
@@ -122,305 +106,140 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import SemesterComponent from '../components/Semester.vue';
 import FocusComponent from '../components/Focus.vue';
-import BeautifulProgressIndicator from '../components/BeautifulProgressIndicator.vue';
 import ToastNotification from '../components/ToastNotification.vue';
-import {getColorForCategoryId} from '../helpers/color-helper';
-import type {Category, Focus, Module, Semester, UnknownModule} from '../helpers/types';
-import {parseQuery} from "vue-router";
-import {SemesterInfo} from "../helpers/semester-info";
-
-const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/4.3/data';
-const ROUTE_MODULES = '/modules.json';
-const ROUTE_CATEGORIES = '/categories.json';
-const ROUTE_FOCUSES = '/focuses.json';
-
-const currentSemester = SemesterInfo.now();
+import { UnknownModule} from '../helpers/types';
+import { SemesterInfo } from "../helpers/semester-info";
+import Categories from '../components/Categories.vue';
+import { StorageHelper } from '../helpers/storage-helper';
+import { store } from '../helpers/store';
+import { mapGetters } from 'vuex';
+import AccreditedModules from '../components/AccreditedModules.vue';
 
 export default defineComponent({
   name: 'Home',
-  components: { SemesterComponent, FocusComponent, BeautifulProgressIndicator, ToastNotification },
+  components: {
+    SemesterComponent,
+    FocusComponent,
+    ToastNotification,
+    Categories,
+    AccreditedModules
+  },
   data() {
     return {
-      startSemester: undefined as SemesterInfo | undefined,
-      studienordnung: '21' as '21' | '23',
-      selectableStartSemesters: [
-        currentSemester.minus(14),
-        currentSemester.minus(13),
-        currentSemester.minus(12),
-        currentSemester.minus(11),
-        currentSemester.minus(10),
-        currentSemester.minus(9),
-        currentSemester.minus(8),
-        currentSemester.minus(7),
-        currentSemester.minus(6),
-        currentSemester.minus(5),
-        currentSemester.minus(4),
-        currentSemester.minus(3),
-        currentSemester.minus(2),
-        currentSemester.minus(1),
-        currentSemester,
-        currentSemester.plus(1),
-      ] as SemesterInfo[],
-      semesters: [] as Semester[],
-      modules: [] as Module[],
-      categories: [] as Category[],
-      focuses: [] as Focus[],
+      selectableStartSemesters: SemesterInfo.selectableStartSemesters,
+      studienOrdnungToUrlMap: {
+        '21': 'https://studien.ost.ch/allStudies/10191_I.html',
+        '23': 'https://studien.ost.ch/allStudies/10246_I.html'
+      },
       errorMessages: [] as string[],
       unknownModules: [] as UnknownModule[],
     };
   },
   computed: {
-    mappedCategories() {
-      return this.categories.map((category) => ({
-        earnedCredits: this.getEarnedCredits(category),
-        plannedCredits: this.getPlannedCredits(category),
-        color: getColorForCategoryId(category.id),
-        ...category,
-      }));
-    },
-    plannedModules() {
-      return this.semesters
-        .flatMap((semester) => semester.modules);
-    },
-    mappedFocuses() {
-      const plannedModuleIds = this.plannedModules.map((module) => module.id);
-      const numberOfModulesRequiredToGetFocus = 8;
-      return this.focuses.map((focus) => ({
-        ...focus,
-        numberOfMissingModules: Math.max(0, numberOfModulesRequiredToGetFocus - focus.modules
-          .filter((module) => plannedModuleIds.includes(module.id))
-          .length),
-        filteredModules: focus.modules
-          .filter((module) => !plannedModuleIds.includes(module.id)),
-      }));
-    },
-    totalPlannedEcts() {
-      return this.getPlannedCredits();
-    },
-    totalEarnedEcts() {
-      return this.getEarnedCredits();
+    ...mapGetters([
+      'modules',
+      'enrichedFocuses',
+      'enrichedSemesters',
+      'startSemester',
+      'studienordnung',
+    ]),
+    addingSemesterIsDisabled() {
+      return this.enrichedSemesters.length >= SemesterInfo.maxNumberOfAllowedSemesters;
     },
   },
   watch: {
     $route: {
       handler() {
-        this.semesters = this.getPlanDataFromUrl();
+        setTimeout(() => {
+          this.getPlanDataFromUrl();
+        }, 0);
       },
-    },
-    startSemester: {
-      handler (newStartSemester) {
-        this.updateUrlFragment()
-
-        if (newStartSemester === undefined) {
-          return
-        }
-
-        if (newStartSemester.year > 2023 || (newStartSemester.year === 2023 && !newStartSemester.isSpringSemester)) {
-          this.studienordnung = '23';
-        } else {
-          this.studienordnung = '21';
-        }
-      }
-    },
-    studienordnung: {
-      async handler() {
-        this.categories = await this.getCategories();
-        this.focuses = await this.getFocuses();
-      },
-      immediate: true,
     },
   },
   async mounted() {
-    this.modules = await this.getModules();
-    this.semesters = this.getPlanDataFromUrl();
+    await store.dispatch('loadModules');
+    this.getPlanDataFromUrl();
   },
   methods: {
-    sumCredits: (previousTotal: number, module: Module) => previousTotal + module.ects,
-    getColorForCategoryId(categoryId: string): string {
-      return getColorForCategoryId(categoryId);
+    setStartSemester(startSemester: string) {
+      const newStartSemester = SemesterInfo.parse(startSemester);
+      store.dispatch('setStartSemester', newStartSemester).then(() => this.updateUrlFragment());
     },
-    async getModules(): Promise<Module[]> {
-      const response = await fetch(`${BASE_URL}${ROUTE_MODULES}`);
-      return response.json();
-    },
-    async getCategories(): Promise<Category[]> {
-      const response = await fetch(`${BASE_URL}${this.studienordnung}${ROUTE_CATEGORIES}`);
-      return (await response.json()).map((c: Category) => ({ ...c, required_ects: Number(c.required_ects) }));
-    },
-    async getFocuses(): Promise<Focus[]> {
-      const response = await fetch(`${BASE_URL}${this.studienordnung}${ROUTE_FOCUSES}`);
-      return response.ok ? response.json() : [];
-    },
-    getPlanDataFromUrl(): Semester[] {
-      let path = window.location.hash;
-      const planIndicator = '#/plan/';
-      const moduleSeparator = '_';
-      const semesterSeparator = '-';
-      function isNullOrWhitespace(input: string) {
-        return !input || !input.trim();
-      }
-
-      if (!path.startsWith(planIndicator)) {
-        const cachedPlan = localStorage.getItem('plan');
-        if (cachedPlan) {
-          window.location.hash = cachedPlan;
-          path = cachedPlan;
-        }
-      }
-
-      if (path.startsWith(planIndicator)) {
-        // This ensures backwards compatability. Removing it after everyone who started before 2022
-        // has finished their studies, so about 2026, is guaranteed to be fine.
-        const newPath = path
-          .replace('BuPro', 'WI2')
-          .replace('RheKI', 'RheKoI')
-          .replace('SDW', 'IBN')
-          .replace('FunProg', 'FP')
-          .replace('BAI14', 'BAI21')
-          .replace('SE1', 'SEP1')
-          .replace('SE2', 'SEP2')
-          .replace('NISec', 'NIoSec')
-          .replace('PFSec', 'PlFSec')
-          .replace('WIoT', 'WsoT');
-
-        const [ hash, query ] = newPath.split('?');
-
-        let newStartSemester = undefined;
-
-        if (query != undefined) {
-          const queryParameters = parseQuery(query);
-          const startSemesterQueryParameter = queryParameters["startSemester"];
-
-          if (typeof startSemesterQueryParameter === 'string') {
-            newStartSemester = SemesterInfo.parse(startSemesterQueryParameter) ?? undefined;
-          }
-        }
-
-        this.startSemester = newStartSemester;
-
-        const planData = hash
-          .slice(planIndicator.length)
-          .split(semesterSeparator)
-          .map((semesterPart, index) => ({
-            number: index + 1,
-            modules: semesterPart
-              .split(moduleSeparator)
-              .filter((id) => !(isNullOrWhitespace(id)))
-              .map((moduleId) => {
-                const newModule = this.modules.find((module) => module.id === moduleId);
-                if (!newModule) {
-                  this.showUnknownModulesError(index + 1, moduleId);
-                }
-                return newModule!;
-              })
-              .filter((module) => module),
-          }));
-
-        if (newPath !== path) {
-          window.location.hash = newPath;
-        }
-
-        this.savePlanInLocalStorage(newPath);
-
-        return planData;
-      }
-
-      return [];
+    getPlanDataFromUrl() {
+      const [
+        semesters,
+        accreditedModules,
+        startSemester,
+        validationEnabled
+      ] = StorageHelper.getDataFromUrlHash(
+        window.location.hash,
+        (semesterNumber: number, moduleId: string) => this.showUnknownModulesError(semesterNumber, moduleId)
+      );
+      store.commit('setValidationEnabled', validationEnabled);
+      store.commit('setSemesters', semesters);
+      store.commit('setAccreditedModules', accreditedModules);
+      store.dispatch('setStartSemester', startSemester).then(() => this.updateUrlFragment());
     },
     updateUrlFragment() {
-      let encodedPlan = this.semesters
-        .map((semester) => semester.modules.map((module) => module.id).join('_'))
-        .join('-');
-
-      if (this.startSemester !== undefined) {
-        encodedPlan += `?startSemester=${this.startSemester.toString()}`
-      }
-
-      window.location.hash = `/plan/${encodedPlan}`;
-
-      if (encodedPlan) {
-        this.savePlanInLocalStorage(window.location.hash);
-      }
+      StorageHelper.updateUrlFragment();
     },
-    savePlanInLocalStorage(path: string) {
-      localStorage.setItem('plan', path);
-    },
-    getPlannedSemesterForModule(moduleName: string): number | undefined {
-      return this.semesters.find(
-        (semester) => semester.modules.some((module) => module.name === moduleName),
+    getPlannedSemesterForModule(moduleId: string): number | undefined {
+      return this.enrichedSemesters.find(
+        (semester) => semester.modules.some((module) => module.id === moduleId),
       )?.number;
     },
-    getEarnedCredits(category?: Category): number {
-      if (this.startSemester === undefined) {
-        return 0;
+    addModule(moduleId: string, semesterNumber?: number) {
+      const module = this.modules.find((item) => item.id === moduleId);
+
+      if (module === undefined) {
+        this.showErrorMsg(`Modul '${moduleId}' existiert nicht`);
+        return;
       }
 
-      const indexOfLastCompletedSemester = currentSemester.difference(this.startSemester);
-
-      if (indexOfLastCompletedSemester < 0) {
-        return 0;
-      }
-
-      return this.semesters
-        .slice(0, indexOfLastCompletedSemester)
-        .flatMap((semester) => semester.modules)
-        .filter((module) => !category || category.modules.some((m) => m.id === module.id))
-        .reduce(this.sumCredits, 0);
-    },
-    getPlannedCredits(category?: Category): number {
-      if (this.startSemester === undefined) {
-        return 0;
-      }
-
-      let semestersToConsider = this.semesters;
-      const indexOfLastCompletedSemester = currentSemester.difference(this.startSemester);
-
-      if (indexOfLastCompletedSemester >= 0) {
-        semestersToConsider = semestersToConsider.slice(indexOfLastCompletedSemester)
-      }
-
-      return semestersToConsider
-        .flatMap((semester) => semester.modules)
-        .filter((module) => !category || category.modules.some((m) => m.id === module.id))
-        .reduce(this.sumCredits, 0);
-    },
-    addModule(moduleName: string, semesterNumber: number) {
-      const blockingSemesterNumber = this.getPlannedSemesterForModule(moduleName);
+      const blockingSemesterNumber = this.getPlannedSemesterForModule(moduleId);
       if (blockingSemesterNumber) {
-        const text = `Modul ${moduleName} ist bereits im Semester ${blockingSemesterNumber}`;
+        const text = `Modul ${module.name} ist bereits im Semester ${blockingSemesterNumber}`;
         console.warn(text);
         this.showErrorMsg(text);
         return;
       }
 
-      const module = this.modules.find((item) => item.name === moduleName);
-
-      if (module === undefined) {
-        this.showErrorMsg(`Modul '${moduleName}' existiert nicht`);
-        return;
+      if(!semesterNumber) {
+        if(!module.nextPossibleSemester) {
+          this.showErrorMsg(`Kein nächstmögliches Semester für Modul ${module.name} gefunden`);
+          return;
+        }
+        let nextSemester = this.enrichedSemesters.find(s => s.name === module.nextPossibleSemester.toString())
+        while(!nextSemester && !this.addingSemesterIsDisabled) {
+          this.addSemester();
+          nextSemester = this.enrichedSemesters.find(s => s.name === module.nextPossibleSemester.toString());
+        }
+        semesterNumber = nextSemester.number;
       }
 
-      this.semesters[semesterNumber - 1].modules.push(module);
+      store.commit('addModuleToSemester', {semesterNumber, moduleId: moduleId});
       this.updateUrlFragment();
     },
     removeModule(semesterNumber: number, moduleId: string) {
-      this.semesters[semesterNumber - 1].modules = this.semesters[semesterNumber - 1].modules
-        .filter((module) => module.id !== moduleId);
+      store.commit('removeModuleFromSemester', { semesterNumber, moduleId });
       this.unknownModules = this.unknownModules.filter((f) => f.id !== moduleId);
-
       this.updateUrlFragment();
     },
     addSemester() {
-      this.semesters.push({
-        number: this.semesters.length + 1,
-        modules: [],
-      });
+      if(this.addingSemesterIsDisabled) {
+        this.showErrorMsg(
+          `Es können nicht mehr als ${SemesterInfo.maxNumberOfAllowedSemesters} Semester geplant werden!`
+        );
+        return;
+      }
+      store.commit('addSemester')
+      this.updateUrlFragment();
     },
     removeSemester(semesterNumber: number) {
-      this.semesters = this.semesters.filter((semester) => semester.number !== semesterNumber);
+      store.commit('removeSemester', semesterNumber);
       this.unknownModules = this.unknownModules.filter((f) => f.semesterNumber !== semesterNumber);
       this.updateUrlFragment();
     },
@@ -438,9 +257,6 @@ export default defineComponent({
     removeUnknownModulesFromUrl() {
       this.unknownModules = [];
       this.updateUrlFragment();
-    },
-    onModuleDeleted(semesterNumber: number, moduleId: string) {
-      this.removeModule(semesterNumber, moduleId);
     },
   },
 });
