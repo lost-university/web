@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="numberOfValidationProblems > 0"
-    class="w-full ml-2 text-sm bg-red-200 rounded"
+    class="w-full ml-2 text-sm bg-red-200 rounded-sm"
   >
     <Disclosure v-slot="{ open }">
       <DisclosureButton
@@ -24,7 +24,7 @@
               {{ problem.text }}
             </div>
             <button
-              class="bg-gray-800 text-white text-xs ml-2 mb-2 mt-1  px-2 py-1 rounded"
+              class="bg-gray-800 text-white text-xs ml-2 mb-2 mt-1  px-2 py-1 rounded-sm"
               type="button"
               @click="removeModule(problem.moduleId, problem.semesterNumbersToRemoveFrom)"
             >
@@ -42,7 +42,7 @@
               {{ problem.text }}
             </div>
             <button
-              class="bg-gray-800 text-white text-xs ml-2 mb-2 mt-1 px-2 py-1 rounded"
+              class="bg-gray-800 text-white text-xs ml-2 mb-2 mt-1 px-2 py-1 rounded-sm"
               type="button"
               @click="removeModule(problem.moduleId)"
             >
@@ -50,7 +50,7 @@
             </button>
             <button
               v-if="problem.successorModuleId"
-              class="bg-gray-800 text-white text-xs ml-2 mb-2 mt-1  px-2 py-1 rounded"
+              class="bg-gray-800 text-white text-xs ml-2 mb-2 mt-1  px-2 py-1 rounded-sm"
               type="button"
               @click="replaceModuleWithSuccessor(problem.moduleId, problem.successorModuleId)"
             >
@@ -68,14 +68,14 @@
               {{ problem.text }}
             </div>
             <button
-              class="bg-gray-800 text-white text-xs ml-2 mb-2 mt-1  px-2 py-1 rounded"
+              class="bg-gray-800 text-white text-xs ml-2 mb-2 mt-1  px-2 py-1 rounded-sm"
               type="button"
               @click="removeModule(problem.moduleId)"
             >
               entfernen
             </button>
             <button
-              class="bg-gray-800 text-white text-xs ml-2 mb-2 mt-1  px-2 py-1 rounded"
+              class="bg-gray-800 text-white text-xs ml-2 mb-2 mt-1  px-2 py-1 rounded-sm"
               type="button"
               @click="moveModuleToSemester(problem.moduleId, problem.targetSemesterNumber)"
             >

@@ -7,7 +7,7 @@
   >
     <div
       v-if="isActive"
-      class="rounded p-4 mb-2 bg-red-500 text-white"
+      class="rounded-sm p-4 mb-2 bg-red-500 text-white"
     >
       <span>{{ text }}</span>
       <ul v-if="listItems?.length">
@@ -20,7 +20,7 @@
       </ul>
       <button
         v-if="dismissButtonText"
-        class="block rounded bg-slate-200/50 py-1 px-2 mt-2 hover:bg-slate-300/50 transition-colors duration-75"
+        class="block rounded-sm bg-slate-200/50 py-1 px-2 mt-2 hover:bg-slate-300/50 transition-colors duration-75"
         type="button"
         @click="$emit('on-dismiss')"
       >

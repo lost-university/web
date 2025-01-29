@@ -1,6 +1,6 @@
 <template>
   <button
-    class="h-6 w-16 bg-gray-800 text-white text-sm rounded"
+    class="h-6 w-16 bg-gray-800 text-white text-sm rounded-sm"
     type="button"
     @click="openModal"
   >
@@ -94,7 +94,7 @@
               <input
                 id="external-name"
                 v-model="externalName"
-                class="border rounded"
+                class="border rounded-sm"
                 required
                 maxlength="30"
               >
@@ -104,7 +104,7 @@
               <input
                 id="external-ects"
                 v-model="externalEcts"
-                class="border rounded"
+                class="border rounded-sm"
                 type="number"
                 required
                 min="1"
@@ -156,14 +156,14 @@
 
           <div class="flex justify-end">
             <button
-              class="bg-gray-800 text-white py-1 px-2 ml-auto rounded"
+              class="bg-gray-800 text-white py-1 px-2 ml-auto rounded-sm"
               type="button"
               @click="cancelChanges"
             >
               abbrechen
             </button>
             <button
-              class="bg-gray-800 text-white py-1 px-2 ml-2 rounded disabled:bg-gray-500"
+              class="bg-gray-800 text-white py-1 px-2 ml-2 rounded-sm disabled:bg-gray-500"
               type="button"
               :disabled="!canSaveChanges"
               @click="saveChanges"

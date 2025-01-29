@@ -1,7 +1,7 @@
 <template>
   <div
     :key="module.name"
-    class="rounded group/module relative p-2 px-8 flex flex-col items-center text-center text-white w-full"
+    class="rounded-sm group/module relative p-2 px-8 flex flex-col items-center text-center text-white w-full"
     :class="computedClasses"
   >
     <div class="absolute left-2">

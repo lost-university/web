@@ -19,7 +19,7 @@
     <SemesterComponent
       v-for="semester in enrichedSemesters"
       :key="semester.number"
-      class="bg-gray-200 rounded p-2 group/semester w-64 min-w-64"
+      class="bg-gray-200 rounded-sm p-2 group/semester w-64 min-w-64"
       :semester="semester"
       @on-module-deleted="(moduleId: string) => removeModule(semester.number, moduleId)"
       @on-add-module="addModule"
@@ -27,7 +27,7 @@
       @on-drop-end="updateUrlFragment"
     />
     <button
-      class="transition-colors text-white w-8 px-2 rounded"
+      class="transition-colors text-white w-8 px-2 rounded-sm"
       :class="addingSemesterIsDisabled? 'bg-gray-300' : 'bg-gray-500 hover:bg-gray-800'"
       type="button"
       :disabled="addingSemesterIsDisabled"
@@ -58,7 +58,7 @@
         <select
           id="last-semester-select"
           :value="startSemester"
-          class="ml-2 px-3 py-2 rounded bg-gray-200"
+          class="ml-2 px-3 py-2 rounded-sm bg-gray-200"
           @change="setStartSemester($event.target.value)"
         >
           <option
