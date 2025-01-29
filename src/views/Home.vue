@@ -47,7 +47,7 @@
   </div>
 
   <div class="my-16 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 justify-items-center gap-y-16">
-    <article class="px-4 w-full sm:w-[30rem]">
+    <article class="px-4 w-full sm:w-96">
       <span class="text-xl">
         Übersicht der ECTS Punkte
       </span>
