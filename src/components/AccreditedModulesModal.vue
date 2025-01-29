@@ -69,6 +69,7 @@
                 :show-chevron="true"
                 :show-next-possible-semester="false"
                 :text-for-button="'Modul auswählen'"
+                :disable-invalid-modules="false"
                 @on-module-selected="moduleId => onModuleSelected(moduleId)"
               />
             </div>
