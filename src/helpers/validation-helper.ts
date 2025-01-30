@@ -135,7 +135,7 @@ export class ValidationHelper {
   }
 
   static isModuleInWrongTerm(module: Module, term: Term): boolean {
-    return term === 'both' ? false : module.term === term;
+    return term === 'both' ? false : module.term !== term;
   }
 
   private static isModuleInWrongTermForSemester(module: Module, semesterInfo: SemesterInfo): boolean {
