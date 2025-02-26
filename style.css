@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant touch-only (@media (hover: none));
+
 @media (hover: none) {
     [title] {
         position: relative;
