@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+@custom-variant touch-only (@media (hover: none));
+
+/* This media query applies styles only to devices that do not support hover, 
+   such as touchscreens. It ensures that elements with a title attribute 
+   display a tooltip when focused. */
 @media (hover: none) {
     [title] {
         position: relative;
