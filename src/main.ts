@@ -28,4 +28,8 @@ library.add(faInfoCircle as IconDefinition);
 library.add(faCircleExclamation as IconDefinition);
 library.add(faCircleQuestion as IconDefinition);
 
-createApp(App).use(router).use(store).component('font-awesome-icon', FontAwesomeIcon).mount('#app');
+createApp(App)
+  .use(router)
+  .use(store)
+  .component('font-awesome-icon', FontAwesomeIcon)
+  .mount('#app');

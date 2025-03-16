@@ -1,6 +1,7 @@
 <template>
   <div
-    :key="module.name"
+    ref="itemRef"
+    :key="module.name + id"
     class="rounded-sm group/module relative p-2 px-8 flex flex-col items-center text-center text-white w-full"
     :class="computedClasses"
   >
@@ -42,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { type PropType, defineComponent } from 'vue';
+import {type PropType, defineComponent} from 'vue';
 import { getColorClassForPrioritizedCategory } from '../helpers/color-helper';
 import type { Module } from '../helpers/types';
 
@@ -52,7 +53,11 @@ export default defineComponent({
     module: {
       type: Object as PropType<Module>,
       required: true,
-    }
+    },
+    id: {
+      type: Number,
+      required: true,
+    },
   },
   emits: ['on-delete'],
   computed: {
@@ -66,6 +71,9 @@ export default defineComponent({
   },
   methods: {
     getColorClassForPrioritizedCategory,
+    getElement() {
+      return this.$refs.itemRef;
+    }
   }
 });
 </script>
