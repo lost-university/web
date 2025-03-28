@@ -10,6 +10,7 @@
     "lint-fix": "eslint --ext .ts,.vue src --fix"
   },
   "dependencies": {
+    "@clerk/vue": "^1.4.4",
     "@fortawesome/fontawesome-free": "^6.5.1",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
