@@ -153,7 +153,7 @@ export class ValidationHelper {
   ): ModuleValidationInfo | null {
     const plannedModules = allSemesters.reduce(
       (modules, sem) =>
-        [...modules, ...sem.modules.flatMap(m =>({semester: sem, module: m}))],
+        [...modules, ...sem.modules.flatMap(m =>({ semester: sem, module: m }))],
       [] as {module: Module, semester: Semester}[]
     );
     const predecessorOrSuccessorOccurences = plannedModules.filter(m =>
@@ -215,7 +215,7 @@ export class ValidationHelper {
     const missing = [];
     const later = [];
     for (const recommendedModuleId of module.recommendedModuleIds) {
-      const {position, moduleIdForPosition} = this.getPositionOfModuleInPlan(
+      const { position, moduleIdForPosition } = this.getPositionOfModuleInPlan(
         recommendedModuleId,
         allSemesters,
         semesterNumberForModule,
@@ -250,14 +250,14 @@ export class ValidationHelper {
     const semesterNumberForModule = this.getSemesterNumberForModuleId(moduleId, allSemesters);
     if(semesterNumberForModule) {
       if (semesterNumberForModule <= referenceSemesterNumber) {
-        return { position: 'sameOrEarlier', moduleIdForPosition: moduleId};
+        return { position: 'sameOrEarlier', moduleIdForPosition: moduleId };
       }
       if (semesterNumberForModule > referenceSemesterNumber) {
         return { position: 'later', moduleIdForPosition: moduleId };
       }
     }
     if(allAccreditedModules.some(m => m.moduleId === moduleId)) {
-      return { position: 'sameOrEarlier', moduleIdForPosition: moduleId};
+      return { position: 'sameOrEarlier', moduleIdForPosition: moduleId };
     }
 
     const successor = store.getters.modules.find(m => m.predecessorModuleId === moduleId);

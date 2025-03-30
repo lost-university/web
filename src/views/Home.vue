@@ -110,7 +110,7 @@ import { defineComponent } from 'vue';
 import SemesterComponent from '../components/Semester.vue';
 import FocusComponent from '../components/Focus.vue';
 import ToastNotification from '../components/ToastNotification.vue';
-import { UnknownModule} from '../helpers/types';
+import { UnknownModule } from '../helpers/types';
 import { SemesterInfo } from "../helpers/semester-info";
 import Categories from '../components/Categories.vue';
 import { StorageHelper } from '../helpers/storage-helper';
@@ -220,7 +220,7 @@ export default defineComponent({
         semesterNumber = nextSemester.number;
       }
 
-      store.commit('addModuleToSemester', {semesterNumber, moduleId: moduleId});
+      store.commit('addModuleToSemester', { semesterNumber, moduleId: moduleId });
       this.updateUrlFragment();
     },
     removeModule(semesterNumber: number, moduleId: string) {
