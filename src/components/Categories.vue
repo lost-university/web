@@ -46,7 +46,7 @@ import { mapGetters } from 'vuex'
 
 export default defineComponent({
   name: 'Categories',
-  components: {BeautifulProgressIndicator, ModuleSearch},
+  components: { BeautifulProgressIndicator, ModuleSearch },
   emits: ['on-add-module'],
   computed: {
     ...mapGetters(['enrichedCategories', 'totalPlannedEcts', 'totalEarnedEcts']),
