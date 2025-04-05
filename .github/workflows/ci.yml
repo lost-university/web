@@ -98,8 +98,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push Docker image
+        env:
+          REPOSITORY: '${{ github.repository }}'
         run: |
-          docker push ghcr.io/${{ github.repository }}/web --all-tags
+          docker push ghcr.io/${REPOSITORY,,}/web --all-tags
 
   cleanup:
     runs-on: ubuntu-latest
