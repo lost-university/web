@@ -14,7 +14,7 @@
       </router-link>
 
       <div
-        class="w-full sm:flex hidden"
+        class="grow sm:flex hidden"
       >
         <template
           v-for="category in categories"
