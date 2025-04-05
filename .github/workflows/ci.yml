@@ -59,7 +59,7 @@ jobs:
 
       - name: Load Docker image from artifact
         run: |
-          docker load < ./web.tar
+          docker load --input ./web.tar
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
@@ -86,7 +86,7 @@ jobs:
           name: web-image
       - name: Load Docker image from artifact
         run: |
-          docker load < ./web.tar
+          docker load --input ./web.tar
       - name: Login to GHCR
         uses: docker/login-action@v3
         with:
