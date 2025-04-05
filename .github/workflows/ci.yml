@@ -62,7 +62,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          start: docker run -d -p 5173:80 web
+          start: docker run -d -p 5173:80 web:${{ github.sha }}
           browser: ${{ matrix.browser }}
           wait-on: 'http://localhost:5173'
 
