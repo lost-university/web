@@ -43,8 +43,6 @@ jobs:
   test:
     needs: build
     runs-on: ubuntu-latest
-    container:
-      image: cypress/browsers:22.12.0
     strategy:
       matrix:
         browser: [ chrome, firefox, edge ]
@@ -65,6 +63,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           start: docker run -d -p 5173:80 web
+          browser: ${{ matrix.browser }}
           wait-on: 'http://localhost:5173'
 
       - name: Upload Cypress Screenshots
