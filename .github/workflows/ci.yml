@@ -24,7 +24,7 @@ jobs:
             type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-            type=sha
+            type=sha,format=long
       - name: Setup buildx
         uses: docker/setup-buildx-action@v3
 
@@ -62,7 +62,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          start: docker run -d -p 5173:80 web:${{ github.sha }}
+          start: docker run -d -p 5173:80 web:sha-${{ github.sha }}
           browser: ${{ matrix.browser }}
           wait-on: 'http://localhost:5173'
 
