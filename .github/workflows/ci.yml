@@ -10,8 +10,22 @@ on:
       - '*'
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run ESLint
+        run: npm run lint
   build:
     runs-on: ubuntu-latest
+    needs: lint
     outputs:
       tags: ${{ steps.meta.outputs.tags }}
     steps:
@@ -31,7 +45,6 @@ jobs:
             type=sha,format=long
       - name: Setup buildx
         uses: docker/setup-buildx-action@v3
-
       - name: Build Docker image
         uses: docker/build-push-action@v6
         with:
@@ -39,12 +52,6 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-#          outputs: type=docker,dest=${{ runner.temp }}/web.tar
-#      - name: Temporary store image
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: web-image
-#          path: ${{ runner.temp }}/web.tar
 
   test:
     needs: build
@@ -55,15 +62,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-#      - name: Download Docker image artifact
-#        uses: actions/download-artifact@v4
-#        with:
-#          name: web-image
-
-#      - name: Load Docker image from artifact
-#        run: |
-#          docker load --input web.tar
       - name: Setup buildx
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image
@@ -91,37 +89,26 @@ jobs:
           path: cypress/screenshots/
           retention-days: 7
 
-#  push:
-#    name: Push
-#    runs-on: ubuntu-latest
-#    needs: test
-#    if: success()
-#    steps:
-#      - name: Download Docker image artifact
-#        uses: actions/download-artifact@v4
-#        with:
-#          name: web-image
-#      - name: Load Docker image from artifact
-#        run: |
-#          docker load --input web.tar
-#      - name: Login to GHCR
-#        uses: docker/login-action@v3
-#        with:
-#          registry: ghcr.io
-#          username: ${{ github.actor }}
-#          password: ${{ secrets.GITHUB_TOKEN }}
-#      - name: Push Docker image
-#        env:
-#          REPOSITORY: '${{ github.repository }}'
-#        run: |
-#          docker push ghcr.io/${REPOSITORY,,}/web --all-tags
-
-#  cleanup:
-#    runs-on: ubuntu-latest
-#    needs: push
-#    if: always()
-#    steps:
-#      - name: Remove temporary stored Docker image
-#        uses: geekyeggo/delete-artifact@v5
-#        with:
-#          name: web-image
+  push:
+    name: Push
+    runs-on: ubuntu-latest
+    needs: test
+    if: success()
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and Push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ${{ needs.build.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
