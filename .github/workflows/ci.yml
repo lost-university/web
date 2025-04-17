@@ -71,13 +71,13 @@ jobs:
         with:
           push: false
           tags: ${{ needs.build.outputs.tags }}
+          load: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Run Docker container
         env:
           REPOSITORY: '${{ github.repository }}'
         run: |
-          docker buildx build --load -t ghcr.io/${REPOSITORY,,}/web:sha-${{ github.sha }} .
           docker run -d -p 5173:80 ghcr.io/${REPOSITORY,,}/web:sha-${{ github.sha }}
       - name: Cypress run
         uses: cypress-io/github-action@v6
