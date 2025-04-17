@@ -73,19 +73,19 @@ jobs:
           tags: ${{ needs.build.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
+      - name: Copy Docker image to local
+        run: |
+          docker buildx build --load -t ghcr.io/${REPOSITORY,,}/web:sha-${{ github.sha }} .
       - name: Run Docker container
         env:
           REPOSITORY: '${{ github.repository }}'
         run: |
           docker run -d -p 5173:80 ghcr.io/${REPOSITORY,,}/web:sha-${{ github.sha }}
-
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
           browser: ${{ matrix.browser }}
           wait-on: 'http://localhost:5173'
-
       - name: Upload Cypress Screenshots
         uses: actions/upload-artifact@v4
         with:
