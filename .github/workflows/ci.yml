@@ -37,6 +37,8 @@ jobs:
         with:
           push: false
           tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 #          outputs: type=docker,dest=${{ runner.temp }}/web.tar
 #      - name: Temporary store image
 #        uses: actions/upload-artifact@v4
@@ -68,6 +70,8 @@ jobs:
         with:
           push: false
           tags: ${{ needs.build.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Run Docker container
         env:
