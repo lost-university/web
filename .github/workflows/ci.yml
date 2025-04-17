@@ -92,7 +92,7 @@ jobs:
   push:
     name: Push
     runs-on: ubuntu-latest
-    needs: test
+    needs: [build, test]
     if: success()
     steps:
       - name: Checkout repository
