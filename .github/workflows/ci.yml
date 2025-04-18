@@ -82,6 +82,7 @@ jobs:
         with:
           browser: ${{ matrix.browser }}
           wait-on: 'http://localhost:5173'
+          component: true
       - name: Upload Cypress Screenshots
         uses: actions/upload-artifact@v4
         with:

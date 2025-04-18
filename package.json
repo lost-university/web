@@ -9,6 +9,7 @@
     "lint": "eslint --ext .ts,.vue src",
     "lint-fix": "eslint --ext .ts,.vue src --fix",
     "test": "cypress run --config video=false",
+    "test:component": "cypress run --config video=false --component",
     "test:chrome": "cypress run --config video=false --browser chrome",
     "test:firefox": "cypress run --config video=false --browser firefox",
     "test:edge": "cypress run --config video=false --browser edge"

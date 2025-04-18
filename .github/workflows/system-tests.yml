@@ -1,0 +1,45 @@
+name: System tests
+on:
+  workflow_dispatch:
+    inputs:
+      frontendVersion:
+        description: 'Frontend version'
+        required: true
+      backendVersion:
+        description: 'Backend version'
+        required: true
+
+jobs:
+  system-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [ chrome, firefox, edge ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set env
+        run: |
+          echo "FRONTEND_VERSION=${{ github.event.inputs.frontendVersion }}" >> $GITHUB_ENV
+          echo "BACKEND_VERSION=${{ github.event.inputs.backendVersion }}" >> $GITHUB_ENV
+          echo "POSTGRES_HOST=postgres-db" >> $GITHUB_ENV
+          echo "POSTGRES_PORT=5432" >> $GITHUB_ENV
+          echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_DB=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
+          echo "CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}" >> $GITHUB_ENV
+          echo "VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}" >> $GITHUB_ENV
+      - name: Start Docker containers
+        run: |
+          docker-compose -f cypress/docker-compose.yml up -d
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          browser: ${{ matrix.browser }}
+          wait-on: 'http://localhost:5173'
+      - name: Upload Cypress Screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots-${{ matrix.browser }}
+          path: cypress/screenshots/
+          retention-days: 90
