@@ -31,7 +31,7 @@ jobs:
           echo "VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}" >> $GITHUB_ENV
       - name: Start Docker containers
         run: |
-          docker-compose -f cypress/docker-compose.yml up -d
+          docker compose -f cypress/docker-compose.yml up -d
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
