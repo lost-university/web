@@ -32,7 +32,7 @@
               />
             </div>
             <div
-              class="sm:hidden peer-hover:flex hover:flex flex rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-10"
+              class="sm:hidden peer-hover:flex hover:flex flex rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-50"
             >
               <a
                 v-for="plan in category.plans"
@@ -49,12 +49,15 @@
 
       <div class="flex justify-end mr-2">
         <SignedOut>
-          <SignInButton />
+          <div data-cy="Navigation-SignInButton">
+            <SignInButton />
+          </div>
         </SignedOut>
         <SignedIn>
-          <UserButton />
+          <div data-cy="Navigation-UserButton">
+            <UserButton />
+          </div>
         </SignedIn>
-
         <button
           class="sm:hidden p-4 flex justify-end"
           tabindex="0"
