@@ -101,7 +101,7 @@ import { StorageHelper } from '../helpers/storage-helper';
 
 export default defineComponent({
   name: 'GlobalValidationInfo',
-  components: {Disclosure, DisclosureButton, DisclosurePanel},
+  components: { Disclosure, DisclosureButton, DisclosurePanel },
   computed: {
     numberOfValidationProblems(): number {
       return store.getters.numberOfHardValidationProblems;
@@ -120,24 +120,24 @@ export default defineComponent({
     removeModule(moduleId: string, semesterNumbers?: number[]) {
       if(!semesterNumbers) {
         const semesterNumber = store.getters.semesters.find(sem => sem.moduleIds.includes(moduleId))?.number;
-        store.commit('removeModuleFromSemester', {semesterNumber, moduleId});
+        store.commit('removeModuleFromSemester', { semesterNumber, moduleId });
       } else {
         for (const semesterNumber of semesterNumbers) {
-          store.commit('removeModuleFromSemester', {semesterNumber, moduleId});
+          store.commit('removeModuleFromSemester', { semesterNumber, moduleId });
         }
       }
       this.updateUrlFragment();
     },
     moveModuleToSemester(moduleId: string, semesterNumber: number) {
       const currentSemesterNumber = store.getters.semesters.find(sem => sem.moduleIds.includes(moduleId))?.number;
-      store.commit('removeModuleFromSemester', {semesterNumber: currentSemesterNumber, moduleId});
-      store.commit('addModuleToSemester', {semesterNumber, moduleId});
+      store.commit('removeModuleFromSemester', { semesterNumber: currentSemesterNumber, moduleId });
+      store.commit('addModuleToSemester', { semesterNumber, moduleId });
       this.updateUrlFragment();
     },
     replaceModuleWithSuccessor(moduleId: string, successorModuleId: string) {
       const semesterNumber = store.getters.semesters.find(sem => sem.moduleIds.includes(moduleId))?.number;
-      store.commit('removeModuleFromSemester', {semesterNumber, moduleId});
-      store.commit('addModuleToSemester', {semesterNumber, moduleId: successorModuleId});
+      store.commit('removeModuleFromSemester', { semesterNumber, moduleId });
+      store.commit('addModuleToSemester', { semesterNumber, moduleId: successorModuleId });
       this.updateUrlFragment();
     },
     updateUrlFragment() {
