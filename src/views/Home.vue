@@ -147,8 +147,6 @@ import { mapGetters } from 'vuex';
 import AccreditedModules from '../components/AccreditedModules.vue';
 import GlobalValidationInfo from "../components/GlobalValidationInfo.vue";
 
-import { useAuth } from "@clerk/vue";
-
 export default defineComponent({
   name: 'Home',
   components: {
@@ -161,29 +159,6 @@ export default defineComponent({
     HeadlessSwitch,
     SwitchGroup,
     SwitchLabel,
-  },
-  setup() {
-    const { getToken } = useAuth();
-    const fetchProtectedData = async () => {
-      const token = await getToken.value()
-
-      fetch('http://localhost:8000/plans', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    }
-
-    return { fetchProtectedData };
   },
   data() {
     return {
@@ -221,8 +196,6 @@ export default defineComponent({
   async mounted() {
     await store.dispatch('loadModules');
     this.getPlanDataFromUrl();
-
-    this.fetchProtectedData().then()
   },
   methods: {
     setStartSemester(startSemester: string) {
