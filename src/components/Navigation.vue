@@ -47,6 +47,12 @@
           </div>
         </SwitchGroup>
         <GlobalValidationInfo />
+        <router-link
+          :to="{ path: '/graph/', hash: currentHash }"
+          class="ml-4 px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Graph
+        </router-link>
       </div>
     </div>
     <div
@@ -138,6 +144,9 @@ export default defineComponent({
     ...mapGetters([
       'validationEnabled'
     ]),
+    currentHash(): string {
+      return this.$route.hash;
+    },
   },
   methods: {
     onBurgerClick() {

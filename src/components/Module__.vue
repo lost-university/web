@@ -1,15 +1,9 @@
 <template>
   <div
-    ref="itemRef"
-    :key="module.name + id"
-    class="rounded-sm group/module relative p-2 px-8 flex flex-col items-center text-center text-white w-full module-node"
+    :key="module.name"
+    class="rounded-sm group/module relative p-2 px-8 flex flex-col items-center text-center text-white w-full"
     :class="computedClasses"
   >
-    <Handle
-      type="target"
-      :position="Position.Left"
-      :style="{ top: '50%', transform: 'translate(0, -50%)', background: '#555', visibility: 'hidden'}"
-    />
     <div class="absolute left-2">
       <span
         v-if="module.validationInfo && module.validationInfo.severity === 'soft'"
@@ -44,42 +38,23 @@
     >{{ module.name }}
     </a>
     <p>{{ module.ects }} ECTS</p>
-
-    <Handle
-      type="source"
-      :position="Position.Right"
-      :style="{ top: '50%', transform: 'translateY(-50%)', background: '#555', visibility: 'hidden'}"
-    />
   </div>
 </template>
 
 <script lang="ts">
-import {type PropType, defineComponent} from 'vue';
-import { Handle, Position } from '@vue-flow/core' 
+import { type PropType, defineComponent } from 'vue';
 import { getColorClassForPrioritizedCategory } from '../helpers/color-helper';
 import type { Module } from '../helpers/types';
 
 export default defineComponent({
   name: 'Module',
-  components: {
-    Handle,
-  },
   props: {
     module: {
       type: Object as PropType<Module>,
       required: true,
-    },
-    id: {
-      type: Number,
-      required: true,
-    },
+    }
   },
   emits: ['on-delete'],
-  data() {
-    return {
-      Position
-    };
-  },
   computed: {
     computedClasses() {
       const classes = [this.getColorClassForPrioritizedCategory(this.module.categoriesForColoring)];
@@ -91,15 +66,6 @@ export default defineComponent({
   },
   methods: {
     getColorClassForPrioritizedCategory,
-    getElement() {
-      return this.$refs.itemRef;
-    }
   }
 });
 </script>
-
-<style scoped>
-.module-node {
-  width: 240px;
-}
-</style>
