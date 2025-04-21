@@ -45,6 +45,30 @@
             </div>
           </div>
         </template>
+        <div>
+          <div class="px-2 sm:px-4 pt-4 pb-2 sm:py-6 peer">
+            <button
+              class="hover:cursor-auto mr-2 text-lg font-bold sm:text-md sm:font-normal"
+            >
+              Saved Plans
+            </button>
+            <font-awesome-icon
+              :icon="['fa', 'chevron-down']"
+              class="peer invisible sm:visible"
+            />
+          </div>
+          <div
+            class="sm:hidden peer-hover:flex hover:flex flex rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-50"
+          >
+            <a
+              v-for="savedPlan in saved_plans"
+              :key="savedPlan.title"
+              class="p-2 hover:bg-gray-100 rounded-sm"
+              @click="onBurgerClick"
+              v-text="savedPlan.title"
+            />
+          </div>
+        </div>
       </div>
 
       <div class="flex justify-end mr-2">
@@ -153,6 +177,11 @@ export default defineComponent({
           ],
         },
       ],
+      saved_plans: [
+        { title: 'Plan 1', path: 'saved-plan-1' },
+        { title: 'Plan 2', path: 'saved-plan-2' },
+        { title: 'Plan 3', path: 'saved-plan-3' },
+      ]
     };
   },
   methods: {
