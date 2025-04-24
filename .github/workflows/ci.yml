@@ -50,7 +50,7 @@ jobs:
         with:
           push: false
           build-args: |
-            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }}
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -71,7 +71,7 @@ jobs:
         with:
           push: false
           build-args: |
-            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }}
           tags: ${{ needs.build.outputs.tags }}
           load: true
           cache-from: type=gha
@@ -115,7 +115,7 @@ jobs:
         with:
           push: true
           build-args: |
-            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PROD_PUBLISHABLE_KEY }}
           tags: ${{ needs.build.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

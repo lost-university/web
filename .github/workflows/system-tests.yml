@@ -21,7 +21,7 @@ jobs:
       POSTGRES_DB: postgres
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
-      VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+      VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
     strategy:
       matrix:
 #        browser: [ chrome, firefox, edge ]
