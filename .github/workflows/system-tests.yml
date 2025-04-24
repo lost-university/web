@@ -7,7 +7,33 @@ on:
         required: true
 
 jobs:
+  build-frontend:
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.set-docker-tag.outputs.repo }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Set Docker tag
+        id: set-docker-tag
+        env:
+          REPOSITORY: '${{ github.repository }}'
+        run: |
+          echo "repo=ghcr.io/${REPOSITORY,,}/web:local-system-tests" >> $GITHUB_OUTPUT
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          push: false
+          build-args: |
+            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }}
+          tags: ${{ steps.set-docker-tag.outputs.repo }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
   system-tests:
+    needs: build-frontend
     runs-on: ubuntu-latest
     env:
       BACKEND_VERSION: ${{ github.event.inputs.backendVersion }}
@@ -20,23 +46,19 @@ jobs:
       VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
     strategy:
       matrix:
-#        browser: [ chrome, firefox, edge ]
-        browser: [ chrome ]
+        browser: [ chrome, firefox, edge ]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Setup buildx
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image
-        env:
-          REPOSITORY: '${{ github.repository }}'
         uses: docker/build-push-action@v6
         with:
           push: false
           build-args: |
             VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }}
-          tags: |
-            ghcr.io/${REPOSITORY,,}/web:local-system-tests
+          tags: ${{ needs.build-frontend.outputs.tags }}
           load: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
