@@ -2,9 +2,6 @@ name: System tests
 on:
   workflow_dispatch:
     inputs:
-      frontendVersion:
-        description: 'Frontend version'
-        required: true
       backendVersion:
         description: 'Backend version'
         required: true
@@ -13,7 +10,6 @@ jobs:
   system-tests:
     runs-on: ubuntu-latest
     env:
-      FRONTEND_VERSION: ${{ github.event.inputs.frontendVersion }}
       BACKEND_VERSION: ${{ github.event.inputs.backendVersion }}
       POSTGRES_HOST: postgres-db
       POSTGRES_PORT: 5432
@@ -29,6 +25,21 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Docker image
+        env:
+          REPOSITORY: '${{ github.repository }}'
+        uses: docker/build-push-action@v6
+        with:
+          push: false
+          build-args: |
+            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }}
+          tags: |
+            ghcr.io/${REPOSITORY,,}/web:local-system-tests
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: Start Docker containers
         run: |
           docker compose -f cypress/docker-compose.yml up -d
