@@ -67,6 +67,13 @@
               @click="onBurgerClick"
               v-text="savedPlan.title"
             />
+            <router-link
+              to="/plan"
+              class="p-2 hover:bg-gray-100 rounded-sm"
+              @click="savePlan"
+            >
+              + Save current plan
+            </router-link>
           </div>
         </div>
       </div>
@@ -136,9 +143,12 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/vue'
+import { SignedIn, SignedOut, SignInButton, useAuth, UserButton } from '@clerk/vue'
 
 import { SemesterInfo } from "../helpers/semester-info";
+
+import type { Plan } from "../helpers/plan-store"
+import { PlanStore } from "../helpers/plan-store"
 
 /* eslint-disable max-len */
 export default defineComponent({
@@ -148,6 +158,13 @@ export default defineComponent({
     SignedOut,
     SignInButton,
     UserButton,
+  },
+  setup() {
+    const { getToken } = useAuth();
+
+    return {
+      getToken,
+    };
   },
   data() {
     return {
@@ -188,7 +205,22 @@ export default defineComponent({
     onBurgerClick() {
       this.isBurgerActive = !this.isBurgerActive;
     },
-  },
+    async getPlans() {
+      try {
+        const token = await this.getToken() as string;
+        this.plans = await PlanStore.fetchSavedPlans(token);
+        console.log(typeof(this.plans));
+        console.log(this.plans)
+      } catch (error) {
+        console.error('Error fetching plans: ', error)
+      }
+    },
+    async savePlan() {
+      const token = await this.getToken() as string;
+      console.log(this.$route.path.replace('/plan/', ''));
+      await PlanStore.savePlan(this.$route.path.replace('/plan/', ''), token);
+    }
+  }
 });
 </script>
 
