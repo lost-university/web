@@ -1,20 +1,26 @@
-export interface SavedPlan {
-  id: number;
-  title: string;
-  path: string;
+export interface Plan {
+  id: string;
+  name: string;
+  content: string;
+  is_favorite: boolean;
+  created_at: string;
+  user_id: string;
 }
 
 const BASE_URL = process.env.NODE_ENV === 'production' ? window.location.origin : "http://localhost:8000";
 
 export class PlanStore {
 
-  // TODO: Change base url to production as soon as its available
-  baseUrl: string = ''
-
-  static async fetchSavedPlans(): Promise<SavedPlan[]> {
+  static async fetchSavedPlans(token: string): Promise<Plan[]> {
     try {
-      const response = await fetch('/api/plans'); // Replace with your actual API endpoint
-      return response.data;
+      const response = await fetch(`${BASE_URL}/api/plans`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await response.json();
+      console.log(data);
+      return data;
     } catch (error) {
       console.error('Error fetching saved plans:', error);
       throw error;

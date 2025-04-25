@@ -61,11 +61,11 @@
             class="sm:hidden peer-hover:flex hover:flex flex rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-50"
           >
             <a
-              v-for="savedPlan in saved_plans"
-              :key="savedPlan.title"
+              v-for="plan in plans"
+              :key="plan.id"
               class="p-2 hover:bg-gray-100 rounded-sm"
               @click="onBurgerClick"
-              v-text="savedPlan.title"
+              v-text="plan.name"
             />
             <router-link
               to="/plan"
@@ -194,12 +194,11 @@ export default defineComponent({
           ],
         },
       ],
-      saved_plans: [
-        { title: 'Plan 1', path: 'saved-plan-1' },
-        { title: 'Plan 2', path: 'saved-plan-2' },
-        { title: 'Plan 3', path: 'saved-plan-3' },
-      ]
+      plans: [] as Plan[],
     };
+  },
+  mounted() {
+    this.getPlans();
   },
   methods: {
     onBurgerClick() {
