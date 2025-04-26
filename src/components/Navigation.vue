@@ -25,9 +25,9 @@
         />
       </button>
     </div>
-    <div class="flex w-full sm:w-1/3 sm:order-last relative mx-2 h-9 sm:h-auto">
-      <div class="flex w-full absolute top-0 right-0 z-40">
-        <SwitchGroup>
+    <div class="flex w-full sm:w-1/2 sm:order-last relative mx-2 h-9 sm:h-auto">
+        <div class="flex w-full sm:flex-1 sm:order-last mx-2 h-9 sm:h-auto items-center justify-end space-x-4 relative z-40">
+        <SwitchGroup v-show="!isGraphRoute">
           <div class="flex ml-auto items-start">
             <SwitchLabel class="mr-4">
               Validierung:
@@ -41,17 +41,27 @@
               <span
                 aria-hidden="true"
                 :class="validationEnabled ? 'translate-x-9 sm:translate-x-6' : 'translate-x-1'"
-                class="inline-block h-6 w-6 sm:h-4 sm:w-4 transform rounded-full bg-white transition"
+                class=" inline-block h-6 w-6 sm:h-4 sm:w-4 transform rounded-full bg-white transition "
               />
             </HeadlessSwitch>
           </div>
         </SwitchGroup>
         <GlobalValidationInfo />
+
+        
         <router-link
+          v-if="!isGraphRoute"
           :to="{ path: '/graph/', hash: currentHash }"
-          class="ml-4 px-4 py-2 bg-blue-500 text-white rounded"
+          class="ml-8 px-4 py-2 bg-gray-800 text-white rounded"
         >
-          Graph
+          Graph View
+        </router-link>
+        <router-link
+          v-else
+          :to="{ path: '/', hash: currentHash }"
+          class="ml-8 px-4 py-2 bg-gray-800 text-white rounded"
+        >
+          Table View
         </router-link>
       </div>
     </div>
@@ -146,6 +156,9 @@ export default defineComponent({
     ]),
     currentHash(): string {
       return this.$route.hash;
+    },
+    isGraphRoute(): boolean {
+      return this.$route.path.startsWith('/graph/');
     },
   },
   methods: {

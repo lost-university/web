@@ -1,65 +1,18 @@
 <template>
-  <div class="toggle-container" style="margin-bottom: 1rem;">
-    <label>
-      <input type="checkbox" v-model="showAllModules" />
-        Alle Module anzeigen
-    </label>
-  </div>
-  <!----<SwitchGroup>
-    <div class="flex ml-auto items-start">
-      <SwitchLabel class="mr-4">
-        Alle Module anzeigen
-      </SwitchLabel>
-      <HeadlessSwitch
-        :model-value="showAllModules"
-        :class="showAllModules ? 'bg-teal-700' : 'bg-gray-500'"
-        class="relative inline-flex h-9 w-16 sm:h-6 sm:w-11 items-center rounded-full"
-        @update:model-value="showAllModulesActivate"
-      >
-        <span
-          aria-hidden="true"
-          :class="showAllModules ? 'translate-x-9 sm:translate-x-6' : 'translate-x-1'"
-          class="inline-block h-6 w-6 sm:h-4 sm:w-4 transform rounded-full bg-white transition"
-        />
-      </HeadlessSwitch>
-    </div>
-  </SwitchGroup>-->
-
-  <div class="flex flex-row wrapper">
+  <div class="flex flex-row wrapper" ref="wrapper" @mousemove="hideTooltip"
+  >
     <VueFlow
       ref="vueFlow"
       :nodes="laidOutNodes"
       :edges="processedEdges"
+      @edge-click="onEdgeClick"
+      @nodes-initialized="fitView"
       :defaultZoom="0.5"
       :max-zoom="1"
       :min-zoom="0.15"
+      :nodes-draggable="false"
     >
-
-
-      <svg style="position: absolute; width: 0; height: 0;">
-        <defs>
-          <linearGradient
-            v-for="edge in laidOutEdges"
-            :key="edge.id"
-            :id="edge.gradientId"
-            x1="0%" y1="0%" x2="100%" y2="0%"
-            > 
-            <stop offset="0%" :stop-color="edge.sourceColor" />
-            <stop offset="100%" :stop-color="edge.targetColor" />
-            
-          </linearGradient>
-          <marker
-            id="test_marker"
-            markerWidth="10"
-            markerHeight="100"
-            refX="0" 
-            refY="5"
-            orient="auto"
-          >
-            <path d="M0,0 L0,10 L10,5 Z" />
-          </marker>
-        </defs>
-      </svg>
+      <EdgeDefs :edges="laidOutEdges" />
 
       <template #node-module="props">
         <div
@@ -72,27 +25,59 @@
         </div>
       </template>
     </VueFlow>
+
+    <button
+      class="absolute right-8 bottom-4 bg-gray-800 rounded-full p-2 shadow hover:bg-gray-700 focus:outline-none fit-view-button"
+      @click="fitView"
+      aria-label="Fit View"
+    >
+      <!-- Icon: outward arrows -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4h6M4 4v6M20 20h-6M20 20v-6" />
+      </svg>
+    </button>
+
+    <div
+      v-if="tooltip.visible"
+      class="absolute bg-gray-800 text-white text-sm px-2 py-1 rounded shadow tooltip"
+      :style="{
+        top:    tooltip.y + 'px',
+        left:   tooltip.x + 'px',
+        zIndex: 1000,
+        width:  'max-content'
+      }"
+    >
+      Diese Abhängikeit ist Pflicht.
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick } from 'vue';
-import { MarkerType, VueFlow } from '@vue-flow/core';
-import ModuleComponent from '../components/Module.vue';
+import { defineComponent } from 'vue';
+import { VueFlow } from '@vue-flow/core';
 import { mapGetters } from 'vuex';
-import type { AccreditedModule, Module } from '../helpers/types';
+import ModuleComponent from '../components/GraphModule.vue';
+import EdgeDefs from '../components/GraphEdgeDefs.vue';
 import { store } from '../helpers/store';
 import { StorageHelper } from '../helpers/storage-helper';
-import ELK from 'elkjs/lib/elk.bundled.js';
+import specialModuleIds from '../helpers/temporarySpecialModules';
 import { getColorHexForPrioritizedCategory } from '../helpers/color-helper';
-import { Switch as HeadlessSwitch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
+import {
+  generateModuleNodes,
+  generateModuleEdges,
+  sortLayout,
+} from '../helpers/graph-helper';
+import type { Module } from '../helpers/types';
+import type { Edge } from '@vue-flow/core';
+import { nextTick } from 'vue'
 
 
 export default defineComponent({
   name: 'Graph',
   components: {
-    ModuleComponent,
     VueFlow,
+    ModuleComponent,
+    EdgeDefs,
   },
   data() {
     return {
@@ -100,28 +85,23 @@ export default defineComponent({
       laidOutEdges: [] as any[],
       hoveredModule: null as string | null,
       showAllModules: false,
+      tooltip: {
+        visible: false,
+        x: 20,
+        y: 20,
+        edgeId: '' as string,
+      },
     };
   },
   computed: {
-    ...mapGetters([
-      'modules',
-      'enrichedFocuses',
-      'enrichedSemesters',
-      'startSemester',
-      'studienordnung',
-      'allPlannedModuleIds'
-    ]),
+    ...mapGetters(['modules', 'allPlannedModuleIds']),
     highlightedNodes(): Set<string> {
       const highlight = new Set<string>();
       if (!this.hoveredModule) return highlight;
       highlight.add(this.hoveredModule);
       this.laidOutEdges.forEach((edge: any) => {
-        if (edge.source === this.hoveredModule) {
-          highlight.add(edge.target);
-        }
-        if (edge.target === this.hoveredModule) {
-          highlight.add(edge.source);
-        }
+        if (edge.source === this.hoveredModule) highlight.add(edge.target);
+        if (edge.target === this.hoveredModule) highlight.add(edge.source);
       });
       return highlight;
     },
@@ -132,154 +112,47 @@ export default defineComponent({
           edge.source === this.hoveredModule || edge.target === this.hoveredModule;
         const baseStyle = edge.style || {};
         const dimmedStyle = !isHighlighted
-          ? { opacity: 0.1, filter: 'grayscale(100%)', transition: 'opacity 0.3s ease, filter 0.3s ease' }
+          ? {
+              opacity: 0.1,
+              filter: 'grayscale(100%)',
+              transition: 'opacity 0.3s ease, filter 0.3s ease',
+            }
           : { opacity: 1, filter: 'none', transition: 'opacity 0.3s ease, filter 0.3s ease' };
+
+        let badgeBg = {};
+        if (edge.labelShowBg && edge.labelBgStyle) {
+          badgeBg = !isHighlighted
+            ? { ...edge.labelBgStyle, fill: edge.labelBgStyle.fill + '1A' }
+            : {};
+        }
+
+        let badgeText = {};
+        if (edge.label && edge.labelStyle) {
+          badgeText = !isHighlighted
+            ? { ...edge.labelStyle, fill: edge.labelStyle.fill + '1A' }
+            : {};
+        }
+
         return {
           ...edge,
-          style: {
-            ...baseStyle,
-            ...dimmedStyle,
-          },
+          style: { ...baseStyle, ...dimmedStyle },
+          ...(edge.labelShowBg ? { labelBgStyle: { ...edge.labelBgStyle, ...badgeBg } } : {}),
+          ...(edge.label ? { labelStyle: { ...edge.labelStyle, ...badgeText } } : {}),
         };
       });
     },
   },
-  methods: {
-    showAllModulesActivate() {
-      this.showAllModules = !this.showAllModules;
+  watch: {
+    $route: {
+      handler() {
+        setTimeout(this.getPlanDataFromUrl, 0);
+      },
     },
-    getPlanDataFromUrl() {
-      // This method is the same as in Home.vue - TODO: Refactor to avoid duplication
-      const [
-        semesters,
-        accreditedModules,
-        startSemester,
-        validationEnabled
-      ] = StorageHelper.getDataFromUrlHash(
-        window.location.hash,
-        (semesterNumber: number, moduleId: string) => this.showUnknownModulesError(semesterNumber, moduleId)
-      );
-      store.commit('setValidationEnabled', validationEnabled);
-      store.commit('setSemesters', semesters);
-      store.commit('setAccreditedModules', accreditedModules);
+    modules(newModules: Module[]) {
+      if (newModules.length) this.computeLayout();
+    },
+    showAllModules() {
       this.computeLayout();
-      //store.dispatch('setStartSemester', startSemester).then(() => this.updateUrlFragment());
-    },
-    getModuleColor(module: Module): string {
-      return getColorHexForPrioritizedCategory(module.categoriesForColoring);
-    },
-    fitView(){
-      (this.$refs.vueFlow as any)?.fitView();
-    },
-    handleKeydown(event: KeyboardEvent) {
-      if (event.key === 'f' || event.key === 'F') {
-        this.fitView();
-      }
-    },
-    computeLayout() {
-      const allModulesArray = this.modules as Module[];
-      const modulesArray = allModulesArray.filter((module) => {
-        return this.showAllModules || this.allPlannedModuleIds.includes(module.id) ;
-      });
-
-      //const modulesArray = this.modules as Module[];
-      console.log('Modules1:', this.allPlannedModuleIds);
-      console.log('Modules:', modulesArray.map((m) => m.id));
-
-
-      let rawNodes = modulesArray.map((module, index) => ({
-        id: module.id,
-        type: 'module',
-        position: { x: index * 400, y: 0 },
-        data: { moduleData: module },
-      }));
-
-      const rawEdges: any[] = [];
-      modulesArray.forEach((module) => {
-        if (module.dependentModuleIds && module.dependentModuleIds.length > 0) {
-          module.dependentModuleIds.forEach((depId: string) => {
-            if (! this.showAllModules && (!this.allPlannedModuleIds.includes(depId))) {
-              return;
-            }
-            const targetModule = modulesArray.find((m) => m.id === depId);
-            if(!targetModule) {
-              return;
-            }
-            const sourceColor = this.getModuleColor(module);
-            const targetColor = targetModule ? this.getModuleColor(targetModule) : 'gray';
-            const gradientId = `edgeGradient_${module.id}_${depId}`;
-            rawEdges.push({
-              id: `${module.id}->${depId}`,
-              source: module.id,
-              target: depId,
-              markerEnd: { type: MarkerType.ArrowClosed, color: targetColor },
-              style: { strokeWidth: 4, stroke: `url(#${gradientId})` },
-              gradientId,
-              sourceColor,
-              targetColor,
-            });
-          });
-        }
-      });
-
-      const involvedNodeIds = new Set<string>();
-      rawEdges.forEach((edge) => {
-        involvedNodeIds.add(edge.source);
-        involvedNodeIds.add(edge.target);
-      });
-      //rawNodes = rawNodes.filter((node) => involvedNodeIds.has(node.id));
-
-      const elkGraph = {
-        id: 'root',
-        layoutOptions: {
-          'elk.algorithm': 'layered',
-          'elk.direction': 'RIGHT',
-          'elk.spacing.nodeNode': '50',
-          'elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
-        },
-        children: rawNodes.map((node) => ({
-          id: node.id,
-          width: 320,
-          height: 120,
-        })),
-        edges: rawEdges.map((edge) => ({
-          id: edge.id,
-          sources: [edge.source],
-          targets: [edge.target],
-        })),
-      };
-
-      const elk = new ELK();
-
-      elk
-        .layout(elkGraph)
-        .then((layout: any) => {
-          const nodePositions: Record<string, { x: number; y: number }> = {};
-          layout.children.forEach((node: any) => {
-            nodePositions[node.id] = { x: node.x, y: node.y + Math.random()};
-            //The random part is a workaround to avoid horizontal edges (gradient breaks than)
-          });
-
-          rawNodes.forEach((node: any) => {
-            const pos = nodePositions[node.id];
-            if (pos) {
-              node.position = pos;
-            }
-          });
-
-          this.laidOutNodes = rawNodes;
-          this.laidOutEdges = rawEdges;
-
-          
-        })
-        .then(() => {
-          nextTick(() => {
-            this.fitView();
-          });
-        })
-        .catch((error: any) => {
-          console.error('ELK layout error:', error);
-        });
     },
   },
   mounted() {
@@ -292,22 +165,89 @@ export default defineComponent({
   unmounted() {
     window.removeEventListener('keydown', this.handleKeydown);
   },
-  watch: {
-    $route: {
-      handler() {
-        setTimeout(() => {
-          this.getPlanDataFromUrl();
-        }, 0);
-      },
+  methods: {
+    hideTooltip() {
+      this.tooltip.visible = false;
     },
-    modules(newModules: Module[]) {
-      if (newModules.length > 0) {
-        this.computeLayout();
+    onEdgeClick({ event, edge }: { event: MouseEvent; edge: Edge }) {
+      event.stopPropagation();
+
+      // only mandatory edges have a badge label
+      if (!edge.labelShowBg || !edge.label) return;
+
+      // find the <rect rx="15"> that is your badge background
+      const target = event.target as Element;
+      const badgeRect = target.tagName === 'rect' && target.getAttribute('rx')
+        ? target
+        : target.closest('rect[rx]');
+
+      if (!badgeRect) {
+        // clicked somewhere else on the edge — ignore
+        return;
+      }
+
+      // get its screen position
+      const badgeBox = (badgeRect as SVGGraphicsElement).getBoundingClientRect();
+      const wrapperEl = this.$refs.wrapper as HTMLElement;
+      const wrapperBox = wrapperEl.getBoundingClientRect();
+
+      // center of the badge in wrapper-local coords
+      this.tooltip.x = badgeBox.left + badgeBox.width  / 2 - wrapperBox.left;
+      this.tooltip.y = badgeBox.top  + badgeBox.height / 2 - wrapperBox.top;
+      this.tooltip.visible  = true;
+      this.tooltip.edgeId  = edge.id!;
+    },
+    showAllModulesActivate() {
+      this.showAllModules = !this.showAllModules;
+    },
+    getPlanDataFromUrl() {
+      const [semesters, accreditedModules, startSem, validationEnabled] =
+        StorageHelper.getDataFromUrlHash(
+          window.location.hash,
+          (semNum: number, moduleId: string) =>
+            this.showUnknownModulesError(semNum, moduleId)
+        );
+      store.commit('setValidationEnabled', validationEnabled);
+      store.commit('setSemesters', semesters);
+      store.commit('setAccreditedModules', accreditedModules);
+      this.computeLayout();
+    },
+
+    getModuleColor(module: Module): string {
+      return getColorHexForPrioritizedCategory(module.categoriesForColoring);
+    },
+
+    fitView() {
+      (this.$refs.vueFlow as any)?.fitView();
+    },
+
+    handleKeydown(event: KeyboardEvent) {
+      if (event.key.toLowerCase() === 'f') {
+        this.fitView();
       }
     },
 
-    showAllModules(newVal: boolean) {
-      this.computeLayout();
+    async computeLayout() {
+      const allModules = this.modules as Module[];
+      const planned = allModules.filter((m) =>
+        this.allPlannedModuleIds.includes(m.id)
+      );
+      const rawNodes = generateModuleNodes(planned);
+      const rawEdges = generateModuleEdges(
+        planned,
+        this.showAllModules,
+        this.allPlannedModuleIds,
+        this.getModuleColor,
+        specialModuleIds
+      );
+      try {
+        const { nodes, edges } = await sortLayout(rawNodes, rawEdges);
+        this.laidOutNodes = nodes;
+        this.laidOutEdges = edges;
+      } catch (error) {
+        console.error('ELK layout error:', error);
+      }
+
     },
   },
 });
@@ -315,6 +255,7 @@ export default defineComponent({
 
 <style scoped>
 .wrapper {
+  position: relative;
   width: 100%;
   height: 70vh;
 }
@@ -330,4 +271,36 @@ export default defineComponent({
   filter: grayscale(100%);
   opacity: 0.1;
 }
+
+.tooltip {
+  position: absolute;
+  background: #000;           /* black bg */
+  color: #fff;                /* white text */
+  padding: 0.5rem 1rem;       /* adjust px as you like */
+  border-radius: 0.5rem;      /* rounded corners */
+  font-size: 0.875rem;        /* e.g. text-sm */
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transform: translate(-50%, -160%); /* so x/y is the center-bottom point */
+}
+
+/* the little arrow */
+.tooltip::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;               /* pull it below the box */
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #000; /* same color as bg */
+}
+
+.fit-view-button {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+}
+
+
 </style>

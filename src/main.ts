@@ -12,7 +12,8 @@ import {
   faCheck,
   faInfoCircle,
   faCircleExclamation,
-  faCircleQuestion
+  faCircleQuestion,
+  faPlusCircle
 } from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue';
 import router from './router';
@@ -27,6 +28,7 @@ library.add(faCheck as IconDefinition);
 library.add(faInfoCircle as IconDefinition);
 library.add(faCircleExclamation as IconDefinition);
 library.add(faCircleQuestion as IconDefinition);
+library.add(faPlusCircle as IconDefinition);
 
 createApp(App)
   .use(router)

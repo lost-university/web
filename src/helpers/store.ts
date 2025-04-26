@@ -104,7 +104,6 @@ export const store = createStore({
     setAccreditedModules(state, accreditedModules: AccreditedModule[]) {
       state.accreditedModules = accreditedModules;
     },
-
     addSemester(state) {
       const newSemester = new Semester(state.semesters.length + 1, []).setName(state.startSemester);
       state.semesters.push(newSemester);
@@ -116,6 +115,11 @@ export const store = createStore({
       const semester = state.semesters.find(s => s.number === data.semesterNumber);
       const index = semester.moduleIds.indexOf(data.moduleId);
       semester.moduleIds.splice(index, 1);
+    },
+    removeModuleFromAllSemesters(state, moduleId: string) {
+      state.semesters.forEach(semester => {
+        semester.moduleIds = semester.moduleIds.filter(id => id !== moduleId);
+      });
     },
     addModuleToSemester(state, data: {semesterNumber: number, moduleId: string}) {
       state.semesters.find(s => s.number === data.semesterNumber).moduleIds.push(data.moduleId);
