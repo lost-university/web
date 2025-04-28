@@ -1,11 +1,11 @@
 <template>
   <div
     v-if="numberOfValidationProblems > 0"
-    class="w-full ml-2 text-sm bg-red-200 rounded-sm"
+    class="w-52 ml-2 text-sm bg-red-200 rounded-sm"
   >
     <Disclosure v-slot="{ open }">
       <DisclosureButton
-        class="flex w-full justify-between text-red-800 px-4 py-2 font-medium"
+        class="flex w-full justify-between items-center text-red-800 px-4 py-2 font-medium sm:h-8.5"
       >
         <span>Es gibt {{ numberOfValidationProblems }} Probleme:</span>
         <font-awesome-icon
