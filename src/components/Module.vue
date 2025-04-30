@@ -2,7 +2,8 @@
   <div
     ref="itemRef"
     :key="module.name + id"
-    class="rounded-sm group/module relative p-2 px-8 flex flex-col items-center text-center text-white w-full module-node"
+    class="rounded-sm group/module relative p-2 px-8 flex flex-col
+    items-center text-center text-white w-full module-node"
     :class="computedClasses"
   >
     <div class="absolute left-2">

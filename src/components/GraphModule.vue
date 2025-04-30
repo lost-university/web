@@ -2,7 +2,8 @@
   <div
     ref="itemRef"
     :key="module.name + id"
-    class="rounded-sm group/module relative p-2 px-8 flex flex-col items-center text-center text-white w-full module-node"
+    class="rounded-sm group/module relative p-2 px-8 flex flex-col
+    items-center text-center text-white w-full module-node"
     :class="computedClasses"
   >
     <Handle
@@ -26,7 +27,7 @@
     </button>
 
     <button
-       v-if="hasRecommendedModules()"
+      v-if="hasRecommendedModules()"
       class="absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
              hover:!opacity-100 left-2 -bottom-1 transform -translate-y-1/2 transition-opacity duration-75"
       type="button"
@@ -70,7 +71,7 @@
     v-if="showList"
     class="absolute inset-y-0 w-60 bg-black bg-opacity-75 flex items-center justify-center z-100"
     :class="[ listSide === 'left' ? '-left-55' : '-right-55' ]"
-    @click.self="toggleList"
+    @click.self="hideList"
     @mouseleave="hideList"
   >
     <ModuleList

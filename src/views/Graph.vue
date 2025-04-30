@@ -1,39 +1,57 @@
 <template>
-  <div class="flex flex-row wrapper" ref="wrapper" @mousemove="hideTooltip"
+  <div
+    ref="wrapper"
+    class="flex flex-row wrapper"
+    @mousemove="hideTooltip"
   >
     <VueFlow
       ref="vueFlow"
       :nodes="laidOutNodes"
       :edges="processedEdges"
-      @edge-click="onEdgeClick"
-      @nodes-initialized="fitView"
-      :defaultZoom="0.5"
+      :default-zoom="0.5"
       :max-zoom="1"
       :min-zoom="0.15"
       :nodes-draggable="false"
+      @edge-click="onEdgeClick"
+      @nodes-initialized="fitView"
     >
       <EdgeDefs :edges="laidOutEdges" />
 
       <template #node-module="props">
         <div
           class="node-wrapper"
-          :class="{ dimmed: hoveredModule && !highlightedNodes.has(props.id) }"
+          :class="{ dimmed: hoveredModule && !(highlightedNodes as Set<string>).has(props.id) }"
           @mouseover="hoveredModule = props.id"
           @mouseleave="hoveredModule = null"
         >
-          <ModuleComponent :id="props.id" :module="props.data.moduleData" />
+          <ModuleComponent
+            :id="Number(props.id)"
+            :module="props.data.moduleData"
+          />
         </div>
       </template>
     </VueFlow>
 
     <button
-      class="absolute right-8 bottom-4 bg-gray-800 rounded-full p-2 shadow hover:bg-gray-700 focus:outline-none fit-view-button"
-      @click="fitView"
+      class="absolute right-8 bottom-8 bg-gray-800 rounded-full p-2 shadow
+      hover:bg-gray-700 focus:outline-none fit-view-button"
       aria-label="Fit View"
+      @click="fitView"
     >
       <!-- Icon: outward arrows -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4h6M4 4v6M20 20h-6M20 20v-6" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6 text-white"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M4 4h6M4 4v6M20 20h-6M20 20v-6"
+        />
       </svg>
     </button>
 
@@ -41,10 +59,10 @@
       v-if="tooltip.visible"
       class="absolute bg-gray-800 text-white text-sm px-2 py-1 rounded shadow tooltip"
       :style="{
-        top:    tooltip.y + 'px',
-        left:   tooltip.x + 'px',
+        top: tooltip.y + 'px',
+        left: tooltip.x + 'px',
         zIndex: 1000,
-        width:  'max-content'
+        width: 'max-content'
       }"
     >
       Diese Abhängikeit ist Pflicht.
@@ -55,6 +73,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { VueFlow } from '@vue-flow/core';
+import type { Node, Edge } from '@vue-flow/core';
 import { mapGetters } from 'vuex';
 import ModuleComponent from '../components/GraphModule.vue';
 import EdgeDefs from '../components/GraphEdgeDefs.vue';
@@ -68,8 +87,6 @@ import {
   sortLayout,
 } from '../helpers/graph-helper';
 import type { Module } from '../helpers/types';
-import type { Edge } from '@vue-flow/core';
-import { nextTick } from 'vue'
 
 
 export default defineComponent({
@@ -81,8 +98,8 @@ export default defineComponent({
   },
   data() {
     return {
-      laidOutNodes: [] as any[],
-      laidOutEdges: [] as any[],
+      laidOutNodes: [] as Node[],
+      laidOutEdges: [] as Edge[],
       hoveredModule: null as string | null,
       showAllModules: false,
       tooltip: {
@@ -99,15 +116,15 @@ export default defineComponent({
       const highlight = new Set<string>();
       if (!this.hoveredModule) return highlight;
       highlight.add(this.hoveredModule);
-      this.laidOutEdges.forEach((edge: any) => {
+      this.laidOutEdges.forEach((edge: Edge) => {
         if (edge.source === this.hoveredModule) highlight.add(edge.target);
         if (edge.target === this.hoveredModule) highlight.add(edge.source);
       });
       return highlight;
     },
-    processedEdges(): any[] {
-      if (!this.hoveredModule) return this.laidOutEdges;
-      return this.laidOutEdges.map((edge: any) => {
+    processedEdges(): Edge[] {
+      if (!this.hoveredModule) return this.laidOutEdges as Edge[];
+      return this.laidOutEdges.map((edge: Edge) => {
         const isHighlighted =
           edge.source === this.hoveredModule || edge.target === this.hoveredModule;
         const baseStyle = edge.style || {};
@@ -161,37 +178,44 @@ export default defineComponent({
       this.computeLayout();
     });
     window.addEventListener('keydown', this.handleKeydown);
+    this.setGraphHeight();
+    window.addEventListener('resize', this.setGraphHeight);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.setGraphHeight);
   },
   unmounted() {
     window.removeEventListener('keydown', this.handleKeydown);
   },
   methods: {
+    setGraphHeight() {
+      const wrapper = this.$refs.wrapper as HTMLElement;
+      if (!wrapper) return;
+      const { top } = wrapper.getBoundingClientRect();
+      const height = window.innerHeight - top;
+      wrapper.style.height = `${height}px`;
+    },
     hideTooltip() {
       this.tooltip.visible = false;
     },
-    onEdgeClick({ event, edge }: { event: MouseEvent; edge: Edge }) {
+    onEdgeClick({ event, edge }: { event: MouseEvent | TouchEvent; edge: Edge }) {
       event.stopPropagation();
 
-      // only mandatory edges have a badge label
       if (!edge.labelShowBg || !edge.label) return;
 
-      // find the <rect rx="15"> that is your badge background
       const target = event.target as Element;
       const badgeRect = target.tagName === 'rect' && target.getAttribute('rx')
         ? target
         : target.closest('rect[rx]');
 
       if (!badgeRect) {
-        // clicked somewhere else on the edge — ignore
         return;
       }
 
-      // get its screen position
       const badgeBox = (badgeRect as SVGGraphicsElement).getBoundingClientRect();
       const wrapperEl = this.$refs.wrapper as HTMLElement;
       const wrapperBox = wrapperEl.getBoundingClientRect();
 
-      // center of the badge in wrapper-local coords
       this.tooltip.x = badgeBox.left + badgeBox.width  / 2 - wrapperBox.left;
       this.tooltip.y = badgeBox.top  + badgeBox.height / 2 - wrapperBox.top;
       this.tooltip.visible  = true;
@@ -201,7 +225,7 @@ export default defineComponent({
       this.showAllModules = !this.showAllModules;
     },
     getPlanDataFromUrl() {
-      const [semesters, accreditedModules, startSem, validationEnabled] =
+      const [semesters, accreditedModules, , validationEnabled] =
         StorageHelper.getDataFromUrlHash(
           window.location.hash,
           (semNum: number, moduleId: string) =>
@@ -217,8 +241,12 @@ export default defineComponent({
       return getColorHexForPrioritizedCategory(module.categoriesForColoring);
     },
 
+    showUnknownModulesError(semNum: number, moduleId: string): void {
+      console.error(`Unknown module ${moduleId} encountered for semester ${semNum}`);
+    },
+
     fitView() {
-      (this.$refs.vueFlow as any)?.fitView();
+      (this.$refs.vueFlow as InstanceType<typeof VueFlow>)?.fitView();
     },
 
     handleKeydown(event: KeyboardEvent) {
@@ -230,13 +258,13 @@ export default defineComponent({
     async computeLayout() {
       const allModules = this.modules as Module[];
       const planned = allModules.filter((m) =>
-        this.allPlannedModuleIds.includes(m.id)
+        (this.allPlannedModuleIds as string[]).includes(m.id)
       );
       const rawNodes = generateModuleNodes(planned);
       const rawEdges = generateModuleEdges(
         planned,
         this.showAllModules,
-        this.allPlannedModuleIds,
+        this.allPlannedModuleIds as string[],
         this.getModuleColor,
         specialModuleIds
       );
@@ -257,7 +285,6 @@ export default defineComponent({
 .wrapper {
   position: relative;
   width: 100%;
-  height: 70vh;
 }
 .wrapper > * {
   width: 100%;

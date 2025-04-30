@@ -28,6 +28,16 @@ export type GraphEdge = Edge & {
   };
 };
 
+const elk = new ELK();
+
+
+const savedPositions: Record<string, { x: number; y: number }> = {};
+
+export interface LayoutResult {
+  nodes: GraphNode[];
+  edges: GraphEdge[];
+}
+
 
 export function generateModuleNodes(modules: Module[]): GraphNode[] {
   return modules.map((module, idx) => ({
@@ -110,33 +120,122 @@ export function generateModuleEdges(
 }
 
 export async function sortLayout(
-  nodes: GraphNode[],
-  edges: GraphEdge[]
-): Promise<{ nodes: GraphNode[]; edges: GraphEdge[] }> {
-  const elk = new ELK();
+  rawNodes: GraphNode[],
+  rawEdges: GraphEdge[],
+): Promise<LayoutResult> {
+  const currentIds = rawNodes.map(n => n.id);
+  const cachedIds = Object.keys(savedPositions);
+
+  const newNodeIds = currentIds.filter(id => !cachedIds.includes(id));
+  const removedNodeIds = cachedIds.filter(id => !currentIds.includes(id));
+  const changeCount = newNodeIds.length + removedNodeIds.length;
+
+  // no changes
+  if (changeCount === 0) {
+    const nodes = rawNodes.map(n => ({
+      ...n,
+      position: { ...savedPositions[n.id] }
+    }));
+    return { nodes, edges: rawEdges };
+  }
+
+    // exactly one removal
+    if (removedNodeIds.length === 1 && newNodeIds.length === 0) {
+      delete savedPositions[removedNodeIds[0]];
+      const nodes = rawNodes.map(n => ({
+        ...n,
+        position: { ...savedPositions[n.id] }
+      }));
+      return { nodes, edges: rawEdges };
+    }
+  
+
+  // exactly one addition: place it next to its neighbors
+  if (newNodeIds.length < 3 && removedNodeIds.length === 0) {
+    const addedId = newNodeIds[0];
+
+    // find all neighbors of the new node
+    const neighborIds = rawEdges
+      .filter(e => e.source === addedId || e.target === addedId)
+      .map(e => (e.source === addedId ? e.target : e.source))
+      // only keep those we actually have cached positions for
+      .filter(id => id in savedPositions);
+
+    let newPos: { x: number; y: number };
+
+    if (neighborIds.length > 0) {
+      // average the neighbor positions
+      const sum = neighborIds.reduce(
+        (acc, id) => {
+          const p = savedPositions[id];
+          return { x: acc.x + p.x, y: acc.y + p.y };
+        },
+        { x: 0, y: 0 }
+      );
+      const avgX = sum.x / neighborIds.length;
+      const avgY = sum.y / neighborIds.length;
+
+      // offset just to the right (you can tweak the offset as you like)
+      newPos = { x: avgX + 200, y: avgY };
+    } else {
+      // fallback to the far right if it has no links
+      const maxX = Math.max(
+        ...Object.values(savedPositions).map(p => p.x),
+        0
+      );
+      newPos = { x: maxX + 400, y: 0 };
+    }
+
+    // cache and return all positions
+    savedPositions[addedId] = newPos;
+    const nodes = rawNodes.map(n => ({
+      ...n,
+      position: { ...savedPositions[n.id] }
+    }));
+    return { nodes, edges: rawEdges };
+  }
+
+
+  // >1 change → full ELK re-layout
   const elkGraph = {
     id: 'root',
     layoutOptions: {
       'elk.algorithm': 'layered',
       'elk.direction': 'RIGHT',
+      'elk.layered.crossingMinimization': 'LAYER_SWEEP',
+      'elk.randomize': 'false',
       'elk.spacing.nodeNode': '50',
       'elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
     },
-    children: nodes.map((node) => ({ id: node.id, width: 320, height: 120 })),
-    edges: edges.map((edge) => ({ id: edge.id, sources: [edge.source], targets: [edge.target] })),
+    children: rawNodes.map(n => ({
+      id: n.id,
+      width: 320,
+      height: 100,
+    })),
+    edges: rawEdges.map(e => ({
+      id: e.id!,
+      sources: [e.source],
+      targets: [e.target],
+    })),
   };
 
-  const layout = await elk.layout(elkGraph);
+  const elkResult = await elk.layout(elkGraph);
 
-  const nodePositions: Record<string, { x: number; y: number }> = {};
-  layout.children?.forEach((child: any) => {
-    nodePositions[child.id] = { x: child.x, y: child.y + Math.random() };
+  const laidOut = elkResult.children!.map(elkNode => {
+    const orig = rawNodes.find(n => n.id === elkNode.id)!;
+    return {
+      ...orig,
+      position: {
+        x: elkNode.x! + Math.random(),
+        y: elkNode.y! + Math.random(),
+      }
+    };
   });
 
-  const positionedNodes = nodes.map((node) => {
-    const pos = nodePositions[node.id];
-    return pos ? { ...node, position: pos } : node;
+  // update the cache in full
+  laidOut.forEach(n => {
+    savedPositions[n.id] = { x: n.position.x, y: n.position.y };
   });
 
-  return { nodes: positionedNodes, edges };
+  return { nodes: laidOut, edges: rawEdges };
 }
