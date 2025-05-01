@@ -4,7 +4,7 @@
     role="navigation"
     aria-label="main navigation"
   >
-    <div class="flex items-center justify-between sm:justify-normal w-full sm:w-auto">
+    <div class="flex items-center justify-between w-full">
       <router-link to="/">
         <img
           src="../assets/logo.png"
@@ -12,45 +12,69 @@
           alt="Home"
         >
       </router-link>
-      <button
-        class="sm:hidden p-4"
-        tabindex="0"
-        aria-label="menu"
-        aria-expanded="false"
-        @click="onBurgerClick"
+
+      <div
+        class="grow sm:flex hidden"
       >
-        <font-awesome-icon
-          :icon="['fa', 'bars']"
-          size="2x"
-        />
-      </button>
-    </div>
-    <div class="flex w-full sm:w-1/3 sm:order-last relative mx-2 h-9 sm:h-auto">
-      <div class="flex w-full absolute top-0 right-0 z-40">
-        <SwitchGroup>
-          <div class="flex ml-auto items-start">
-            <SwitchLabel class="mr-4">
-              Validierung:
-            </SwitchLabel>
-            <HeadlessSwitch
-              :model-value="validationEnabled"
-              :class="validationEnabled ? 'bg-teal-700' : 'bg-gray-500'"
-              class="relative inline-flex h-9 w-16 sm:h-6 sm:w-11 items-center rounded-full"
-              @update:model-value="setValidationEnabled"
-            >
-              <span
-                aria-hidden="true"
-                :class="validationEnabled ? 'translate-x-9 sm:translate-x-6' : 'translate-x-1'"
-                class="inline-block h-6 w-6 sm:h-4 sm:w-4 transform rounded-full bg-white transition"
+        <template
+          v-for="category in categories"
+          :key="category.title"
+        >
+          <div>
+            <div class="px-2 sm:px-4 pt-4 pb-2 sm:py-6 peer">
+              <button
+                class="hover:cursor-auto mr-2 text-lg font-bold sm:text-md sm:font-normal"
+                v-text="category.title"
               />
-            </HeadlessSwitch>
+              <font-awesome-icon
+                :icon="['fa', 'chevron-down']"
+                class="peer invisible sm:visible"
+              />
+            </div>
+            <div
+              class="sm:hidden peer-hover:flex hover:flex flex rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-50"
+            >
+              <a
+                v-for="plan in category.plans"
+                :key="plan.title"
+                class="p-2 hover:bg-gray-100 rounded-sm"
+                :href="`#/plan/${plan.path}?startSemester=${startSemesterName}`"
+                @click="onBurgerClick"
+                v-text="plan.title"
+              />
+            </div>
           </div>
-        </SwitchGroup>
-        <GlobalValidationInfo />
+        </template>
+      </div>
+
+      <div class="flex justify-end mr-2">
+        <SignedOut>
+          <div data-cy="Navigation-SignInButton">
+            <SignInButton />
+          </div>
+        </SignedOut>
+        <SignedIn>
+          <div data-cy="Navigation-UserButton">
+            <UserButton />
+          </div>
+        </SignedIn>
+        <button
+          class="sm:hidden p-4 flex justify-end"
+          tabindex="0"
+          aria-label="menu"
+          aria-expanded="false"
+          @click="onBurgerClick"
+        >
+          <font-awesome-icon
+            :icon="['fa', 'bars']"
+            size="2x"
+          />
+        </button>
       </div>
     </div>
+
     <div
-      class="w-full sm:inline-flex basis-full"
+      class="w-full basis-full sm:hidden mb-2"
       :class="{ 'hidden': !isBurgerActive }"
     >
       <template
@@ -88,21 +112,18 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/vue'
+
 import { SemesterInfo } from "../helpers/semester-info";
-import { store } from '../helpers/store';
-import GlobalValidationInfo from '../components/GlobalValidationInfo.vue';
-import { Switch as HeadlessSwitch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
-import { StorageHelper } from '../helpers/storage-helper';
-import { mapGetters } from 'vuex';
 
 /* eslint-disable max-len */
 export default defineComponent({
   name: 'Navigation',
   components: {
-    GlobalValidationInfo,
-    HeadlessSwitch,
-    SwitchGroup,
-    SwitchLabel,
+    SignedIn,
+    SignedOut,
+    SignInButton,
+    UserButton,
   },
   data() {
     return {
@@ -134,19 +155,27 @@ export default defineComponent({
       ],
     };
   },
-  computed: {
-    ...mapGetters([
-      'validationEnabled'
-    ]),
-  },
   methods: {
     onBurgerClick() {
       this.isBurgerActive = !this.isBurgerActive;
     },
-    setValidationEnabled(validationEnabled: boolean) {
-      store.commit('setValidationEnabled', validationEnabled);
-      StorageHelper.updateUrlFragment();
-    },
   },
 });
 </script>
+
+<style>
+.cl-rootBox {
+  display: flex;
+  align-items: center;
+}
+
+.cl-avatarBox {
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+.cl-userButtonTrigger {
+  height: 2.5rem;
+  width: 2.5rem;
+}
+</style>
