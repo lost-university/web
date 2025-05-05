@@ -219,6 +219,11 @@ export default defineComponent({
       console.log(this.$route.path.replace('/plan/', ''));
       await PlanStore.savePlan(this.$route.path.replace('/plan/', ''), token);
     }
+    async deletePlan(planId: string) {
+      const token = await this.getToken() as string;
+      await PlanStore.deletePlan(planId, token)
+      await this.getPlans();
+    },
   }
 });
 </script>

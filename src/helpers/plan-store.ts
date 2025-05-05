@@ -47,4 +47,22 @@ export class PlanStore {
       throw error;
     }
   }
+
+  static async deletePlan(planId: string, token: string): Promise<void> {
+    try {
+      const response = await fetch(`${BASE_URL}/api/plan/${planId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete plan');
+      }
+    } catch (error) {
+      console.error('Error deleting plan:', error);
+      throw error;
+    }
+  }
 }
