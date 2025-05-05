@@ -195,6 +195,7 @@ export default defineComponent({
         },
       ],
       plans: [] as Plan[],
+      modulePlans: [] as Plan[],
       planName: '',
     };
   },
@@ -208,9 +209,7 @@ export default defineComponent({
     async getPlans() {
       try {
         const token = await this.getToken() as string;
-        this.plans = await PlanStore.fetchSavedPlans(token);
-        console.log(typeof(this.plans));
-        console.log(this.plans)
+        this.modulePlans = await PlanStore.fetchSavedPlans(token);
       } catch (error) {
         console.error('Error fetching plans: ', error)
       }
