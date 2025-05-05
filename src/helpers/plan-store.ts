@@ -19,8 +19,7 @@ export class PlanStore {
         }
       });
       const data = await response.json();
-      console.log(data);
-      return data;
+      return data.plans;
     } catch (error) {
       console.error('Error fetching saved plans:', error);
       throw error;
