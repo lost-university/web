@@ -194,8 +194,8 @@ export default defineComponent({
           ],
         },
       ],
-      plans: [] as Plan[],
       modulePlans: [] as Plan[],
+      isEditingName: false,
       planName: '',
     };
   },
@@ -217,8 +217,11 @@ export default defineComponent({
     async savePlan() {
       const token = await this.getToken() as string;
       console.log(this.$route.path.replace('/plan/', ''));
-      await PlanStore.savePlan(this.$route.path.replace('/plan/', ''), token);
-    }
+      await PlanStore.savePlan(this.planName, this.$route.path.replace('/plan/', ''), token);
+      await this.getPlans();
+      this.isEditingName = false;
+      this.planName = '';
+    },
     async deletePlan(planId: string) {
       const token = await this.getToken() as string;
       await PlanStore.deletePlan(planId, token)
