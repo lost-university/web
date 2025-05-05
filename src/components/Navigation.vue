@@ -60,20 +60,51 @@
           <div
             class="sm:hidden peer-hover:flex hover:flex flex rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-50"
           >
-            <a
-              v-for="plan in plans"
-              :key="plan.id"
-              class="p-2 hover:bg-gray-100 rounded-sm"
-              @click="onBurgerClick"
-              v-text="plan.name"
-            />
-            <router-link
-              to="/plan"
-              class="p-2 hover:bg-gray-100 rounded-sm"
-              @click="savePlan"
+            <ul>
+              <li
+                v-for="plan in modulePlans"
+                :key="plan.id"
+                class="flex items-center justify-between"
+              >
+                <router-link
+                  :to="plan.content"
+                  class="p-2 hover:bg-gray-100 rounded-sm"
+                >
+                  {{ plan.name }}
+                </router-link>
+                <button
+                  class="p-2 hover:bg-gray-100 rounded-sm"
+                  @click="deletePlan(plan.id)"
+                >
+                  Delete
+                </button>
+              </li>
+            </ul>
+            <form
+              class="flex items-center justify-between"
+              @submit.prevent="savePlan"
+            >
+              <input
+                v-if="isEditingName"
+                v-model="planName"
+                type="text"
+                class="p-2 hover:bg-gray-100 rounded-sm"
+                placeholder="Enter plan name"
+              >
+              <button
+                v-if="isEditingName"
+                type="submit"
+              >
+                Submit
+              </button>
+            </form>
+            <button
+              v-if="!isEditingName"
+              class="p-2 hover:bg-gray-100 rounded-sm text-left"
+              @click="() => isEditingName = !isEditingName"
             >
               + Save current plan
-            </router-link>
+            </button>
           </div>
         </div>
       </div>
