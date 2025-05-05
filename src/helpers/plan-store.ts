@@ -26,9 +26,9 @@ export class PlanStore {
     }
   }
 
-  static async savePlan(modules: string, token: string): Promise<void> {
-    modules = JSON.stringify({ content: modules });
-    console.log(modules);
+  static async savePlan(planName: string, modules: string, token: string): Promise<void> {
+    const payload = JSON.stringify({ name: planName, content: modules });
+    console.log(payload);
     try {
       const response = await fetch(`${BASE_URL}/api/plan`, {
         method: 'POST',
@@ -36,7 +36,7 @@ export class PlanStore {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: modules,
+        body: payload,
       });
       console.log(await response.json());
       if (!response.ok) {
