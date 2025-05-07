@@ -49,6 +49,7 @@
           <div class="px-2 sm:px-4 pt-4 pb-2 sm:py-6 peer">
             <button
               class="hover:cursor-auto mr-2 text-lg font-bold sm:text-md sm:font-normal"
+              data-cy="SavedPlans-Dropdown-Button"
             >
               Saved Plans
             </button>
@@ -90,10 +91,12 @@
                 type="text"
                 class="p-2 hover:bg-gray-100 rounded-sm"
                 placeholder="Enter plan name"
+                data-cy="SavePlan-Name"
               >
               <button
                 v-if="isEditingName"
                 type="submit"
+                data-cy="SavePlan-Submit"
               >
                 Submit
               </button>
@@ -101,6 +104,7 @@
             <button
               v-if="!isEditingName"
               class="p-2 hover:bg-gray-100 rounded-sm text-left"
+              data-cy="SavePlan-Button"
               @click="() => isEditingName = !isEditingName"
             >
               + Save current plan
@@ -192,8 +196,12 @@ export default defineComponent({
   },
   setup() {
     const { getToken } = useAuth();
-
+    const fetchData = async () => {
+      const token = await getToken.value()
+      await new PlanStore().savePlan('this.planName','irgendöpis', token as string);
+    }
     return {
+      fetchData,
       getToken,
     };
   },
@@ -240,23 +248,25 @@ export default defineComponent({
     async getPlans() {
       try {
         const token = await this.getToken() as string;
-        this.modulePlans = await PlanStore.fetchSavedPlans(token);
+        this.modulePlans = await new PlanStore().fetchSavedPlans(token);
       } catch (error) {
         console.error('Error fetching plans: ', error)
       }
     },
     async savePlan() {
-      const token = await this.getToken() as string;
-      console.log(this.$route.path.replace('/plan/', ''));
-      await PlanStore.savePlan(this.planName, this.$route.path.replace('/plan/', ''), token);
-      await this.getPlans();
-      this.isEditingName = false;
-      this.planName = '';
+      const temp = async (token) => {
+        console.log(this.$route.path.replace('/plan/', ''));
+        await new PlanStore().savePlan(this.planName, this.$route.path.replace('/plan/', ''), token);
+        await this.getPlans();
+        this.isEditingName = false;
+        this.planName = '';
+      }
+      this.fetchData()
     },
-    async deletePlan(planId: string) {
-      const token = await this.getToken() as string;
-      await PlanStore.deletePlan(planId, token)
-      await this.getPlans();
+    async deletePlan(/*planId: string*/) {
+      /*const token = await this.getToken() as string;
+      await new PlanStore().deletePlan(planId, token)
+      await this.getPlans();*/
     },
   }
 });

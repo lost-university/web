@@ -11,7 +11,7 @@ const BASE_URL = process.env.NODE_ENV === 'production' ? window.location.origin 
 
 export class PlanStore {
 
-  static async fetchSavedPlans(token: string): Promise<Plan[]> {
+  async fetchSavedPlans(token: string): Promise<Plan[]> {
     try {
       const response = await fetch(`${BASE_URL}/api/plans`, {
         headers: {
@@ -26,11 +26,11 @@ export class PlanStore {
     }
   }
 
-  static async savePlan(planName: string, modules: string, token: string): Promise<void> {
+  async savePlan(planName: string, modules: string, token: string): Promise<void> {
     const payload = JSON.stringify({ name: planName, content: modules });
     console.log(payload);
     try {
-      const response = await fetch(`${BASE_URL}/api/plan`, {
+      const response = await fetch(`/api/plan`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ export class PlanStore {
     }
   }
 
-  static async deletePlan(planId: string, token: string): Promise<void> {
+  async deletePlan(planId: string, token: string): Promise<void> {
     try {
       const response = await fetch(`${BASE_URL}/api/plan/${planId}`, {
         method: 'DELETE',
