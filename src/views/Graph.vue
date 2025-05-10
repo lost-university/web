@@ -1,5 +1,9 @@
 <template>
-  <div ref="wrapperRef" class="flex wrapper" @mouseleave="onWrapperLeave">
+  <div
+    ref="wrapperRef"
+    class="flex wrapper"
+    @mouseleave="onWrapperLeave"
+  >
     <VueFlow
       ref="vueFlowRef"
       :nodes="nodes"
@@ -14,13 +18,23 @@
       <EdgeDefs :edges="edges" />
 
       <template #node-module="props">
-        <ModuleNode :props="props" />
+        <ModuleNode
+          :props="props"
+          :active-hover="activeHover"
+          :highlighted-nodes="highlightedNodes"
+          @hover="onNodeHover"
+          @leave="onNodeLeave"
+        />
       </template>
     </VueFlow>
 
     <FitViewButton @click="fitView" />
 
-    <GraphTooltip v-model:visible="tooltipVisible" :x="tooltipX" :y="tooltipY">
+    <GraphTooltip
+      v-model:visible="tooltipVisible"
+      :x="tooltipX"
+      :y="tooltipY"
+    >
       Diese Abhängigkeit ist Pflicht.
     </GraphTooltip>
   </div>
@@ -45,6 +59,10 @@ const {
   onEdgeClick,
   onWrapperLeave,
   fitView,
+  activeHover,
+  highlightedNodes,
+  onNodeHover,
+  onNodeLeave,
 } = useGraphView();
 </script>
 

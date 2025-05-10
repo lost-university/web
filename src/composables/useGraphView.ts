@@ -24,7 +24,7 @@ export function useGraphView() {
   const allPlannedModuleIds = computed<string[]>(() => store.getters.allPlannedModuleIds as string[]);
 
   const { tooltip, showTooltip, hideTooltip } = useTooltip();
-  const { hoveredId, activeHover, highlightedNodes, processedEdges } =
+  const { hoveredId, processedEdges } =
     useGraphHighlighting(laidOutNodes, laidOutEdges);
 
   const route = useRoute();
@@ -48,7 +48,6 @@ export function useGraphView() {
   function fitView() {
     vueFlowRef.value?.fitView();
   }
-
 
   async function computeLayout() {
     const visibleModules = modules.value.filter(m =>
@@ -107,9 +106,9 @@ export function useGraphView() {
     vueFlowRef,
     nodes: laidOutNodes,
     edges: processedEdges,
-    tooltipVisible: tooltip.visible,
-    tooltipX: tooltip.x,
-    tooltipY: tooltip.y,
+    tooltipVisible: tooltip.value.visible,
+    tooltipX: tooltip.value.x,
+    tooltipY: tooltip.value.y,
     onEdgeClick,
     onWrapperLeave,
     fitView,

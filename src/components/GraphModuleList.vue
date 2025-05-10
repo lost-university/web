@@ -7,15 +7,14 @@
         :key="mod.id"
         class="m-1 w-full"
       >
-        <!-- add `relative group` here -->
         <button
           type="button"
           class="w-full text-left cursor-pointer focus:outline-none relative group"
           @click="addModuleToPlan(mod)"
         >
-          <!-- your existing card -->
           <ModuleCard
             v-if="mod?.name"
+            :id="Number(mod.id)"
             :module="mod"
           />
 
@@ -41,9 +40,10 @@
   <script lang="ts">
   import { defineComponent} from 'vue';
   import type {PropType} from 'vue';
-  import ModuleCard from './Module.vue'; // or reuse your Module.vue in a “button” mode
+  import ModuleCard from './Module.vue';
   import { store } from '../helpers/store';
   import { StorageHelper } from '../helpers/storage-helper';
+  import type { Module } from '../helpers/types';
 
   export default defineComponent({
     name: 'ModuleList',
@@ -57,12 +57,10 @@
     emits: ['module-added'],
     methods: {
       addModuleToPlan(module: Module) {
-        // find the highest-numbered semester
         const lastSemester = [...store.getters.semesters]
           .sort((a, b) => a.number - b.number)
           .pop()!;
 
-        // pass its number, not the object
         store.commit('addModuleToSemester', {
           semesterNumber: lastSemester.number,
           moduleId: module.id
@@ -79,7 +77,7 @@
   
   <style scoped>
   .list-node {
-    width: 260px; /* a bit wider than a single Module */
+    width: 260px;
     background-color: var(--color-gray-200);
     border: grey;
     z-index: 1000;
