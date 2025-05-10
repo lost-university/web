@@ -1,10 +1,10 @@
 <template>
   <span
-    class=""
     :class="{
       'isolate rounded-sm inline-flex shadow-sm': isButtonGroup,
       'flex flex-col gap-1': !isButtonGroup,
     }"
+    :data-cy="dataCyTag"
   >
     <button
       v-for="item in data"
@@ -12,6 +12,7 @@
       type="button"
       class="relative inline-flex px-3 py-2 focus:z-10"
       :class="[classes(item), item.color]"
+      :data-cy="`${dataCyTag}-Item`"
       @click="onclick(item.id)"
     >
       <span :class="{'underline': selected.includes(item.id)}">
@@ -43,7 +44,11 @@ export default defineComponent({
     isButtonGroup: {
       type: Boolean,
       default: false
-    }
+    },
+    dataCyTag: {
+      type: String,
+      default: 'ModuleFilter'
+    },
   },
   emits: ['update:selected'],
   methods: {

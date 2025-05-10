@@ -4,9 +4,15 @@
     :class="moduleIsDisabled(module) ?
       'text-gray-400 bg-gray-300 cursor-default' :
       'cursor-pointer hover:bg-gray-200'"
+    data-cy="ModuleSearch-ModuleListItem"
     @click="!moduleIsDisabled(module) ? onModuleSelect(module.id) : null"
   >
-    <span class="max-w-3/4">{{ module.name }}</span>
+    <span
+      class="max-w-3/4"
+      data-cy="ModuleSearch-ModuleListItem-ModuleName"
+    >
+      {{ module.name }}
+    </span>
     <span
       v-if="moduleIsInPlan(module)"
       class="italic"
@@ -16,14 +22,17 @@
     <span v-else-if="module.isDeactivated && disableInvalidModules">
       inaktiv
     </span>
-    <span v-else>
+    <span
+      v-else
+      data-cy="ModuleSearch-ModuleListItem-ECTS"
+    >
       {{ module.ects }} ECTS
     </span>
   </li>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, type PropType } from 'vue'
 import type { Module, Term } from "../helpers/types";
 import { store } from "../helpers/store";
 import { ValidationHelper } from "../helpers/validation-helper";
@@ -33,7 +42,7 @@ export default defineComponent({
   inject: ['disableInvalidModules', 'showNextPossibleSemester', 'termForWhichToSearch', 'onModuleSelect'],
   props: {
     module: {
-      type: Object,
+      type: Object as PropType<Module>,
       required: true
     },
   },

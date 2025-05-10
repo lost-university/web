@@ -1,6 +1,7 @@
 <template>
   <button
     class="bg-gray-800 text-white p-1 rounded-sm"
+    data-cy="ModuleSearch-OpenButton"
     type="button"
     :class="[buttonWidthClass]"
     @click="isSearching = true"
@@ -21,8 +22,9 @@
       <DialogPanel
         class="w-full max-w-4xl max-h-dvh flex flex-col
       rounded bg-white p-6 shadow-2xl overflow-y-auto sm:overflow-y-hidden sm:h-3/4"
+        data-cy="ModuleSearch-DialogPanel"
       >
-        <div class="flex justify-end mb-2">
+        <div class="flex sm:hidden justify-end mb-2">
           <button
             class="flex items-center"
             @click="isSearching= false"
@@ -40,6 +42,7 @@
             type="text"
             class="w-full border border-gray-300 rounded p-2"
             placeholder="Suche nach Modul oder Dozent"
+            data-cy="ModuleSearch-Input"
           >
           <button
             class="absolute top-0 right-0 h-full mx-2 px-1"
@@ -53,11 +56,15 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-5 gap-4 grow-0 sm:overflow-y-hidden">
-          <div class="col-span-2 mb-4">
+          <div
+            class="col-span-2 overflow-y-auto mb-4"
+            data-cy="ModuleSearch-Filter"
+          >
             <h3>Kategorie</h3>
             <ModuleFilter
               v-model:selected="filter.categories"
               :data="categoryFilterData()"
+              data-cy-tag="ModuleFilter-CategoryFilter"
               :is-single-select="false"
               :is-button-group="false"
             />
@@ -69,6 +76,7 @@
               v-model:selected="filter.ects"
               :data="ectsFilterData()"
               :is-single-select="false"
+              data-cy-tag="ModuleFilter-EctsFilter"
               is-button-group
             />
 
@@ -78,13 +86,14 @@
             <ModuleFilter
               v-model:selected="filter.semester"
               :data="semesterFilterData()"
+              data-cy-tag="ModuleFilter-SemesterFilter"
               is-single-select
               is-button-group
             />
           </div>
 
           <div class="col-span-3 overflow-y-auto flex flex-col">
-            <h3 class="mt-4">
+            <h3 class="sm:mt-0 mt-4">
               Module
             </h3>
             <div
@@ -115,14 +124,7 @@ import { getColorClassForCategoryId } from '../helpers/color-helper';
 import { ValidationHelper } from '../helpers/validation-helper';
 import ModuleFilter from "./ModuleFilter.vue";
 import ModuleSearchList from "./ModuleSearchList.vue";
-
-export type GroupedModule = {
-  id: string,
-  name: string,
-  modules: Module[],
-  isOpen: boolean,
-  colorClass: object
-};
+import type { GroupedModule } from "../types/GroupedModule";
 
 export default defineComponent({
   name: 'ModuleSearch',
@@ -178,7 +180,7 @@ export default defineComponent({
       isOneModuleAvailable: true,
       filter: {
         query: '',
-        categories: [],
+        categories: [] as string[],
         ects: [] as number[],
         semester: [] as string[],
       },
@@ -197,7 +199,7 @@ export default defineComponent({
       });
       const modulesInGroups = groups.flatMap(g => g.modules).map(m => m.id);
       const modulesNotInGroups = store.getters.modules.filter(m => !modulesInGroups.includes(m.id));
-      let filteredGroups = groups.concat({
+      let filteredGroups: GroupedModule[] = groups.concat({
         id: 'none',
         name: 'Ohne',
         modules: modulesNotInGroups,
@@ -222,7 +224,7 @@ export default defineComponent({
         filteredGroups = filteredGroups.map(g => {
           return {
             ...g,
-            modules: g.modules.filter(m => this.filter.semester.includes(m.term))
+            modules: g.modules.filter(m => this.filter.semester.includes(m.term as string))
           }
         });
       }

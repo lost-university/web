@@ -25,7 +25,10 @@
             />
           </div>
         </DisclosureButton>
-        <DisclosurePanel class="pb-2 text-sm">
+        <DisclosurePanel
+          class="pb-2 text-sm"
+          data-cy="ModuleSearch-ModuleList"
+        >
           <ModuleSearchListItem
             v-for="module in group.modules"
             :key="module.id"
