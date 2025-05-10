@@ -7,11 +7,11 @@
     }"
   >
     <button
-      v-for="(item, index) in data"
+      v-for="item in data"
       :key="item.id"
       type="button"
       class="relative inline-flex px-3 py-2 focus:z-10"
-      :class="[classes(item, index), item.color]"
+      :class="[classes(item), item.color]"
       @click="onclick(item.id)"
     >
       <span :class="{'underline': selected.includes(item.id)}">
@@ -23,12 +23,13 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue'
+import type { ModuleFilter } from "../types/ModuleFilter";
 
 export default defineComponent({
   name: "ModuleFilter",
   props: {
     data: {
-      type: Array as PropType<Array<{ id: number | string; value: string, color?: string }>>,
+      type: Array as PropType<Array<ModuleFilter>>,
       required: true
     },
     selected: {
@@ -46,12 +47,11 @@ export default defineComponent({
   },
   emits: ['update:selected'],
   methods: {
-    classes(item, index) {
+    classes(item: ModuleFilter) {
       return {
         'hover:bg-gray-50 ring-1 ring-inset ring-gray-300': this.isButtonGroup,
-        'rounded-l-sm': index === 0 && this.isButtonGroup,
-        'relative -ml-px rounded-r-sm': index === this.data.length - 1 && this.isButtonGroup,
-        'relative -ml-px': index !== 0 && this.isButtonGroup,
+        'first:rounded-l-sm not-first:relative not-first:-ml-px': this.isButtonGroup,
+        'last:relative last:-ml-px last:rounded-r-sm': this.isButtonGroup,
         'bg-white': this.selected.includes(item.id) && this.isButtonGroup,
         'bg-gray-200 text-gray-500': !this.selected.includes(item.id) && this.selected.length > 0 && this.isButtonGroup,
         'opacity-60 text-black': !this.selected.includes(item.id) && this.selected.length > 0 && !this.isButtonGroup,

@@ -16,5 +16,7 @@ export default {
   plugins: [
     plugin(function({ addVariant }) {
       addVariant('touch-only', '@media (hover:none)')
+      addVariant('not-first', '&:not(:first-child)');
     })
-  ]}
+  ]
+}

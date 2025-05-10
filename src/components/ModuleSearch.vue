@@ -1,10 +1,9 @@
 <template>
   <button
-    v-if="!isSearching"
     class="bg-gray-800 text-white p-1 rounded-sm"
     type="button"
     :class="[buttonWidthClass]"
-    @click="startSearching()"
+    @click="isSearching = true"
   >
     {{ textForButton }}
     <font-awesome-icon
@@ -12,113 +11,6 @@
       :icon="'chevron-down'"
     />
   </button>
-  <Combobox
-    v-if="false"
-    :model-value="modelValue"
-    by="id"
-    nullable
-    @update:model-value="value => selectModule(value)"
-  >
-    <div
-      class="relative w-full h-8 rounded-t-lg shadow-md flex items-center"
-    >
-      <div
-        class="absolute flex bg-gray-100 py-2 px-3 space-x-1 rounded-t"
-        :class="[listWidthClass]"
-      >
-        <ComboboxInput
-          ref="comboboxInput"
-          class="w-full border-none text-sm"
-          :display-value="(e) => e?.id"
-          @change="query = $event.target.value"
-        />
-        <ComboboxButton
-          ref="buttonForOpening"
-          class="w-0 h-0"
-        />
-        <button
-          class="my-auto"
-          type="button"
-          @click="isSearching = false"
-        >
-          <font-awesome-icon :icon="['fa', 'circle-xmark']" />
-        </button>
-      </div>
-    </div>
-    <ComboboxOptions
-      static
-      :class="[listWidthClass, containerBound ? 'inherit' : 'absolute']"
-      class="max-h-72 overflow-auto rounded-b-md shadow-lg bg-gray-100 z-40"
-    >
-      <div
-        v-for="group in groupedModules"
-        :key="group.id"
-      >
-        <div
-          class="cursor-pointer px-2 text-white flex justify-between items-center"
-          :class="group.colorClass"
-          :aria-expanded="group.isOpen"
-          type="button"
-          @click="toggleGroup(group.id)"
-        >
-          <span>{{ group.name }}</span>
-          <font-awesome-icon
-            :icon="['fa', group.isOpen ? 'chevron-up' : 'chevron-down']"
-            class="h-5 w-5 ml-2"
-          />
-        </div>
-
-        <ComboboxOption
-          v-for="module in filteredModulesByGroup(group.id)"
-          v-show="group.isOpen"
-          :key="module.id"
-          :value="module.id"
-          as="template"
-          :disabled="moduleIsDisabled(module)"
-        >
-          <li
-            class="pl-3 border-b border-slate-500 flex items-center"
-            :class="moduleIsDisabled(module) ?
-              'text-gray-400 bg-gray-300 cursor-default' :
-              'cursor-pointer hover:bg-gray-200'"
-          >
-            <span
-              class="w-3/5 block break-words font-normal"
-            >
-              {{ module.name }}
-            </span>
-
-            <div class="w-1/5 text-xs">
-              <span
-                v-if="moduleIsInPlan(module)"
-                class="italic"
-              >
-                geplant
-              </span>
-              <span v-else-if="module.isDeactivated && disableInvalidModules">
-                inaktiv
-              </span>
-              <span v-else>
-                {{ module.ects }} ECTS
-              </span>
-            </div>
-
-            <div class="w-1/5 text-xs">
-              <span v-if="showNextPossibleSemester && module.nextPossibleSemester">
-                ({{ module.nextPossibleSemester }})
-              </span>
-              <span v-else-if="moduleHasWrongTerm(module) && disableInvalidModules">
-                nur im {{ module.term }}
-              </span>
-              <span v-else>
-                {{ module.getDisplayTextForTerm() }}
-              </span>
-            </div>
-          </li>
-        </ComboboxOption>
-      </div>
-    </ComboboxOptions>
-  </Combobox>
 
   <HeadlessUIDialog
     :open="isSearching"
@@ -128,8 +20,20 @@
     <div class="fixed inset-0 flex w-screen items-center justify-center">
       <DialogPanel
         class="w-full max-w-4xl max-h-dvh flex flex-col
-      rounded bg-white p-6 shadow-2xl overflow-y-auto sm:overflow-y-hidden sm:max-h-3/4"
+      rounded bg-white p-6 shadow-2xl overflow-y-auto sm:overflow-y-hidden sm:h-3/4"
       >
+        <div class="flex justify-end mb-2">
+          <button
+            class="flex items-center"
+            @click="isSearching= false"
+          >
+            <span class="pr-2">schliessen</span>
+            <font-awesome-icon
+              :icon="['fa', 'circle-xmark']"
+              class="fa-2x"
+            />
+          </button>
+        </div>
         <div class="relative mb-6">
           <input
             v-model="filter.query"
@@ -137,7 +41,10 @@
             class="w-full border border-gray-300 rounded p-2"
             placeholder="Suche nach Modul oder Dozent"
           >
-          <button class="absolute top-0 right-0 h-full mx-2 px-1">
+          <button
+            class="absolute top-0 right-0 h-full mx-2 px-1"
+            @click="filter.query = ''"
+          >
             <font-awesome-icon
               :icon="['fa', 'circle-xmark']"
               class="text-gray-500"
@@ -176,7 +83,16 @@
             />
           </div>
 
-          <div class="col-span-3 overflow-y-auto">
+          <div class="col-span-3 overflow-y-auto flex flex-col">
+            <h3 class="mt-4">
+              Module
+            </h3>
+            <div
+              v-if="!isOneModuleAvailable"
+              class="flex flex-col justify-center items-center grow"
+            >
+              <span class="font-bold">Keine Module verfügbar. Wende einen anderen Filter an.</span>
+            </div>
             <ModuleSearchList
               :groups="groupedModules"
             />
@@ -192,11 +108,6 @@ import { defineComponent } from 'vue';
 import type { Module, Term } from '../helpers/types';
 import { store } from '../helpers/store';
 import {
-  Combobox,
-  ComboboxInput,
-  ComboboxOptions,
-  ComboboxOption,
-  ComboboxButton,
   Dialog as HeadlessUIDialog,
   DialogPanel,
 } from '@headlessui/vue';
@@ -218,7 +129,6 @@ export default defineComponent({
   components: {
     ModuleSearchList,
     ModuleFilter,
-    Combobox, ComboboxInput, ComboboxOptions, ComboboxOption, ComboboxButton,
     HeadlessUIDialog, DialogPanel
   },
   provide() {
@@ -241,14 +151,6 @@ export default defineComponent({
     buttonWidthClass: {
       type: String,
       required: true,
-    },
-    listWidthClass: {
-      type: String,
-      default: 'w-72'
-    },
-    containerBound: {
-      type: Boolean,
-      default: false
     },
     termForWhichToSearch: {
       type: String as () => Term,
@@ -273,19 +175,13 @@ export default defineComponent({
   data() {
     return {
       isSearching: false,
-      searchId: Math.random(),
-      // OLD
-      modelValue: null,
-      query: '',
-      // OLD end
-
+      isOneModuleAvailable: true,
       filter: {
         query: '',
         categories: [],
         ects: [] as number[],
         semester: [] as string[],
       },
-      // groupedModules: [] as GroupedModule[],
     };
   },
   computed: {
@@ -301,11 +197,11 @@ export default defineComponent({
       });
       const modulesInGroups = groups.flatMap(g => g.modules).map(m => m.id);
       const modulesNotInGroups = store.getters.modules.filter(m => !modulesInGroups.includes(m.id));
-      let filteredGroups =  groups.concat({
+      let filteredGroups = groups.concat({
         id: 'none',
         name: 'Ohne',
         modules: modulesNotInGroups,
-        isOpen: this.categoryId ? false : true,
+        isOpen: !this.categoryId,
         colorClass: getColorClassForCategoryId('')
       });
 
@@ -331,7 +227,29 @@ export default defineComponent({
         });
       }
 
+      if (this.filter.query.length > 0) {
+        filteredGroups = filteredGroups.map(g => {
+          return {
+            ...g,
+            modules: g.modules.filter(m => m.name.toLowerCase().includes(this.filter.query.toLowerCase()))
+          }
+        });
+      }
+
       return filteredGroups;
+    }
+  },
+  watch: {
+    groupedModules: {
+      handler(newValue) {
+        const modules = newValue.flatMap(g => {
+          return g.modules
+        })
+
+        this.isOneModuleAvailable = modules.length !== 0;
+      },
+      deep: true,
+      immediate: true
     }
   },
   methods: {
@@ -395,52 +313,6 @@ export default defineComponent({
           id: 'both',
           value: 'Beide'
         }];
-    },
-    startSearching() {
-      if (!this.isSearching) {
-        // const groups = store.getters.enrichedCategories.map(c => {
-        //   return {
-        //     id: c.id,
-        //     name: c.name,
-        //     modules: c.modules,
-        //     isOpen: this.categoryId ? this.categoryId === c.id : true,
-        //     colorClass: getColorClassForCategoryId(c.id),
-        //   };
-        // });
-        // const modulesInGroups = groups.flatMap(g => g.modules).map(m => m.id);
-        // const modulesNotInGroups = store.getters.modules.filter(m => !modulesInGroups.includes(m.id));
-        // this.groupedModules = groups.concat({
-        //   id: 'none',
-        //   name: 'Ohne',
-        //   modules: modulesNotInGroups,
-        //   isOpen: this.categoryId ? false : true,
-        //   colorClass: getColorClassForCategoryId('')
-        // });
-      }
-      this.query = '';
-      this.isSearching = true;
-      // this.$nextTick(() => {
-      //   const buttonForOpening = this.$refs.buttonForOpening;
-      //   if (buttonForOpening.el) {
-      //     // this focuses the input and ensures that blur will close the list
-      //     buttonForOpening.el.click();
-      //   }
-      // });
-    },
-    toggleGroup(id: string) {
-      // const group = this.groupedModules.find(f => f.id === id);
-      // // group.isOpen = !group.isOpen;
-      // this.groupedModules = [...this.groupedModules];
-    },
-    filteredModulesByGroup(groupId: string) {
-      const group = this.groupedModules.find(f => f.id === groupId);
-      if (this.query === '') {
-        return group?.modules;
-      }
-      return group?.modules.filter((module) => {
-        return module.name.toLowerCase().includes(this.query.toLowerCase()) ||
-          module.id.toLowerCase().includes(this.query.toLowerCase());
-      })
     },
   }
 });

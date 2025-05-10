@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import type { Module } from "../helpers/types";
+import type { Module, Term } from "../helpers/types";
 import { store } from "../helpers/store";
 import { ValidationHelper } from "../helpers/validation-helper";
 
@@ -45,10 +45,10 @@ export default defineComponent({
       return this.moduleIsInPlan(module) || (this.disableInvalidModules && (
         this.moduleHasWrongTerm(module) ||
         module.isDeactivated ||
-        (this.showNextPossibleSemester && !module.nextPossibleSemester)));
+        (this.showNextPossibleSemester && !module.nextPossibleSemester))) as boolean;
     },
     moduleHasWrongTerm(module: Module): boolean {
-      return ValidationHelper.isModuleInWrongTerm(module, this.termForWhichToSearch);
+      return ValidationHelper.isModuleInWrongTerm(module, this.termForWhichToSearch as Term);
     },
   }
 })
