@@ -51,6 +51,7 @@
         
         <router-link
           v-if="!isGraphRoute"
+          id="graph-link"
           :to="{ path: '/graph/', hash: currentHash }"
           class="ml-8 px-4 py-2 bg-gray-800 text-white rounded"
         >
@@ -58,6 +59,7 @@
         </router-link>
         <router-link
           v-else
+          id="table-link"
           :to="{ path: '/', hash: currentHash }"
           class="ml-8 px-4 py-2 bg-gray-800 text-white rounded"
         >

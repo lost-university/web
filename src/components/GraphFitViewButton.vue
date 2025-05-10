@@ -1,5 +1,6 @@
 <template>
   <button
+    id="fit-view-button"
     class="fit-view-button absolute right-8 bottom-8 w-10 h-10 bg-gray-800 rounded-full p-2 shadow
              hover:bg-gray-700 focus:outline-none width-10 height-10"
     aria-label="Fit View"

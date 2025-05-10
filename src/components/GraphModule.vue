@@ -15,7 +15,7 @@
     
     <button
       v-if="hasDependentModules()"
-      class="absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
+      class="add-pedendent-modules absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
              hover:!opacity-100 right-2 -bottom-1 transform -translate-y-1/2 transition-opacity duration-75"
       type="button"
       @click="toggleList('right')"
@@ -28,7 +28,7 @@
 
     <button
       v-if="hasRecommendedModules()"
-      class="absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
+      class="add-recommended-modules absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
              hover:!opacity-100 left-2 -bottom-1 transform -translate-y-1/2 transition-opacity duration-75"
       type="button"
       @click="toggleList('left')"
@@ -41,7 +41,7 @@
 
     <button
      
-      class="absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
+      class="remove-module absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
              hover:!opacity-100 right-2 transition-opacity duration-75"
       type="button"
       @click="removeModule"
