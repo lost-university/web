@@ -2,33 +2,66 @@ name: System tests
 on:
   workflow_dispatch:
     inputs:
-      frontendVersion:
-        description: 'Frontend version'
-        required: true
       backendVersion:
         description: 'Backend version'
         required: true
 
 jobs:
-  system-tests:
+  build-frontend:
     runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.set-docker-tag.outputs.repo }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Set Docker tag
+        id: set-docker-tag
+        env:
+          REPOSITORY: '${{ github.repository }}'
+        run: |
+          echo "repo=ghcr.io/${REPOSITORY,,}/web:local-system-tests" >> $GITHUB_OUTPUT
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          push: false
+          build-args: |
+            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }}
+          tags: ${{ steps.set-docker-tag.outputs.repo }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  system-tests:
+    needs: build-frontend
+    runs-on: ubuntu-latest
+    env:
+      BACKEND_VERSION: ${{ github.event.inputs.backendVersion }}
+      POSTGRES_HOST: postgres-db
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+      VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
     strategy:
       matrix:
         browser: [ chrome, firefox, edge ]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Set env
-        run: |
-          echo "FRONTEND_VERSION=${{ github.event.inputs.frontendVersion }}" >> $GITHUB_ENV
-          echo "BACKEND_VERSION=${{ github.event.inputs.backendVersion }}" >> $GITHUB_ENV
-          echo "POSTGRES_HOST=postgres-db" >> $GITHUB_ENV
-          echo "POSTGRES_PORT=5432" >> $GITHUB_ENV
-          echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
-          echo "POSTGRES_DB=postgres" >> $GITHUB_ENV
-          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
-          echo "CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}" >> $GITHUB_ENV
-          echo "VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}" >> $GITHUB_ENV
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          push: false
+          build-args: |
+            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }}
+          tags: ${{ needs.build-frontend.outputs.tags }}
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: Start Docker containers
         run: |
           docker compose -f cypress/docker-compose.yml up -d
@@ -39,6 +72,9 @@ jobs:
           wait-on: 'http://localhost:5173'
       - name: Upload Cypress Screenshots
         uses: actions/upload-artifact@v4
+        env:
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
         with:
           name: cypress-screenshots-${{ matrix.browser }}
           path: cypress/screenshots/

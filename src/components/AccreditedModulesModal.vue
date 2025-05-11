@@ -2,6 +2,7 @@
   <button
     class="h-6 w-16 bg-gray-800 text-white text-sm rounded-sm"
     type="button"
+    data-cy="AccreditedModules-OpenButton"
     @click="openModal"
   >
     +
