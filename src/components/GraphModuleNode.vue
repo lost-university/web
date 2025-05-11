@@ -18,11 +18,11 @@
   <script setup lang="ts">
   import { computed } from 'vue';
   import ModuleComponent from './GraphModule.vue';
-  import type { GraphNodeProps } from '@vue-flow/core';
   import { store } from '../helpers/store';
+  import type { Node } from '@vue-flow/core';
   
   const props = defineProps<{
-    props: GraphNodeProps & { data: { moduleData: unknown } };
+    props: Node & { data: { moduleData: unknown } };
     activeHover: boolean;
     highlightedNodes: Set<string>;
   }>();

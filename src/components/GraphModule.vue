@@ -9,12 +9,11 @@
     <Handle
       type="target"
       :position="Position.Left"
-      :style="{ top: '50%', transform: 'translate(0, -50%)', background: '#555', visibility: 'hidden'}"
+      :style="{ top: '50%', transform: 'translate(0, -50%)', background: '#555', visibility: 'hidden' }"
     />
-    
-    
+
     <button
-      v-if="hasDependentModules()"
+      v-if="hasDependent"
       class="add-pedendent-modules absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
              hover:!opacity-100 right-2 -bottom-1 transform -translate-y-1/2 transition-opacity duration-75"
       type="button"
@@ -27,7 +26,7 @@
     </button>
 
     <button
-      v-if="hasRecommendedModules()"
+      v-if="hasRecommended"
       class="add-recommended-modules absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
              hover:!opacity-100 left-2 -bottom-1 transform -translate-y-1/2 transition-opacity duration-75"
       type="button"
@@ -40,7 +39,6 @@
     </button>
 
     <button
-     
       class="remove-module absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
              hover:!opacity-100 right-2 transition-opacity duration-75"
       type="button"
@@ -56,14 +54,15 @@
       class="font-bold hover:underline"
       target="_blank"
       :href="'https://studien.ost.ch/' + module.url.replace('.json', '.html')"
-    >{{ module.name }}
+    >
+      {{ module.name }}
     </a>
     <p>{{ module.ects }} ECTS</p>
 
     <Handle
       type="source"
       :position="Position.Right"
-      :style="{ top: '50%', transform: 'translateY(-50%)', background: '#555', visibility: 'hidden'}"
+      :style="{ top: '50%', transform: 'translateY(-50%)', background: '#555', visibility: 'hidden' }"
     />
   </div>
 
@@ -75,108 +74,73 @@
     @mouseleave="hideList"
   >
     <ModuleList
-      :modules="listSide === 'left' ? recommendedModules() : dependentModules()"
+      :modules="listSide === 'left' ? recommendedModules : dependentModules"
       @module-selected="onModuleSelected"
       @module-added="hideList"
     />
   </div>
 </template>
 
-<script lang="ts">
-import { type PropType, defineComponent } from 'vue';
-import { Handle, Position } from '@vue-flow/core';
-import { getColorClassForPrioritizedCategory } from '../helpers/color-helper';
-import type { Module } from '../helpers/types';
-import ModuleList from './GraphModuleList.vue';
-import moduleCatalog from '../helpers/temporaryModuleCatalog';
-import { store } from '../helpers/store';
-import { StorageHelper } from '../helpers/storage-helper';
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { Handle, Position } from '@vue-flow/core'
+import ModuleList from './GraphModuleList.vue'
+import { getColorClassForPrioritizedCategory } from '../helpers/color-helper'
+import type { Module } from '../helpers/types'
+import { store } from '../helpers/store'
+import { StorageHelper } from '../helpers/storage-helper'
 
-export default defineComponent({
-  name: 'Module',
-  components: {
-    Handle,
-    ModuleList,
-  },
-  props: {
-    module: {
-      type: Object as PropType<Module>,
-      required: true,
-    },
-    id: {
-      type: Number,
-      required: true,
-    },
-  },
-  emits: ['on-delete', 'module-selected'],
-  data() {
-    return {
-      showList: false,
-      listSide: 'left',
-      catalog: moduleCatalog,
-      Position,
-    };
-  },
-  computed: {
-    computedClasses(): string[] {
-      const classes = [
-        this.getColorClassForPrioritizedCategory(
-          this.module.categoriesForColoring
-        ),
-      ];
-      if (this.module.validationInfo?.severity === 'hard') {
-        classes.push('border-red-500', 'border-4');
-      }
-      return classes;
-    },
-  },
-  methods: {
-    toggleList(side: 'left' | 'right') {
-      this.listSide = side;
-      this.showList = !this.showList;
-    },
-    hideList() {
-      this.showList = false;
-    },
-    getColorClassForPrioritizedCategory,
-    getElement() {
-      return this.$refs.itemRef as HTMLElement;
-    },
-    onModuleSelected(mod: Module) {
-      this.$emit('module-selected', { parentId: this.id, module: mod });
-      this.showList = false;
-    },
-    recommendedModules(): Module[] {
-      const allModules = store.getters.modules as Module[];
-      const plannedModuleIds = store.getters.allPlannedModuleIds as string[];
-      return this.module.recommendedModuleIds
-        .map((modId) => allModules.find((m) => m.id === modId))
-        .filter((m) => m && !plannedModuleIds.includes(m.id))
-        .filter((m): m is Module => Boolean(m));
-    },
-    dependentModules(): Module[] {
-      const allModules = store.getters.modules as Module[];
-      const plannedModuleIds = store.getters.allPlannedModuleIds as string[];
-      return this.module.dependentModuleIds
-        .map((modId) => allModules.find((m) => m.id === modId))
-        .filter((m) => m && !plannedModuleIds.includes(m.id))
-        .filter((m): m is Module => Boolean(m));
-    },
-    hasRecommendedModules(): boolean {
-      return this.recommendedModules().length > 0;
-    },
-    hasDependentModules(): boolean {
-      return this.dependentModules().length > 0;
-    },
-    removeModule() {
-      store.commit('removeModuleFromAllSemesters', this.module.id);
-      this.updateUrlFragment();
-    },
-    updateUrlFragment() {
-      StorageHelper.updateUrlFragment();
-    },
-  },
-});
+const props = defineProps<{ module: Module; id: number }>()
+const emit = defineEmits<{
+  (e: 'on-delete'): void
+  (e: 'module-selected', payload: { parentId: number; module: Module }): void
+}>()
+
+const showList = ref(false)
+const listSide = ref<'left' | 'right'>('left')
+const itemRef = ref<HTMLElement>()
+
+const computedClasses = computed<string[]>(() => {
+  const classes = [getColorClassForPrioritizedCategory(props.module.categoriesForColoring)]
+  if (props.module.validationInfo?.severity === 'hard') {
+    classes.push('border-red-500', 'border-4')
+  }
+  return classes
+})
+
+const recommendedModules = computed<Module[]>(() =>
+  props.module.recommendedModuleIds
+    .map(id => (store.getters.modules as Module[]).find(m => m.id === id))
+    .filter((m): m is Module => !!m && !(store.getters.allPlannedModuleIds as string[]).includes(m.id))
+)
+
+const dependentModules = computed<Module[]>(() =>
+  props.module.dependentModuleIds
+    .map(id => (store.getters.modules as Module[]).find(m => m.id === id))
+    .filter((m): m is Module => !!m && !(store.getters.allPlannedModuleIds as string[]).includes(m.id))
+)
+
+const hasRecommended = computed(() => recommendedModules.value.length > 0)
+const hasDependent = computed(() => dependentModules.value.length > 0)
+
+function toggleList(side: 'left' | 'right') {
+  listSide.value = side
+  showList.value = !showList.value
+}
+
+function hideList() {
+  showList.value = false
+}
+
+function onModuleSelected(mod: Module) {
+  emit('module-selected', { parentId: props.id, module: mod })
+  showList.value = false
+}
+
+function removeModule() {
+  store.commit('removeModuleFromAllSemesters', props.module.id)
+  StorageHelper.updateUrlFragment()
+}
 </script>
 
 <style scoped>
@@ -184,3 +148,4 @@ export default defineComponent({
   width: 240px;
 }
 </style>
+ 

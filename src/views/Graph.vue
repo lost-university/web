@@ -69,6 +69,7 @@ const {
   onNodeHover,
   onNodeLeave,
 } = useGraphHighlighting(nodes, edges);
+
 </script>
 
 <style scoped>

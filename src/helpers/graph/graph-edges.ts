@@ -49,12 +49,13 @@ export function manditoryEdgeStyle(
   edge.labelShowBg = true;
   edge.labelBgStyle = {
     fill: midColor,
-    width: 30,
-    height: 30,
-    rx: 15,
-    ry: 15,
+    width: '30px',
+    height: '30px',
     transform: 'translate(-6px,2px)',
-  };
+  // Firefox was not happy about width: 30, but the type must be a number - so thiw is a workaround
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } as any;
+  edge.labelBgBorderRadius = 15;
   edge.labelBgPadding = [6, 6];
   edge.labelStyle = {
     fill: '#fff',

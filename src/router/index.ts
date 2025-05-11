@@ -8,11 +8,6 @@ const routes = [
     component: () => import('../views/Graph.vue'),
   },
   {
-    path: '/overlay',
-    name: 'Overlay',
-    component: () => import('../views/Overlay.vue'),
-  },
-  {
     path: '/:catchAll(.*)',
     name: 'Home',
     component: Home,

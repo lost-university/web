@@ -1,17 +1,17 @@
-import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
-import { useRoute } from 'vue-router';
-import type { VueFlow } from '@vue-flow/core';
-import type { Node, Edge } from '@vue-flow/core';
-import { store } from '../helpers/store';
-import specialModuleIds from '../helpers/temporarySpecialModules';
-import { getColorHexForPrioritizedCategory } from '../helpers/color-helper';
-import { generateModuleEdges } from '../helpers/graph/graph-edges';
-import { generateModuleNodes } from '../helpers/graph/graph-nodes';
-import { sortLayout } from '../helpers/graph/graph-layout';
-import { useTooltip } from './useGraphTooltip';
-import { useGraphHighlighting } from './useGraphHighlighting';
-import { getPlanDataFromUrl } from '../helpers/plan-loader';
-import type { Module } from '../helpers/types';
+import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
+import { useRoute } from "vue-router";
+import type { VueFlow } from "@vue-flow/core";
+import type { Node, Edge } from "@vue-flow/core";
+import { store } from "../helpers/store";
+import specialModuleIds from "../helpers/temporarySpecialModules";
+import { getColorHexForPrioritizedCategory } from "../helpers/color-helper";
+import { generateModuleEdges } from "../helpers/graph/graph-edges";
+import { generateModuleNodes } from "../helpers/graph/graph-nodes";
+import { sortLayout } from "../helpers/graph/graph-layout";
+import { useTooltip } from "./useGraphTooltip";
+import { useGraphHighlighting } from "./useGraphHighlighting";
+import { getPlanDataFromUrl } from "../helpers/plan-loader";
+import type { Module } from "../helpers/types";
 
 export function useGraphView() {
   const wrapperRef = ref<HTMLElement | null>(null);
@@ -21,11 +21,12 @@ export function useGraphView() {
   const laidOutEdges = ref<Edge[]>([]);
 
   const modules = computed<Module[]>(() => store.getters.modules as Module[]);
-  const allPlannedModuleIds = computed<string[]>(() => store.getters.allPlannedModuleIds as string[]);
+  const allPlannedModuleIds = computed<string[]>(
+    () => store.getters.allPlannedModuleIds as string[]
+  );
 
   const { tooltip, showTooltip, hideTooltip } = useTooltip();
-  const { hoveredId, processedEdges } =
-    useGraphHighlighting(laidOutNodes, laidOutEdges);
+  const { hoveredId, processedEdges } = useGraphHighlighting(laidOutNodes, laidOutEdges);
 
   const route = useRoute();
 
@@ -35,7 +36,8 @@ export function useGraphView() {
 
   function onEdgeClick({ event, edge }: { event: MouseEvent | TouchEvent; edge: Edge }) {
     event.stopPropagation();
-    if (!edge.labelShowBg || !edge.label) return;
+    if (!edge.label) return;
+
     const wrapperEl = wrapperRef.value!;
     showTooltip(event, wrapperEl, edge.id!);
   }
@@ -50,9 +52,7 @@ export function useGraphView() {
   }
 
   async function computeLayout() {
-    const visibleModules = modules.value.filter(m =>
-      allPlannedModuleIds.value.includes(m.id)
-    );
+    const visibleModules = modules.value.filter((m) => allPlannedModuleIds.value.includes(m.id));
     const rawNodes = generateModuleNodes(visibleModules);
     const rawEdges = generateModuleEdges(
       visibleModules,
@@ -66,7 +66,7 @@ export function useGraphView() {
       laidOutNodes.value = nodes;
       laidOutEdges.value = edges;
     } catch (err) {
-      console.error('ELK layout error:', err);
+      console.error("ELK layout error:", err);
     }
   }
 
@@ -76,7 +76,7 @@ export function useGraphView() {
   }
 
   function handleKeydown(event: KeyboardEvent) {
-    if (event.key.toLowerCase() === 'f') fitView();
+    if (event.key.toLowerCase() === "f") fitView();
   }
 
   function setGraphHeight() {
@@ -87,18 +87,20 @@ export function useGraphView() {
   }
 
   onMounted(() => {
-    store.dispatch('loadModules').then(loadPlanDataFromUrl);
-    window.addEventListener('keydown', handleKeydown);
-    window.addEventListener('resize', setGraphHeight);
+    store.dispatch("loadModules").then(loadPlanDataFromUrl);
+    window.addEventListener("keydown", handleKeydown);
+    window.addEventListener("resize", setGraphHeight);
     setGraphHeight();
   });
 
   onBeforeUnmount(() => {
-    window.removeEventListener('keydown', handleKeydown);
-    window.removeEventListener('resize', setGraphHeight);
+    window.removeEventListener("keydown", handleKeydown);
+    window.removeEventListener("resize", setGraphHeight);
   });
 
-  watch(modules, mods => { if (mods.length) computeLayout(); });
+  watch(modules, (mods) => {
+    if (mods.length) computeLayout();
+  });
   watch(() => route.hash, loadPlanDataFromUrl);
 
   return {
@@ -106,9 +108,9 @@ export function useGraphView() {
     vueFlowRef,
     nodes: laidOutNodes,
     edges: processedEdges,
-    tooltipVisible: tooltip.value.visible,
-    tooltipX: tooltip.value.x,
-    tooltipY: tooltip.value.y,
+    tooltipVisible: computed(() => tooltip.value.visible),
+    tooltipX: computed(() => tooltip.value.x),
+    tooltipY: computed(() => tooltip.value.y),
     onEdgeClick,
     onWrapperLeave,
     fitView,

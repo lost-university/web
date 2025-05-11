@@ -37,7 +37,7 @@ export function useGraphHighlighting(
   const processedEdges = computed<GraphEdge[]>(() => {
     const hov = activeHover.value;
     if (!hov) {
-      return edges.value;
+      return edges.value as GraphEdge[];
     }
     return edges.value.map((edge) => {
       const isHighlighted = edge.source === hov || edge.target === hov;

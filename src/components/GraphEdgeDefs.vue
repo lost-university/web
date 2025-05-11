@@ -21,7 +21,6 @@
         
       </linearGradient>
       <marker
-        id="test_marker"
         markerWidth="10"
         markerHeight="100"
         refX="0" 
