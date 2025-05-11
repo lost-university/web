@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue';
 import type { Ref } from 'vue';
-
 import type { Edge, Node } from '@vue-flow/core';
+import type { GraphEdge } from '../helpers/graph/graph-edges'
 
 
 export function useGraphHighlighting(
@@ -9,6 +9,13 @@ export function useGraphHighlighting(
   edges: Ref<Edge[]>
 ) {
   const hoveredId = ref<string | null>(null);
+
+  const onNodeHover = (id: string) => {
+    hoveredId.value = id
+  }
+  const onNodeLeave = () => {
+    hoveredId.value = null
+  }
 
   const activeHover = computed(() => {
     const id = hoveredId.value;
@@ -27,7 +34,7 @@ export function useGraphHighlighting(
     return set;
   });
 
-  const processedEdges = computed(() => {
+  const processedEdges = computed<GraphEdge[]>(() => {
     const hov = activeHover.value;
     if (!hov) {
       return edges.value;
@@ -53,12 +60,12 @@ export function useGraphHighlighting(
           : {};
       }
 
-      return {
-        ...edge,
+      return ({
+        ...edge ,
         style: { ...baseStyle, ...dimmedStyle },
         ...(edge.labelShowBg ? { labelBgStyle: { ...edge.labelBgStyle, ...badgeBg } } : {}),
         ...(edge.label ? { labelStyle: { ...edge.labelStyle, ...badgeText } } : {}),
-      };
+      }) as GraphEdge;
     });
   });
 
@@ -67,5 +74,7 @@ export function useGraphHighlighting(
     activeHover,
     highlightedNodes,
     processedEdges,
+    onNodeHover,
+    onNodeLeave,
   };
 }

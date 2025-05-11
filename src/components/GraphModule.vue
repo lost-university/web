@@ -163,11 +163,9 @@ export default defineComponent({
         .filter((m): m is Module => Boolean(m));
     },
     hasRecommendedModules(): boolean {
-      console.log('hasRecommendedModules', this.recommendedModules());
       return this.recommendedModules().length > 0;
     },
     hasDependentModules(): boolean {
-      console.log('hasDependentModules', this.dependentModules());
       return this.dependentModules().length > 0;
     },
     removeModule() {

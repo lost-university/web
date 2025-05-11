@@ -7,7 +7,7 @@
     <VueFlow
       ref="vueFlowRef"
       :nodes="nodes"
-      :edges="edges"
+      :edges="processedEdges"
       :default-zoom="0.5"
       :max-zoom="1"
       :min-zoom="0.15"
@@ -15,14 +15,14 @@
       @edge-click="onEdgeClick"
       @nodes-initialized="fitView"
     >
-      <EdgeDefs :edges="edges" />
+      <EdgeDefs :edges="processedEdges" />
 
       <template #node-module="props">
         <ModuleNode
           :props="props"
-          :active-hover="activeHover"
+          :active-hover="!!activeHover"
           :highlighted-nodes="highlightedNodes"
-          @hover="onNodeHover"
+          @hover="() => onNodeHover(props.id)"
           @leave="onNodeLeave"
         />
       </template>
@@ -42,6 +42,7 @@
 
 <script setup lang="ts">
 import { useGraphView } from '../composables/useGraphView';
+import { useGraphHighlighting} from '../composables/useGraphHighlighting';
 import { VueFlow } from '@vue-flow/core';
 import EdgeDefs from '../components/GraphEdgeDefs.vue';
 import ModuleNode from '../components/GraphModuleNode.vue';
@@ -59,11 +60,15 @@ const {
   onEdgeClick,
   onWrapperLeave,
   fitView,
+} = useGraphView();
+
+const {
   activeHover,
   highlightedNodes,
+  processedEdges,
   onNodeHover,
   onNodeLeave,
-} = useGraphView();
+} = useGraphHighlighting(nodes, edges);
 </script>
 
 <style scoped>

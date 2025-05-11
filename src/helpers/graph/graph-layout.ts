@@ -1,4 +1,6 @@
 import ELK from 'elkjs/lib/elk.bundled.js';
+import type { ElkNode } from 'elkjs/lib/elk-api';
+
 import type { XYPosition } from '@vue-flow/core';
 import type { LayoutResult } from './graph-layout-utils';
 import type { GraphNode } from './graph-nodes';
@@ -37,8 +39,8 @@ function buildElkGraph(rawNodes: GraphNode[], rawEdges: GraphEdge[]) {
     } as const;
 }
 
-function updatePositions(layout: any, rawNodes: GraphNode[]): GraphNode[] {
-    return layout.children!.map((elkNode: any) => {
+function updatePositions(layout: ElkNode, rawNodes: GraphNode[]): GraphNode[] {
+    return layout.children!.map((elkNode: ElkNode) => {
         const original = rawNodes.find((n) => n.id === elkNode.id)!;
         const pos = { x: elkNode.x!, y: elkNode.y! };
         savedPositions[original.id] = pos;

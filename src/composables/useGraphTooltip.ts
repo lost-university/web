@@ -1,4 +1,3 @@
-// composables/useTooltip.ts
 import { ref } from 'vue';
 
 export function useTooltip() {

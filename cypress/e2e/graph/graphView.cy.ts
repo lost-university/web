@@ -83,5 +83,22 @@ describe('Graph View E2E Tests', () => {
         should('not.exist');
     });
 
+    it('adjusts graph height on window resize', () => {
+      // Get initial height
+      cy.get('.wrapper')
+        .invoke('height')
+        .as('initialHeight');
+  
+      // Resize window
+      cy.viewport(800, 600);
+      cy.wait(200); // allow resize listener to run
+  
+      // Height should update
+      cy.get('.wrapper')
+        .invoke('height')
+        .then((newHeight) => {
+          cy.get('@initialHeight').should('not.eq', newHeight);
+        });
+    });
 
 });
