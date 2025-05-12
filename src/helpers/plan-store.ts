@@ -7,13 +7,11 @@ export interface Plan {
   user_id: string;
 }
 
-const BASE_URL = process.env.NODE_ENV === 'production' ? window.location.origin : "http://localhost:8000";
-
 export class PlanStore {
 
   async fetchSavedPlans(token: string): Promise<Plan[]> {
     try {
-      const response = await fetch(`${BASE_URL}/api/plans`, {
+      const response = await fetch(`/api/plans`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -50,7 +48,7 @@ export class PlanStore {
 
   async deletePlan(planId: string, token: string): Promise<void> {
     try {
-      const response = await fetch(`${BASE_URL}/api/plan/${planId}`, {
+      const response = await fetch(`/api/plan/${planId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
