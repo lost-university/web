@@ -45,72 +45,9 @@
             </div>
           </div>
         </template>
-        <div>
-          <div class="px-2 sm:px-4 pt-4 pb-2 sm:py-6 peer">
-            <button
-              class="hover:cursor-auto mr-2 text-lg font-bold sm:text-md sm:font-normal"
-              data-cy="SavedPlans-Dropdown-Button"
-            >
-              Saved Plans
-            </button>
-            <font-awesome-icon
-              :icon="['fa', 'chevron-down']"
-              class="peer invisible sm:visible"
-            />
-          </div>
-          <div
-            class="sm:hidden peer-hover:flex hover:flex flex rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-50"
-          >
-            <ul>
-              <li
-                v-for="plan in modulePlans"
-                :key="plan.id"
-                class="flex items-center justify-between"
-              >
-                <router-link
-                  :to="plan.content"
-                  class="p-2 hover:bg-gray-100 rounded-sm"
-                >
-                  {{ plan.name }}
-                </router-link>
-                <button
-                  class="p-2 hover:bg-gray-100 rounded-sm"
-                  @click="deletePlan(plan.id)"
-                >
-                  Delete
-                </button>
-              </li>
-            </ul>
-            <form
-              class="flex items-center justify-between"
-              @submit.prevent="savePlan"
-            >
-              <input
-                v-if="isEditingName"
-                v-model="planName"
-                type="text"
-                class="p-2 hover:bg-gray-100 rounded-sm"
-                placeholder="Enter plan name"
-                data-cy="SavePlan-Name"
-              >
-              <button
-                v-if="isEditingName"
-                type="submit"
-                data-cy="SavePlan-Submit"
-              >
-                Submit
-              </button>
-            </form>
-            <button
-              v-if="!isEditingName"
-              class="p-2 hover:bg-gray-100 rounded-sm text-left"
-              data-cy="SavePlan-Button"
-              @click="() => isEditingName = !isEditingName"
-            >
-              + Save current plan
-            </button>
-          </div>
-        </div>
+        <SavedPlans
+          v-if="isSignedIn"
+        />
       </div>
 
       <div class="flex justify-end mr-2">
@@ -178,6 +115,9 @@
           </div>
         </div>
       </template>
+      <SavedPlans
+        v-if="isSignedIn"
+      />
     </div>
   </nav>
 </template>
@@ -190,25 +130,23 @@ import { SemesterInfo } from "../helpers/semester-info";
 
 import type { Plan } from "../helpers/plan-store"
 import { PlanStore } from "../helpers/plan-store"
+import SavedPlans from "./SavedPlans.vue";
 
 /* eslint-disable max-len */
 export default defineComponent({
   name: 'Navigation',
   components: {
+    SavedPlans,
     SignedIn,
     SignedOut,
     SignInButton,
     UserButton,
   },
   setup() {
-    const { getToken } = useAuth();
-    const fetchData = async () => {
-      const token = await getToken.value()
-      await new PlanStore().savePlan('this.planName','irgendöpis', token as string);
-    }
+    const { isSignedIn } = useAuth();
+
     return {
-      fetchData,
-      getToken,
+      isSignedIn,
     };
   },
   data() {
@@ -239,40 +177,11 @@ export default defineComponent({
           ],
         },
       ],
-      modulePlans: [] as Plan[],
-      isEditingName: false,
-      planName: '',
     };
-  },
-  mounted() {
-    this.getPlans();
   },
   methods: {
     onBurgerClick() {
       this.isBurgerActive = !this.isBurgerActive;
-    },
-    async getPlans() {
-      try {
-        const token = await this.getToken() as string;
-        this.modulePlans = await new PlanStore().fetchSavedPlans(token);
-      } catch (error) {
-        console.error('Error fetching plans: ', error)
-      }
-    },
-    async savePlan() {
-      const temp = async (token) => {
-        console.log(this.$route.path.replace('/plan/', ''));
-        await new PlanStore().savePlan(this.planName, this.$route.path.replace('/plan/', ''), token);
-        await this.getPlans();
-        this.isEditingName = false;
-        this.planName = '';
-      }
-      this.fetchData()
-    },
-    async deletePlan(/*planId: string*/) {
-      /*const token = await this.getToken() as string;
-      await new PlanStore().deletePlan(planId, token)
-      await this.getPlans();*/
     },
   }
 });
