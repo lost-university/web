@@ -26,7 +26,6 @@ export class PlanStore {
 
   async savePlan(planName: string, modules: string, token: string): Promise<void> {
     const payload = JSON.stringify({ name: planName, content: modules });
-    console.log(payload);
     try {
       const response = await fetch(`/api/plan`, {
         method: 'POST',
@@ -36,7 +35,6 @@ export class PlanStore {
         },
         body: payload,
       });
-      console.log(await response.json());
       if (!response.ok) {
         throw new Error('Failed to store plan');
       }
