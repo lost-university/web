@@ -115,12 +115,18 @@
 
       <div class="flex justify-end mr-2">
         <SignedOut>
-          <div data-cy="Navigation-SignInButton">
+          <div
+            data-cy="Navigation-SignInButton"
+            class="flex items-center"
+          >
             <SignInButton />
           </div>
         </SignedOut>
         <SignedIn>
-          <div data-cy="Navigation-UserButton">
+          <div
+            data-cy="Navigation-UserButton"
+            class="flex items-center"
+          >
             <UserButton />
           </div>
         </SignedIn>
