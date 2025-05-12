@@ -2,7 +2,7 @@ import { setupClerkTestingToken } from "@clerk/testing/cypress";
 
 describe('multiple plans', () => {
   describe('as a user I want to save multiple plans to my account', () => {
-    it('happy case :)', () => {
+    it('save 2 plans', () => {
       setupClerkTestingToken()
 
       cy.visit('/');
