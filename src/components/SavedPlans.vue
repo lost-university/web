@@ -5,7 +5,7 @@
         class="hover:cursor-auto mr-2 text-lg font-bold sm:text-md sm:font-normal"
         data-cy="SavedPlans-Dropdown-Button"
       >
-        Saved Plans
+        Gespeicherte Pläne
       </button>
       <font-awesome-icon
         :icon="['fa', 'chevron-down']"
@@ -33,7 +33,7 @@
             data-cy="SavedPlans-Delete-Button"
             @click="deletePlan(plan.id)"
           >
-            Delete
+            Löschen
           </button>
         </li>
       </ul>
@@ -46,7 +46,7 @@
           v-model="planName"
           type="text"
           class="p-2 hover:bg-gray-100 rounded-sm"
-          placeholder="Enter plan name"
+          placeholder="Plan Namen eingeben"
           data-cy="SavePlan-Name"
         >
         <button
@@ -54,7 +54,7 @@
           type="submit"
           data-cy="SavePlan-Submit"
         >
-          Submit
+          Erstellen
         </button>
       </form>
       <button
@@ -63,7 +63,7 @@
         data-cy="SavePlan-Button"
         @click="() => isEditingName = !isEditingName"
       >
-        + Save current plan
+        + Aktuellen Plan speichern
       </button>
     </div>
   </div>
