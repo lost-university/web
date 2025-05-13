@@ -128,8 +128,6 @@ import { SignedIn, SignedOut, SignInButton, useAuth, UserButton } from '@clerk/v
 
 import { SemesterInfo } from "../helpers/semester-info";
 
-import type { Plan } from "../helpers/plan-store"
-import { PlanStore } from "../helpers/plan-store"
 import SavedPlans from "./SavedPlans.vue";
 
 /* eslint-disable max-len */
