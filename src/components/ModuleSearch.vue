@@ -41,7 +41,7 @@
             v-model="filter.query"
             type="text"
             class="w-full border border-gray-300 rounded p-2"
-            placeholder="Suche nach Modul oder Dozent"
+            placeholder="Suche nach Modul"
             data-cy="ModuleSearch-Input"
           >
           <button
