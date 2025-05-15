@@ -71,7 +71,6 @@ export function generateModuleEdges(
   showAll: boolean,
   plannedIds: string[],
   getColor: (m: Module) => string,
-  specialIds: Set<string>,
 ): GraphEdge[] {
   const edges: GraphEdge[] = [];
 
@@ -96,7 +95,7 @@ export function generateModuleEdges(
         targetColor,
       } as GraphEdge;
 
-      if (specialIds.has(module.id) && specialIds.has(depId)) {
+      if (module.isMandatory && targetModule.isMandatory) {
         edge = manditoryEdgeStyle(edge, sourceColor, targetColor);
       }
 

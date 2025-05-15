@@ -47,6 +47,7 @@ export class Module {
   recommendedModuleIds: string[];
   dependentModuleIds: string[];
   validationInfo: ModuleValidationInfo | null;
+  isMandatory: boolean = false;
 
   // null means there cannot be a next semester for this module (reached max semesters)
   nextPossibleSemester: SemesterInfo | null;
@@ -62,7 +63,8 @@ export class Module {
     dependentModuleIds: string[],
     successorModuleId: string,
     predecessorModuleId: string,
-    isDeactivated: boolean
+    isDeactivated: boolean,
+    isMandatory: boolean
   ) {
     this.id = id;
     this.name = name;
@@ -77,6 +79,7 @@ export class Module {
     this.isDeactivated = isDeactivated;
     this.validationInfo = null;
     this.nextPossibleSemester = null;
+    this.isMandatory = isMandatory;
   }
 
   calculateNextPossibleSemester(startSemester: SemesterInfo) {

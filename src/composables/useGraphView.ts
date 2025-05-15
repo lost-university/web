@@ -3,7 +3,6 @@ import { useRoute } from "vue-router";
 import type { VueFlow } from "@vue-flow/core";
 import type { Node, Edge } from "@vue-flow/core";
 import { store } from "../helpers/store";
-import specialModuleIds from "../helpers/temporarySpecialModules";
 import { getColorHexForPrioritizedCategory } from "../helpers/color-helper";
 import { generateModuleEdges } from "../helpers/graph/graph-edges";
 import { generateModuleNodes } from "../helpers/graph/graph-nodes";
@@ -52,15 +51,13 @@ export function useGraphView() {
   }
 
   async function computeLayout() {
-    const visibleModules = modules.value.filter((m) => allPlannedModuleIds.value.includes(m.id));
-    const rawNodes = generateModuleNodes(visibleModules);
+    const plannedModules = modules.value.filter((m) => allPlannedModuleIds.value.includes(m.id));
+    const rawNodes = generateModuleNodes(plannedModules);
     const rawEdges = generateModuleEdges(
-      visibleModules,
+      plannedModules,
       true,
       allPlannedModuleIds.value,
-      getModuleColor,
-      specialModuleIds
-    );
+      getModuleColor,    );
     try {
       const { nodes, edges } = await sortLayout(rawNodes, rawEdges);
       laidOutNodes.value = nodes;

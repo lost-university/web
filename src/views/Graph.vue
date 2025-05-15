@@ -45,7 +45,7 @@ import { useGraphView } from '../composables/useGraphView';
 import { useGraphHighlighting} from '../composables/useGraphHighlighting';
 import { VueFlow } from '@vue-flow/core';
 import EdgeDefs from '../components/GraphEdgeDefs.vue';
-import ModuleNode from '../components/GraphModuleNode.vue';
+import ModuleNode from '../components/GraphModuleHightlight.vue';
 import FitViewButton from '../components/GraphFitViewButton.vue';
 import GraphTooltip from '../components/GraphTooltip.vue';
 
