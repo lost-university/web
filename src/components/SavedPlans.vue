@@ -99,8 +99,7 @@ export default defineComponent({
   },
   watch: {
     isClerkReady: {
-      async handler(newValue, oldValue) {
-        console.log(newValue, oldValue);
+      async handler(newValue) {
         if (newValue) {
           await this.getPlans();
         }
