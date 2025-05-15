@@ -1,0 +1,42 @@
+services:
+  frontend:
+    container_name: frontend
+    image: ghcr.io/janooski/web/web:local-system-tests
+    restart: always
+    ports:
+      - "5173:80"
+    environment:
+      - VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY}
+  backend:
+    container_name: backend
+    image: ghcr.io/janooski/backend/backend:${BACKEND_VERSION}
+    restart: always
+    ports:
+      - "8000:80"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - CLERK_SECRET_KEY=${CLERK_SECRET_KEY}
+  postgres-db:
+    container_name: postgres-db
+    image: postgres:17.4-alpine
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+
+volumes:
+  postgres_db:

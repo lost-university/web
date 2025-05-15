@@ -36,3 +36,32 @@ npm run lint-fix
 
 ### Customize configuration
 See [Configuration Reference](https://vitejs.dev/config/).
+
+## Testing
+
+### Develop component tests
+```
+npm run test:component:dev
+```
+
+### Run component tests
+```
+npm run test:component
+```
+
+### Develop E2E tests
+The dev server must be running so cypress can connect to it. 
+
+```
+npm run test:dev
+```
+
+### Run E2E tests
+```
+npm run test
+```
+
+
+
+
+

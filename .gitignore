@@ -21,3 +21,7 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+*.env
+/cypress/screenshots/
+cypress.env.json

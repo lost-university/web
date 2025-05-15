@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import { clerkPlugin } from '@clerk/vue'
 
 // import Font Awesome as Vue Component: Dynamic Icon Change does not work without it.
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -30,8 +31,11 @@ library.add(faCircleExclamation as IconDefinition);
 library.add(faCircleQuestion as IconDefinition);
 library.add(faPlusCircle as IconDefinition);
 
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+
 createApp(App)
   .use(router)
   .use(store)
+  .use(clerkPlugin, { publishableKey: PUBLISHABLE_KEY })
   .component('font-awesome-icon', FontAwesomeIcon)
   .mount('#app');
