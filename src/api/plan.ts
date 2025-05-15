@@ -19,7 +19,7 @@ const fetchSavedPlans = async (token: string): Promise<SavedPlan[]> => {
 const savePlan = async (planName: string, modules: string, token: string): Promise<void> => {
   const payload = JSON.stringify({ name: planName, content: modules });
   try {
-    const response = await fetch(`/api/plan`, {
+    await fetch(`/api/plan`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,30 +27,22 @@ const savePlan = async (planName: string, modules: string, token: string): Promi
       },
       body: payload,
     });
-    if (!response.ok) {
-      throw new Error('Failed to store plan');
-    }
   } catch (error) {
     console.error('Error storing plan:', error);
-    throw error;
   }
 }
 
 const deletePlan = async (planId: string, token: string): Promise<void> => {
   try {
-    const response = await fetch(`/api/plan/${planId}`, {
+    await fetch(`/api/plan/${planId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
     });
-    if (!response.ok) {
-      throw new Error('Failed to delete plan');
-    }
   } catch (error) {
     console.error('Error deleting plan:', error);
-    throw error;
   }
 }
 
