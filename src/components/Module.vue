@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import {type PropType, defineComponent} from 'vue';
+import { type PropType, defineComponent } from 'vue';
 import { Position } from '@vue-flow/core' 
 import { getColorClassForPrioritizedCategory } from '../helpers/color-helper';
 import type { Module } from '../helpers/types';

@@ -38,8 +38,8 @@
 </template>
 
   <script lang="ts">
-  import { defineComponent} from 'vue';
-  import type {PropType} from 'vue';
+  import { defineComponent } from 'vue';
+  import type { PropType } from 'vue';
   import ModuleCard from './Module.vue';
   import { store } from '../helpers/store';
   import { StorageHelper } from '../helpers/storage-helper';

@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import { useGraphView } from '../composables/useGraphView';
-import { useGraphHighlighting} from '../composables/useGraphHighlighting';
+import { useGraphHighlighting } from '../composables/useGraphHighlighting';
 import { VueFlow } from '@vue-flow/core';
 import EdgeDefs from '../components/GraphEdgeDefs.vue';
 import ModuleNode from '../components/GraphModuleHightlight.vue';
