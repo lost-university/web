@@ -1,11 +1,6 @@
-export interface Plan {
-  id: string;
-  name: string;
-  content: string;
-  is_favorite: boolean;
-  created_at: string;
-  user_id: string;
-}
+import type { PlanDTO } from '../types/PlanDTO';
+import type { Plan } from '../types/Plan';
+import { map } from '../types/Plan';
 
 export class PlanStore {
 
@@ -17,7 +12,7 @@ export class PlanStore {
         }
       });
       const data = await response.json();
-      return data.plans;
+      return data.plans.map((dto: PlanDTO) => map(dto));
     } catch (error) {
       console.error('Error fetching saved plans:', error);
       throw error;
