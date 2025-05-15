@@ -72,7 +72,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAuth } from "@clerk/vue";
-import { type Plan, PlanStore } from "../helpers/plan-store";
+import { fetchSavedPlans, savePlan, deletePlan } from "../api/plan";
+import type { Plan } from "../types/Plan";
 
 export default defineComponent({
   name: 'SavedPlans',
@@ -112,21 +113,21 @@ export default defineComponent({
     async getPlans() {
       try {
         const token = await this.getToken() as string;
-        this.modulePlans = await new PlanStore().fetchSavedPlans(token);
+        this.modulePlans = await fetchSavedPlans(token);
       } catch (error) {
         console.error('Error fetching plans: ', error)
       }
     },
     async savePlan() {
       const token = await this.getToken() as string;
-      await new PlanStore().savePlan(this.planName, this.$route.path.replace('/plan/', ''), token);
+      await savePlan(this.planName, this.$route.path.replace('/plan/', ''), token);
       this.isEditingName = false;
       this.planName = '';
       await this.getPlans();
     },
     async deletePlan(planId: string) {
       const token = await this.getToken() as string;
-      await new PlanStore().deletePlan(planId, token)
+      await deletePlan(planId, token)
       await this.getPlans();
     },
   },
