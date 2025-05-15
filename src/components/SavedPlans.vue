@@ -22,6 +22,12 @@
           class="flex items-center justify-between"
           data-cy="SavedPlans-List-Item"
         >
+        <button
+            class="p-2 hover:bg-gray-100 rounded-sm"
+            data-cy="SavedPlans-Favourite-Button"
+            @click="favouritePlan(plan.id)"
+          > ★
+          </button>
           <router-link
             :to="plan.content"
             class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm flex-auto"
