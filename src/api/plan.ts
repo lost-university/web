@@ -19,7 +19,7 @@ const fetchSavedPlans = async (token: string): Promise<SavedPlan[]> => {
 const savePlan = async (planName: string, modules: string, token: string): Promise<void> => {
   const payload = JSON.stringify({ name: planName, content: modules });
   try {
-    await fetch(`/api/plan`, {
+    await fetch(`/api/plans`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ const savePlan = async (planName: string, modules: string, token: string): Promi
 
 const deletePlan = async (planId: string, token: string): Promise<void> => {
   try {
-    await fetch(`/api/plan/${planId}`, {
+    await fetch(`/api/plans/${planId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
