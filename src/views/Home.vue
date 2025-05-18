@@ -41,7 +41,10 @@
     </div>
   </div>
 
-  <div class="flex space-x-2 overflow-auto before:m-auto after:m-auto p-4">
+  <div
+    id="semester-container"
+    class="flex space-x-2 overflow-auto before:m-auto after:m-auto p-4"
+  >
     <SemesterComponent
       v-for="semester in enrichedSemesters"
       :key="semester.number"
