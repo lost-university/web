@@ -53,7 +53,6 @@ describe('multiple plans', () => {
       cy.visit('/');
       cy.clerkSignIn({ strategy: 'email_code', identifier: 'user1+clerk_test@lost.university' })
 
-
       for (let i = 0; i < 2; i++) {
         const timestamp = `${new Date().getTime()}-${i}`;
 
@@ -80,7 +79,7 @@ describe('multiple plans', () => {
         .within(() => {
           cy.get('[data-cy=SavedPlans-Delete-Button]')
             .click()
-        })
+        });
 
       cy.get("[data-cy='SavedPlans-Dropdown-Button']").realHover();
       cy.contains("[data-cy='SavedPlans-List-Item']", "Test Plan: To Delete").should('not.exist');
