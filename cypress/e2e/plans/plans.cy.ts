@@ -58,9 +58,9 @@ describe('multiple plans', () => {
         const timestamp = `${new Date().getTime()}-${i}`;
 
         cy.get("[data-cy='SavedPlans-Dropdown-Button']").realHover();
-        cy.get("[data-cy='SavePlan-Button']").click();
+        cy.get("[data-cy='SavePlan-Button']:visible").click();
         cy.get("[data-cy='SavePlan-Name']").type(`Test Plan ${timestamp}`);
-        cy.get("[data-cy='SavePlan-Submit']").click();
+        cy.get("[data-cy='SavePlan-Submit']:visible").click();
 
         cy.get("[data-cy=SavedPlans-List-Item").filter(`:contains("Test Plan ${timestamp}")`).should('exist');
       }
@@ -72,9 +72,9 @@ describe('multiple plans', () => {
       cy.clerkSignIn({ strategy: 'email_code', identifier: 'user1+clerk_test@lost.university' })
 
       cy.get("[data-cy='SavedPlans-Dropdown-Button']").realHover();
-      cy.get("[data-cy='SavePlan-Button']").click();
+      cy.get("[data-cy='SavePlan-Button']:visible").click();
       cy.get("[data-cy='SavePlan-Name']").type(`Test Plan: To Delete`);
-      cy.get("[data-cy='SavePlan-Submit']").click();
+      cy.get("[data-cy='SavePlan-Submit']:visible").click();
 
       cy.get("[data-cy=SavedPlans-List-Item").filter(`:contains("Test Plan: To Delete")`)
         .within(() => {
