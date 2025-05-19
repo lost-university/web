@@ -88,9 +88,9 @@ export default defineComponent({
   },
   data() {
     return {
-    modulePlans: [] as Plan[],
-    isEditingName: false,
-    planName: '',
+      modulePlans: [] as Plan[],
+      isEditingName: false,
+      planName: '',
     }
   },
   computed: {
