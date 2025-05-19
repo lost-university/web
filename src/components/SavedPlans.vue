@@ -22,7 +22,7 @@
           class="flex items-center justify-between"
           data-cy="SavedPlans-List-Item"
         >
-        <button
+          <button
             class="p-2 hover:bg-gray-100 rounded-sm"
             data-cy="SavedPlans-Bookmark-Button"
             @click="bookmarkPlan(plan.id)"
