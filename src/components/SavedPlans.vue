@@ -23,7 +23,7 @@
           data-cy="SavedPlans-List-Item"
         >
           <router-link
-            :to="plan.content"
+            :to="{ path: plan.content, query: $route.query }"
             class="p-2 hover:bg-gray-100 rounded-sm"
           >
             {{ plan.name }}
