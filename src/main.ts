@@ -8,7 +8,11 @@ import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons'
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import {
   faBars,
+<<<<<<< HEAD
   faBookmark as fasBookmark,
+=======
+  faBookmark,
+>>>>>>> 0c0b5c2 (replaced star with bookmark)
   faChevronDown,
   faChevronUp,
   faCircleXmark,
@@ -22,7 +26,11 @@ import router from './router';
 import { store } from './helpers/store';
 
 library.add(faBars as IconDefinition);
+<<<<<<< HEAD
 library.add(fasBookmark, farBookmark as IconDefinition)
+=======
+library.add(faBookmark as IconDefinition);
+>>>>>>> 0c0b5c2 (replaced star with bookmark)
 library.add(faChevronUp as IconDefinition);
 library.add(faChevronDown as IconDefinition);
 library.add(faGithub as IconDefinition);
