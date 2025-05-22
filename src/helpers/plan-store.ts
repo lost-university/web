@@ -65,7 +65,7 @@ export class PlanStore {
   async bookmarkPlan(planId: string, token: string): Promise<void> {
     try {
       const response = await fetch(`/api/plan/bookmark/${planId}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
