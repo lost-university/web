@@ -46,4 +46,22 @@ const deletePlan = async (planId: string, token: string): Promise<void> => {
   }
 }
 
-export { fetchSavedPlans, savePlan, deletePlan };
+const favouritePlan = async (planId: string, token: string): Promise<void> => {
+  try {
+    const response = await fetch(`/api/plan/favourite/${planId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Failed to (un)favourite plan');
+    }
+  } catch (error) {
+    console.error('Error to favourite plan:', error);
+    throw error;
+  }
+}
+
+export { fetchSavedPlans, savePlan, deletePlan, favouritePlan };
