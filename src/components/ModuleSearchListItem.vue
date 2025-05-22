@@ -2,7 +2,7 @@
   <li
     class="px-2 py-1 border-b border-slate-500 flex items-center last:rounded-b-sm last:border-b-0"
     :class="moduleIsDisabled(module) ?
-      'text-gray-400 bg-gray-300 cursor-default' :
+      'text-gray-400 bg-gray-300 dark:bg-zinc-700 cursor-default' :
       'cursor-pointer hover:bg-gray-200'"
     data-cy="ModuleSearch-ModuleListItem"
     @click="!moduleIsDisabled(module) ? onModuleSelect(module.id) : null"
