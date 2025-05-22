@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library, type IconDefinition } from '@fortawesome/fontawesome-svg-core';
 <<<<<<< HEAD
 =======
-import { faBookmark as fasBookmark } from '@fortawesome/free-solid-svg-icons'
 >>>>>>> b3360ca (bookmark toggle working)
 import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons'
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
@@ -19,8 +18,7 @@ import {
   faBookmark,
 >>>>>>> 0c0b5c2 (replaced star with bookmark)
 =======
-  faBookmark as faBookmarkSolid,
-  faBookmark as faBookmarkRegular,
+  faBookmark as fasBookmark,
 >>>>>>> b3360ca (bookmark toggle working)
   faChevronDown,
   faChevronUp,
