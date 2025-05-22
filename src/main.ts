@@ -4,22 +4,11 @@ import { clerkPlugin } from '@clerk/vue'
 // import Font Awesome as Vue Component: Dynamic Icon Change does not work without it.
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library, type IconDefinition } from '@fortawesome/fontawesome-svg-core';
-<<<<<<< HEAD
-=======
->>>>>>> b3360ca (bookmark toggle working)
 import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons'
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import {
   faBars,
-<<<<<<< HEAD
-<<<<<<< HEAD
   faBookmark as fasBookmark,
-=======
-  faBookmark,
->>>>>>> 0c0b5c2 (replaced star with bookmark)
-=======
-  faBookmark as fasBookmark,
->>>>>>> b3360ca (bookmark toggle working)
   faChevronDown,
   faChevronUp,
   faCircleXmark,
@@ -33,15 +22,8 @@ import router from './router';
 import { store } from './helpers/store';
 
 library.add(faBars as IconDefinition);
-<<<<<<< HEAD
-<<<<<<< HEAD
 library.add(fasBookmark, farBookmark as IconDefinition)
-=======
-library.add(faBookmark as IconDefinition);
->>>>>>> 0c0b5c2 (replaced star with bookmark)
-=======
 library.add(fasBookmark, farBookmark as IconDefinition)
->>>>>>> b3360ca (bookmark toggle working)
 library.add(faChevronUp as IconDefinition);
 library.add(faChevronDown as IconDefinition);
 library.add(faGithub as IconDefinition);

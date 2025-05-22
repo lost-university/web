@@ -205,7 +205,7 @@ export default defineComponent({
     async bookmarkPlan(planId: string){
       const token = await this.getToken() as string;
       await bookmarkPlan(planId, token)
-      await this.getPlans();
+      // await this.getPlans();
     }
   },
 })

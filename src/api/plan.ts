@@ -48,16 +48,13 @@ const deletePlan = async (planId: string, token: string): Promise<void> => {
 
 const bookmarkPlan = async (planId: string, token: string): Promise<void> => {
   try {
-    const response = await fetch(`/api/plan/bookmark/${planId}`, {
+    await fetch(`/api/plans/bookmark/${planId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
     });
-    if (!response.ok) {
-      throw new Error('Failed to (un)bookmark plan');
-    }
   } catch (error) {
     console.error('Error to bookmark plan:', error);
     throw error;
