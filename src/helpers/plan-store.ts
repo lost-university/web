@@ -2,6 +2,7 @@ export interface Plan {
   id: string;
   name: string;
   content: string;
+  public_slug: string;
   is_favorite: boolean;
   created_at: string;
   user_id: string;
@@ -27,7 +28,7 @@ export class PlanStore {
   async savePlan(planName: string, modules: string, token: string): Promise<void> {
     const payload = JSON.stringify({ name: planName, content: modules });
     try {
-      const response = await fetch(`/api/plan`, {
+      const response = await fetch(`/api/plans`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,7 +47,7 @@ export class PlanStore {
 
   async deletePlan(planId: string, token: string): Promise<void> {
     try {
-      const response = await fetch(`/api/plan/${planId}`, {
+      const response = await fetch(`/api/plans/${planId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

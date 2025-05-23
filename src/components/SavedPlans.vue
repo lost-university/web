@@ -28,29 +28,39 @@
           >
             {{ plan.name }}
           </router-link>
-          <div class="relative">
-            <button
-              class="p-2 hover:bg-gray-100 rounded-sm"
-              @click="toggleMenu(plan.id)"
-            >
-              ⋮
-            </button>
-
+          <div
+            class="relative"
+            @mouseenter="activePlanId = plan.id"
+            @mouseleave="activePlanId = null"
+          >
+            <div class="p-2 hover:bg-gray-100 rounded-sm">
+              <font-awesome-icon
+                :icon="['fas', 'ellipsis-vertical']"
+                class="w-4 h-4"
+              />
+            </div>
             <div
               v-if="activePlanId === plan.id"
-              class="absolute right-0 top-full mt-1 bg-white shadow-lg border rounded-sm z-10"
+              class="absolute top-0 left-full mt-1 bg-white shadow-lg rounded-sm z-10"
             >
               <button
-                class="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                @click="deletePlan(plan.id)"
-              >
-                Löschen
-              </button>
-              <button
-                class="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100"
                 @click="sharePlan(plan.id)"
               >
-              Teilen
+                <font-awesome-icon
+                  :icon="copiedPlanId === plan.id ? ['fas', 'check'] : ['fas', 'clone']"
+                  :class="copiedPlanId === plan.id ? 'text-green-600' : 'text-black'"
+                />
+                <span class="sr-only">Teilen</span>
+              </button>
+              <button
+                class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100"
+                @click="deletePlan(plan.id)"
+              >
+                <font-awesome-icon
+                  :icon="['fas', 'trash']"
+                />
+                <span class="sr-only">Löschen</span>
               </button>
             </div>
           </div>
@@ -89,19 +99,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useAuth } from "@clerk/vue";
 import { type Plan, PlanStore } from "../helpers/plan-store";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTrash, faClone, faCheck, faChevronDown, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faTrash, faClone, faCheck, faChevronDown, faEllipsisVertical);
 
 export default defineComponent({
   name: 'SavedPlans',
+  components: { FontAwesomeIcon },
   setup() {
     const { getToken, isLoaded, isSignedIn } = useAuth();
-
+    const activePlanId = ref<string | null>(null);
+    const copiedPlanId = ref<string | null>(null);
     return {
       getToken,
       isLoaded,
       isSignedIn,
+      activePlanId,
+      copiedPlanId,
     };
   },
   data() {
@@ -109,7 +128,6 @@ export default defineComponent({
     modulePlans: [] as Plan[],
     isEditingName: false,
     planName: '',
-    activePlanId: null as string | null,
     }
   },
   computed: {
@@ -151,9 +169,26 @@ export default defineComponent({
       await this.getPlans();
     },
     async sharePlan(planId: string) {
-      const token = await this.getToken() as string;
-      await new PlanStore().sharePlan(planId, token);
-      this.activePlanId = null; // close the menu
+      const plan = this.modulePlans.find(p => p.id === planId);
+      if (!plan || !plan.public_slug) {
+        console.error('No public_slug found for this plan');
+        return;
+      }
+
+      const baseUrl = window.location.origin;
+      const shareUrl = `${baseUrl}/shared/${plan.public_slug}`;
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        console.log('Link copied to clipboard:', shareUrl);
+        this.copiedPlanId = planId;
+        // Reset after 2 seconds
+        setTimeout(() => {
+          this.copiedPlanId = null;
+        }, 2000);
+        // Optionally show a toast or notification here
+      } catch (err) {
+        console.error('Failed to copy link:', err);
+      }
     },
   },
 })
