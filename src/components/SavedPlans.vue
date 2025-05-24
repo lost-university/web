@@ -48,7 +48,7 @@
                 @click="sharePlan(plan.id)"
               >
                 <font-awesome-icon
-                  :icon="copiedPlanId === plan.id ? ['fas', 'check'] : ['fas', 'clone']"
+                  :icon="copiedPlanId === plan.id ? ['fas', 'check'] : ['fas', 'share']"
                   :class="copiedPlanId === plan.id ? 'text-green-600' : 'text-black'"
                 />
                 <span class="sr-only">Teilen</span>
@@ -104,9 +104,9 @@ import { useAuth } from "@clerk/vue";
 import { type Plan, PlanStore } from "../helpers/plan-store";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrash, faClone, faCheck, faChevronDown, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faShare, faCheck, faChevronDown, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faTrash, faClone, faCheck, faChevronDown, faEllipsisVertical);
+library.add(faTrash, faShare, faCheck, faChevronDown, faEllipsisVertical);
 
 export default defineComponent({
   name: 'SavedPlans',
@@ -176,7 +176,7 @@ export default defineComponent({
       }
 
       const baseUrl = window.location.origin;
-      const shareUrl = `${baseUrl}/shared/${plan.public_slug}`;
+      const shareUrl = `${baseUrl}/#/shared/${plan.public_slug}`;
       try {
         await navigator.clipboard.writeText(shareUrl);
         console.log('Link copied to clipboard:', shareUrl);
