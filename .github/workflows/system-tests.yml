@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BACKEND_VERSION: ${{ github.event.inputs.backendVersion }}
-      POSTGRES_HOST: localhost
+      POSTGRES_HOST: postgres-db
       POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
