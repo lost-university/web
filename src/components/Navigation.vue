@@ -7,7 +7,7 @@
     <div class="flex items-center justify-between w-full">
       <router-link to="/">
         <img
-          src="../assets/logo.png"
+          src="/logo.png"
           class="size-24 pb-4 object-contain"
           alt="Home"
         >
