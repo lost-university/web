@@ -1,19 +1,19 @@
 <template>
-  <div>
-    <div class="px-2 sm:px-4 pt-4 pb-2 sm:py-6 peer">
-      <button
-        class="hover:cursor-auto mr-2 text-lg font-bold sm:text-md sm:font-normal"
-        data-cy="SavedPlans-Dropdown-Button"
-      >
-        Gespeicherte Pläne
-      </button>
+  <Popover
+    class="hidden sm:block relative"
+  >
+    <PopoverButton
+      class="mx-2 sm:mx-4 mt-4 mb-2 sm:my-6 text-lg font-bold sm:text-md sm:font-normal"
+      data-cy="SavedPlans-Dropdown-Button"
+    >
+      <span class="mr-2">Gespeicherte Pläne</span>
       <font-awesome-icon
         :icon="['fa', 'chevron-down']"
         class="peer invisible sm:visible"
       />
-    </div>
-    <div
-      class="sm:hidden peer-hover:flex hover:flex flex rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-50"
+    </PopoverButton>
+    <PopoverPanel
+      class="absolute transform rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-50"
     >
       <ul>
         <li
@@ -24,7 +24,7 @@
         >
           <router-link
             :to="{ path: plan.content, query: $route.query }"
-            class="p-2 hover:bg-gray-100 rounded-sm"
+            class="p-2 hover:bg-gray-100 rounded-sm flex-grow"
           >
             {{ plan.name }}
           </router-link>
@@ -65,8 +65,8 @@
       >
         + Aktuellen Plan speichern
       </button>
-    </div>
-  </div>
+    </PopoverPanel>
+  </Popover>
 </template>
 
 <script lang="ts">
@@ -74,9 +74,21 @@ import { defineComponent } from 'vue';
 import { useAuth } from "@clerk/vue";
 import { fetchSavedPlans, savePlan, deletePlan } from "../api/plan";
 import type { Plan } from "../types/Plan";
+import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faChevronDown);
 
 export default defineComponent({
   name: 'SavedPlans',
+  components: {
+    Popover,
+    PopoverButton,
+    PopoverPanel,
+    FontAwesomeIcon
+  },
   setup() {
     const { getToken, isLoaded, isSignedIn } = useAuth();
 
