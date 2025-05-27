@@ -67,6 +67,65 @@
       </button>
     </PopoverPanel>
   </Popover>
+
+  <div class="flex flex-col sm:hidden">
+    <span
+      class="mx-2 mt-2 text-lg font-bold sm:text-md sm:font-normal"
+      data-cy="SavedPlans-Title-Mobile"
+    >
+      Gespeicherte Pläne
+    </span>
+    <ul>
+      <li
+        v-for="plan in modulePlans"
+        :key="plan.id"
+        class="flex items-center justify-between"
+        data-cy="SavedPlans-List-Item"
+      >
+        <router-link
+          :to="{ path: plan.content, query: $route.query }"
+          class="p-2 hover:bg-gray-100 rounded-sm"
+        >
+          {{ plan.name }}
+        </router-link>
+        <button
+          class="p-2 hover:bg-gray-100 rounded-sm"
+          data-cy="SavedPlans-Delete-Button"
+          @click="deletePlan(plan.id)"
+        >
+          Löschen
+        </button>
+      </li>
+    </ul>
+    <form
+      class="flex items-center justify-between"
+      @submit.prevent="savePlan"
+    >
+      <input
+        v-if="isEditingName"
+        v-model="planName"
+        type="text"
+        class="p-2 hover:bg-gray-100 rounded-sm"
+        placeholder="Plan Namen eingeben"
+        data-cy="SavePlan-Name"
+      >
+      <button
+        v-if="isEditingName"
+        type="submit"
+        data-cy="SavePlan-Submit"
+      >
+        Erstellen
+      </button>
+    </form>
+    <button
+      v-if="!isEditingName"
+      class="p-2 hover:bg-gray-100 rounded-sm text-left"
+      data-cy="SavePlan-Button"
+      @click="() => isEditingName = !isEditingName"
+    >
+      + Aktuellen Plan speichern
+    </button>
+  </div>
 </template>
 
 <script lang="ts">
@@ -123,12 +182,8 @@ export default defineComponent({
   },
   methods: {
     async getPlans() {
-      try {
-        const token = await this.getToken() as string;
-        this.modulePlans = await fetchSavedPlans(token);
-      } catch (error) {
-        console.error('Error fetching plans: ', error)
-      }
+      const token = await this.getToken() as string;
+      this.modulePlans = await fetchSavedPlans(token);
     },
     async savePlan() {
       const token = await this.getToken() as string;

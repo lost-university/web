@@ -1,6 +1,3 @@
 {
-    "extends": "@vue/tsconfig/tsconfig.dom.json",
-    "compilerOptions": {
-        "types": ["cypress", "node", "cypress-real-events"]
-    }
+    "extends": "@vue/tsconfig/tsconfig.dom.json"
 }

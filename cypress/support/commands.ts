@@ -37,5 +37,4 @@
 // }
 
 import { addClerkCommands } from '@clerk/testing/cypress'
-import "cypress-real-events";
 addClerkCommands({ Cypress, cy })

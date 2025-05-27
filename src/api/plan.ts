@@ -12,7 +12,6 @@ const fetchSavedPlans = async (token: string): Promise<SavedPlan[]> => {
     return data.plans.map(planHelper.map);
   } catch (error) {
     console.error('Error fetching saved plans:', error);
-    throw error;
   }
 }
 
