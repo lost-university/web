@@ -23,7 +23,7 @@
           data-cy="SavedPlans-List-Item"
         >
           <router-link
-            :to="{ path: plan.content, query: $route.query }"
+            :to="plan.content"
             class="p-2 hover:bg-gray-100 rounded-sm flex-grow"
           >
             {{ plan.name }}
@@ -83,7 +83,7 @@
         data-cy="SavedPlans-List-Item"
       >
         <router-link
-          :to="{ path: plan.content, query: $route.query }"
+          :to="plan.content"
           class="p-2 hover:bg-gray-100 rounded-sm"
         >
           {{ plan.name }}
@@ -164,13 +164,8 @@ export default defineComponent({
       planName: '',
     }
   },
-  computed: {
-    isClerkReady() {
-      return this.isLoaded && this.isSignedIn;
-    }
-  },
   watch: {
-    isClerkReady: {
+    isSignedIn: {
       async handler(newValue) {
         if (newValue) {
           await this.getPlans();
@@ -187,7 +182,8 @@ export default defineComponent({
     },
     async savePlan() {
       const token = await this.getToken() as string;
-      await savePlan(this.planName, this.$route.path.replace('/plan/', ''), token);
+      let plan = this.$route.path.replace('/plan/', '') + "?" + new URLSearchParams(this.$route.query).toString();
+      await savePlan(this.planName, plan, token);
       this.isEditingName = false;
       this.planName = '';
       await this.getPlans();
