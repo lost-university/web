@@ -28,13 +28,21 @@
           >
             {{ plan.name }}
           </router-link>
-          <button
-            class="p-2 hover:bg-gray-100 rounded-sm"
-            data-cy="SavedPlans-Delete-Button"
-            @click="deletePlan(plan.id)"
-          >
-            Löschen
-          </button>
+          <div>
+            <button
+              class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100"
+              @click="sharePlan(plan.id)"
+            >
+              Teilen
+            </button>
+            <button
+              class="p-2 hover:bg-gray-100 rounded-sm"
+              data-cy="SavedPlans-Delete-Button"
+              @click="deletePlan(plan.id)"
+            >
+              Löschen
+            </button>
+          </div>
         </li>
       </ul>
       <form
@@ -136,9 +144,9 @@ import type { Plan } from "../types/Plan";
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faUpRightFromSquare, faCheck, faChevronDown, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faChevronDown);
+library.add(faTrash, faUpRightFromSquare, faCheck, faChevronDown, faEllipsisVertical);
 
 export default defineComponent({
   name: 'SavedPlans',
@@ -150,11 +158,12 @@ export default defineComponent({
   },
   setup() {
     const { getToken, isLoaded, isSignedIn } = useAuth();
-
+    const copiedPlanId = ref<string | null>(null);
     return {
       getToken,
       isLoaded,
       isSignedIn,
+      copiedPlanId,
     };
   },
   data() {
@@ -196,6 +205,28 @@ export default defineComponent({
       const token = await this.getToken() as string;
       await deletePlan(planId, token)
       await this.getPlans();
+    },
+    async sharePlan(planId: string) {
+      const plan = this.modulePlans.find(p => p.id === planId);
+      if (!plan || !plan.public_slug) {
+        console.error('No public_slug found for this plan');
+        return;
+      }
+
+      const baseUrl = window.location.origin;
+      const shareUrl = `${baseUrl}/#/shared/${plan.public_slug}`;
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        console.log('Link copied to clipboard:', shareUrl);
+        this.copiedPlanId = planId;
+        // Reset after 2 seconds
+        setTimeout(() => {
+          this.copiedPlanId = null;
+        }, 2000);
+        // Optionally show a toast or notification here
+      } catch (err) {
+        console.error('Failed to copy link:', err);
+      }
     },
   },
 })
