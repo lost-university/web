@@ -54,11 +54,13 @@ export default defineComponent({
   methods: {
     classes(item: ModuleFilter) {
       return {
-        'hover:bg-gray-50 ring-1 ring-inset ring-gray-300': this.isButtonGroup,
+        // eslint-disable-next-line max-len
+        'hover:bg-gray-50 dark:hover:bg-transparent dark:hover:text-white ring-1 ring-inset ring-gray-300': this.isButtonGroup,
         'first:rounded-l-sm not-first:relative not-first:-ml-px': this.isButtonGroup,
         'last:relative last:-ml-px last:rounded-r-sm': this.isButtonGroup,
-        'bg-white': this.selected.includes(item.id) && this.isButtonGroup,
-        'bg-gray-200 text-gray-500': !this.selected.includes(item.id) && this.selected.length > 0 && this.isButtonGroup,
+        'bg-white dark:bg-transparent': this.selected.includes(item.id) && this.isButtonGroup,
+        // eslint-disable-next-line max-len
+        'bg-gray-200 dark:bg-zinc-700 text-gray-500': !this.selected.includes(item.id) && this.selected.length > 0 && this.isButtonGroup,
         'opacity-60 text-black': !this.selected.includes(item.id) && this.selected.length > 0 && !this.isButtonGroup,
         'rounded-sm text-white': !this.isButtonGroup,
       }
