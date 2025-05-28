@@ -46,7 +46,7 @@
     class="flex mb-4 hidden print:flex mt-5 ml-4"
   >
     <img
-      src="../assets/logo.png"
+      src="/logo.png"
       class="size-30 pb-4 object-contain"
       alt="Home"
     >
