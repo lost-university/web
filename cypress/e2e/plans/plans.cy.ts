@@ -1,7 +1,7 @@
 import { setupClerkTestingToken } from "@clerk/testing/cypress";
 
 describe('multiple plans', () => {
- beforeEach(() => {
+  beforeEach(() => {
     setupClerkTestingToken();
     cy.visit('/');
     cy.clerkSignIn({ strategy: 'email_code', identifier: 'user1+clerk_test@lost.university' });

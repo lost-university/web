@@ -28,21 +28,53 @@
           >
             {{ plan.name }}
           </router-link>
-          <div>
-            <button
-              class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100"
-              @click="sharePlan(plan.id)"
+          <Menu
+            as="div"
+            class="relative inline-block text-left"
+          >
+            <div>
+              <MenuButton
+                class="p-2 hover:bg-gray-100 rounded-sm"
+              >
+                <font-awesome-icon
+                  :icon="['fas', 'ellipsis']"
+                  class="w-4 h-4"
+                />
+              </MenuButton>
+            </div>
+            <MenuItems
+              class="absolute top-0 left-full ml-1 bg-white shadow-lg rounded-sm z-10"
             >
-              Teilen
-            </button>
-            <button
-              class="p-2 hover:bg-gray-100 rounded-sm"
-              data-cy="SavedPlans-Delete-Button"
-              @click="deletePlan(plan.id)"
-            >
-              Löschen
-            </button>
-          </div>
+              <div class="px-1 py-1">
+                <MenuItem
+                  v-slot="{ close }"
+                  as="div"
+                >
+                  <button
+                    class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100"
+                    @click.stop.prevent="sharePlan(plan.id, close)"
+                  >
+                    <font-awesome-icon
+                      :icon="copiedPlanId === plan.id ? ['fas', 'check'] : ['fas', 'share-nodes']"
+                      :class="copiedPlanId === plan.id ? 'text-green-600' : 'text-black'"
+                    />
+                  </button>
+                </MenuItem>
+              </div>
+              <div class="px-1 py-1">
+                <MenuItem>
+                  <button
+                    class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100"
+                    @click="deletePlan(plan.id)"
+                  >
+                    <font-awesome-icon
+                      :icon="['fas', 'trash']"
+                    />
+                  </button>
+                </MenuItem>
+              </div>
+            </MenuItems>
+          </Menu>
         </li>
       </ul>
       <form
@@ -96,13 +128,53 @@
         >
           {{ plan.name }}
         </router-link>
-        <button
-          class="p-2 hover:bg-gray-100 rounded-sm"
-          data-cy="SavedPlans-Delete-Button"
-          @click="deletePlan(plan.id)"
+        <Menu
+          as="div"
+          class="relative inline-block text-left"
         >
-          Löschen
-        </button>
+          <div>
+            <MenuButton
+              class="p-2 hover:bg-gray-100 rounded-sm"
+            >
+              <font-awesome-icon
+                :icon="['fas', 'ellipsis']"
+                class="w-4 h-4"
+              />
+            </MenuButton>
+          </div>
+          <MenuItems
+            class="absolute right-0 mt-1 bg-white shadow-lg rounded-sm z-10"
+          >
+            <div class="px-1 py-1">
+              <MenuItem
+                v-slot="{ close }"
+                as="div"
+              >
+                <button
+                  class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100"
+                  @click.stop.prevent="sharePlan(plan.id, close)"
+                >
+                  <font-awesome-icon
+                    :icon="copiedPlanId === plan.id ? ['fas', 'check'] : ['fas', 'share-nodes']"
+                    :class="copiedPlanId === plan.id ? 'text-green-600' : 'text-black'"
+                  />
+                </button>
+              </MenuItem>
+            </div>
+            <div class="px-1 py-1">
+              <MenuItem>
+                <button
+                  class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100"
+                  @click="deletePlan(plan.id)"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'trash']"
+                  />
+                </button>
+              </MenuItem>
+            </div>
+          </MenuItems>
+        </Menu>
       </li>
     </ul>
     <form
@@ -137,16 +209,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useAuth } from "@clerk/vue";
 import { fetchSavedPlans, savePlan, deletePlan } from "../api/plan";
 import type { Plan } from "../types/Plan";
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
+import {
+  Popover,
+  PopoverButton,
+  PopoverPanel,
+  Menu,
+  MenuButton,
+  MenuItems,
+  MenuItem
+} from '@headlessui/vue';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrash, faUpRightFromSquare, faCheck, faChevronDown, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import {
+  faTrash,
+  faShareNodes,
+  faCheck,
+  faChevronDown,
+  faEllipsis
+} from '@fortawesome/free-solid-svg-icons';
 
-library.add(faTrash, faUpRightFromSquare, faCheck, faChevronDown, faEllipsisVertical);
+library.add(faTrash, faShareNodes, faCheck, faChevronDown, faEllipsis);
 
 export default defineComponent({
   name: 'SavedPlans',
@@ -154,6 +240,13 @@ export default defineComponent({
     Popover,
     PopoverButton,
     PopoverPanel,
+    // eslint-disable-next-line vue/no-reserved-component-names
+    Menu,
+    MenuButton,
+    // eslint-disable-next-line vue/no-reserved-component-names
+    MenuItems,
+    // eslint-disable-next-line vue/no-reserved-component-names
+    MenuItem,
     FontAwesomeIcon
   },
   setup() {
@@ -206,24 +299,23 @@ export default defineComponent({
       await deletePlan(planId, token)
       await this.getPlans();
     },
-    async sharePlan(planId: string) {
+    async sharePlan(planId: string, close: () => void) {
       const plan = this.modulePlans.find(p => p.id === planId);
-      if (!plan || !plan.public_slug) {
+      if (!plan || !plan.publicSlug) {
         console.error('No public_slug found for this plan');
         return;
       }
 
       const baseUrl = window.location.origin;
-      const shareUrl = `${baseUrl}/#/shared/${plan.public_slug}`;
+      const shareUrl = `${baseUrl}/#/shared/${plan.publicSlug}`;
       try {
         await navigator.clipboard.writeText(shareUrl);
         console.log('Link copied to clipboard:', shareUrl);
         this.copiedPlanId = planId;
-        // Reset after 2 seconds
         setTimeout(() => {
           this.copiedPlanId = null;
-        }, 2000);
-        // Optionally show a toast or notification here
+          close();
+        }, 1000);
       } catch (err) {
         console.error('Failed to copy link:', err);
       }
