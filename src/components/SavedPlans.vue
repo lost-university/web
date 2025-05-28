@@ -13,7 +13,7 @@
       />
     </PopoverButton>
     <PopoverPanel
-      class="absolute transform rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-50"
+      class="absolute transform rounded-sm sm:shadow-2xl bg-white dark:bg-zinc-800 flex-col sm:fixed z-50"
     >
       <ul>
         <li
@@ -24,12 +24,12 @@
         >
           <router-link
             :to="plan.content"
-            class="p-2 hover:bg-gray-100 rounded-sm flex-grow"
+            class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm flex-auto"
           >
             {{ plan.name }}
           </router-link>
           <button
-            class="p-2 hover:bg-gray-100 rounded-sm"
+            class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
             data-cy="SavedPlans-Delete-Button"
             @click="deletePlan(plan.id)"
           >
@@ -45,13 +45,14 @@
           v-if="isEditingName"
           v-model="planName"
           type="text"
-          class="p-2 hover:bg-gray-100 rounded-sm"
+          class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm flex-auto"
           placeholder="Plan Namen eingeben"
           data-cy="SavePlan-Name"
         >
         <button
           v-if="isEditingName"
           type="submit"
+          class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
           data-cy="SavePlan-Submit"
         >
           Erstellen
@@ -59,7 +60,7 @@
       </form>
       <button
         v-if="!isEditingName"
-        class="p-2 hover:bg-gray-100 rounded-sm text-left"
+        class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm text-left"
         data-cy="SavePlan-Button"
         @click="() => isEditingName = !isEditingName"
       >
@@ -84,12 +85,12 @@
       >
         <router-link
           :to="plan.content"
-          class="p-2 hover:bg-gray-100 rounded-sm"
+          class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm flex-auto"
         >
           {{ plan.name }}
         </router-link>
         <button
-          class="p-2 hover:bg-gray-100 rounded-sm"
+          class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
           data-cy="SavedPlans-Delete-Button"
           @click="deletePlan(plan.id)"
         >
@@ -105,13 +106,14 @@
         v-if="isEditingName"
         v-model="planName"
         type="text"
-        class="p-2 hover:bg-gray-100 rounded-sm"
+        class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm flex-auto"
         placeholder="Plan Namen eingeben"
         data-cy="SavePlan-Name"
       >
       <button
         v-if="isEditingName"
         type="submit"
+        class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
         data-cy="SavePlan-Submit"
       >
         Erstellen
@@ -119,7 +121,7 @@
     </form>
     <button
       v-if="!isEditingName"
-      class="p-2 hover:bg-gray-100 rounded-sm text-left"
+      class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm text-left"
       data-cy="SavePlan-Button"
       @click="() => isEditingName = !isEditingName"
     >
