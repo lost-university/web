@@ -60,6 +60,7 @@
     ref="plan"
     class="flex space-x-2 overflow-auto before:m-auto after:m-auto p-4
       print:overflow-visible print:origin-top-left"
+    data-cy="semester-container"
   >
     <SemesterComponent
       v-for="semester in enrichedSemesters"

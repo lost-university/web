@@ -38,7 +38,7 @@ describe('multiple plans', () => {
     cy.get('[data-cy="SavePlan-Name"]').first().type("2 modules");
     cy.get('[data-cy="SavePlan-Submit"]').first().click();
 
-    cy.get('#semester-container').screenshot('plans.cy.ts/create-plan-with-2-modules');
+    cy.get('[data-cy="semester-container"]').screenshot('plans.cy.ts/create-plan-with-2-modules');
 
     cy.visit('/')
 
@@ -50,7 +50,7 @@ describe('multiple plans', () => {
       cy.wrap(element).should('have.text', expectedModules[index]);
     });
 
-    cy.get('#semester-container').screenshot('plans.cy.ts/load-plan-with-2-modules');
+    cy.get('[data-cy="semester-container"]').screenshot('plans.cy.ts/load-plan-with-2-modules');
   });
 
   it('save 2 plans', () => {
@@ -65,7 +65,7 @@ describe('multiple plans', () => {
       cy.get("[data-cy=SavedPlans-List-Item").filter(`:contains("Test Plan ${timestamp}")`).should('exist');
     }
 
-    cy.get('#semester-container').screenshot('plans.cy.ts/create-2-plans');
+    cy.get('[data-cy="semester-container"]').screenshot('plans.cy.ts/create-2-plans');
   });
 
   it('delete 1 plan', () => {
@@ -75,7 +75,7 @@ describe('multiple plans', () => {
     cy.get("[data-cy='SavePlan-Name']").first().type(`Test Plan: To Delete`);
     cy.get("[data-cy='SavePlan-Submit']:visible").click();
 
-    cy.get('#semester-container').screenshot('plans.cy.ts/create-to-delete-plan');
+    cy.get('[data-cy="semester-container"]').screenshot('plans.cy.ts/create-to-delete-plan');
 
     cy.get("[data-cy=SavedPlans-List-Item").filter(`:contains("Test Plan: To Delete")`)
       .first().within(() => {
@@ -83,8 +83,8 @@ describe('multiple plans', () => {
           .first().click()
       });
 
-    cy.contains("[data-cy='SavedPlans-List-Item']", "Test Plan: To Delete").should('not.exist');
+    cy.contains('[data-cy="SavedPlans-List-Item"]', "Test Plan: To Delete").should('not.exist');
 
-    cy.get('#semester-container').screenshot('plans.cy.ts/delete-to-delete-plan');
+    cy.get('[data-cy="semester-container"]').screenshot('plans.cy.ts/delete-to-delete-plan');
   });
 })
