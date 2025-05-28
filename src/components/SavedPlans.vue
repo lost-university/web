@@ -28,53 +28,10 @@
           >
             {{ plan.name }}
           </router-link>
-          <Menu
-            as="div"
-            class="relative inline-block text-left"
-          >
-            <div>
-              <MenuButton
-                class="p-2 hover:bg-gray-100 rounded-sm"
-              >
-                <font-awesome-icon
-                  :icon="['fas', 'ellipsis']"
-                  class="w-4 h-4"
-                />
-              </MenuButton>
-            </div>
-            <MenuItems
-              class="absolute top-0 left-full ml-1 bg-white shadow-lg rounded-sm z-10"
-            >
-              <div class="px-1 py-1">
-                <MenuItem
-                  v-slot="{ close }"
-                  as="div"
-                >
-                  <button
-                    class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100"
-                    @click.stop.prevent="sharePlan(plan.id, close)"
-                  >
-                    <font-awesome-icon
-                      :icon="copiedPlanId === plan.id ? ['fas', 'check'] : ['fas', 'share-nodes']"
-                      :class="copiedPlanId === plan.id ? 'text-green-600' : 'text-black'"
-                    />
-                  </button>
-                </MenuItem>
-              </div>
-              <div class="px-1 py-1">
-                <MenuItem>
-                  <button
-                    class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100"
-                    @click="deletePlan(plan.id)"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'trash']"
-                    />
-                  </button>
-                </MenuItem>
-              </div>
-            </MenuItems>
-          </Menu>
+          <SavedPlansActionMenu
+            :plan="plan"
+            @delete="deletePlan"
+          />
         </li>
       </ul>
       <form
@@ -128,53 +85,11 @@
         >
           {{ plan.name }}
         </router-link>
-        <Menu
-          as="div"
-          class="relative inline-block text-left"
-        >
-          <div>
-            <MenuButton
-              class="p-2 hover:bg-gray-100 rounded-sm"
-            >
-              <font-awesome-icon
-                :icon="['fas', 'ellipsis']"
-                class="w-4 h-4"
-              />
-            </MenuButton>
-          </div>
-          <MenuItems
-            class="absolute right-0 mt-1 bg-white shadow-lg rounded-sm z-10"
-          >
-            <div class="px-1 py-1">
-              <MenuItem
-                v-slot="{ close }"
-                as="div"
-              >
-                <button
-                  class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100"
-                  @click.stop.prevent="sharePlan(plan.id, close)"
-                >
-                  <font-awesome-icon
-                    :icon="copiedPlanId === plan.id ? ['fas', 'check'] : ['fas', 'share-nodes']"
-                    :class="copiedPlanId === plan.id ? 'text-green-600' : 'text-black'"
-                  />
-                </button>
-              </MenuItem>
-            </div>
-            <div class="px-1 py-1">
-              <MenuItem>
-                <button
-                  class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100"
-                  @click="deletePlan(plan.id)"
-                >
-                  <font-awesome-icon
-                    :icon="['fas', 'trash']"
-                  />
-                </button>
-              </MenuItem>
-            </div>
-          </MenuItems>
-        </Menu>
+        <SavedPlansActionMenu
+          :plan="plan"
+          :menu-position-class="'right-0 mt-1'"
+          @delete="deletePlan"
+        />
       </li>
     </ul>
     <form
@@ -209,54 +124,33 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import { useAuth } from "@clerk/vue";
 import { fetchSavedPlans, savePlan, deletePlan } from "../api/plan";
 import type { Plan } from "../types/Plan";
-import {
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-  Menu,
-  MenuButton,
-  MenuItems,
-  MenuItem
-} from '@headlessui/vue';
+import SavedPlansActionMenu from "./SavedPlansActionMenu.vue";
+import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from '@fortawesome/fontawesome-svg-core';
-import {
-  faTrash,
-  faShareNodes,
-  faCheck,
-  faChevronDown,
-  faEllipsis
-} from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faTrash, faShareNodes, faCheck, faChevronDown, faEllipsis);
+library.add(faChevronDown);
 
 export default defineComponent({
   name: 'SavedPlans',
   components: {
+    SavedPlansActionMenu,
     Popover,
     PopoverButton,
     PopoverPanel,
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Menu,
-    MenuButton,
-    // eslint-disable-next-line vue/no-reserved-component-names
-    MenuItems,
-    // eslint-disable-next-line vue/no-reserved-component-names
-    MenuItem,
     FontAwesomeIcon
   },
   setup() {
     const { getToken, isLoaded, isSignedIn } = useAuth();
-    const copiedPlanId = ref<string | null>(null);
     return {
       getToken,
       isLoaded,
       isSignedIn,
-      copiedPlanId,
     };
   },
   data() {
@@ -298,27 +192,6 @@ export default defineComponent({
       const token = await this.getToken() as string;
       await deletePlan(planId, token)
       await this.getPlans();
-    },
-    async sharePlan(planId: string, close: () => void) {
-      const plan = this.modulePlans.find(p => p.id === planId);
-      if (!plan || !plan.publicSlug) {
-        console.error('No public_slug found for this plan');
-        return;
-      }
-
-      const baseUrl = window.location.origin;
-      const shareUrl = `${baseUrl}/#/shared/${plan.publicSlug}`;
-      try {
-        await navigator.clipboard.writeText(shareUrl);
-        console.log('Link copied to clipboard:', shareUrl);
-        this.copiedPlanId = planId;
-        setTimeout(() => {
-          this.copiedPlanId = null;
-          close();
-        }, 1000);
-      } catch (err) {
-        console.error('Failed to copy link:', err);
-      }
     },
   },
 })
