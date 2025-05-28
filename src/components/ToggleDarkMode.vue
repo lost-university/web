@@ -1,6 +1,6 @@
 <template>
   <button
-    :aria-pressed="isDark.toString()"
+    :aria-pressed="isDark"
     :class="[
       'p-2 transition-colors rounded-sm focus:outline-none ml-4 mr-4',
       isDark ? 'bg-gray-700 text-white' : 'bg-gray-800 text-white'

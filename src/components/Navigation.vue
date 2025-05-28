@@ -7,12 +7,12 @@
     <div class="flex items-center justify-between w-full">
       <router-link to="/">
         <img
-          src="../assets/logo.png"
+          src="/logo.png"
           class="size-24 pb-4 object-contain dark:hidden"
           alt="Home"
         >
         <img
-          src="../assets/logo_dark.png"
+          src="/logo_dark.png"
           class="size-24 pb-4 object-contain hidden dark:block"
           alt="Home"
         >
