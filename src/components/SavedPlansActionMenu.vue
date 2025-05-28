@@ -4,7 +4,10 @@
     class="relative inline-block text-left"
   >
     <div>
-      <MenuButton class="p-2 hover:bg-gray-100 rounded-sm">
+      <MenuButton
+        class="p-2 hover:bg-gray-100 rounded-sm"
+        data-cy="menu-button"
+      >
         <font-awesome-icon
           :icon="['fas', 'ellipsis']"
         />
@@ -21,9 +24,11 @@
         >
           <button
             class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100"
+            data-cy="share-button"
             @click.stop.prevent="sharePlan(close)"
           >
             <font-awesome-icon
+              data-cy="share-icon"
               :icon="planCopied ? ['fas', 'check'] : ['fas', 'share-nodes']"
               :class="planCopied ? 'text-green-600' : 'text-black'"
             />
@@ -36,6 +41,7 @@
         >
           <button
             class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100"
+            data-cy="delete-button"
             @click="deletePlan()"
           >
             <font-awesome-icon :icon="['fas', 'trash']" />
