@@ -40,7 +40,9 @@ describe('multiple plans', () => {
 
     cy.get('[data-cy="semester-container"]').screenshot('plans.cy.ts/create-plan-with-2-modules');
 
-    cy.visit('/')
+    cy.get('[data-cy="ModuleSearch-OpenButton"]').first().click();
+    cy.get('[data-cy="ModuleSearch-Input"]').type("Computer Grafik");
+    cy.get('[data-cy="ModuleSearch-ModuleList"]').first().click();
 
     cy.get('[data-cy="SavedPlans-Dropdown-Button"]').first().click();
     cy.get("[data-cy='SavedPlans-List-Item']").filter(`:contains("2 modules")`).first().click();
