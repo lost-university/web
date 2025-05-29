@@ -60,11 +60,12 @@
     ref="plan"
     class="flex space-x-2 overflow-auto before:m-auto after:m-auto p-4
       print:overflow-visible print:origin-top-left"
+    data-cy="semester-container"
   >
     <SemesterComponent
       v-for="semester in enrichedSemesters"
       :key="semester.number"
-      class="bg-gray-200 dark:bg-zinc-800 rounded-sm p-2 
+      class="bg-gray-200 dark:bg-zinc-800 rounded-sm p-2
       group/semester w-64 min-w-64"
       :semester="semester"
       @on-module-deleted="(moduleId: string) => removeModule(semester.number, moduleId)"

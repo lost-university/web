@@ -51,17 +51,26 @@
             </div>
           </div>
         </template>
+        <SavedPlans
+          v-if="isSignedIn"
+        />
       </div>
 
       <div class="flex justify-end mr-2">
         <ToggleDarkMode />
         <SignedOut>
-          <div data-cy="Navigation-SignInButton">
+          <div
+            data-cy="Navigation-SignInButton"
+            class="flex items-center"
+          >
             <SignInButton />
           </div>
         </SignedOut>
         <SignedIn>
-          <div data-cy="Navigation-UserButton">
+          <div
+            data-cy="Navigation-UserButton"
+            class="flex items-center"
+          >
             <UserButton />
           </div>
         </SignedIn>
@@ -106,7 +115,7 @@
             <a
               v-for="plan in category.plans"
               :key="plan.title"
-              class="p-2 hover:bg-gray-100 rounded-sm"
+              class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
               :href="`#/plan/${plan.path}?startSemester=${startSemesterName}`"
               @click="onBurgerClick"
               v-text="plan.title"
@@ -114,25 +123,43 @@
           </div>
         </div>
       </template>
+      <SavedPlans
+        v-if="isSignedIn"
+      />
     </div>
   </nav>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/vue'
+import { SignedIn, SignedOut, SignInButton, useAuth, UserButton } from '@clerk/vue'
 import { SemesterInfo } from "../helpers/semester-info";
 import ToggleDarkMode from './ToggleDarkMode.vue';
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import SavedPlans from "./SavedPlans.vue";
+
+library.add(faChevronDown);
 
 /* eslint-disable max-len */
 export default defineComponent({
   name: 'Navigation',
   components: {
+    SavedPlans,
     SignedIn,
     SignedOut,
     SignInButton,
     UserButton,
     ToggleDarkMode,
+    FontAwesomeIcon
+  },
+  setup() {
+    const { isSignedIn } = useAuth();
+
+    return {
+      isSignedIn,
+    };
   },
   data() {
     return {
