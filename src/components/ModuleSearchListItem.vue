@@ -1,33 +1,46 @@
 <template>
   <li
-    class="px-2 py-1 border-b border-slate-500 flex justify-between items-center last:rounded-b-sm last:border-b-0"
+    class="px-2 py-1 border-b border-slate-500 flex items-center last:rounded-b-sm last:border-b-0"
     :class="moduleIsDisabled(module) ?
-      'text-gray-400 bg-gray-300 cursor-default' :
+      'text-gray-400 bg-gray-300 dark:bg-zinc-700 cursor-default' :
       'cursor-pointer hover:bg-gray-200'"
     data-cy="ModuleSearch-ModuleListItem"
     @click="!moduleIsDisabled(module) ? onModuleSelect(module.id) : null"
   >
-    <span
-      class="max-w-3/4"
+    <div
+      class="w-4/6"
       data-cy="ModuleSearch-ModuleListItem-ModuleName"
     >
       {{ module.name }}
-    </span>
-    <span
-      v-if="moduleIsInPlan(module)"
-      class="italic"
-    >
-      geplant
-    </span>
-    <span v-else-if="module.isDeactivated && disableInvalidModules">
-      inaktiv
-    </span>
-    <span
-      v-else
-      data-cy="ModuleSearch-ModuleListItem-ECTS"
-    >
-      {{ module.ects }} ECTS
-    </span>
+    </div>
+    <div class="text-right w-1/6">
+      <span
+        v-if="moduleIsInPlan(module)"
+        class="italic"
+      >
+        geplant
+      </span>
+      <span v-else-if="module.isDeactivated && disableInvalidModules">
+        inaktiv
+      </span>
+      <span
+        v-else
+        data-cy="ModuleSearch-ModuleListItem-ECTS"
+      >
+        {{ module.ects }} ECTS
+      </span>
+    </div>
+    <div class="w-1/6 text-xs text-center">
+      <span v-if="showNextPossibleSemester && module.nextPossibleSemester">
+        ({{ module.nextPossibleSemester }})
+      </span>
+      <span v-else-if="moduleHasWrongTerm(module) && disableInvalidModules">
+        nur im {{ module.term }}
+      </span>
+      <span v-else>
+        {{ module.getDisplayTextForTerm() }}
+      </span>
+    </div>
   </li>
 </template>
 

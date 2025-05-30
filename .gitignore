@@ -23,6 +23,9 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-*.env
+.env
 /cypress/screenshots/
 cypress.env.json
+
+# PWA dev files
+/dev-dist/*

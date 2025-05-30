@@ -41,7 +41,8 @@ jobs:
       POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_PASSWORD: postgres
+      AUTHORIZED_PARTIES: http://localhost,http://localhost:5173,http://localhost:8080
       CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
       VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
     strategy:
@@ -65,11 +66,19 @@ jobs:
       - name: Start Docker containers
         run: |
           docker compose -f cypress/docker-compose.yml up -d
+      - name: Initialize DB tables
+        run: |
+          docker exec backend sh -c "uv run python app/create_tables.py"
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
           browser: ${{ matrix.browser }}
-          wait-on: 'http://localhost:5173'
+          headed: true
+          wait-on: "http://localhost"
+        env:
+          CYPRESS_BASE_URL: "http://localhost"
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
       - name: Upload Cypress Screenshots
         uses: actions/upload-artifact@v4
         env:

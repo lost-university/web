@@ -1,14 +1,19 @@
 <template>
   <nav
-    class="flex sm:mx-4 items-center flex-wrap sm:flex-nowrap"
+    class="flex sm:mx-4 items-center flex-wrap sm:flex-nowrap print:hidden"
     role="navigation"
     aria-label="main navigation"
   >
     <div class="flex items-center justify-between w-full">
       <router-link to="/">
         <img
-          src="../assets/logo.png"
-          class="size-24 pb-4 object-contain"
+          src="/logo.png"
+          class="size-24 pb-4 object-contain dark:hidden"
+          alt="Home"
+        >
+        <img
+          src="/logo_dark.png"
+          class="size-24 pb-4 object-contain hidden dark:block"
           alt="Home"
         >
       </router-link>
@@ -32,12 +37,13 @@
               />
             </div>
             <div
-              class="sm:hidden peer-hover:flex hover:flex flex rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-50"
+              class="sm:hidden peer-hover:flex hover:flex flex rounded-sm
+              sm:shadow-2xl bg-white dark:bg-zinc-800 flex-col sm:fixed z-50"
             >
               <a
                 v-for="plan in category.plans"
                 :key="plan.title"
-                class="p-2 hover:bg-gray-100 rounded-sm"
+                class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
                 :href="`#/plan/${plan.path}?startSemester=${startSemesterName}`"
                 @click="onBurgerClick"
                 v-text="plan.title"
@@ -45,6 +51,9 @@
             </div>
           </div>
         </template>
+        <SavedPlans
+          v-if="isSignedIn"
+        />
       </div>
 
       <router-link
@@ -65,13 +74,20 @@
       </router-link>
 
       <div class="flex justify-end mr-2">
+        <ToggleDarkMode />
         <SignedOut>
-          <div data-cy="Navigation-SignInButton">
+          <div
+            data-cy="Navigation-SignInButton"
+            class="flex items-center"
+          >
             <SignInButton />
           </div>
         </SignedOut>
         <SignedIn>
-          <div data-cy="Navigation-UserButton">
+          <div
+            data-cy="Navigation-UserButton"
+            class="flex items-center"
+          >
             <UserButton />
           </div>
         </SignedIn>
@@ -110,12 +126,13 @@
             />
           </div>
           <div
-            class="sm:hidden peer-hover:flex hover:flex flex rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-10"
+            class="sm:hidden peer-hover:flex hover:flex flex rounded-sm
+            sm:shadow-2xl bg-white dark:bg-zinc-800 flex-col sm:fixed z-10"
           >
             <a
               v-for="plan in category.plans"
               :key="plan.title"
-              class="p-2 hover:bg-gray-100 rounded-sm"
+              class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
               :href="`#/plan/${plan.path}?startSemester=${startSemesterName}`"
               @click="onBurgerClick"
               v-text="plan.title"
@@ -123,24 +140,43 @@
           </div>
         </div>
       </template>
+      <SavedPlans
+        v-if="isSignedIn"
+      />
     </div>
   </nav>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/vue'
-
+import { SignedIn, SignedOut, SignInButton, useAuth, UserButton } from '@clerk/vue'
 import { SemesterInfo } from "../helpers/semester-info";
+import ToggleDarkMode from './ToggleDarkMode.vue';
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import SavedPlans from "./SavedPlans.vue";
+
+library.add(faChevronDown);
 
 /* eslint-disable max-len */
 export default defineComponent({
   name: 'Navigation',
   components: {
+    SavedPlans,
     SignedIn,
     SignedOut,
     SignInButton,
     UserButton,
+    ToggleDarkMode,
+    FontAwesomeIcon
+  },
+  setup() {
+    const { isSignedIn } = useAuth();
+
+    return {
+      isSignedIn,
+    };
   },
   data() {
     return {
