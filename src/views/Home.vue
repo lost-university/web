@@ -130,8 +130,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Switch as HeadlessSwitch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
-
 import SemesterComponent from '../components/Semester.vue';
 import FocusComponent from '../components/Focus.vue';
 import ToastNotification from '../components/ToastNotification.vue';
@@ -142,20 +140,15 @@ import { StorageHelper } from '../helpers/storage-helper';
 import { store } from '../helpers/store';
 import { mapGetters } from 'vuex';
 import AccreditedModules from '../components/AccreditedModules.vue';
-import GlobalValidationInfo from "../components/GlobalValidationInfo.vue";
 
 export default defineComponent({
   name: 'Home',
   components: {
-    GlobalValidationInfo,
     SemesterComponent,
     FocusComponent,
     ToastNotification,
     Categories,
     AccreditedModules,
-    HeadlessSwitch,
-    SwitchGroup,
-    SwitchLabel,
   },
   data() {
     return {

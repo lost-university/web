@@ -1,7 +1,9 @@
 <template>
   <SwitchGroup>
     <div class="flex items-center ml-auto sm:h-8.5">
-      <SwitchLabel class="mr-4">Validierung:</SwitchLabel>
+      <SwitchLabel class="mr-4">
+        Validierung:
+      </SwitchLabel>
       <HeadlessSwitch
         :model-value="validationEnabled"
         :class="validationEnabled ? 'bg-teal-700' : 'bg-gray-500'"

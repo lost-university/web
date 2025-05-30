@@ -58,13 +58,16 @@
 
       <NavigationToggleValidation />
       <button
-        @click="showGraphModal = true"
         class="ml-8 px-4 py-2 bg-gray-800 text-white rounded"
+        @click="showGraphModal = true"
       >
         Graph
       </button>
 
-      <GraphModal :open="showGraphModal" @close="showGraphModal = false" />
+      <GraphModal
+        :open="showGraphModal"
+        @close="showGraphModal = false"
+      />
 
       
 
