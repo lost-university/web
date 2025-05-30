@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="flex sm:mx-4 items-center flex-wrap sm:flex-nowrap"
+    class="flex sm:mx-4 items-center flex-wrap sm:flex-nowrap print:hidden"
     role="navigation"
     aria-label="main navigation"
   >
@@ -8,7 +8,12 @@
       <router-link to="/">
         <img
           src="/logo.png"
-          class="size-24 pb-4 object-contain"
+          class="size-24 pb-4 object-contain dark:hidden"
+          alt="Home"
+        >
+        <img
+          src="/logo_dark.png"
+          class="size-24 pb-4 object-contain hidden dark:block"
           alt="Home"
         >
       </router-link>
@@ -32,12 +37,13 @@
               />
             </div>
             <div
-              class="sm:hidden peer-hover:flex hover:flex flex rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-50"
+              class="sm:hidden peer-hover:flex hover:flex flex rounded-sm
+              sm:shadow-2xl bg-white dark:bg-zinc-800 flex-col sm:fixed z-50"
             >
               <a
                 v-for="plan in category.plans"
                 :key="plan.title"
-                class="p-2 hover:bg-gray-100 rounded-sm"
+                class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
                 :href="`#/plan/${plan.path}?startSemester=${startSemesterName}`"
                 @click="onBurgerClick"
                 v-text="plan.title"
@@ -51,6 +57,7 @@
       </div>
 
       <div class="flex justify-end mr-2">
+        <ToggleDarkMode />
         <SignedOut>
           <div
             data-cy="Navigation-SignInButton"
@@ -102,12 +109,13 @@
             />
           </div>
           <div
-            class="sm:hidden peer-hover:flex hover:flex flex rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-10"
+            class="sm:hidden peer-hover:flex hover:flex flex rounded-sm
+            sm:shadow-2xl bg-white dark:bg-zinc-800 flex-col sm:fixed z-10"
           >
             <a
               v-for="plan in category.plans"
               :key="plan.title"
-              class="p-2 hover:bg-gray-100 rounded-sm"
+              class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
               :href="`#/plan/${plan.path}?startSemester=${startSemesterName}`"
               @click="onBurgerClick"
               v-text="plan.title"
@@ -125,10 +133,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { SignedIn, SignedOut, SignInButton, useAuth, UserButton } from '@clerk/vue'
-
 import { SemesterInfo } from "../helpers/semester-info";
-
+import ToggleDarkMode from './ToggleDarkMode.vue';
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import SavedPlans from "./SavedPlans.vue";
+
+library.add(faChevronDown);
 
 /* eslint-disable max-len */
 export default defineComponent({
@@ -139,6 +151,8 @@ export default defineComponent({
     SignedOut,
     SignInButton,
     UserButton,
+    ToggleDarkMode,
+    FontAwesomeIcon
   },
   setup() {
     const { isSignedIn } = useAuth();
@@ -181,7 +195,7 @@ export default defineComponent({
     onBurgerClick() {
       this.isBurgerActive = !this.isBurgerActive;
     },
-  }
+  },
 });
 </script>
 

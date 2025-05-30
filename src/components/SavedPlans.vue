@@ -13,7 +13,7 @@
       />
     </PopoverButton>
     <PopoverPanel
-      class="absolute transform rounded-sm sm:shadow-2xl bg-white flex-col sm:fixed z-50"
+      class="absolute transform rounded-sm sm:shadow-2xl bg-white dark:bg-zinc-800 flex-col sm:fixed z-50"
     >
       <ul>
         <li
@@ -23,8 +23,8 @@
           data-cy="SavedPlans-List-Item"
         >
           <router-link
-            :to="{ path: plan.content, query: $route.query }"
-            class="p-2 hover:bg-gray-100 rounded-sm flex-grow"
+            :to="plan.content"
+            class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm flex-auto"
           >
             {{ plan.name }}
           </router-link>
@@ -42,13 +42,14 @@
           v-if="isEditingName"
           v-model="planName"
           type="text"
-          class="p-2 hover:bg-gray-100 rounded-sm"
+          class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm flex-auto"
           placeholder="Plan Namen eingeben"
           data-cy="SavePlan-Name"
         >
         <button
           v-if="isEditingName"
           type="submit"
+          class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
           data-cy="SavePlan-Submit"
         >
           Erstellen
@@ -56,7 +57,7 @@
       </form>
       <button
         v-if="!isEditingName"
-        class="p-2 hover:bg-gray-100 rounded-sm text-left"
+        class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm text-left"
         data-cy="SavePlan-Button"
         @click="() => isEditingName = !isEditingName"
       >
@@ -80,8 +81,8 @@
         data-cy="SavedPlans-List-Item"
       >
         <router-link
-          :to="{ path: plan.content, query: $route.query }"
-          class="p-2 hover:bg-gray-100 rounded-sm"
+          :to="plan.content"
+          class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm flex-auto"
         >
           {{ plan.name }}
         </router-link>
@@ -100,13 +101,14 @@
         v-if="isEditingName"
         v-model="planName"
         type="text"
-        class="p-2 hover:bg-gray-100 rounded-sm"
+        class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm flex-auto"
         placeholder="Plan Namen eingeben"
         data-cy="SavePlan-Name"
       >
       <button
         v-if="isEditingName"
         type="submit"
+        class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
         data-cy="SavePlan-Submit"
       >
         Erstellen
@@ -114,7 +116,7 @@
     </form>
     <button
       v-if="!isEditingName"
-      class="p-2 hover:bg-gray-100 rounded-sm text-left"
+      class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm text-left"
       data-cy="SavePlan-Button"
       @click="() => isEditingName = !isEditingName"
     >
@@ -147,6 +149,7 @@ export default defineComponent({
   },
   setup() {
     const { getToken, isLoaded, isSignedIn } = useAuth();
+
     return {
       getToken,
       isLoaded,
@@ -160,13 +163,8 @@ export default defineComponent({
       planName: '',
     }
   },
-  computed: {
-    isClerkReady() {
-      return this.isLoaded && this.isSignedIn;
-    }
-  },
   watch: {
-    isClerkReady: {
+    isSignedIn: {
       async handler(newValue) {
         if (newValue) {
           await this.getPlans();
@@ -183,7 +181,8 @@ export default defineComponent({
     },
     async savePlan() {
       const token = await this.getToken() as string;
-      await savePlan(this.planName, this.$route.path.replace('/plan/', ''), token);
+      let plan = this.$route.path.replace('/plan/', '') + "?" + new URLSearchParams(this.$route.query).toString();
+      await savePlan(this.planName, plan, token);
       this.isEditingName = false;
       this.planName = '';
       await this.getPlans();

@@ -1,6 +1,6 @@
 <template>
   <button
-    class="bg-gray-800 text-white p-1 rounded-sm"
+    class="bg-gray-800 text-white dark:bg-gray-700 p-1 rounded-sm print:hidden"
     data-cy="ModuleSearch-OpenButton"
     type="button"
     :class="[buttonWidthClass]"
@@ -18,10 +18,10 @@
     class="relative z-100"
     @close="() => isSearching = false"
   >
-    <div class="fixed inset-0 flex w-screen items-center justify-center">
+    <div class="fixed inset-0 flex w-screen items-center justify-center bg-black/30 dark:bg-black/70">
       <DialogPanel
         class="w-full max-w-4xl max-h-dvh flex flex-col
-      rounded bg-white p-6 shadow-2xl overflow-y-auto sm:overflow-y-hidden sm:h-3/4"
+      rounded bg-white dark:bg-zinc-900 p-6 shadow-2xl overflow-y-auto sm:overflow-y-hidden sm:h-3/4"
         data-cy="ModuleSearch-DialogPanel"
       >
         <div class="flex sm:hidden justify-end mb-2">

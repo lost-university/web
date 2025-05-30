@@ -1,10 +1,11 @@
 <template>
   <div
     :key="module.name"
-    class="rounded-sm group/module relative p-2 px-8 flex flex-col items-center text-center text-white w-full"
+    class="rounded-sm group/module relative p-2 px-8 flex flex-col items-center
+    text-center text-white w-full print:text-black print:border print:border-gray-300"
     :class="computedClasses"
   >
-    <div class="absolute left-2">
+    <div class="absolute left-2 print:hidden">
       <span
         v-if="module.validationInfo && module.validationInfo.severity === 'soft'"
         :title="module.validationInfo.tooltip"
@@ -22,7 +23,7 @@
     </div>
     <button
       class="absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
-             hover:!opacity-100 right-2 transition-opacity duration-75"
+             hover:!opacity-100 right-2 transition-opacity duration-75 print:!opacity-0"
       type="button"
       @click="$emit('on-delete', module.id)"
     >
