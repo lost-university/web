@@ -55,10 +55,11 @@
           v-if="isSignedIn"
         />
       </div>
-
       <NavigationToggleValidation />
+
       <button
         class="ml-8 px-4 py-2 bg-gray-800 text-white rounded"
+        data-cy="activate-graph-button"
         @click="showGraphModal = true"
       >
         Graph

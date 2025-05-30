@@ -16,6 +16,7 @@
         >
           <VueFlow
             ref="vueFlowRef"
+            data-cy="graph-vueflow"
             :nodes="nodes"
             :edges="processedEdges"
             :default-zoom="0.5"
@@ -41,6 +42,7 @@
           <div class="absolute right-4 top-4 ">
             <button
               class="flex items-center"
+              data-cy="graph-close-button"
               @click="$emit('close')"
             >
               <font-awesome-icon

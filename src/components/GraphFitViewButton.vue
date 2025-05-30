@@ -1,8 +1,8 @@
 <template>
   <button
-    id="fit-view-button"
     class="fit-view-button w-auto h-auto bg-gray-800 rounded-full
     px-3 py-2 shadow hover:bg-gray-700 focus:outline-none flex items-center"
+    data-cy="fit-view-button"
     aria-label="Fit View"
     @click="$emit('click')"
   >
