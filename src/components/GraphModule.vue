@@ -19,7 +19,10 @@
       type="button"
       @click="toggleList('right')"
     >
-      <font-awesome-icon :icon="['fa', 'plus-circle']" size="lg" />
+      <font-awesome-icon
+        :icon="['fa', 'plus-circle']"
+        size="lg"
+      />
     </button>
 
     <button
@@ -29,7 +32,10 @@
       type="button"
       @click="toggleList('left')"
     >
-      <font-awesome-icon :icon="['fa', 'plus-circle']" size="lg" />
+      <font-awesome-icon
+        :icon="['fa', 'plus-circle']"
+        size="lg"
+      />
     </button>
 
     <button
@@ -38,7 +44,10 @@
       type="button"
       @click="removeModule"
     >
-      <font-awesome-icon :icon="['fa', 'circle-xmark']" size="lg" />
+      <font-awesome-icon
+        :icon="['fa', 'circle-xmark']"
+        size="lg"
+      />
     </button>
 
     <a
