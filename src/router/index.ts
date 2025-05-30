@@ -3,11 +3,6 @@ import Home from '../views/Home.vue';
 
 const routes = [
   {
-    path: '/graph',
-    name: 'Graph',
-    component: () => import('../views/Graph.vue'),
-  },
-  {
     path: '/:catchAll(.*)',
     name: 'Home',
     component: Home,

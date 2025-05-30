@@ -16,31 +16,6 @@
     />
   </div>
 
-  <div class="flex justify-end mx-2 relative mb-10">
-    <div class="flex items-start w-full absolute top-0 right-0 z-40">
-      <SwitchGroup>
-        <div class="flex items-center ml-auto sm:h-8.5">
-          <SwitchLabel class="mr-4">
-            Validierung:
-          </SwitchLabel>
-          <HeadlessSwitch
-            :model-value="validationEnabled"
-            :class="validationEnabled ? 'bg-teal-700' : 'bg-gray-500'"
-            class="relative inline-flex h-9 w-16 sm:h-6 sm:w-11 items-center rounded-full"
-            @update:model-value="setValidationEnabled"
-          >
-            <span
-              aria-hidden="true"
-              :class="validationEnabled ? 'translate-x-9 sm:translate-x-6' : 'translate-x-1'"
-              class="inline-block h-6 w-6 sm:h-4 sm:w-4 transform rounded-full bg-white transition"
-            />
-          </HeadlessSwitch>
-        </div>
-      </SwitchGroup>
-      <GlobalValidationInfo />
-    </div>
-  </div>
-
   <div
     id="print-title"
     class="flex mb-4 hidden print:flex mt-5 ml-4"
