@@ -1,7 +1,7 @@
 <template>
   <div
     ref="wrapperRef"
-    class="flex wrapper"
+    class="flex relative w-full"
     @mouseleave="onWrapperLeave"
   >
     <VueFlow
@@ -71,16 +71,3 @@ const {
 } = useGraphHighlighting(nodes, edges);
 
 </script>
-
-<style scoped>
-.wrapper {
-  position: relative;
-  width: 100%;
-}
-
-.controls {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-}
-</style>

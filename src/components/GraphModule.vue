@@ -3,7 +3,7 @@
     ref="itemRef"
     :key="module.name + id"
     class="rounded-sm group/module relative p-2 px-8 flex flex-col
-    items-center text-center text-white w-full module-node"
+           items-center text-center text-white w-full w-[240px]"
     :class="computedClasses"
   >
     <Handle
@@ -19,10 +19,7 @@
       type="button"
       @click="toggleList('right')"
     >
-      <font-awesome-icon
-        :icon="['fa', 'plus-circle']"
-        size="lg"
-      />
+      <font-awesome-icon :icon="['fa', 'plus-circle']" size="lg" />
     </button>
 
     <button
@@ -32,10 +29,7 @@
       type="button"
       @click="toggleList('left')"
     >
-      <font-awesome-icon
-        :icon="['fa', 'plus-circle']"
-        size="lg"
-      />
+      <font-awesome-icon :icon="['fa', 'plus-circle']" size="lg" />
     </button>
 
     <button
@@ -44,10 +38,7 @@
       type="button"
       @click="removeModule"
     >
-      <font-awesome-icon
-        :icon="['fa', 'circle-xmark']"
-        size="lg"
-      />
+      <font-awesome-icon :icon="['fa', 'circle-xmark']" size="lg" />
     </button>
 
     <a
@@ -81,71 +72,81 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed } from 'vue'
+<script lang="ts">
+import { defineComponent } from 'vue'
 import { Handle, Position } from '@vue-flow/core'
 import ModuleList from './GraphModuleList.vue'
 import { getColorClassForPrioritizedCategory } from '../helpers/color-helper'
-import type { Module } from '../helpers/types'
 import { store } from '../helpers/store'
 import { StorageHelper } from '../helpers/storage-helper'
+import type { Module } from '../helpers/types'
 
-const props = defineProps<{ module: Module; id: number }>()
-const emit = defineEmits<{
-  (e: 'on-delete'): void
-  (e: 'module-selected', payload: { parentId: number; module: Module }): void
-}>()
-
-const showList = ref(false)
-const listSide = ref<'left' | 'right'>('left')
-const itemRef = ref<HTMLElement>()
-
-const computedClasses = computed<string[]>(() => {
-  const classes = [getColorClassForPrioritizedCategory(props.module.categoriesForColoring)]
-  if (props.module.validationInfo?.severity === 'hard') {
-    classes.push('border-red-500', 'border-4')
+export default defineComponent({
+  name: 'GraphModule',
+  components: {
+    Handle,
+    ModuleList
+  },
+  props: {
+    module: {
+      type: Object as () => Module,
+      required: true
+    },
+    id: {
+      type: Number,
+      required: true
+    }
+  },
+  emits: ['on-delete', 'module-selected'],
+  data() {
+    return {
+      showList: false,
+      listSide: 'left' as 'left' | 'right',
+      Position: Position
+    }
+  },
+  computed: {
+    computedClasses(): string[] {
+      const classes = [getColorClassForPrioritizedCategory(this.module.categoriesForColoring)]
+      if (this.module.validationInfo?.severity === 'hard') {
+        classes.push('border-red-500', 'border-4')
+      }
+      return classes
+    },
+    recommendedModules(): Module[] {
+      return this.module.recommendedModuleIds
+        .map(id => (store.getters.modules as Module[]).find(m => m.id === id))
+        .filter((m): m is Module => !!m && !(store.getters.allPlannedModuleIds as string[]).includes(m.id))
+    },
+    dependentModules(): Module[] {
+      return this.module.dependentModuleIds
+        .map(id => (store.getters.modules as Module[]).find(m => m.id === id))
+        .filter((m): m is Module => !!m && !(store.getters.allPlannedModuleIds as string[]).includes(m.id))
+    },
+    hasRecommended(): boolean {
+      return this.recommendedModules.length > 0
+    },
+    hasDependent(): boolean {
+      return this.dependentModules.length > 0
+    }
+  },
+  methods: {
+    toggleList(side: 'left' | 'right') {
+      this.listSide = side
+      this.showList = !this.showList
+    },
+    hideList() {
+      this.showList = false
+    },
+    onModuleSelected(mod: Module) {
+      this.$emit('module-selected', { parentId: this.id, module: mod })
+      this.showList = false
+    },
+    removeModule() {
+      store.commit('removeModuleFromAllSemesters', this.module.id)
+      StorageHelper.updateUrlFragment()
+      this.$emit('on-delete')
+    }
   }
-  return classes
 })
-
-const recommendedModules = computed<Module[]>(() =>
-  props.module.recommendedModuleIds
-    .map(id => (store.getters.modules as Module[]).find(m => m.id === id))
-    .filter((m): m is Module => !!m && !(store.getters.allPlannedModuleIds as string[]).includes(m.id))
-)
-
-const dependentModules = computed<Module[]>(() =>
-  props.module.dependentModuleIds
-    .map(id => (store.getters.modules as Module[]).find(m => m.id === id))
-    .filter((m): m is Module => !!m && !(store.getters.allPlannedModuleIds as string[]).includes(m.id))
-)
-
-const hasRecommended = computed(() => recommendedModules.value.length > 0)
-const hasDependent = computed(() => dependentModules.value.length > 0)
-
-function toggleList(side: 'left' | 'right') {
-  listSide.value = side
-  showList.value = !showList.value
-}
-
-function hideList() {
-  showList.value = false
-}
-
-function onModuleSelected(mod: Module) {
-  emit('module-selected', { parentId: props.id, module: mod })
-  showList.value = false
-}
-
-function removeModule() {
-  store.commit('removeModuleFromAllSemesters', props.module.id)
-  StorageHelper.updateUrlFragment()
-}
 </script>
-
-<style scoped>
-.module-node {
-  width: 240px;
-}
-</style>
- 

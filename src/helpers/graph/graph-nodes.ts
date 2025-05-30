@@ -1,8 +1,6 @@
-import type { Node, XYPosition } from '@vue-flow/core';
+import type { XYPosition } from '@vue-flow/core';
 import type { Module } from '../types';
-
-
-export type GraphNode = Node<{ moduleData: Module }>;
+import type { GraphNode } from '../types/Graph';
 
 export function generateModuleNodes(modules: Module[]): GraphNode[] {
   return modules.map((module, idx) => ({

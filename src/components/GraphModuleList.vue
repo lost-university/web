@@ -1,6 +1,8 @@
 
 <template>
-  <div class="rounded-sm p-2 flex flex-col items-center text-white bg-gray-800 list-node">
+  <div
+    class="w-[260px] bg-gray-200 z-[1000] rounded-sm p-2 flex flex-col items-center"
+  >
     <template v-if="modules.length">
       <div
         v-for="mod in modules"
@@ -32,7 +34,7 @@
       v-else
       class="p-2 text-center text-gray-400"
     >
-      No modules
+      Keine Module
     </div>
   </div>
 </template>
@@ -74,13 +76,3 @@
   },
   });
   </script>
-  
-  <style scoped>
-  .list-node {
-    width: 260px;
-    background-color: var(--color-gray-200);
-    border: grey;
-    z-index: 1000;
-
-  }
-  </style>

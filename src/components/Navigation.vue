@@ -53,7 +53,7 @@
         :to="{ path: '/graph/', hash: currentHash }"
         class="ml-8 px-4 py-2 bg-gray-800 text-white rounded"
       >
-        Graph View
+        Graph
       </router-link>
       <router-link
         v-else
@@ -61,7 +61,7 @@
         :to="{ path: '/', hash: currentHash }"
         class="ml-8 px-4 py-2 bg-gray-800 text-white rounded"
       >
-        Table View
+        Tabelle
       </router-link>
 
       <div class="flex justify-end mr-2">

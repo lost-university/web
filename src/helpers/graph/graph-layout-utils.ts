@@ -1,13 +1,8 @@
 import type { GraphNode } from './graph-nodes';
 import type { GraphEdge } from './graph-edges';
+import type { LayoutResult } from '../types/Graph';
 
-
-export interface LayoutResult {
-  nodes: GraphNode[];
-  edges: GraphEdge[];
-}
-
-export function isIsolated(id: string, edges: GraphEdge[]): boolean {
+function isIsolated(id: string, edges: GraphEdge[]): boolean {
   return !edges.some((e) => e.source === id || e.target === id);
 }
 
@@ -22,7 +17,7 @@ function buildAdjacency(edges: GraphEdge[]): Map<string, Set<string>> {
   return adj;
 }
 
-export function components(nodes: GraphNode[], edges: GraphEdge[]): string[][] {
+function components(nodes: GraphNode[], edges: GraphEdge[]): string[][] {
   const adj = buildAdjacency(edges);
   const seen = new Set<string>();
   const comps: string[][] = [];
@@ -46,3 +41,5 @@ export function components(nodes: GraphNode[], edges: GraphEdge[]): string[][] {
   }
   return comps;
 }
+
+export { isIsolated, components };

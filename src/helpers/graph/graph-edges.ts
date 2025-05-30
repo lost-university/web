@@ -1,32 +1,9 @@
 import type { Edge } from '@vue-flow/core';
 import { MarkerType } from '@vue-flow/core';
 import type { Module } from '../types';
+import type { GraphEdge } from '../types/Graph';
 
-export type GraphEdge = Edge & {
-    gradientId: string;
-    sourceColor: string;
-    targetColor: string;
-    label?: string;
-    labelShowBg?: boolean;
-    labelBgStyle?: {
-      fill: string;
-      width: number;
-      height: number;
-      rx: number;
-      ry: number;
-      transform: string;
-    };
-    labelBgPadding?: [number, number];
-    labelStyle?: {
-      fill: string;
-      fontWeight: string;
-      fontSize: string;
-      lineHeight: string;
-    };
-};
-
-
-export function generateGraphEdges( edge: Edge, sourceColor: string, targetColor: string): GraphEdge {
+function generateGraphEdges( edge: Edge, sourceColor: string, targetColor: string): GraphEdge {
   const gradientId = `edgeGradient_${edge.source}_${edge.target}`;
 
   return {
@@ -37,7 +14,7 @@ export function generateGraphEdges( edge: Edge, sourceColor: string, targetColor
   } as GraphEdge;
 }
 
-export function manditoryEdgeStyle(
+function manditoryEdgeStyle(
   edge: GraphEdge,
   _sourceColor: string,
   targetColor: string,
@@ -66,7 +43,7 @@ export function manditoryEdgeStyle(
   return edge;
 }
 
-export function generateModuleEdges(
+function generateModuleEdges(
   modules: Module[],
   showAll: boolean,
   plannedIds: string[],
@@ -105,3 +82,5 @@ export function generateModuleEdges(
 
   return edges;
 }
+
+export { generateGraphEdges, manditoryEdgeStyle, generateModuleEdges };

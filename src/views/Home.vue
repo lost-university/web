@@ -226,11 +226,8 @@ export default defineComponent({
       )?.number;
     },
     addModule(moduleId: string, semesterNumber?: number) {
-      const module = (this.modules as Array<{
-        id: string;
-        name: string;
-        nextPossibleSemester?: number;
-      }>).find((item) => item.id === moduleId);
+      const module = this.modules.find((item) => item.id === moduleId);
+
       if (module === undefined) {
         this.showErrorMsg(`Modul '${moduleId}' existiert nicht`);
         return;

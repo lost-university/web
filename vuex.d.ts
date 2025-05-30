@@ -1,4 +1,4 @@
-// This is a workaround, since TS does not recognise vuex type deifinitions:
+// This is a workaround, since TS does not recognise Vuex type definitions:
 // https://stackoverflow.com/questions/76196277/could-not-find-a-declaration-file-for-module-vuex-with-create-vue
 declare module "vuex" {
    export * from "vuex/types/index.d.ts";

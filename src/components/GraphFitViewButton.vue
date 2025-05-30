@@ -1,7 +1,7 @@
 <template>
   <button
     id="fit-view-button"
-    class="fit-view-button absolute right-8 bottom-8 bg-gray-800 rounded-full
+    class="fit-view-button w-auto h-auto absolute right-8 bottom-8 bg-gray-800 rounded-full
     px-3 py-2 shadow hover:bg-gray-700 focus:outline-none flex items-center"
     aria-label="Fit View"
     @click="$emit('click')"
@@ -31,10 +31,3 @@ export default defineComponent({
   emits: ['click']
 });
 </script>
-
-<style scoped>
-  .fit-view-button {
-    width: auto !important;
-    height: auto;
-  }
-</style>

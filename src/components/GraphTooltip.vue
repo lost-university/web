@@ -1,7 +1,8 @@
 <template>
   <div
     v-if="visible"
-    class="absolute bg-gray-800 text-white text-sm px-2 py-1 rounded shadow tooltip"
+    class="absolute bg-gray-800 text-white text-sm px-4 py-2 rounded-lg
+    shadow-[0_4px_12px_rgba(0,0,0,0.3)] whitespace-nowrap transform -translate-x-1/2 -translate-y-[160%]"
     :style="{
       top: y + 'px',
       left: x + 'px',
@@ -12,10 +13,14 @@
     <slot>
       Diese Abhängikeit ist Pflicht.
     </slot>
+    <div
+      class="absolute left-1/2 -bottom-1.5 transform -translate-x-1/2 w-0 h-0 border-l-6 
+    border-r-6 border-t-6 border-l-transparent border-r-transparent border-t-gray-800"
+    />
   </div>
 </template>
   
-  <script lang="ts">
+<script lang="ts">
   export default {
     name: 'GraphTooltip',
     props: {
@@ -24,30 +29,4 @@
       y: { type: Number, required: true }
     }
   };
-  </script>
-  
-  <style scoped>
-  .tooltip {
-    position: absolute;
-    background: #000;
-    color: #fff;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-    white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    transform: translate(-50%, -160%);
-  }
-  
-  .tooltip::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: -6px;
-    transform: translateX(-50%);
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 6px solid #000;
-  }
-  </style>
-  
+</script>

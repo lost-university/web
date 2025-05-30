@@ -35,13 +35,7 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import type { PropType } from 'vue';
-  import type { Edge as VueFlowEdge } from '@vue-flow/core';
-
-  export type GraphEdge = VueFlowEdge & {
-    gradientId: string;
-    sourceColor: string;
-    targetColor: string;
-  };
+  import type { GraphEdge } from "../types/Graph"
 
   export default defineComponent({
     name: 'EdgeDefs',

@@ -3,7 +3,7 @@
     ref="itemRef"
     :key="module.name + id"
     class="rounded-sm group/module relative p-2 px-8 flex flex-col
-    items-center text-center text-white w-full module-node"
+    items-center text-center text-white w-full w-[240px]"
     :class="computedClasses"
   >
     <div class="absolute left-2">
@@ -84,9 +84,3 @@ export default defineComponent({
   }
 });
 </script>
-
-<style scoped>
-.module-node {
-  width: 240px;
-}
-</style>

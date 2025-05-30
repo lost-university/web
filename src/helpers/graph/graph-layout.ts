@@ -1,12 +1,11 @@
 import ELK from 'elkjs/lib/elk.bundled.js';
 import type { ElkNode } from 'elkjs/lib/elk-api';
-
 import type { XYPosition } from '@vue-flow/core';
 import type { LayoutResult } from './graph-layout-utils';
 import type { GraphNode } from './graph-nodes';
 import type { GraphEdge } from './graph-edges';
 import { components, isIsolated } from './graph-layout-utils';
-
+import { LayoutConfig } from './graph-layout-config';
 
 const elk = new ELK();
 const savedPositions: Record<string, { x: number; y: number }> = {};
@@ -15,16 +14,20 @@ function buildElkGraph(rawNodes: GraphNode[], rawEdges: GraphEdge[]) {
     return {
         id: 'root',
         layoutOptions: {
-            'elk.algorithm': 'layered',
-            'elk.direction': 'RIGHT',
-            'elk.spacing.nodeNode': '50',
-            'elk.layered.layering.strategy': 'INTERACTIVE',
-            'elk.layered.crossingMinimization.strategy': 'INTERACTIVE',
-            'elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
-            'elk.randomize': 'false',
+            'elk.algorithm': LayoutConfig.elkOptions.algorithm,
+            'elk.direction': LayoutConfig.elkOptions.direction,
+            'elk.spacing.nodeNode': LayoutConfig.elkOptions.nodeSpacing,
+            'elk.layered.layering.strategy': LayoutConfig.elkOptions.layeringStrategy,
+            'elk.layered.crossingMinimization.strategy': LayoutConfig.elkOptions.crossingMinStrategy,
+            'elk.layered.nodePlacement.strategy': LayoutConfig.elkOptions.nodePlacementStrategy,
+            'elk.randomize': LayoutConfig.elkOptions.randomize,
         },
         children: rawNodes.map((n) => {
-            const base = { id: n.id, width: 320, height: 100 };
+            const base = { 
+                id: n.id, 
+                width: LayoutConfig.nodeSize.width, 
+                height: LayoutConfig.nodeSize.height 
+            };
             if (savedPositions[n.id]) {
                 const { x, y } = savedPositions[n.id];
                 return { ...base, x, y, layoutOptions: { 'org.eclipse.elk.fixed': 'true' } };
@@ -53,7 +56,7 @@ function reorderComponents(nodes: GraphNode[], edges: GraphEdge[]): void {
         .filter((comp) => comp.length > 1)
         .sort((a, b) => b.length - a.length);
 
-    const compGap = 150;
+    const compGap = LayoutConfig.nodeGap.width;
     let baselineY = 0;
     for (const comp of comps) {
         const compNodes = nodes.filter((n) => comp.includes(n.id));
@@ -82,9 +85,9 @@ function distributeIsolatedNodes(nodes: GraphNode[], edges: GraphEdge[]): void {
     const nonIsolatedYs = nodes
         .filter((n) => !isolatedIds.includes(n.id))
         .map((n) => n.position.y);
-    const firstRowY = (nonIsolatedYs.length ? Math.max(...nonIsolatedYs) : 0) + 150;
-    const colGap = 360;
-    const rowGap = 150;
+    const firstRowY = (nonIsolatedYs.length ? Math.max(...nonIsolatedYs) : 0) + LayoutConfig.nodeGap.width;
+    const colGap = LayoutConfig.nodeGap.width;
+    const rowGap = LayoutConfig.nodeGap.height;
 
     const isolatedNodes = nodes
         .filter((n) => isolatedIds.includes(n.id))
