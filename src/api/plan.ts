@@ -57,7 +57,6 @@ const bookmarkPlan = async (planId: string, token: string): Promise<void> => {
     });
   } catch (error) {
     console.error('Error to bookmark plan:', error);
-    throw error;
   }
 }
 
