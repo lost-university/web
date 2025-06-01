@@ -1,5 +1,9 @@
 <template>
-  <ModuleCard :module="module" :id="id" @on-delete="$emit('on-delete', module.id)">
+  <ModuleCard
+    :id="id"
+    :module="module"
+    @on-delete="$emit('on-delete', module.id)"
+  >
     <template #actions>
       <button
         class="absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
@@ -7,7 +11,10 @@
         type="button"
         @click="$emit('on-delete', module.id)"
       >
-        <font-awesome-icon :icon="['fa', 'circle-xmark']" size="lg" />
+        <font-awesome-icon
+          :icon="['fa', 'circle-xmark']"
+          size="lg"
+        />
       </button>
     </template>
   </ModuleCard>

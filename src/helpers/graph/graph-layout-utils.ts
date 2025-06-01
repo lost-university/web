@@ -1,5 +1,5 @@
-import type { GraphNode } from './graph-nodes';
-import type { GraphEdge } from './graph-edges';
+import type { GraphNode } from "./graph-nodes";
+import type { GraphEdge } from "./graph-edges";
 
 function isIsolated(id: string, edges: GraphEdge[]): boolean {
   return !edges.some((e) => e.source === id || e.target === id);

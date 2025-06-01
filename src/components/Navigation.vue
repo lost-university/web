@@ -59,7 +59,7 @@
 
       <button
         class="ml-8 px-4 py-2 bg-gray-800 text-white rounded"
-        data-cy="activate-graph-button"
+        data-cy="activate-"
         @click="showGraphModal = true"
       >
         Graph
@@ -77,7 +77,7 @@
         <SignedOut>
           <div
             data-cy="Navigation-SignInButton"
-            class="flex items-center"
+            class="ml-4 px-4 py-2 bg-gray-800 text-white rounded flex items-center"
           >
             <SignInButton />
           </div>
@@ -85,7 +85,7 @@
         <SignedIn>
           <div
             data-cy="Navigation-UserButton"
-            class="flex items-center"
+            class="flex items-center ml-4 "
           >
             <UserButton />
           </div>

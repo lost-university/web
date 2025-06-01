@@ -19,14 +19,14 @@
     />
   </div>
 </template>
-  
+
 <script lang="ts">
-  export default {
-    name: 'GraphTooltip',
-    props: {
-      visible: { type: Boolean, required: true },
-      x: { type: Number, required: true },
-      y: { type: Number, required: true }
-    }
-  };
+export default {
+  name: 'GraphTooltip',
+  props: {
+    visible: { type: Boolean, required: true },
+    x: { type: Number, required: true },
+    y: { type: Number, required: true }
+  }
+};
 </script>

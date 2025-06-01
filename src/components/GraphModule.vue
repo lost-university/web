@@ -1,7 +1,10 @@
 <template>
-  <ModuleCard :module="module" :id="id" :show-validation="false">
+  <ModuleCard
+    :id="id"
+    :module="module"
+    :show-validation="false"
+  >
     <template #actions>
-      <!-- Left Handle -->
       <Handle
         type="target"
         :position="Position.Left"
@@ -13,39 +16,47 @@
         }"
       />
 
-      <!-- Recommended modules button -->
       <button
         v-if="hasRecommended"
-        class="add-recommended-modules absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
+        class="absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
                hover:!opacity-100 left-2 -bottom-1 transform -translate-y-1/2 transition-opacity duration-75"
+        data-cy="add-recommended-modules-button"
         type="button"
         @click="toggleList('left')"
       >
-        <font-awesome-icon :icon="['fa', 'plus-circle']" size="lg" />
+        <font-awesome-icon
+          :icon="['fa', 'plus-circle']"
+          size="lg"
+        />
       </button>
 
-      <!-- Dependent modules button -->
       <button
         v-if="hasDependent"
-        class="add-pedendent-modules absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
+        class="absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
                hover:!opacity-100 right-2 -bottom-1 transform -translate-y-1/2 transition-opacity duration-75"
+        data-cy="add-pedendent-modules-button"
         type="button"
         @click="toggleList('right')"
       >
-        <font-awesome-icon :icon="['fa', 'plus-circle']" size="lg" />
+        <font-awesome-icon
+          :icon="['fa', 'plus-circle']"
+          size="lg"
+        />
       </button>
 
-      <!-- Remove module button -->
       <button
-        class="remove-module absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
+        class="absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
                hover:!opacity-100 right-2 transition-opacity duration-75"
+        data-cy="remove-module-button"
         type="button"
         @click="removeModule"
       >
-        <font-awesome-icon :icon="['fa', 'circle-xmark']" size="lg" />
+        <font-awesome-icon
+          :icon="['fa', 'circle-xmark']"
+          size="lg"
+        />
       </button>
 
-      <!-- Right Handle -->
       <Handle
         type="source"
         :position="Position.Right"
@@ -59,7 +70,6 @@
     </template>
   </ModuleCard>
 
-  <!-- Popup list of related modules -->
   <div
     v-if="showList"
     class="absolute inset-y-0 w-60 bg-black bg-opacity-75 flex items-center justify-center z-100"

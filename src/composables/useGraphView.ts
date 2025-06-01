@@ -57,7 +57,8 @@ export function useGraphView() {
       plannedModules,
       true,
       allPlannedModuleIds.value,
-      getModuleColor,    );
+      getModuleColor
+    );
     try {
       const { nodes, edges } = await sortLayout(rawNodes, rawEdges);
       laidOutNodes.value = nodes;
@@ -95,8 +96,8 @@ export function useGraphView() {
     window.removeEventListener("resize", setGraphHeight);
   });
 
-  watch(modules, (mods) => {
-    if (mods.length) computeLayout();
+  watch([modules, allPlannedModuleIds], ([mods, ids]) => {
+    if (mods.length && ids.length) computeLayout();
   });
   watch(() => route.hash, loadPlanDataFromUrl);
 

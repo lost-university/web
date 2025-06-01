@@ -6,7 +6,10 @@
            text-center text-white w-[240px]"
     :class="computedClasses"
   >
-    <div v-if="showValidation" class="absolute left-2 print:hidden">
+    <div
+      v-if="showValidation"
+      class="absolute left-2 print:hidden"
+    >
       <span
         v-if="module.validationInfo?.severity === 'soft'"
         :title="module.validationInfo.tooltip"

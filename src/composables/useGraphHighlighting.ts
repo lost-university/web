@@ -1,21 +1,17 @@
-import { computed, ref } from 'vue';
-import type { Ref } from 'vue';
-import type { Edge, Node } from '@vue-flow/core';
-import type { GraphEdge } from '../helpers/graph/graph-edges'
+import { computed, ref } from "vue";
+import type { Ref } from "vue";
+import type { Edge, Node } from "@vue-flow/core";
+import type { GraphEdge } from "../helpers/graph/graph-edges";
 
-
-export function useGraphHighlighting(
-  nodes: Ref<Node[]>,
-  edges: Ref<Edge[]>
-) {
+export function useGraphHighlighting(nodes: Ref<Node[]>, edges: Ref<Edge[]>) {
   const hoveredId = ref<string | null>(null);
 
   const onNodeHover = (id: string) => {
-    hoveredId.value = id
-  }
+    hoveredId.value = id;
+  };
   const onNodeLeave = () => {
-    hoveredId.value = null
-  }
+    hoveredId.value = null;
+  };
 
   const activeHover = computed(() => {
     const id = hoveredId.value;
@@ -43,29 +39,36 @@ export function useGraphHighlighting(
       const isHighlighted = edge.source === hov || edge.target === hov;
       const baseStyle = edge.style || {};
       const dimmedStyle = !isHighlighted
-        ? { opacity: 0.1, filter: 'grayscale(100%)', transition: 'opacity 0.3s ease, filter 0.3s ease' }
-        : { opacity: 1, filter: 'none', transition: 'opacity 0.3s ease, filter 0.3s ease' };
+        ? {
+            opacity: 0.1,
+            filter: "grayscale(100%)",
+            transition: "opacity 0.3s ease, filter 0.3s ease",
+          }
+        : { opacity: 1, filter: "none", transition: "opacity 0.3s ease, filter 0.3s ease" };
 
       let badgeBg = {};
       if (edge.labelShowBg && edge.labelBgStyle) {
         badgeBg = !isHighlighted
-          ? { ...edge.labelBgStyle, fill: edge.labelBgStyle.fill + '1A' }
+          ? { ...edge.labelBgStyle, fill: edge.labelBgStyle.fill + "1A" }
           : {};
       }
 
       let badgeText = {};
       if (edge.label && edge.labelStyle) {
         badgeText = !isHighlighted
-          ? { ...edge.labelStyle, fill: edge.labelStyle.fill + '1A' }
-          : {};
+          ? {
+              ...edge.labelStyle,
+              fill: `rgba(0, 0, 0, 0.1)`,
+            }
+          : edge.labelStyle;
       }
 
-      return ({
-        ...edge ,
+      return {
+        ...edge,
         style: { ...baseStyle, ...dimmedStyle },
         ...(edge.labelShowBg ? { labelBgStyle: { ...edge.labelBgStyle, ...badgeBg } } : {}),
         ...(edge.label ? { labelStyle: { ...edge.labelStyle, ...badgeText } } : {}),
-      }) as GraphEdge;
+      } as GraphEdge;
     });
   });
 

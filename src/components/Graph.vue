@@ -39,7 +39,7 @@
             </template>
           </VueFlow>
 
-          <div class="absolute right-4 top-4 ">
+          <div class="absolute right-4 top-4 opacity-60 hover:opacity-90">
             <button
               class="flex items-center"
               data-cy="graph-close-button"

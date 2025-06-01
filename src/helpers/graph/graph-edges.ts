@@ -1,9 +1,9 @@
-import type { Edge } from '@vue-flow/core';
-import { MarkerType } from '@vue-flow/core';
-import type { Module } from '../types';
-import type { GraphEdge } from '../types/Graph';
+import type { Edge } from "@vue-flow/core";
+import { MarkerType } from "@vue-flow/core";
+import type { Module } from "../types";
+import type { GraphEdge } from "../types/Graph";
 
-function generateGraphEdges( edge: Edge, sourceColor: string, targetColor: string): GraphEdge {
+function generateGraphEdges(edge: Edge, sourceColor: string, targetColor: string): GraphEdge {
   const gradientId = `edgeGradient_${edge.source}_${edge.target}`;
 
   return {
@@ -14,31 +14,27 @@ function generateGraphEdges( edge: Edge, sourceColor: string, targetColor: strin
   } as GraphEdge;
 }
 
-function manditoryEdgeStyle(
-  edge: GraphEdge,
-  _sourceColor: string,
-  targetColor: string,
-): GraphEdge {
+function manditoryEdgeStyle(edge: GraphEdge, _sourceColor: string, targetColor: string): GraphEdge {
   const midColor = targetColor;
 
   edge.style = { ...edge.style, strokeWidth: 4 };
-  edge.label = '!';
+  edge.label = "!";
   edge.labelShowBg = true;
   edge.labelBgStyle = {
     fill: midColor,
-    width: '30px',
-    height: '30px',
-    transform: 'translate(-6px,2px)',
-  // Firefox was not happy about width: 30, but the type must be a number - so thiw is a workaround
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    width: "30px",
+    height: "30px",
+    transform: "translate(-6px,2px)",
+    // Firefox was not happy about width: 30, but the type must be a number - so thiw is a workaround
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any;
   edge.labelBgBorderRadius = 15;
   edge.labelBgPadding = [6, 6];
   edge.labelStyle = {
-    fill: '#fff',
-    fontWeight: 'bold',
-    fontSize: '20px',
-    lineHeight: '14px',
+    fill: "#fff",
+    fontWeight: "bold",
+    fontSize: "20px",
+    lineHeight: "14px",
   };
   return edge;
 }
@@ -47,7 +43,7 @@ function generateModuleEdges(
   modules: Module[],
   showAll: boolean,
   plannedIds: string[],
-  getColor: (m: Module) => string,
+  getColor: (m: Module) => string
 ): GraphEdge[] {
   const edges: GraphEdge[] = [];
 
