@@ -30,6 +30,7 @@
 
     <a
       class="font-bold hover:underline"
+      data-cy="module-name"
       target="_blank"
       :href="'https://studien.ost.ch/' + module.url.replace('.json', '.html')"
     >
