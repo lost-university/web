@@ -79,6 +79,8 @@
   >
     <ModuleList
       :modules="listSide === 'left' ? recommendedModules : dependentModules"
+      :base-semester="currentSemester"
+      :position="listSide"
       @module-selected="onModuleSelected"
       @module-added="hideList"
     />
@@ -135,6 +137,12 @@ export default defineComponent({
     },
     hasDependent(): boolean {
       return this.dependentModules.length > 0
+    },
+    currentSemester(): number | null {
+    const semester = store.getters.semesters.find((s) =>
+      s.moduleIds.includes(this.module.id)
+    );
+    return semester?.number ?? null;
     }
   },
   methods: {

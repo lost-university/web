@@ -2,7 +2,7 @@ export const LayoutConfig = {
   elkOptions: {
     algorithm: "layered",
     direction: "RIGHT",
-    nodeSpacing: "20", 
+    nodeSpacing: "5", 
     layeringStrategy: "INTERACTIVE",
     crossingMinStrategy: "INTERACTIVE",
     nodePlacementStrategy: "NETWORK_SIMPLEX",

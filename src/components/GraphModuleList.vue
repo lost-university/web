@@ -54,22 +54,61 @@ export default defineComponent({
     modules: {
       type: Array as PropType<Module[]>,
       required: true
+    },
+    baseSemester: {
+      type: Number,
+      default: null
+    },
+    position: {
+      type: String as PropType<'left' | 'right'>,
+      default: null
     }
   },
   emits: ['module-added'],
   methods: {
     addModuleToPlan(module: Module) {
-      const lastSemester = [...store.getters.semesters]
-        .sort((a, b) => a.number - b.number)
-        .pop()!;
+      const semesters = [...store.getters.semesters].sort((a, b) => a.number - b.number);
+      const plannedModules = store.getters.allPlannedModuleIds as string[];
+
+      let targetSemesterNumber: number | null = null;
+
+      if (this.baseSemester && this.position) {
+        const offset = this.position === 'left' ? -1 : 1;
+        const newSemesterNumber = this.baseSemester + offset;
+        const semesterExists = semesters.some(s => s.number === newSemesterNumber);
+
+        if (semesterExists) {
+          targetSemesterNumber = newSemesterNumber;
+        }
+      }
+
+      if (!targetSemesterNumber && module.predecessorModuleId && plannedModules.includes(module.predecessorModuleId)) {
+        const semester = semesters.find((s, idx) =>
+          s.moduleIds.includes(module.predecessorModuleId) && idx < semesters.length - 1
+        );
+        if (semester) targetSemesterNumber = semester.number + 1;
+      }
+
+      if (!targetSemesterNumber && module.successorModuleId && plannedModules.includes(module.successorModuleId)) {
+        const semester = semesters.find((s, idx) =>
+          s.moduleIds.includes(module.successorModuleId) && idx > 0
+        );
+        if (semester) targetSemesterNumber = semester.number - 1;
+      }
+
+      if (!targetSemesterNumber) {
+        targetSemesterNumber = semesters[semesters.length - 1].number;
+      }
 
       store.commit('addModuleToSemester', {
-        semesterNumber: lastSemester.number,
+        semesterNumber: targetSemesterNumber,
         moduleId: module.id
       });
+
       this.updateUrlFragment();
       this.$emit('module-added', module);
-    },
+    }
+    ,
     updateUrlFragment() {
       StorageHelper.updateUrlFragment();
     },
