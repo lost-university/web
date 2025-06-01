@@ -1,0 +1,3893 @@
+[
+  {
+    "id": "AADL",
+    "name": "Applied AI with Deep Learning",
+    "url": "allModules/57207_M_AADL.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Inf",
+      "RA"
+    ]
+  },
+  {
+    "id": "AIAp",
+    "name": "AI Applications",
+    "url": "allModules/40870_M_AIAp.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "AIFo",
+      "WE1"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "AIFo",
+    "name": "AI Foundations",
+    "url": "allModules/40866_M_AIFo.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "An1I",
+      "An2I",
+      "AutoSpr",
+      "OOP1",
+      "OOP2"
+    ],
+    "dependentModuleIds": [
+      "AIAp",
+      "GenAI"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Inf",
+      "RA"
+    ]
+  },
+  {
+    "id": "AJwn",
+    "name": "Auf Jobsuche, was nun?",
+    "url": "allModules/57128_M_AJwn.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "AlgDat",
+    "name": "Algorithmen und Datenstrukturen",
+    "url": "allModules/38881_M_AlgDat.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "OOP1",
+      "OOP2"
+    ],
+    "dependentModuleIds": [
+      "CPlA",
+      "ComGra",
+      "MsTe"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": "AD2",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Inf",
+      "RA"
+    ]
+  },
+  {
+    "id": "An1I",
+    "name": "Analysis 1 für Informatik",
+    "url": "allModules/28151_M_An1I.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "AIFo",
+      "An2I",
+      "ComGra",
+      "IntTra",
+      "KomFou1",
+      "PhAI"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "MaPh"
+    ]
+  },
+  {
+    "id": "An2I",
+    "name": "Analysis 2 für Informatik",
+    "url": "allModules/28156_M_An2I.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "An1I"
+    ],
+    "dependentModuleIds": [
+      "AIFo",
+      "IntTra",
+      "PhAI",
+      "WrStat"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "MaPh"
+    ]
+  },
+  {
+    "id": "AppArch",
+    "name": "Application Architecture",
+    "url": "allModules/28236_M_AppArch.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "SE1"
+    ],
+    "dependentModuleIds": [
+      "CldSol"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "AutPy",
+    "name": "Automatisierung mit Python",
+    "url": "allModules/38879_M_AutPy.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "GenAI",
+      "SEProj"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Inf",
+      "RA"
+    ]
+  },
+  {
+    "id": "AutoSpr",
+    "name": "Automaten und Sprachen",
+    "url": "allModules/24404_M_AutoSpr.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "AIFo",
+      "FP"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": "Math2I",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Inf",
+      "RA"
+    ]
+  },
+  {
+    "id": "BAI21",
+    "name": "Bachelor-Arbeit Informatik",
+    "url": "allModules/41626_M_BAI21.json",
+    "ects": 12,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [
+      "SAI21"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "BAI14",
+    "isMandatory": true,
+    "categoriesForColoring": [
+      "Inf",
+      "SaBa"
+    ]
+  },
+  {
+    "id": "BlCh",
+    "name": "Blockchain",
+    "url": "allModules/39041_M_BlCh.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "DSy"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "ADSB",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "Bsys1",
+    "name": "Betriebssysteme 1",
+    "url": "allModules/39080_M_Bsys1.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "Bsys2",
+      "CPl",
+      "CPlA",
+      "CoBau",
+      "DSy",
+      "ParProg",
+      "PlFSec",
+      "SecSW",
+      "SecSoW"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Inf",
+      "RA"
+    ]
+  },
+  {
+    "id": "Bsys2",
+    "name": "Betriebssysteme 2",
+    "url": "allModules/37903_M_Bsys2.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "Bsys1"
+    ],
+    "dependentModuleIds": [
+      "CoBau"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "BuPro",
+    "name": "Business Processes für Informatik",
+    "url": "allModules/40825_M_BuPro.json",
+    "ects": 4,
+    "isDeactivated": true,
+    "term": "",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": "WI2",
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "gwr"
+    ]
+  },
+  {
+    "id": "BuRe1",
+    "name": "Business und Recht 1",
+    "url": "allModules/20780_M_BuRe1.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "BuRe2a"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "gwr"
+    ]
+  },
+  {
+    "id": "BuRe2a",
+    "name": "Business und Recht 2 (a)",
+    "url": "allModules/45604_M_BuRe2a.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "BuRe1"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "gwr"
+    ]
+  },
+  {
+    "id": "CN1",
+    "name": "Computernetze 1",
+    "url": "allModules/39084_M_CN1.json",
+    "ects": 6,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "CN2",
+      "CldInf",
+      "CySec",
+      "IBN",
+      "NIoSec",
+      "PlFSec",
+      "SecSW",
+      "SecSoW"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Inf",
+      "RA"
+    ]
+  },
+  {
+    "id": "CN2",
+    "name": "Computernetze 2",
+    "url": "allModules/23311_M_CN2.json",
+    "ects": 6,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "CN1"
+    ],
+    "dependentModuleIds": [
+      "CldInf",
+      "IBN",
+      "NIoSec",
+      "PlFSec"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "CPl",
+    "name": "C++",
+    "url": "allModules/24357_M_CPl.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "Bsys1",
+      "OOP1",
+      "OOP2"
+    ],
+    "dependentModuleIds": [
+      "CPlA"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "CPlA",
+    "name": "C++ Advanced",
+    "url": "allModules/28684_M_CPlA.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "AlgDat",
+      "Bsys1",
+      "CPl",
+      "OOP1",
+      "OOP2"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "Chin1",
+    "name": "Chinesisch 1",
+    "url": "allModules/28063_M_Chin1.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "Chinese2",
+    "name": "Chinesisch 2",
+    "url": "allModules/36024_M_Chinese2.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "CldInf",
+    "name": "Cloud Infrastructure",
+    "url": "allModules/29855_M_CldInf.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "CN1",
+      "CN2"
+    ],
+    "dependentModuleIds": [
+      "CldOp"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "CldOp",
+    "name": "Cloud Operations",
+    "url": "allModules/55074_M_CldOp.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "CldInf"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "CldSol",
+    "name": "Cloud Solutions",
+    "url": "allModules/37167_M_CldSol.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "AppArch"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "Clou",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "CoBau",
+    "name": "Compilerbau",
+    "url": "allModules/40663_M_CoBau.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "Bsys1",
+      "Bsys2",
+      "OOP1",
+      "OOP2",
+      "SE2"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "ComEng1",
+    "name": "Computer Engineering 1",
+    "url": "allModules/25232_M_ComEng1.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "ComEng2"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "ComEng2",
+    "name": "Computer Engineering 2",
+    "url": "allModules/23345_M_ComEng2.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "ComEng1"
+    ],
+    "dependentModuleIds": [
+      "EmbSys1"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": "CompT2",
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "ComGra",
+    "name": "Computer Grafik",
+    "url": "allModules/43801_M_ComGra.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "AlgDat",
+      "An1I",
+      "OOP1",
+      "OOP2"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "CyDef",
+    "name": "Cyber Defense",
+    "url": "allModules/38551_M_CyDef.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "CySec",
+      "HackL",
+      "SecSW"
+    ],
+    "dependentModuleIds": [
+      "IncResp"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "CySec",
+    "name": "Cyber Security Foundations",
+    "url": "allModules/36478_M_CySec.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "CN1"
+    ],
+    "dependentModuleIds": [
+      "CyDef",
+      "IncResp",
+      "NIoSec",
+      "PlFSec",
+      "SecSW",
+      "SecSoW"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": "InfSi1",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Inf",
+      "RA"
+    ]
+  },
+  {
+    "id": "DL",
+    "name": "Deep Learning",
+    "url": "allModules/31834_M_DL.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "ML"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "DMI",
+    "name": "Diskrete Mathematik für Informatik",
+    "url": "allModules/24442_M_DMI.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "FP",
+      "FunProg",
+      "KomFou1"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": "Math1I",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Inf",
+      "RA"
+    ]
+  },
+  {
+    "id": "DSy",
+    "name": "Distributed Systems",
+    "url": "allModules/39054_M_DSy.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "Bsys1",
+      "SE1"
+    ],
+    "dependentModuleIds": [
+      "BlCh"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": "DS1",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "DatAna",
+    "name": "Data Analytics",
+    "url": "allModules/36034_M_DatAna.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "Dbs1"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "InfSys",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "DatEng",
+    "name": "Data Engineering",
+    "url": "allModules/36038_M_DatEng.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "Dbs1"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "Dbs2",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "Dbs1",
+    "name": "Datenbanksysteme 1",
+    "url": "allModules/39093_M_Dbs1.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "DatAna",
+      "DatEng",
+      "MsTe"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Inf",
+      "RA"
+    ]
+  },
+  {
+    "id": "DigBusI",
+    "name": "Digital Business für Informatik",
+    "url": "allModules/40316_M_DigBusI.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "WI1",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "gwr"
+    ]
+  },
+  {
+    "id": "DigCod",
+    "name": "Digitale Codierungen",
+    "url": "allModules/38920_M_DigCod.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "ICTh",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Inf",
+      "RA"
+    ]
+  },
+  {
+    "id": "DigDes",
+    "name": "Digital Design",
+    "url": "allModules/40680_M_DigDes.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "EmbSys1",
+    "name": "Embedded Systems 1",
+    "url": "allModules/22062_M_EmbSys1.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "ComEng2"
+    ],
+    "dependentModuleIds": [
+      "EmbSys2"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "EmbSys2",
+    "name": "Embedded Systems 2",
+    "url": "allModules/22068_M_EmbSys2.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "EmbSys1"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "EnglHTw",
+    "name": "English: How Things work",
+    "url": "allModules/56496_M_EnglHTw.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "KomEng"
+    ]
+  },
+  {
+    "id": "EnglScience",
+    "name": "English: The World of Science",
+    "url": "allModules/56504_M_EnglScience.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "KomEng"
+    ]
+  },
+  {
+    "id": "ExEv",
+    "name": "Experimentieren und Evaluieren für Informatik",
+    "url": "allModules/24381_M_ExEv.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "MaPh"
+    ]
+  },
+  {
+    "id": "FKIA",
+    "name": "Führungskommunikation im internationalen Arbeitsmarkt",
+    "url": "allModules/24427_M_FKIA.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "KomEng"
+    ]
+  },
+  {
+    "id": "FP",
+    "name": "Functional Programming",
+    "url": "allModules/39143_M_FP.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "AutoSpr",
+      "DMI",
+      "OOP1"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "FunProg",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Inf",
+      "RA"
+    ]
+  },
+  {
+    "id": "FranzKomm",
+    "name": "Französisch Kommunikation",
+    "url": "allModules/36421_M_FranzKomm.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "FranzKomm2"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": "Franz1",
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "FranzKomm2",
+    "name": "Französisch Kommunikation 2",
+    "url": "allModules/38868_M_FranzKomm2.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "FranzKomm"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "FuVar",
+    "name": "Funktionen mehrerer Variablen",
+    "url": "allModules/10942_M_FuVar.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "MaPh"
+    ]
+  },
+  {
+    "id": "FunProg",
+    "name": "Funktionale Programmierung",
+    "url": "allModules/38928_M_FunProg.json",
+    "ects": 4,
+    "isDeactivated": true,
+    "term": "",
+    "recommendedModuleIds": [
+      "DMI"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": "FP",
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Inf",
+      "RA"
+    ]
+  },
+  {
+    "id": "GenAI",
+    "name": "Generative AI",
+    "url": "allModules/43809_M_GenAI.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "AIFo",
+      "AutPy"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "HackL",
+    "name": "Hacking Lab",
+    "url": "allModules/36457_M_HackL.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "CyDef",
+      "IncResp"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "IBN",
+    "name": "Intent-Based Networking",
+    "url": "allModules/57056_M_IBN.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "CN1",
+      "CN2"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "SDW",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "IKAA",
+    "name": "Applied AI",
+    "url": "allModules/44202_M_IKAA.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKAAp",
+    "name": "Applied AI (Projektarbeit)",
+    "url": "allModules/44196_M_IKAA_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKAG",
+    "name": "Alternde Gesellschaften",
+    "url": "allModules/44020_M_IKAG.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKAK",
+    "name": "Gesundes Altern mit Hilfe von künstlicher Intelligenz",
+    "url": "allModules/44064_M_IKAK.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKAKp",
+    "name": "Gesundes Altern mit Hilfe von künstlicher Intelligenz (Projektarbeit)",
+    "url": "allModules/44067_M_IKAK_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKBD",
+    "name": "Behavioral Design",
+    "url": "allModules/55066_M_IKBD.json",
+    "ects": 2,
+    "isDeactivated": true,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "IKBH",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKBF",
+    "name": "Selbststeuerung im Beruf",
+    "url": "allModules/56707_M_IKBF.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKBH",
+    "name": "Behavioral Design",
+    "url": "allModules/56919_M_IKBH.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": "IKBD",
+    "predecessorModuleId": "IKBD",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKBW",
+    "name": "Blickwechsel",
+    "url": "allModules/44040_M_IKBW.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKCC",
+    "name": "Co-Creation und Inclusive Design Methoden",
+    "url": "allModules/56710_M_IKCC.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKCCp",
+    "name": "Co-Creation und Inclusive Design Methoden (Projektarbeit)",
+    "url": "allModules/56713_M_IKCC_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKCG",
+    "name": "Corporate Governance and Sustainability",
+    "url": "allModules/56716_M_IKCG.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKDH",
+    "name": "Lernlabor «Digitalisieren Hands-on»",
+    "url": "allModules/44235_M_IKDH.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKDHp",
+    "name": "Lernlabor «Digitalisieren Hands-on» (Projektarbeit)",
+    "url": "allModules/44232_M_IKDH_p.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKDK",
+    "name": "Demokratie im Zeitalter von KI",
+    "url": "allModules/44043_M_IKDK.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKDKp",
+    "name": "Demokratie im Zeitalter von KI (Projektarbeit)",
+    "url": "allModules/44046_M_IKDK_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKDL",
+    "name": "Digitalisieren mit Low Code: Einen AI Chatbot selber bauen",
+    "url": "allModules/44250_M_IKDL.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKDLp",
+    "name": "Digitalisieren mit Low Code: Einen AI Chatbot selber bauen (Projektarbeit)",
+    "url": "allModules/44247_M_IKDL_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKDM_A",
+    "name": "Dream Team - Mentoringprogramm für die nächste Generation Teil A",
+    "url": "allModules/44241_M_IKDM_A.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "IKDM_B"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKDM_B",
+    "name": "Dream Team - Mentoringprogramm für die nächste Generation Teil B",
+    "url": "allModules/44244_M_IKDM_B.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "IKDM_A"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKEI",
+    "name": "Einsamkeit erforschen - wirtschaftliche, gesellschaftliche und private Dimensionen",
+    "url": "allModules/56720_M_IKEI.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKEIp",
+    "name": "Einsamkeit erforschen - wirtschaftliche, gesellschaftliche und private Dimensionen (Projektarbeit)",
+    "url": "allModules/56731_M_IKEI_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKEK",
+    "name": "Ethik & KI",
+    "url": "allModules/44049_M_IKEK.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKEKp",
+    "name": "Ethik & KI (Projektarbeit)",
+    "url": "allModules/44052_M_IKEK_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKFD",
+    "name": "Applied Frugal Design: Einfach gestalten, gesund leben",
+    "url": "allModules/56734_M_IKFD.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKFDp",
+    "name": "Applied Frugal Design: Einfach gestalten, gesund leben (Projektarbeit)",
+    "url": "allModules/56737_M_IKFD_p.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKFL",
+    "name": "Future Life Design: Successfully shaping your own life path",
+    "url": "allModules/56740_M_IKFL.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKFLp",
+    "name": "Future Life Design: Successfully shaping your own life path (Projektarbeit)",
+    "url": "allModules/56743_M_IKFL_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKGA",
+    "name": "Generative AI in der Planung",
+    "url": "allModules/44211_M_IKGA.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKGAp",
+    "name": "Generative AI in der Planung (Projektarbeit)",
+    "url": "allModules/44214_M_IKGA_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKGE",
+    "name": "Klimagerechte Stadt- und Gemeindeentwicklung",
+    "url": "allModules/44088_M_IKGE.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKGEp",
+    "name": "Klimagerechte Stadt- und Gemeindeentwicklung (Projektarbeit)",
+    "url": "allModules/44091_M_IKGE_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKGL",
+    "name": "Gesund leben und Langlebigkeit",
+    "url": "allModules/44061_M_IKGL.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKGS",
+    "name": "Knowhow und Technologien für nachhaltige Entwicklung im globalen Süden",
+    "url": "allModules/44190_M_IKGS.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKGSp",
+    "name": "Knowhow und Technologien für nachhaltige Entwicklung im globalen Süden (Projektarbeit)",
+    "url": "allModules/56922_M_IKGS_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKIE",
+    "name": "Interdisziplinär entwickeln - gerüstet für die technikbasierte Arbeitswelt",
+    "url": "allModules/44079_M_IKIE.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKII",
+    "name": "Ideen Inkubator Klimawende",
+    "url": "allModules/44073_M_IKII.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKIIp",
+    "name": "Ideen Inkubator Klimawende (Projektarbeit)",
+    "url": "allModules/44076_M_IKII_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKIS",
+    "name": "International Summer School for Sustainability",
+    "url": "allModules/56789_M_IKIS.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKISp",
+    "name": "International Summer School for Sustainability (Projektarbeit)",
+    "url": "allModules/56866_M_IKIS_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKKA",
+    "name": "Nachhaltigkeit und Klimaschutz angewandt",
+    "url": "allModules/44223_M_IKKA.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKKK",
+    "name": "Kommunale Klimawende",
+    "url": "allModules/44184_M_IKKK.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKKKp",
+    "name": "Kommunale Klimawende (Projektarbeit)",
+    "url": "allModules/44187_M_IKKK_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKKL",
+    "name": "Circular Economy",
+    "url": "allModules/44094_M_IKKL.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKKLp",
+    "name": "Circular Economy (Projektarbeit)",
+    "url": "allModules/44097_M_IKKL_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKKP",
+    "name": "Klimakrise: Kann die Politik die Welt noch retten?",
+    "url": "allModules/44226_M_IKKP.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKKPp",
+    "name": "Klimakrise: Kann die Politik die Welt noch retten? (Projektarbeit)",
+    "url": "allModules/44229_M_IKKP_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKLD",
+    "name": "Future Life Design: Den eigenen Lebensweg erfolgreich gestalten",
+    "url": "allModules/56925_M_IKLD.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKLDp",
+    "name": "Future Life Design: Den eigenen Lebensweg erfolgreich gestalten (Projektarbeit)",
+    "url": "allModules/56928_M_IKLD_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKLE",
+    "name": "IZM-Projekt",
+    "url": "allModules/44082_M_IKLE.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKLEp",
+    "name": "IZM-Projekt (Projektarbeit)",
+    "url": "allModules/44085_M_IKLE_p.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKLF",
+    "name": "Lernfähigkeit und Gedächtnis",
+    "url": "allModules/44100_M_IKLF.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKLK",
+    "name": "Lösungsorientierte Kommunikation für dynamische Arbeitswelten",
+    "url": "allModules/44103_M_IKLK.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKME",
+    "name": "Messbar gesund",
+    "url": "allModules/44115_M_IKME.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKMEp",
+    "name": "Messbar gesund (Projektarbeit)",
+    "url": "allModules/56875_M_IKME_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKMI",
+    "name": "Medien- und Informationskompetenz in Zeiten von KI",
+    "url": "allModules/44109_M_IKMI.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKMIp",
+    "name": "Medien- und Informationskompetenz in Zeiten von KI (Projektarbeit)",
+    "url": "allModules/44112_M_IKMI_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKMO",
+    "name": "Gemeinden & Städte von morgen. So gelingt nachhaltige Gemeindeentwicklung",
+    "url": "allModules/44055_M_IKMO.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKMOp",
+    "name": "Gemeinden & Städte von morgen. So gelingt nachhaltige Gemeindeentwicklung (Projektarbeit)",
+    "url": "allModules/44058_M_IKMO_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKNB",
+    "name": "Wasser und Klima: Nachhaltige Wasserbewirtschaftung auf Gemeindeebene",
+    "url": "allModules/44199_M_IKNB.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKNBp",
+    "name": "Wasser und Klima: Nachhaltige Wasserbewirtschaftung auf Gemeindeebene (Projektarbeit)",
+    "url": "allModules/57170_M_IKNB_p.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKNE",
+    "name": "Nachhaltige Ernährung für Körper, Geist und Klima",
+    "url": "allModules/56792_M_IKNE.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKNEp",
+    "name": "Nachhaltige Ernährung für Körper, Geist und Klima (Projektarbeit)",
+    "url": "allModules/56795_M_IKNE_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKNG",
+    "name": "Neue Narrative für eine nachhaltige Gesellschaft",
+    "url": "allModules/44121_M_IKNG.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKNGp",
+    "name": "Neue Narrative für eine nachhaltige Gesellschaft (Projektarbeit)",
+    "url": "allModules/44124_M_IKNG_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKNK",
+    "name": "New Work & KI",
+    "url": "allModules/44127_M_IKNK.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKNKp",
+    "name": "New Work & KI (Projektarbeit)",
+    "url": "allModules/44130_M_IKNK_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKNN",
+    "name": "Hackathon zu \"Netto-null in Gebäuden und Verkehr\"",
+    "url": "allModules/44070_M_IKNN.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKNW",
+    "name": "Die Nachhaltigkeitswoche: Eventfabrik und Zukunftsworkshops",
+    "url": "allModules/56802_M_IKNW.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKNWp",
+    "name": "Die Nachhaltigkeitswoche: Eventfabrik und Zukunftsworkshops (Projektarbeit)",
+    "url": "allModules/56804_M_IKNW_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKOW",
+    "name": "Offgrid Wasser und Sonne: Hands on",
+    "url": "allModules/56805_M_IKOW.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKOWp",
+    "name": "Offgrid Wasser und Sonne: Hands on (Projektarbeit)",
+    "url": "allModules/56806_M_IKOW_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKPE",
+    "name": "Psychologisches Empowerment in Veränderungs- und Wandlungsprozessen",
+    "url": "allModules/44139_M_IKPE.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKPH",
+    "name": "Prototyping für Startup-Ideen beim Hackathon",
+    "url": "allModules/56807_M_IKPH.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKPS",
+    "name": "Prototyping für Startup-Ideen",
+    "url": "allModules/44133_M_IKPS.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKPSp",
+    "name": "Prototyping für Startup-Ideen (Projektarbeit)",
+    "url": "allModules/44136_M_IKPS_p.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKRE",
+    "name": "Resilienz: Schlüsselkompetenz für innere Stärke",
+    "url": "allModules/44142_M_IKRE.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKSH",
+    "name": "Social and Human Robotic",
+    "url": "allModules/44145_M_IKSH.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKSM",
+    "name": "Strategisches Management von Naturgefahren",
+    "url": "allModules/44205_M_IKSM.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKSMp",
+    "name": "Strategisches Management von Naturgefahren (Projektarbeit)",
+    "url": "allModules/44208_M_IKSM_p.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKSS",
+    "name": "Ski-Nation Schweiz",
+    "url": "allModules/44220_M_IKSS.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKSSp",
+    "name": "Ski-Nation Schweiz (Projektarbeit)",
+    "url": "allModules/44217_M_IKSS_p.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKST",
+    "name": "Starkes Ich – Starkes Team",
+    "url": "allModules/44154_M_IKST.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKSTp",
+    "name": "Starkes Ich – Starkes Team (Projektarbeit)",
+    "url": "allModules/44157_M_IKST_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKSU",
+    "name": "Startup - Weg zur Gründung",
+    "url": "allModules/44253_M_IKSU.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKSUp",
+    "name": "Startup - Weg zur Gründung (Projektarbeit)",
+    "url": "allModules/44256_M_IKSU_p.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKSW",
+    "name": "Stadt der kurzen Wege",
+    "url": "allModules/44148_M_IKSW.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKSWp",
+    "name": "Stadt der kurzen Wege (Projektarbeit)",
+    "url": "allModules/44151_M_IKSW_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKTE",
+    "name": "The Internet of Everything",
+    "url": "allModules/44340_M_IKTE.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKTEp",
+    "name": "The Internet of Everything (Projektarbeit)",
+    "url": "allModules/44343_M_IKTE_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKTSV2",
+    "name": "IKTS_Vorlage 2ECTS",
+    "url": "allModules/43909_M_IKTSV2.json",
+    "ects": 2,
+    "isDeactivated": true,
+    "term": "",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKTSV3",
+    "name": "IKTS_Vorlage 3ECTS",
+    "url": "allModules/43910_M_IKTSV3.json",
+    "ects": 3,
+    "isDeactivated": true,
+    "term": "",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKTSV4",
+    "name": "IKTS_Vorlage 4ECTS",
+    "url": "allModules/43911_M_IKTSV4.json",
+    "ects": 4,
+    "isDeactivated": true,
+    "term": "",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKUG",
+    "name": "Umwelt und Gesundheit",
+    "url": "allModules/44160_M_IKUG.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKUGp",
+    "name": "Umwelt und Gesundheit (Projektarbeit)",
+    "url": "allModules/44163_M_IKUG_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKVA",
+    "name": "Virtual Reality für gesundes Leben und Altern",
+    "url": "allModules/44172_M_IKVA.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKVAp",
+    "name": "Virtual Reality für gesundes Leben und Altern (Projektarbeit)",
+    "url": "allModules/44175_M_IKVA_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKVK",
+    "name": "Vielfalt, Chancengleichheit und Inklusion im KI-Zeitalter",
+    "url": "allModules/44166_M_IKVK.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKVKp",
+    "name": "Vielfalt, Chancengleichheit und Inklusion im KI-Zeitalter (Projektarbeit)",
+    "url": "allModules/44169_M_IKVK_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKVR",
+    "name": "Virtual Reality für Klima und Energie",
+    "url": "allModules/56195_M_IKVR.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IKVRp",
+    "name": "Virtual Reality für Klima und Energie (Projektarbeit)",
+    "url": "allModules/44181_M_IKVR_p.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "GWRIKTS"
+    ]
+  },
+  {
+    "id": "IPCV1",
+    "name": "Image Processing and Computer Vision 1",
+    "url": "allModules/36264_M_IPCV1.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "DigPro1Engl",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "IPCV2",
+    "name": "Image Processing and Computer Vision 2",
+    "url": "allModules/36269_M_IPCV2.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "DigPro2Engl",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "IncResp",
+    "name": "Incident Response",
+    "url": "allModules/36473_M_IncResp.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "CyDef",
+      "CySec",
+      "HackL",
+      "SecSoW"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "Inno2",
+    "name": "Innovation 2",
+    "url": "allModules/20110_M_Inno2.json",
+    "ects": 2,
+    "isDeactivated": true,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": "Inno_2",
+    "predecessorModuleId": "StraProPla_e",
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "Inno_2",
+    "name": "Innovation 2: Operatives Innovationsmanagement",
+    "url": "allModules/43299_M_Inno_2.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "Inno2",
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "IntTra",
+    "name": "Integraltransformationen",
+    "url": "allModules/15367_M_IntTra.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "An1I",
+      "An2I",
+      "KomFou1"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "MaPh"
+    ]
+  },
+  {
+    "id": "Ital1",
+    "name": "Italienisch 1",
+    "url": "allModules/36015_M_Ital1.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "Ital2"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "Ital2",
+    "name": "Italienisch 2",
+    "url": "allModules/36011_M_Ital2.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "Ital1"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "Jap1",
+    "name": "Japanisch 1",
+    "url": "allModules/28088_M_Jap1.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "Jap2"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "Jap2",
+    "name": "Japanisch 2",
+    "url": "allModules/28093_M_Jap2.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "Jap1"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "KomFou1",
+    "name": "Komplexe Zahlen und Fourierreihen",
+    "url": "allModules/15546_M_KomFou1.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "An1I",
+      "DMI"
+    ],
+    "dependentModuleIds": [
+      "IntTra"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "MaPh"
+    ]
+  },
+  {
+    "id": "KommIng2",
+    "name": "Kommunikation 2 für IngenieurInnen  (Teamkommunikation)",
+    "url": "allModules/37397_M_KommIng2.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "KomEng"
+    ]
+  },
+  {
+    "id": "LLDIG",
+    "name": "Lernlabor \"Digitalisieren Hands-on\"",
+    "url": "allModules/41732_M_LLDIG.json",
+    "ects": 4,
+    "isDeactivated": true,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "gwr"
+    ]
+  },
+  {
+    "id": "MGE",
+    "name": "Mobile and GUI Engineering",
+    "url": "allModules/28254_M_MGE.json",
+    "ects": 4,
+    "isDeactivated": true,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "UX"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "ML",
+    "name": "Statistical Machine Learning",
+    "url": "allModules/31838_M_ML.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "DL"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "MOSIM",
+    "name": "Modellbildung und Simulation",
+    "url": "allModules/40139_M_MOSIM.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "SIMUL",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "MathFML",
+    "name": "Mathematical Foundations for Machine Learning",
+    "url": "allModules/31614_M_MathFML.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "MaPh"
+    ]
+  },
+  {
+    "id": "MathSem1",
+    "name": "Mathematisches Seminar 1",
+    "url": "allModules/45131_M_MathSem1.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "MathSem2"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "MathSem2",
+    "name": "Mathematisches Seminar 2",
+    "url": "allModules/24089_M_MathSem2.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "MathSem1"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "MsTe",
+    "name": ".Net Technologien",
+    "url": "allModules/37247_M_MsTe.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "AlgDat",
+      "Dbs1",
+      "OOP1",
+      "OOP2"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "NIoSec",
+    "name": "Network and IoT Security",
+    "url": "allModules/42231_M_NIoSec.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "CN1",
+      "CN2",
+      "CySec"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "NISec",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "NetAut",
+    "name": "Network Automation",
+    "url": "allModules/56252_M_NetAut.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "NwP",
+    "name": "Naturwissenschaftliches Praktikum",
+    "url": "allModules/45138_M_NwP.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [
+      "Ph1Mech"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "MaPh"
+    ]
+  },
+  {
+    "id": "OOP1",
+    "name": "Objektorientierte Programmierung 1",
+    "url": "allModules/43813_M_OOP1.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "AIFo",
+      "AlgDat",
+      "CPl",
+      "CPlA",
+      "CoBau",
+      "ComGra",
+      "FP",
+      "MsTe",
+      "OOP2",
+      "ParProg",
+      "SE1",
+      "SEP1",
+      "SEProj",
+      "WE1"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Inf",
+      "RA"
+    ]
+  },
+  {
+    "id": "OOP2",
+    "name": "Objektorientierte Programmierung 2",
+    "url": "allModules/38910_M_OOP2.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "OOP1"
+    ],
+    "dependentModuleIds": [
+      "AIFo",
+      "AlgDat",
+      "CPl",
+      "CPlA",
+      "CoBau",
+      "ComGra",
+      "MsTe",
+      "ParProg",
+      "SE1",
+      "SEP1",
+      "SEProj",
+      "WE1"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": "AD1",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Inf",
+      "RA"
+    ]
+  },
+  {
+    "id": "PF",
+    "name": "Patterns und Frameworks",
+    "url": "allModules/39045_M_PF.json",
+    "ects": 4,
+    "isDeactivated": true,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "SE1"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "APF",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "PWWD",
+    "name": "Praxiswoche Webdesign",
+    "url": "allModules/57180_M_PWWD.json",
+    "ects": 2,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "ParProg",
+    "name": "Parallele Programmierung",
+    "url": "allModules/41462_M_ParProg.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "Bsys1",
+      "OOP1",
+      "OOP2"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "Ph1Mech",
+    "name": "Physik 1 - Mechanik",
+    "url": "allModules/45143_M_Ph1Mech.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "NwP",
+      "Ph2HAT",
+      "Ph3SWO"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "MaPh"
+    ]
+  },
+  {
+    "id": "Ph2HAT",
+    "name": "Physik 2 - Hydro-, Aero- und Thermodynamik",
+    "url": "allModules/22021_M_Ph2HAT.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "Ph1Mech"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "MaPh"
+    ]
+  },
+  {
+    "id": "Ph3SWO",
+    "name": "Physik 3 - Schwingungen und Wellen, Optik",
+    "url": "allModules/45153_M_Ph3SWO.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "Ph1Mech"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "MaPh"
+    ]
+  },
+  {
+    "id": "PhAI",
+    "name": "Physik Anwendungen für Informatik",
+    "url": "allModules/43544_M_PhAI.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "An1I",
+      "An2I"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "MaPh"
+    ]
+  },
+  {
+    "id": "PlFSec",
+    "name": "Platform Security",
+    "url": "allModules/42227_M_PlFSec.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "Bsys1",
+      "CN1",
+      "CN2",
+      "CySec",
+      "SecSW"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "PFSec",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "PmQm",
+    "name": "Projekt- und Qualitätsmanagement",
+    "url": "allModules/28231_M_PmQm.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "gwr"
+    ]
+  },
+  {
+    "id": "Python",
+    "name": "Python",
+    "url": "allModules/41489_M_Python.json",
+    "ects": 3,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "RKI",
+    "name": "Rhetorische Kommunikation für IngenieurInnen",
+    "url": "allModules/25661_M_RKI.json",
+    "ects": 4,
+    "isDeactivated": true,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": "RheKI",
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "KomEng"
+    ]
+  },
+  {
+    "id": "RheKI",
+    "name": "Rhetorische Kommunikation für IngenieurInnen",
+    "url": "allModules/31909_M_RheKI.json",
+    "ects": 4,
+    "isDeactivated": true,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "RKI",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "KomEng"
+    ]
+  },
+  {
+    "id": "RheKoI",
+    "name": "Rhetorische Kommunikation für IngenieurInnen",
+    "url": "allModules/43277_M_RheKoI.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "RheKI",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "KomEng"
+    ]
+  },
+  {
+    "id": "SAI21",
+    "name": "Studienarbeit Informatik",
+    "url": "allModules/40906_M_SAI21.json",
+    "ects": 8,
+    "isDeactivated": false,
+    "term": "both",
+    "recommendedModuleIds": [
+      "SEProj"
+    ],
+    "dependentModuleIds": [
+      "BAI21"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": true,
+    "categoriesForColoring": [
+      "Inf",
+      "SaBa"
+    ]
+  },
+  {
+    "id": "SE1",
+    "name": "Software-Engineering 1",
+    "url": "allModules/37893_M_SE1.json",
+    "ects": 4,
+    "isDeactivated": true,
+    "term": "",
+    "recommendedModuleIds": [
+      "OOP1",
+      "OOP2"
+    ],
+    "dependentModuleIds": [
+      "AppArch",
+      "DSy",
+      "PF",
+      "SE2",
+      "UX"
+    ],
+    "successorModuleId": "SEP2",
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "EP",
+      "Inf"
+    ]
+  },
+  {
+    "id": "SE2",
+    "name": "Software-Engineering 2",
+    "url": "allModules/37191_M_SE2.json",
+    "ects": 4,
+    "isDeactivated": true,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "SE1"
+    ],
+    "dependentModuleIds": [
+      "CoBau"
+    ],
+    "successorModuleId": "SEP2",
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "EP",
+      "Inf"
+    ]
+  },
+  {
+    "id": "SEP1",
+    "name": "SE Practices 1",
+    "url": "allModules/39203_M_SEP1.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "OOP1",
+      "OOP2"
+    ],
+    "dependentModuleIds": [
+      "SEP2",
+      "SEProj"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": "SE1",
+    "isMandatory": true,
+    "categoriesForColoring": [
+      "EP",
+      "Inf"
+    ]
+  },
+  {
+    "id": "SEP2",
+    "name": "SE Practices 2",
+    "url": "allModules/57233_M_SEP2.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "SEP1"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "SE2",
+    "isMandatory": true,
+    "categoriesForColoring": [
+      "EP",
+      "Inf"
+    ]
+  },
+  {
+    "id": "SEProj",
+    "name": "SE Project",
+    "url": "allModules/43712_M_SEProj.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "AutPy",
+      "OOP1",
+      "OOP2",
+      "SEP1"
+    ],
+    "dependentModuleIds": [
+      "SAI21"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": true,
+    "categoriesForColoring": [
+      "EP",
+      "Inf"
+    ]
+  },
+  {
+    "id": "SModSim",
+    "name": "System Modeling and Simulation",
+    "url": "allModules/38938_M_SModSim.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "SPPRODUCTS",
+    "name": "SP-Smart Products",
+    "url": "allModules/35903_M_SPPRODUCTS.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "SecSW",
+    "name": "Secure Software",
+    "url": "allModules/36488_M_SecSW.json",
+    "ects": 4,
+    "isDeactivated": true,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "Bsys1",
+      "CN1",
+      "CySec"
+    ],
+    "dependentModuleIds": [
+      "CyDef",
+      "PlFSec"
+    ],
+    "successorModuleId": "SecSoW",
+    "predecessorModuleId": "InfSi3",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "SecSoW",
+    "name": "Secure Software",
+    "url": "allModules/40311_M_SecSoW.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "Bsys1",
+      "CN1",
+      "CySec"
+    ],
+    "dependentModuleIds": [
+      "IncResp"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": "SecSW",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "SelTec",
+    "name": "English: Selling Technology",
+    "url": "allModules/45661_M_SelTec.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "KomEng"
+    ]
+  },
+  {
+    "id": "ServDev",
+    "name": "Service Development (ITIL)",
+    "url": "allModules/37171_M_ServDev.json",
+    "ects": 4,
+    "isDeactivated": true,
+    "term": "",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "Span1",
+    "name": "Spanisch 1",
+    "url": "allModules/28097_M_Span1.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [
+      "Span2"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "Span2",
+    "name": "Spanisch 2",
+    "url": "allModules/44428_M_Span2.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "Span1"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "TecBEC",
+    "name": "English Beyond Borders: Navigating Academic & Professional Success with IELTS",
+    "url": "allModules/55597_M_TecBEC.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "KomEng"
+    ]
+  },
+  {
+    "id": "UIP",
+    "name": "UI Patterns and Frameworks",
+    "url": "allModules/56946_M_UIP.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "UX",
+    "name": "User Experience",
+    "url": "allModules/41106_M_UX.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "MGE",
+      "SE1"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "HCD",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "VwlTg",
+    "name": "Volkswirtschaft und Technikgeschichte",
+    "url": "allModules/42760_M_VwlTg.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "gwr"
+    ]
+  },
+  {
+    "id": "WE1",
+    "name": "Web Engineering 1",
+    "url": "allModules/38891_M_WE1.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "OOP1",
+      "OOP2"
+    ],
+    "dependentModuleIds": [
+      "AIAp",
+      "WE2"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": "WED1",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Inf",
+      "RA"
+    ]
+  },
+  {
+    "id": "WE2",
+    "name": "Web Engineering 2",
+    "url": "allModules/38945_M_WE2.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [
+      "WE1"
+    ],
+    "dependentModuleIds": [
+      "WE3"
+    ],
+    "successorModuleId": null,
+    "predecessorModuleId": "WED2",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "WE3",
+    "name": "Web Engineering 3",
+    "url": "allModules/38901_M_WE3.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "WE2"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "WI2",
+    "name": "Business Processes für Informatik",
+    "url": "allModules/57174_M_WI2.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "BuPro",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "gwr"
+    ]
+  },
+  {
+    "id": "WIoT",
+    "name": "Wireless and IoT",
+    "url": "allModules/37157_M_WIoT.json",
+    "ects": 4,
+    "isDeactivated": true,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": "WsoT",
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  },
+  {
+    "id": "WSLS",
+    "name": "Workshop \"Lern-Support an der OST\"",
+    "url": "allModules/32766_M_WSLS.json",
+    "ects": 0,
+    "isDeactivated": false,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": []
+  },
+  {
+    "id": "WrStat",
+    "name": "Wahrscheinlichkeitsrechnung und Statistik",
+    "url": "allModules/24489_M_WrStat.json",
+    "ects": 4,
+    "isDeactivated": false,
+    "term": "HS",
+    "recommendedModuleIds": [
+      "An2I"
+    ],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": null,
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "MaPh"
+    ]
+  },
+  {
+    "id": "WsoT",
+    "name": "Wireless and IoT",
+    "url": "allModules/40038_M_WsoT.json",
+    "ects": 4,
+    "isDeactivated": true,
+    "term": "FS",
+    "recommendedModuleIds": [],
+    "dependentModuleIds": [],
+    "successorModuleId": null,
+    "predecessorModuleId": "WIoT",
+    "isMandatory": false,
+    "categoriesForColoring": [
+      "Auf",
+      "Inf"
+    ]
+  }
+]

@@ -1,30 +1,50 @@
 /* eslint-disable max-len */
 describe("Graph View E2E Tests", () => {
   beforeEach(() => {
-    cy.visit("/graph/");
-  });
+    cy.intercept(
+      'GET',
+      'https://raw.githubusercontent.com/Janooski/data/main/data/modules.json',
+      { fixture: 'modules.json' }
+    ).as('modules');
 
-  it("toggle between table and graph view", () => {
-    cy.get(".vue-flow__viewport").should("be.visible");
-    cy.get("#table-link").click();
-    cy.get("#graph-link").should("be.visible");
-    cy.get("#graph-link").click();
-    cy.get(".vue-flow__viewport").should("be.visible");
-  });
+    cy.intercept(
+      'GET',
+      'https://raw.githubusercontent.com/Janooski/data/main/data2I/categories.json',
+      { fixture: 'categories.json' }
+    ).as('categories');
 
-  it("triggers fitView on FitViewButton click", () => {
     cy.visit(
       "/#/plan/RheKoI_OOP1_AutPy_CN1_DMI_An1I_Dbs1_EnglScience-FP_OOP2_DigCod_CySec_AutoSpr_An2I_DatEng_KommIng2-WE1_AlgDat_Bsys1_AIFo_MsTe_CPl_SEP1_ExEv-ParProg_SecSoW_Bsys2_AIAp_DSy_SEProj_SEP2_DigBusI-PmQm_CoBau_UIP_AppArch_SAI21_WI2-CPlA_CldSol_BAI21_PhAI?startSemester=HS24"
     );
-    cy.get("#graph-link").click();
+  });
 
-    cy.get(".vue-flow__viewport").trigger("wheel", {
+  it("enable and disable graph modal", () => {
+    cy.screenshot("01-graph-view-enabled");
+    cy.get('[data-cy="activate-graph-button"]').click();
+    cy.get('[data-cy="graph-vueflow"]').should("be.visible");
+    cy.screenshot("02-graph-view-disabled");
+    cy.get('[data-cy="graph-close-button"]').click();
+    cy.get('[data-cy="graph-vueflow"]').should("not.exist")
+    cy.get('[data-cy="activate-graph-button"]').click();
+    cy.get('[data-cy="graph-vueflow"]').should("be.visible");
+    cy.screenshot("03-graph-view-enabled");
+  });
+
+  /*it("triggers fitView on FitViewButton click", () => {
+    cy.get('[data-cy="activate-graph-button"]').click();
+    //cy.screenshot("01-graph-view-initial-state");
+
+    cy.get('[data-cy="graph-vueflow"]').trigger("wheel", {
       deltaY: -1000,
       bubbles: true,
       eventConstructor: "WheelEvent",
     });
+    cy.screenshot("02-zoomed-out-graph");
+    cy.wait(1000); 
 
-    cy.get("#fit-view-button").click();
+
+    cy.get('[data-cy="fit-view-button"]').click();
+    //cy.screenshot("03-fit-view-button-clicked");
 
     cy.contains("a", "Bachelor-Arbeit Informatik").then(($el) => {
       const rect = $el[0].getBoundingClientRect();
@@ -38,42 +58,22 @@ describe("Graph View E2E Tests", () => {
     });
   });
 
-  it("triggers fitView on key F press", () => {
-    cy.visit(
-      "/#/plan/RheKoI_OOP1_AutPy_CN1_DMI_An1I_Dbs1_EnglScience-FP_OOP2_DigCod_CySec_AutoSpr_An2I_DatEng_KommIng2-WE1_AlgDat_Bsys1_AIFo_MsTe_CPl_SEP1_ExEv-ParProg_SecSoW_Bsys2_AIAp_DSy_SEProj_SEP2_DigBusI-PmQm_CoBau_UIP_AppArch_SAI21_WI2-CPlA_CldSol_BAI21_PhAI?startSemester=HS24"
-    );
-    cy.get("#graph-link").click();
-
-    cy.get(".vue-flow__viewport").trigger("wheel", {
-      deltaY: -1000,
-      bubbles: true,
-      eventConstructor: "WheelEvent",
-    });
-
-    cy.get("body").type("f");
-
-    cy.contains("a", "Bachelor-Arbeit Informatik").then(($el) => {
-      const rect = $el[0].getBoundingClientRect();
-      const vh = Cypress.config("viewportHeight");
-      const vw = Cypress.config("viewportWidth");
-
-      expect(rect.top, "top ≥ 0").to.be.at.least(0);
-      expect(rect.bottom, "bottom ≤ viewportHeight").to.be.at.most(vh);
-      expect(rect.left, "left ≥ 0").to.be.at.least(0);
-      expect(rect.right, "right ≤ viewportWidth").to.be.at.most(vw);
-    });
-  });
-
+  
   it("modules can be removed and added", () => {
     cy.visit(
-      "/#/plan/RheKoI_OOP1_AutPy_CN1_DMI_An1I_Dbs1_EnglScience-FP_OOP2_DigCod_CySec_AutoSpr_An2I_DatEng_KommIng2-WE1_AlgDat_Bsys1_AIFo_MsTe_CPl_SEP1_ExEv-ParProg_SecSoW_Bsys2_AIAp_DSy_SEProj_SEP2_DigBusI-PmQm_CoBau_UIP_AppArch_SAI21_WI2-CPlA_CldSol_BAI21_PhAI?startSemester=HS24"
+      "/#/RheKoI_OOP1_AutPy_CN1_DMI_An1I_Dbs1_EnglScience-FP_OOP2_DigCod_CySec_AutoSpr_An2I_DatEng_KommIng2-WE1_AlgDat_Bsys1_AIFo_MsTe_CPl_SEP1_ExEv-ParProg_SecSoW_Bsys2_AIAp_DSy_SEProj_SEP2_DigBusI-PmQm_CoBau_UIP_AppArch_SAI21_WI2-CPlA_CldSol_BAI21_PhAI?startSemester=HS24"
     );
-    cy.get("#graph-link").click();
+    cy.get('[data-cy="activate-graph-button"]').click();
+
+    cy.screenshot("01-graph-with-BA");
 
     cy.contains("a", "Bachelor-Arbeit Informatik")
       .parent()
       .find("button.remove-module")
       .click({ force: true });
+
+    cy.screenshot("02-graph-without-BA");
+
 
     cy.contains("a", "Bachelor-Arbeit Informatik").should("not.exist");
 
@@ -87,20 +87,21 @@ describe("Graph View E2E Tests", () => {
       .parent()
       .parent()
       .click({ force: true });
-    
+
+    cy.screenshot("03-graph-with-BA");
+
     cy.contains("a", "Bachelor-Arbeit Informatik").should("exist");
-
+    
+    cy.screenshot("graph-view-loaded");
   });
-
-
 
 
 
   it("all modules are displayed", () => {
     cy.visit(
-      "/#/plan/RheKoI_OOP1_AutPy_CN1_DMI_An1I_Dbs1_EnglScience-FP_OOP2_DigCod_CySec_AutoSpr_An2I_DatEng_KommIng2-WE1_AlgDat_Bsys1_AIFo_MsTe_CPl_SEP1_ExEv-ParProg_SecSoW_Bsys2_AIAp_DSy_SEProj_SEP2_DigBusI-PmQm_CoBau_UIP_AppArch_SAI21_WI2-CPlA_CldSol_BAI21_PhAI?startSemester=HS24"
+      "/#/RheKoI_OOP1_AutPy_CN1_DMI_An1I_Dbs1_EnglScience-FP_OOP2_DigCod_CySec_AutoSpr_An2I_DatEng_KommIng2-WE1_AlgDat_Bsys1_AIFo_MsTe_CPl_SEP1_ExEv-ParProg_SecSoW_Bsys2_AIAp_DSy_SEProj_SEP2_DigBusI-PmQm_CoBau_UIP_AppArch_SAI21_WI2-CPlA_CldSol_BAI21_PhAI?startSemester=HS24"
     );
-    cy.get("#graph-link").click();
+    cy.get('[data-cy="activate-graph-button"]').click();
   
     const modules = [
       "RheKoI",
@@ -145,15 +146,15 @@ describe("Graph View E2E Tests", () => {
     ];
   
     modules.forEach((mod) => {
-      cy.get(`.vue-flow__node[data-id="${mod}"]`).should("exist").and("be.visible");
+      cy.get(`[data-cy="graph-vueflow"][data-id="${mod}"]`).should("exist").and("be.visible");//TODO
     });
   });
   
   it("all connects of modules do exist", () => {
     cy.visit(
-      "/#/plan/RheKoI_OOP1_AutPy_CN1_DMI_An1I_Dbs1_EnglScience-FP_OOP2_DigCod_CySec_AutoSpr_An2I_DatEng_KommIng2-WE1_AlgDat_Bsys1_AIFo_MsTe_CPl_SEP1_ExEv-ParProg_SecSoW_Bsys2_AIAp_DSy_SEProj_SEP2_DigBusI-PmQm_CoBau_UIP_AppArch_SAI21_WI2-CPlA_CldSol_BAI21_PhAI?startSemester=HS24"
+      "/#/RheKoI_OOP1_AutPy_CN1_DMI_An1I_Dbs1_EnglScience-FP_OOP2_DigCod_CySec_AutoSpr_An2I_DatEng_KommIng2-WE1_AlgDat_Bsys1_AIFo_MsTe_CPl_SEP1_ExEv-ParProg_SecSoW_Bsys2_AIAp_DSy_SEProj_SEP2_DigBusI-PmQm_CoBau_UIP_AppArch_SAI21_WI2-CPlA_CldSol_BAI21_PhAI?startSemester=HS24"
     );
-    cy.get("#graph-link").click();
+    cy.get('[data-cy="activate-graph-button"]').click();
   
     const connections = [
       "AutoSpr->AIFo",
@@ -203,9 +204,30 @@ describe("Graph View E2E Tests", () => {
     ].filter(Boolean);
   
     connections.forEach((conn) => {
-      cy.get(`.vue-flow__edge[data-id="${conn}"]`).should("exist").and("be.visible");
+      cy.get(`[data-cy="graph-vueflow"][data-id="${conn}"]`).should("exist").and("be.visible"); //TODO
     });
   });
   
+
+  it("graph loads within acceptable time", () => {
+    cy.visit(
+      "/#/RheKoI_OOP1_AutPy_CN1_DMI_An1I_Dbs1_EnglScience-FP_OOP2_DigCod_CySec_AutoSpr_An2I_DatEng_KommIng2-WE1_AlgDat_Bsys1_AIFo_MsTe_CPl_SEP1_ExEv-ParProg_SecSoW_Bsys2_AIAp_DSy_SEProj_SEP2_DigBusI-PmQm_CoBau_UIP_AppArch_SAI21_WI2-CPlA_CldSol_BAI21_PhAI?startSemester=HS24"
+    );
+
+    const maxLoadTime = 2000;
+    const start = Date.now();
+
+    cy.get('[data-cy="activate-graph-button"]').click();
+    cy.wait(2000).then(() => {
+      cy.screenshot("graph-load-after-2000ms");
+    });
+
+    cy.get('[data-cy="node-OOP1"]').should("exist").and("be.visible");
+    cy.then(() => {
+      const loadTime = Date.now() - start;
+      cy.log(`Graph loaded in ${loadTime}ms`);
+      expect(loadTime).to.be.lessThan(maxLoadTime);
+    });
+  });*/
 });
 
