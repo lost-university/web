@@ -63,6 +63,7 @@ describe("Graph View E2E Tests", () => {
       .find('[data-cy="remove-module-button"]')
       .click({ force: true });
     cy.contains('[data-cy="graph-vueflow"] a', "Bachelor-Arbeit Informatik").should("not.exist");
+    cy.get('[data-cy="fit-view-button"]').click();
     cy.get('[data-cy="graph-vueflow"]').screenshot("graphView.cy.ts/BA-removed");
 
     cy.contains('[data-cy="graph-vueflow"] a', "Studienarbeit Informatik")
