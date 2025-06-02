@@ -5,7 +5,7 @@
   >
     <div>
       <MenuButton
-        class="p-2 hover:bg-gray-100 rounded-sm"
+        class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
         data-cy="menu-button"
       >
         <font-awesome-icon
@@ -14,7 +14,7 @@
       </MenuButton>
     </div>
     <MenuItems
-      class="absolute z-10 bg-white shadow-lg rounded-sm"
+      class="absolute z-10 bg-white dark:bg-zinc-800 shadow-lg rounded-sm"
       :class="menuPositionClass"
     >
       <div class="px-1 py-1">
@@ -23,14 +23,17 @@
           as="div"
         >
           <button
-            class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100"
+            class="
+             flex items-center gap-2 w-full text-left px-4 py-2
+            hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700
+            "
             data-cy="share-button"
             @click.stop.prevent="sharePlan(close)"
           >
             <font-awesome-icon
               data-cy="share-icon"
               :icon="planCopied ? ['fas', 'check'] : ['fas', 'share-nodes']"
-              :class="planCopied ? 'text-green-600' : 'text-black'"
+              :class="planCopied ? 'text-green-600' : 'text-black dark:text-white'"
             />
           </button>
         </MenuItem>
@@ -40,7 +43,10 @@
           as="div"
         >
           <button
-            class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100"
+            class="
+              flex items-center gap-2 w-full text-left px-4 py-2
+              hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700
+            "
             data-cy="delete-button"
             @click="deletePlan()"
           >
