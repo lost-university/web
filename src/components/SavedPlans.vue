@@ -23,12 +23,12 @@
           data-cy="SavedPlans-List-Item"
         >
           <button
-            class="p-2 hover:bg-gray-100 rounded-sm"
+            class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
             data-cy="SavedPlans-Bookmark-Button"
             @click="bookmarkPlan(plan.id)"
           >
-            <font-awesome-icon 
-              :icon="[plan.bookmark ? 'fas' : 'far', 'bookmark']" 
+            <font-awesome-icon
+              :icon="[plan.bookmark ? 'fas' : 'far', 'bookmark']"
             />
           </button>
           <router-link
@@ -93,12 +93,12 @@
         data-cy="SavedPlans-List-Item"
       >
         <button
-          class="p-2 hover:bg-gray-100 rounded-sm"
+          class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
           data-cy="SavedPlans-Bookmark-Button"
           @click="bookmarkPlan(plan.id)"
         >
-          <font-awesome-icon 
-            :icon="[plan.bookmark ? 'fas' : 'far', 'bookmark']" 
+          <font-awesome-icon
+            :icon="[plan.bookmark ? 'fas' : 'far', 'bookmark']"
           />
         </button>
         <router-link
