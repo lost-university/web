@@ -39,6 +39,7 @@ describe("Graph View E2E Tests", () => {
     });
 
     cy.get('[data-cy="fit-view-button"]').click();
+    cy.wait(1000);
     cy.contains('[data-cy="graph-vueflow"] a', "Bachelor-Arbeit Informatik").then(($el) => {
       cy.get('[data-cy="graph-vueflow"]').then(($container) => {
         const elRect = $el[0].getBoundingClientRect();
