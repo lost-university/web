@@ -1,6 +1,6 @@
 <template>
   <SwitchGroup>
-    <div class="flex items-center ml-auto sm:h-8.5">
+    <div class="flex items-center sm:h-8.5">
       <SwitchLabel class="mr-4">
         Validierung:
       </SwitchLabel>

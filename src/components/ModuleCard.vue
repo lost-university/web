@@ -71,11 +71,6 @@ export default defineComponent({
       }
       return classes
     }
-  },
-  methods: {
-    getElement() {
-      return this.$refs.itemRef
-    }
   }
 })
 </script>

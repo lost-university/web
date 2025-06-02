@@ -1,9 +1,7 @@
 import ELK from "elkjs/lib/elk.bundled.js";
 import type { ElkNode } from "elkjs/lib/elk-api";
 import type { XYPosition } from "@vue-flow/core";
-import type { LayoutResult } from "./graph-layout-utils";
-import type { GraphNode } from "./graph-nodes";
-import type { GraphEdge } from "./graph-edges";
+import type { LayoutResult, GraphNode, GraphEdge } from "../../types/Graph";
 import { components, isIsolated } from "./graph-layout-utils";
 import { LayoutConfig } from "./graph-layout-config";
 

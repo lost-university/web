@@ -139,10 +139,10 @@ export default defineComponent({
       return this.dependentModules.length > 0
     },
     currentSemester(): number | null {
-    const semester = store.getters.semesters.find((s) =>
-      s.moduleIds.includes(this.module.id)
-    );
-    return semester?.number ?? null;
+      const semester = store.getters.semesters.find((s) =>
+        s.moduleIds.includes(this.module.id)
+      );
+      return semester?.number ?? null;
     }
   },
   methods: {

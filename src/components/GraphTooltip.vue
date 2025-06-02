@@ -11,7 +11,7 @@
     }"
   >
     <slot>
-      Diese Abhängikeit ist Pflicht.
+      Diese Abhängigkeit ist Pflicht.
     </slot>
     <div
       class="absolute left-1/2 -bottom-1.5 transform -translate-x-1/2 w-0 h-0 border-l-6 

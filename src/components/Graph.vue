@@ -7,7 +7,7 @@
     <div class="fixed inset-0 flex w-screen items-center justify-center bg-black/30 dark:bg-black/70">
       <DialogPanel
         class="w-full max-w-screen-xl max-h-dvh flex flex-col
-            rounded bg-white dark:bg-zinc-900 shadow-2xl overflow-y-auto sm:h-[90vh]"
+          rounded bg-white dark:bg-zinc-900 shadow-2xl overflow-y-auto h-[100vh] sm:h-[90vh]"
       >
         <div
           ref="wrapperRef"
@@ -53,7 +53,7 @@
           </div>
 
           <FitViewButton
-            class="absolute right-4 bottom-4 "
+            class="absolute right-4 bottom-4"
             @click="fitView"
           />
 
@@ -70,36 +70,76 @@
   </HeadlessUIDialog>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+import { defineComponent } from 'vue';
 import { VueFlow } from '@vue-flow/core';
 import { Dialog as HeadlessUIDialog, DialogPanel } from '@headlessui/vue';
+
 import EdgeDefs from '../components/GraphEdgeDefs.vue';
 import ModuleNode from '../components/GraphModuleHightlight.vue';
 import FitViewButton from '../components/GraphFitViewButton.vue';
 import GraphTooltip from '../components/GraphTooltip.vue';
+
 import { useGraphView } from '../composables/useGraphView';
 import { useGraphHighlighting } from '../composables/useGraphHighlighting';
 
-defineEmits(['close']);
+export default defineComponent({
+  name: 'GraphDialog',
+  components: {
+    VueFlow,
+    HeadlessUIDialog,
+    DialogPanel,
+    EdgeDefs,
+    ModuleNode,
+    FitViewButton,
+    GraphTooltip,
+  },
+  props: {
+    open: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  emits: ['close'],
+  setup() {
+    const {
+      wrapperRef,
+      vueFlowRef,
+      nodes,
+      edges,
+      tooltipVisible,
+      tooltipX,
+      tooltipY,
+      onEdgeClick,
+      onWrapperLeave,
+      fitView,
+    } = useGraphView();
 
-const {
-  wrapperRef,
-  vueFlowRef,
-  nodes,
-  edges,
-  tooltipVisible,
-  tooltipX,
-  tooltipY,
-  onEdgeClick,
-  onWrapperLeave,
-  fitView,
-} = useGraphView();
+    const {
+      activeHover,
+      highlightedNodes,
+      processedEdges,
+      onNodeHover,
+      onNodeLeave,
+    } = useGraphHighlighting(nodes, edges);
 
-const {
-  activeHover,
-  highlightedNodes,
-  processedEdges,
-  onNodeHover,
-  onNodeLeave,
-} = useGraphHighlighting(nodes, edges);
+    return {
+      wrapperRef,
+      vueFlowRef,
+      nodes,
+      edges,
+      tooltipVisible,
+      tooltipX,
+      tooltipY,
+      onEdgeClick,
+      onWrapperLeave,
+      fitView,
+      activeHover,
+      highlightedNodes,
+      processedEdges,
+      onNodeHover,
+      onNodeLeave,
+    };
+  },
+});
 </script>

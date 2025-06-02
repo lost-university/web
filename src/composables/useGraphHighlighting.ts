@@ -1,7 +1,7 @@
 import { computed, ref } from "vue";
 import type { Ref } from "vue";
 import type { Edge, Node } from "@vue-flow/core";
-import type { GraphEdge } from "../helpers/graph/graph-edges";
+import type { GraphEdge } from "../types/Graph";
 
 export function useGraphHighlighting(nodes: Ref<Node[]>, edges: Ref<Edge[]>) {
   const hoveredId = ref<string | null>(null);

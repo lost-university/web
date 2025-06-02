@@ -3,13 +3,13 @@ import { useRoute } from "vue-router";
 import type { VueFlow } from "@vue-flow/core";
 import type { Node, Edge } from "@vue-flow/core";
 import { store } from "../helpers/store";
+import { StorageHelper } from "../helpers/storage-helper";
 import { getColorHexForPrioritizedCategory } from "../helpers/color-helper";
 import { generateModuleEdges } from "../helpers/graph/graph-edges";
 import { generateModuleNodes } from "../helpers/graph/graph-nodes";
 import { sortLayout } from "../helpers/graph/graph-layout";
 import { useTooltip } from "./useGraphTooltip";
 import { useGraphHighlighting } from "./useGraphHighlighting";
-import { getPlanDataFromUrl } from "../helpers/plan-loader";
 import type { Module } from "../helpers/types";
 
 export function useGraphView() {
@@ -64,8 +64,21 @@ export function useGraphView() {
       laidOutNodes.value = nodes;
       laidOutEdges.value = edges;
     } catch (err) {
-      console.error("ELK layout error:", err);
+      console.error("layout error:", err);
     }
+  }
+
+  function getPlanDataFromUrl() {
+    const [semesters, accreditedModules, , validationEnabled] = StorageHelper.getDataFromUrlHash(
+      window.location.hash,
+      (semNum: number, moduleId: string) => {
+        console.error(`Unknown module ${moduleId} encountered for semester ${semNum}`);
+      }
+    );
+
+    store.commit("setValidationEnabled", validationEnabled);
+    store.commit("setSemesters", semesters);
+    store.commit("setAccreditedModules", accreditedModules);
   }
 
   function loadPlanDataFromUrl() {
@@ -97,8 +110,13 @@ export function useGraphView() {
   });
 
   watch([modules, allPlannedModuleIds], ([mods, ids]) => {
-    if (mods.length && ids.length) computeLayout();
-  });
+  if (mods.length && ids.length) {
+    computeLayout();
+  } else {
+    laidOutNodes.value = [];
+    laidOutEdges.value = [];
+  }
+});
   watch(() => route.hash, loadPlanDataFromUrl);
 
   return {
