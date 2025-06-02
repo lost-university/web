@@ -1,8 +1,6 @@
 /* eslint-disable max-len */
 describe("Graph View E2E Tests", () => {
   beforeEach(() => {
-    cy.viewport(800, 600);
-
     cy.intercept("GET", "https://raw.githubusercontent.com/Janooski/data/main/data/modules.json", {
       fixture: "modules.json",
     }).as("modules");
@@ -24,7 +22,7 @@ describe("Graph View E2E Tests", () => {
 
     cy.get('[data-cy="graph-close-button"]').click();
     cy.get('[data-cy="graph-vueflow"]').should("not.exist");
-    cy.screenshot("graphView.cy.ts/graph-view-disabled");
+    cy.get('body').screenshot("graphView.cy.ts/graph-view-disabled");
 
     cy.get('[data-cy="activate-graph-button"]').click();
     cy.get('[data-cy="graph-vueflow"]').should("be.visible");
