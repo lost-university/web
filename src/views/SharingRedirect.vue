@@ -2,30 +2,13 @@
   <div>Loading...</div>
 </template>
 
-<script setup>
-import { onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+<script lang="ts">
+import { fetchSharedPlan } from "../api/plan";
 
-const route = useRoute()
-const router = useRouter()
-
-onMounted(async () => {
-  const slug = route.params.slug
-
-  try {
-    const response = await fetch(`/api/plans/shared/${slug}`);
-    const data = await response.json();
-
-
-    if (data.content) {
-      await router.replace({ path: `/plan/${data.content}` })
-    } else {
-      // fallback for invalid slugs
-      await router.replace({ path: '/' })
-    }
-  } catch (err) {
-    console.error('Sharing link error:', err)
-    await router.replace({ path: '/' }) // fallback on error
-  }
-})
+export default {
+  async mounted() {
+    const path = await fetchSharedPlan(this.$route.params.slug);
+    await this.$router.replace({ path: path });
+  },
+};
 </script>

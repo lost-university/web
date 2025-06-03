@@ -1,5 +1,5 @@
 <template>
-  <Menu
+  <HeadlessUIMenu
     as="div"
     class="relative inline-block text-left z-50"
   >
@@ -48,20 +48,20 @@
               hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700
             "
             data-cy="SavedPlansActionMenu-Delete-Button"
-            @click="deletePlan()"
+            @click="deletePlan"
           >
             <font-awesome-icon :icon="['fas', 'trash']" />
           </button>
         </MenuItem>
       </div>
     </MenuItems>
-  </Menu>
+  </HeadlessUIMenu>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import type { Plan } from '../types/Plan';
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
+import { Menu as HeadlessUIMenu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faTrash, faCheck, faEllipsis, faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -71,8 +71,7 @@ library.add(faTrash, faCheck, faEllipsis, faShareNodes);
 export default defineComponent({
   name: 'SavedPlansActionMenu',
   components: {
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Menu,
+    HeadlessUIMenu,
     MenuButton,
     MenuItems,
     MenuItem,
@@ -89,23 +88,20 @@ export default defineComponent({
     }
   },
   emits: ['delete'],
-  setup(props, { emit }) {
-    const deletePlan = async () => {
-      emit('delete', props.plan.id);
-    };
-    const planCopied = ref(false);
+  data() {
     return {
-      deletePlan,
-      planCopied,
-    };
+      planCopied: false
+    }
   },
   methods: {
+    async deletePlan() {
+      this.$emit('delete', this.plan.id);
+    },
     async sharePlan(close: () => void) {
       const baseUrl = window.location.origin;
-      const shareUrl = `${baseUrl}/#/shared/${this.$props.plan.publicSlug}`;
+      const shareUrl = `${baseUrl}/#/shared/${this.plan.publicSlug}`;
       try {
         await navigator.clipboard.writeText(shareUrl);
-        console.log('Link copied to clipboard:', shareUrl);
         this.planCopied = true;
         setTimeout(() => {
           this.planCopied = false;

@@ -35,7 +35,7 @@ describe('sharing of plans', () => {
 
   cy.get('[data-cy=SavedPlansActionMenu-Menu-Button]').first().click();
 
-  cy.get('[data-cy="semester-container"]').screenshot('plans.cy.ts/show-action-menu-options');
+  cy.get('[data-cy="semester-container"]').screenshot('sharingOfPlan.cy.ts/show-action-menu-options');
 
   cy.get('[data-cy=SavedPlansActionMenu-Share-Button]').first().click();
 
@@ -49,7 +49,8 @@ describe('sharing of plans', () => {
 
   cy.get('[data-cy="module-name"]').should('have.length', expectedModules.length);
 
-  cy.get('[data-cy="semester-container"]').screenshot('plans.cy.ts/open-shared-plan');
+  cy.get('[data-cy="semester-container"]').screenshot('sharingOfPlan.cy.ts/open-shared-plan');
 
+  cy.get('[data-cy=SavedPlansActionMenu-Delete-Button]').click({ force: true });
   });
 })

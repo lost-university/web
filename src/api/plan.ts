@@ -60,4 +60,19 @@ const bookmarkPlan = async (planId: string, token: string): Promise<void> => {
   }
 }
 
-export { fetchSavedPlans, savePlan, deletePlan, bookmarkPlan };
+const fetchSharedPlan = async (slug: string|string[]): Promise<string> => {
+  try {
+    const response = await fetch(`/api/plans/shared/${slug}`);
+    const data = await response.json();
+    if (data.content) {
+      return `/plan/${data.content}`
+    } else {
+      return `/`
+    }
+  } catch (err) {
+    console.error('Sharing link error:', err);
+    return `/`
+  }
+}
+
+export { fetchSavedPlans, savePlan, deletePlan, bookmarkPlan, fetchSharedPlan };

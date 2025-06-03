@@ -58,8 +58,6 @@ describe('SavedPlan Action Menu Component', () => {
     cy.get('[data-cy=SavedPlansActionMenu-Share-Icon]')
       .should('have.class', 'text-green-600');
 
-    cy.wait(1200);
-
     cy.get('[data-cy=SavedPlansActionMenu-Menu-Button]').click();
 
     cy.get('[data-cy=SavedPlansActionMenu-Share-Icon]')
