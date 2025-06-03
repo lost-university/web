@@ -11,6 +11,20 @@ const CATEGORY_COLOR_CLASS_MAP: { [key: string]: string } = {
   Fallback: 'bg-purple-500',
 };
 
+const CATEGORY_COLOR_HEX_MAP: { [key: string]: string } = {
+  Auf: '#737373',
+  MaPh: '#075985',
+  KomEng: '#38bdf8',
+  gwr: '#059669',
+  GWRIKTS: '#14b8a6',
+  Inf: '#475569',
+  SaBa: '#1e293b',
+  EP: '#1e293b',
+  RA: '#f59e0b',
+  Fallback: '#8b5cf6',
+};
+
+
 type ColorClassCategoryKey = keyof typeof CATEGORY_COLOR_CLASS_MAP;
 
 const CATEGORY_COLOR_PRIORITIES: { [key: ColorClassCategoryKey]: number } = {
@@ -29,7 +43,25 @@ const getColorClassForPrioritizedCategory = (categoryIds: string[]) => {
   return prioritzedCategory ? getColorClassForCategoryId(prioritzedCategory.id) : CATEGORY_COLOR_CLASS_MAP.Fallback;
 };
 
+
+const getColorHexForCategoryId = (categoryId: string): string =>
+  CATEGORY_COLOR_HEX_MAP[categoryId] || CATEGORY_COLOR_HEX_MAP.Fallback;
+
+const getColorHexForPrioritizedCategory = (categoryIds: string[]): string => {
+  const prioritizedCategory = categoryIds
+    .map((categoryId) => ({
+      id: categoryId,
+      priority: CATEGORY_COLOR_PRIORITIES[categoryId as keyof typeof CATEGORY_COLOR_CLASS_MAP] ?? 0,
+    }))
+    .sort((a, b) =>
+      b.priority === a.priority ? (a.id > b.id ? 1 : -1) : b.priority - a.priority
+    )[0];
+
+  return prioritizedCategory ? getColorHexForCategoryId(prioritizedCategory.id) : CATEGORY_COLOR_HEX_MAP.Fallback;
+};
+
 export {
   getColorClassForCategoryId,
   getColorClassForPrioritizedCategory,
+  getColorHexForPrioritizedCategory,
 };

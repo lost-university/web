@@ -1,73 +1,37 @@
 <template>
-  <div
-    :key="module.name"
-    class="rounded-sm group/module relative p-2 px-8 flex flex-col items-center
-    text-center text-white w-full print:text-black print:border print:border-gray-300"
-    :class="computedClasses"
+  <ModuleCard
+    :id="id"
+    :module="module"
+    @on-delete="$emit('on-delete', module.id)"
   >
-    <div class="absolute left-2 print:hidden">
-      <span
-        v-if="module.validationInfo && module.validationInfo.severity === 'soft'"
-        :title="module.validationInfo.tooltip"
-        tabindex="0"
+    <template #actions>
+      <button
+        class="absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
+               hover:!opacity-100 right-2 transition-opacity duration-75 print:!opacity-0"
+        type="button"
+        @click="$emit('on-delete', module.id)"
       >
-        <font-awesome-icon :icon="['fa', 'info-circle']" />
-      </span>
-      <span
-        v-if="module.validationInfo && module.validationInfo.severity === 'hard'"
-        :title="module.validationInfo.tooltip"
-        tabindex="0"
-      >
-        <font-awesome-icon :icon="['fa', 'circle-exclamation']" />
-      </span>
-    </div>
-    <button
-      class="absolute opacity-0 touch-only:opacity-75 group-hover/module:opacity-75
-             hover:!opacity-100 right-2 transition-opacity duration-75 print:!opacity-0"
-      type="button"
-      @click="$emit('on-delete', module.id)"
-    >
-      <font-awesome-icon
-        :icon="['fa', 'circle-xmark']"
-        size="lg"
-      />
-    </button>
-    <a
-      class="font-bold hover:underline"
-      target="_blank"
-      data-cy="module-name"
-      :href="'https://studien.ost.ch/' + module.url.replace('.json', '.html')"
-    >{{ module.name }}
-    </a>
-    <p>{{ module.ects }} ECTS</p>
-  </div>
+        <font-awesome-icon
+          :icon="['fa', 'circle-xmark']"
+          size="lg"
+        />
+      </button>
+    </template>
+  </ModuleCard>
 </template>
 
 <script lang="ts">
-import { type PropType, defineComponent } from 'vue';
-import { getColorClassForPrioritizedCategory } from '../helpers/color-helper';
-import type { Module } from '../helpers/types';
+import { defineComponent } from 'vue'
+import ModuleCard from './ModuleCard.vue'
+import type { Module } from '../helpers/types'
 
 export default defineComponent({
   name: 'Module',
+  components: { ModuleCard },
   props: {
-    module: {
-      type: Object as PropType<Module>,
-      required: true,
-    }
+    module: { type: Object as () => Module, required: true },
+    id: { type: Number, required: true }
   },
-  emits: ['on-delete'],
-  computed: {
-    computedClasses() {
-      const classes = [this.getColorClassForPrioritizedCategory(this.module.categoriesForColoring)];
-      if(this.module.validationInfo?.severity === 'hard') {
-        classes.push(...['border-red-500', 'border-4']);
-      }
-      return classes;
-    }
-  },
-  methods: {
-    getColorClassForPrioritizedCategory,
-  }
-});
+  emits: ['on-delete']
+})
 </script>

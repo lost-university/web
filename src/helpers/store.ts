@@ -3,7 +3,7 @@ import { AccreditedModule, Category, Focus, Module, Semester } from './types';
 import { SemesterInfo } from './semester-info';
 import { getColorClassForCategoryId } from '../helpers/color-helper';
 
-const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/5.0/data';
+const BASE_URL = 'https://raw.githubusercontent.com/Janooski/data/main/data';
 const ROUTE_MODULES = '/modules.json';
 const ROUTE_CATEGORIES = '/categories.json';
 const ROUTE_FOCUSES = '/focuses.json';
@@ -104,7 +104,6 @@ export const store = createStore({
     setAccreditedModules(state, accreditedModules: AccreditedModule[]) {
       state.accreditedModules = accreditedModules;
     },
-
     addSemester(state) {
       const newSemester = new Semester(state.semesters.length + 1, []).setName(state.startSemester);
       state.semesters.push(newSemester);
@@ -116,6 +115,11 @@ export const store = createStore({
       const semester = state.semesters.find(s => s.number === data.semesterNumber);
       const index = semester.moduleIds.indexOf(data.moduleId);
       semester.moduleIds.splice(index, 1);
+    },
+    removeModuleFromAllSemesters(state, moduleId: string) {
+      state.semesters.forEach(semester => {
+        semester.moduleIds = semester.moduleIds.filter(id => id !== moduleId);
+      });
     },
     addModuleToSemester(state, data: {semesterNumber: number, moduleId: string}) {
       state.semesters.find(s => s.number === data.semesterNumber).moduleIds.push(data.moduleId);
@@ -161,7 +165,8 @@ export const store = createStore({
           m.dependentModuleIds,
           m.successorModuleId,
           m.predecessorModuleId,
-          m.isDeactivated
+          m.isDeactivated,
+          m.isMandatory
         )
       );
       context.commit('setModules', modules);

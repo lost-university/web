@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@import '@vue-flow/core/dist/theme-default.css';
+@import '@vue-flow/core/dist/style.css';
+
 @media (hover: none) {
     [title] {
         position: relative;

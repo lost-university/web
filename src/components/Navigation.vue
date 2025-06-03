@@ -1,96 +1,111 @@
 <template>
   <nav
-    class="flex sm:mx-4 items-center flex-wrap sm:flex-nowrap print:hidden"
+    class="relative flex flex-wrap items-start sm:mx-4 print:hidden"
     role="navigation"
     aria-label="main navigation"
   >
-    <div class="flex items-center justify-between w-full">
+    <div class="flex items-center mt-2">
       <router-link to="/">
         <img
           src="/logo.png"
-          class="size-24 pb-4 object-contain dark:hidden"
+          class="size-20 pb-4 object-contain dark:hidden"
           alt="Home"
         >
         <img
           src="/logo_dark.png"
-          class="size-24 pb-4 object-contain hidden dark:block"
+          class="size-20 pb-4 object-contain hidden dark:block"
           alt="Home"
         >
       </router-link>
+    </div>
 
-      <div
-        class="grow sm:flex hidden"
+    <div class="flex-1 min-w-0 md:flex hidden flex-wrap items-center mt-2 overflow-hidden">
+      <template
+        v-for="category in categories"
+        :key="category.title"
       >
-        <template
-          v-for="category in categories"
-          :key="category.title"
-        >
-          <div>
-            <div class="px-2 sm:px-4 pt-4 pb-2 sm:py-6 peer">
-              <button
-                class="hover:cursor-auto mr-2 text-lg font-bold sm:text-md sm:font-normal"
-                v-text="category.title"
-              />
-              <font-awesome-icon
-                :icon="['fa', 'chevron-down']"
-                class="peer invisible sm:visible"
-              />
-            </div>
-            <div
-              class="sm:hidden peer-hover:flex hover:flex flex rounded-sm
-              sm:shadow-2xl bg-white dark:bg-zinc-800 flex-col sm:fixed z-50"
-            >
-              <a
-                v-for="plan in category.plans"
-                :key="plan.title"
-                class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
-                :href="`#/plan/${plan.path}?startSemester=${startSemesterName}`"
-                @click="onBurgerClick"
-                v-text="plan.title"
-              />
-            </div>
+        <div>
+          <div class="px-2 sm:px-4 pt-4 pb-2 sm:py-6 peer whitespace-nowrap text-ellipsis overflow-hidden">
+            <button
+              class="hover:cursor-auto mr-2 text-lg font-bold sm:text-md 
+              sm:font-normal whitespace-normal break-words text-left"
+              v-text="category.title"
+            />
+            <font-awesome-icon
+              :icon="['fa', 'chevron-down']"
+              class="peer invisible sm:visible "
+            />
           </div>
-        </template>
-        <SavedPlans
-          v-if="isSignedIn"
-        />
-      </div>
-
-      <div class="flex justify-end mr-2">
-        <ToggleDarkMode />
-        <SignedOut>
           <div
-            data-cy="Navigation-SignInButton"
-            class="flex items-center"
+            class="md:hidden peer-hover:flex hover:flex flex rounded-sm
+              sm:shadow-2lg bg-white dark:bg-zinc-800 flex-col sm:fixed z-50"
           >
-            <SignInButton />
+            <a
+              v-for="plan in category.plans"
+              :key="plan.title"
+              class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
+              :href="`#/plan/${plan.path}?startSemester=${startSemesterName}`"
+              @click="onBurgerClick"
+              v-text="plan.title"
+            />
           </div>
-        </SignedOut>
-        <SignedIn>
-          <div
-            data-cy="Navigation-UserButton"
-            class="flex items-center"
-          >
-            <UserButton />
-          </div>
-        </SignedIn>
-        <button
-          class="sm:hidden p-4 flex justify-end"
-          tabindex="0"
-          aria-label="menu"
-          aria-expanded="false"
-          @click="onBurgerClick"
-        >
-          <font-awesome-icon
-            :icon="['fa', 'bars']"
-            size="2x"
-          />
-        </button>
-      </div>
+        </div>
+      </template>
+      <SavedPlans v-if="isSignedIn" />
     </div>
 
     <div
-      class="w-full basis-full sm:hidden mb-2"
+      class="xl:pt-6 flex items-center justify-end
+      w-full xl:w-auto mt-2 xl:mt-0 gap-4 xl:mr-16 mr-2 xl:ml-0"
+    >
+      <NavigationToggleValidation />
+      <button
+        class="px-4 py-2 bg-gray-800 text-white rounded"
+        data-cy="activate-graph-button"
+        @click="showGraphModal = true"
+      >
+        Graph
+      </button>
+      <GraphModal
+        :open="showGraphModal"
+        @close="showGraphModal = false"
+      />
+      <NavigationToggleDarkMode />
+    </div>
+
+    <div class="absolute right-0 top-0 flex items-center gap-2 p-2 md:mt-4">
+      <SignedOut>
+        <div
+          data-cy="Navigation-SignInButton"
+          class="px-4 py-2 bg-gray-800 text-white rounded flex items-center"
+        >
+          <SignInButton />
+        </div>
+      </SignedOut>
+      <SignedIn>
+        <div
+          data-cy="Navigation-UserButton"
+          class="flex items-center"
+        >
+          <UserButton />
+        </div>
+      </SignedIn>
+      <button
+        class="md:hidden p-4"
+        tabindex="0"
+        aria-label="menu"
+        aria-expanded="false"
+        @click="onBurgerClick"
+      >
+        <font-awesome-icon
+          :icon="['fa', 'bars']"
+          size="2x"
+        />
+      </button>
+    </div>
+
+    <div
+      class="w-full basis-full md:hidden mb-2"
       :class="{ 'hidden': !isBurgerActive }"
     >
       <template
@@ -109,8 +124,8 @@
             />
           </div>
           <div
-            class="sm:hidden peer-hover:flex hover:flex flex rounded-sm
-            sm:shadow-2xl bg-white dark:bg-zinc-800 flex-col sm:fixed z-10"
+            class="md:hidden peer-hover:flex hover:flex flex rounded-sm
+              sm:shadow-2lg bg-white dark:bg-zinc-800 flex-col sm:fixed z-10"
           >
             <a
               v-for="plan in category.plans"
@@ -123,9 +138,7 @@
           </div>
         </div>
       </template>
-      <SavedPlans
-        v-if="isSignedIn"
-      />
+      <SavedPlans v-if="isSignedIn" />
     </div>
   </nav>
 </template>
@@ -134,11 +147,13 @@
 import { defineComponent } from 'vue';
 import { SignedIn, SignedOut, SignInButton, useAuth, UserButton } from '@clerk/vue'
 import { SemesterInfo } from "../helpers/semester-info";
-import ToggleDarkMode from './ToggleDarkMode.vue';
+import NavigationToggleDarkMode from './NavigationToggleDarkMode.vue';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import SavedPlans from "./SavedPlans.vue";
+import NavigationToggleValidation from "./NavigationToggleValidation.vue";
+import GraphModal from '../components/Graph.vue';
 
 library.add(faChevronDown);
 
@@ -151,8 +166,10 @@ export default defineComponent({
     SignedOut,
     SignInButton,
     UserButton,
-    ToggleDarkMode,
-    FontAwesomeIcon
+    NavigationToggleDarkMode,
+    FontAwesomeIcon,
+    NavigationToggleValidation,
+    GraphModal
   },
   setup() {
     const { isSignedIn } = useAuth();
@@ -163,6 +180,7 @@ export default defineComponent({
   },
   data() {
     return {
+      showGraphModal: false,
       isBurgerActive: false,
       startSemesterName: SemesterInfo.latestAutumnSemester().toString(),
       categories: [
