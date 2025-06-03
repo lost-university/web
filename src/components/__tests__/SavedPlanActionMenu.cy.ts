@@ -14,10 +14,18 @@ library.add(faTrash, faShareNodes, faCheck, faEllipsis);
 
 describe('SavedPlan Action Menu Component', () => {
   beforeEach(() => {
-
-    cy.window().then((win) => {
-      win.navigator.clipboard.writeText = cy.stub().as('writeText');
-    });
+  cy.window().then((win) => {
+    if (!win.navigator.clipboard) {
+      Object.defineProperty(win.navigator, 'clipboard', {
+        value: {
+          writeText: cy.stub().as('writeTextStub').resolves()
+        },
+        writable: false
+      });
+    } else {
+      cy.stub(win.navigator.clipboard, 'writeText').as('writeTextStub').resolves();
+    }
+  });
 
     const fakePlan = {
       id: 'plan-1',

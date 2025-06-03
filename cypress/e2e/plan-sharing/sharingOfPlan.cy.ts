@@ -9,7 +9,16 @@ describe('sharing of plans', () => {
   setupClerkTestingToken();
   cy.visit('/',{
     onBeforeLoad(win) {
-      win.navigator.clipboard.writeText = cy.stub().as('writeText');
+      if (!win.navigator.clipboard) {
+        Object.defineProperty(win.navigator, 'clipboard', {
+          value: {
+            writeText: cy.stub().as('writeTextStub').resolves()
+          },
+          writable: false
+        });
+      } else {
+        cy.stub(win.navigator.clipboard, 'writeText').as('writeTextStub').resolves();
+      }
     }
   });
 
