@@ -39,7 +39,7 @@ describe('sharing of plans', () => {
 
   cy.get('[data-cy=SavedPlansActionMenu-Share-Button]').first().click();
 
-  cy.get('@writeText')
+  cy.get('@writeTextStub')
     .should('have.been.calledOnce')
     .then((writeText: any) => {
       const copiedUrl = writeText.getCall(0).args[0];
