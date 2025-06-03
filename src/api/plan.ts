@@ -46,4 +46,18 @@ const deletePlan = async (planId: string, token: string): Promise<void> => {
   }
 }
 
-export { fetchSavedPlans, savePlan, deletePlan };
+const bookmarkPlan = async (planId: string, token: string): Promise<void> => {
+  try {
+    await fetch(`/api/plans/bookmark/${planId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+  } catch (error) {
+    console.error('Error to bookmark plan:', error);
+  }
+}
+
+export { fetchSavedPlans, savePlan, deletePlan, bookmarkPlan };

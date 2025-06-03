@@ -89,4 +89,30 @@ describe('multiple plans', () => {
 
     cy.get('[data-cy="semester-container"]').screenshot('plans.cy.ts/delete-to-delete-plan');
   });
+
+    it('bookmark plan', () => {
+    cy.get("[data-cy='SavedPlans-Dropdown-Button']").first().click();
+
+    cy.get("[data-cy='SavePlan-Button']").first().click();
+    cy.get("[data-cy='SavePlan-Name']").first().type(`Test Plan: to bookmark`);
+    cy.get("[data-cy='SavePlan-Submit']:visible").click();
+
+    cy.get('[data-cy="semester-container"]').screenshot('plans.cy.ts/create-to-bookmark-plan');
+
+    cy.get("[data-cy=SavedPlans-List-Item").filter(`:contains("Test Plan: to bookmark")`)
+      .first().within(() => {
+        cy.get('[data-cy=SavedPlans-Bookmark-Button]')
+          .first().click()
+      });
+
+    cy.contains('[data-cy="SavedPlans-List-Item"]', "Test Plan: to bookmark").should('exist')
+     .first().within(() => {
+        cy.get('[data-cy="SavedPlans-Bookmark-Button"]')
+          .find('svg')
+          .should('have.attr', 'data-prefix', 'fas');
+      });;
+
+    cy.get('[data-cy="semester-container"]').screenshot('plans.cy.ts/plan-bookmarked');
+  
+  });
 })

@@ -2,7 +2,7 @@ export interface Plan {
   id: string;
   name: string;
   content: string;
-  isFavorite: boolean;
+  bookmark: boolean;
   publicSlug: string;
   createdAt: string;
   userId: string;

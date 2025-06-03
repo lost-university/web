@@ -22,6 +22,15 @@
           class="flex items-center justify-between"
           data-cy="SavedPlans-List-Item"
         >
+          <button
+            class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
+            data-cy="SavedPlans-Bookmark-Button"
+            @click="bookmarkPlan(plan.id)"
+          >
+            <font-awesome-icon
+              :icon="[plan.bookmark ? 'fas' : 'far', 'bookmark']"
+            />
+          </button>
           <router-link
             :to="plan.content"
             class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm flex-auto"
@@ -80,6 +89,15 @@
         class="flex items-center justify-between"
         data-cy="SavedPlans-List-Item"
       >
+        <button
+          class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
+          data-cy="SavedPlans-Bookmark-Button"
+          @click="bookmarkPlan(plan.id)"
+        >
+          <font-awesome-icon
+            :icon="[plan.bookmark ? 'fas' : 'far', 'bookmark']"
+          />
+        </button>
         <router-link
           :to="plan.content"
           class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm flex-auto"
@@ -128,7 +146,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAuth } from "@clerk/vue";
-import { fetchSavedPlans, savePlan, deletePlan } from "../api/plan";
+import { fetchSavedPlans, savePlan, deletePlan, bookmarkPlan } from "../api/plan";
 import type { Plan } from "../types/Plan";
 import SavedPlansActionMenu from "./SavedPlansActionMenu.vue";
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
@@ -192,6 +210,11 @@ export default defineComponent({
       await deletePlan(planId, token)
       await this.getPlans();
     },
+    async bookmarkPlan(planId: string){
+      const token = await this.getToken() as string;
+      await bookmarkPlan(planId, token)
+      await this.getPlans();
+    }
   },
 })
 </script>

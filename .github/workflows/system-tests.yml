@@ -79,6 +79,12 @@ jobs:
           CYPRESS_BASE_URL: "http://localhost"
           CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
           CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
+      - name: Show Docker Compose logs in output
+        if: always()
+        run: |
+         echo "========= DOCKER COMPOSE LOGS ========="
+         docker compose -f cypress/docker-compose.yml logs --no-color
+         echo "========= END OF LOGS ========="
       - name: Upload Cypress Screenshots
         uses: actions/upload-artifact@v4
         env:
