@@ -15,6 +15,10 @@ library.add(faTrash, faShareNodes, faCheck, faEllipsis);
 describe('SavedPlan Action Menu Component', () => {
   beforeEach(() => {
 
+    cy.window().then((win) => {
+      win.navigator.clipboard.writeText = cy.stub().as('writeText');
+    });
+
     const fakePlan = {
       id: 'plan-1',
       name: 'Test Plan',
@@ -36,14 +40,17 @@ describe('SavedPlan Action Menu Component', () => {
         }
       }
     });
-
   });
-
 
   it('Test Menu Items', () => {
     cy.get('[data-cy=SavedPlansActionMenu-Menu-Button]').click();
 
     cy.get('[data-cy=SavedPlansActionMenu-Share-Button]').click();
+
+    cy.get('[data-cy=SavedPlansActionMenu-Share-Icon]')
+      .should('have.class', 'text-green-600');
+
+    cy.wait(1200);
 
     cy.get('[data-cy=SavedPlansActionMenu-Menu-Button]').click();
 

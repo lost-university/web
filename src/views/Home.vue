@@ -17,7 +17,7 @@
   </div>
 
   <div class="flex justify-end mx-2 relative mb-10">
-    <div class="flex items-start w-full absolute top-0 right-0">
+    <div class="flex items-start w-full absolute top-0 right-0 z-40">
       <SwitchGroup>
         <div class="flex items-center ml-auto sm:h-8.5">
           <SwitchLabel class="mr-4">
