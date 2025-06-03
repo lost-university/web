@@ -14,6 +14,7 @@ library.add(faTrash, faShareNodes, faCheck, faEllipsis);
 
 describe('SavedPlan Action Menu Component', () => {
   beforeEach(() => {
+
     const fakePlan = {
       id: 'plan-1',
       name: 'Test Plan',
@@ -43,21 +44,21 @@ describe('SavedPlan Action Menu Component', () => {
 
 
 
-    cy.get('[data-cy=menu-button]').click();
+    cy.get('[data-cy=SavedPlansActionMenu-Menu-Button]').click();
 
-    cy.get('[data-cy=share-button]').click();
+    cy.get('[data-cy=SavedPlansActionMenu-Share-Button]').click();
 
-    cy.get('[data-cy=share-icon]')
+    cy.get('[data-cy=SavedPlansActionMenu-Share-Icon]')
       .should('have.class', 'text-green-600');
 
     cy.wait(1200);
 
-    cy.get('[data-cy=menu-button]').click();
+    cy.get('[data-cy=SavedPlansActionMenu-Menu-Button]').click();
 
-    cy.get('[data-cy=share-icon]')
+    cy.get('[data-cy=SavedPlansActionMenu-Share-Icon]')
       .should('have.class', 'text-black');
 
-    cy.get('[data-cy=delete-button]').click();
+    cy.get('[data-cy=SavedPlansActionMenu-Delete-Button]').click();
 
     cy.get('@onDelete').should('have.been.calledWith', 'plan-1');
   });

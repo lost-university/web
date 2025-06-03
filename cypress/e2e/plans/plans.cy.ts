@@ -12,7 +12,8 @@ describe('multiple plans', () => {
       if ($body.find('[data-cy=SavedPlans-List-Item]').length > 0) {
         cy.get('[data-cy=SavedPlans-List-Item]').each(($el) => {
           cy.wrap($el).within(() => {
-            cy.get('[data-cy=SavedPlans-Delete-Button]').click({ force: true });
+            cy.get('[data-cy=SavedPlansActionMenu-Menu-Button]').click({ force: true });
+            cy.get('[data-cy=SavedPlansActionMenu-Delete-Button]').click({ force: true });
           });
         });
       }
@@ -81,8 +82,8 @@ describe('multiple plans', () => {
 
     cy.get("[data-cy=SavedPlans-List-Item").filter(`:contains("Test Plan: To Delete")`)
       .first().within(() => {
-        cy.get('[data-cy=SavedPlans-Delete-Button]')
-          .first().click()
+        cy.get('[data-cy=SavedPlansActionMenu-Menu-Button]').first().click()
+        cy.get('[data-cy=SavedPlansActionMenu-Delete-Button]').first().click()
       });
 
     cy.contains('[data-cy="SavedPlans-List-Item"]', "Test Plan: To Delete").should('not.exist');
@@ -110,9 +111,9 @@ describe('multiple plans', () => {
         cy.get('[data-cy="SavedPlans-Bookmark-Button"]')
           .find('svg')
           .should('have.attr', 'data-prefix', 'fas');
-      });;
+      });
 
     cy.get('[data-cy="semester-container"]').screenshot('plans.cy.ts/plan-bookmarked');
-  
+
   });
 })

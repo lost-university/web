@@ -6,7 +6,7 @@
     <div>
       <MenuButton
         class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
-        data-cy="menu-button"
+        data-cy="SavedPlansActionMenu-Menu-Button"
       >
         <font-awesome-icon
           :icon="['fas', 'ellipsis']"
@@ -27,11 +27,11 @@
              flex items-center gap-2 w-full text-left px-4 py-2
             hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700
             "
-            data-cy="share-button"
+            data-cy="SavedPlansActionMenu-Share-Button"
             @click.stop.prevent="sharePlan(close)"
           >
             <font-awesome-icon
-              data-cy="share-icon"
+              data-cy="SavedPlansActionMenu-Share-Icon"
               :icon="planCopied ? ['fas', 'check'] : ['fas', 'share-nodes']"
               :class="planCopied ? 'text-green-600' : 'text-black dark:text-white'"
             />
@@ -47,7 +47,7 @@
               flex items-center gap-2 w-full text-left px-4 py-2
               hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700
             "
-            data-cy="delete-button"
+            data-cy="SavedPlansActionMenu-Delete-Button"
             @click="deletePlan()"
           >
             <font-awesome-icon :icon="['fas', 'trash']" />
