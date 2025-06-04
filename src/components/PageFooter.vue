@@ -51,7 +51,7 @@ export default defineComponent({
         { name: "Marco Schneider", githubHandle: "marcoschneider" },
         { name: "Jan Untersander", githubHandle: "Untersander" },
         { name: "Laura Thoma", githubHandle: "captainwuushuu" },
-        { name: "Matteo Gmür", githubHandle: "Matti3939" },
+        { name: "Matteo Mahler", githubHandle: "Matti3939" },
         { name: "Leo Oetterli", githubHandle: "pheonix8" },
         { name: "Martin Arendar", githubHandle: "arenmar" },
         { name: "Simon Ott", githubHandle: "simonott1" },
