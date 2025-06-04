@@ -3,6 +3,7 @@ export interface Plan {
   name: string;
   content: string;
   bookmark: boolean;
+  publicSlug: string;
   createdAt: string;
   userId: string;
 }

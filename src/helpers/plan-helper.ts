@@ -7,6 +7,7 @@ export function map(dto: PlanDTO): Plan {
     name: dto.name,
     content: dto.content,
     bookmark: dto.bookmark,
+    publicSlug: dto.public_slug,
     createdAt: dto.created_at,
     userId: dto.user_id,
   };

@@ -37,13 +37,10 @@
           >
             {{ plan.name }}
           </router-link>
-          <button
-            class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
-            data-cy="SavedPlans-Delete-Button"
-            @click="deletePlan(plan.id)"
-          >
-            Löschen
-          </button>
+          <SavedPlansActionMenu
+            :plan="plan"
+            @delete="deletePlan"
+          />
         </li>
       </ul>
       <form
@@ -107,13 +104,11 @@
         >
           {{ plan.name }}
         </router-link>
-        <button
-          class="p-2 hover:bg-gray-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-sm"
-          data-cy="SavedPlans-Delete-Button"
-          @click="deletePlan(plan.id)"
-        >
-          Löschen
-        </button>
+        <SavedPlansActionMenu
+          :plan="plan"
+          :menu-position-class="'right-0 mt-1'"
+          @delete="deletePlan"
+        />
       </li>
     </ul>
     <form
@@ -153,6 +148,7 @@ import { defineComponent } from 'vue';
 import { useAuth } from "@clerk/vue";
 import { fetchSavedPlans, savePlan, deletePlan, bookmarkPlan } from "../api/plan";
 import type { Plan } from "../types/Plan";
+import SavedPlansActionMenu from "./SavedPlansActionMenu.vue";
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -163,6 +159,7 @@ library.add(faChevronDown);
 export default defineComponent({
   name: 'SavedPlans',
   components: {
+    SavedPlansActionMenu,
     Popover,
     PopoverButton,
     PopoverPanel,
