@@ -27,17 +27,6 @@
         />
       </a>
     </footer>
-    <div class="bg-[#8c195f] text-white text-center p-4 space-y-1">
-      <div class="font-bold">
-        Die Webseite wurde kürzlich im Rahmen einer SA überarbeitet und hat jetzt ein paar neue Features
-      </div>
-      <div class="text-sm">
-        Falls etwas nicht funktionieren sollte, eröffne bitte ein Issue
-        <a href="https://github.com/lost-university/web/issues/new/choose"><u>auf GitHub.</u></a>
-        Die vorherige Version ist unter <a href="https://old.lost.university"><u>old.lost.university</u></a>
-        weiterhin für eine begrenzte Zeit verfügbar.
-      </div>
-    </div>
   </div>
 </template>
 
@@ -61,7 +50,12 @@ export default defineComponent({
         { name: "Linus Flury", githubHandle: "CHLinusch" },
         { name: "Marco Schneider", githubHandle: "marcoschneider" },
         { name: "Jan Untersander", githubHandle: "Untersander" },
-        { name: "Laura Thoma", githubHandle: "captainwuushuu" }
+        { name: "Laura Thoma", githubHandle: "captainwuushuu" },
+        { name: "Matteo Mahler", githubHandle: "Matti3939" },
+        { name: "Leo Oetterli", githubHandle: "pheonix8" },
+        { name: "Martin Arendar", githubHandle: "arenmar" },
+        { name: "Simon Ott", githubHandle: "simonott1" },
+        { name: "Roman Weber", githubHandle: "Janooski" }
       ],
     },
   },
