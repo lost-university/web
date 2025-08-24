@@ -4,6 +4,11 @@
 @import '@vue-flow/core/dist/theme-default.css';
 @import '@vue-flow/core/dist/style.css';
 
+@custom-variant touch-only (@media (hover: none) or (pointer: coarse));
+
+/* This media query applies styles only to devices that do not support hover, 
+   such as touchscreens. It ensures that elements with a title attribute 
+   display a tooltip when focused. */
 @media (hover: none) {
     [title] {
         position: relative;
