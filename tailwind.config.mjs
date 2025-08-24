@@ -6,7 +6,7 @@ export default {
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
-  darkMode: 'class', 
+  darkMode: 'class',
   theme: {
     extend: {
       screens: {
@@ -20,7 +20,6 @@ export default {
   },
   plugins: [
     plugin(function({ addVariant }) {
-      addVariant('touch-only', '@media (hover:none)')
       addVariant('not-first', '&:not(:first-child)');
     })
   ]
