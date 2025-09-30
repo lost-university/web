@@ -61,7 +61,6 @@ jobs:
     strategy:
       matrix:
         browser: [ chrome, firefox, edge ]
-        firefox-version: [140.0]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -86,7 +85,7 @@ jobs:
         if: matrix.browser == 'firefox'
         uses: browser-actions/setup-firefox@v1
         with:
-          firefox-version: ${{ matrix.firefox-version }}
+          firefox-version: "140.0"
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
