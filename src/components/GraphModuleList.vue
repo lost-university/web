@@ -16,7 +16,7 @@
         >
           <ModuleCard
             v-if="mod?.name"
-            :id="Number(mod.id)"
+            :id="mod.id"
             :module="mod"
           />
 

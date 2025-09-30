@@ -29,6 +29,7 @@
     </template>
     <template #item="{ element }">
       <ModuleComponent
+        :id="element.id"
         :module="element"
         :semester="semester"
         @on-delete="$emit('on-module-deleted', $event)"

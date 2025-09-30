@@ -11,9 +11,6 @@ Check the [open issues](https://github.com/lost-university/web/issues) to see wh
 
 ## Project setup
 
-A [Clerk](https://clerk.com/) publishable key is needed to run the project in combination with the backend. Copy the `example.env` file to `.env` and set the variable. 
-> You don't have to set it up if you only want to run the frontend without the backend. 
-
 ```
 npm install
 ```
@@ -67,11 +64,3 @@ npm run test:dev
 ```
 npm run test
 ```
-
-## Pipeline
-
-The pipeline is configured to set the `CLERK_PUBLISHABLE_KEY` environment variable which is stored inside a github secret. The token will be compiled into the docker container. If the publishable key has changed, a new image must be built. This is because the application is compiled into static files so there is no node server when running in production which could set the token dynamically. 
-> As the name publishable key suggests, it is not a secret. It is only used to identify the application and to allow Clerk to serve the correct configuration. It is limited to the url configured for this application.
-
-
-

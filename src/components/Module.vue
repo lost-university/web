@@ -30,7 +30,7 @@ export default defineComponent({
   components: { ModuleCard },
   props: {
     module: { type: Object as () => Module, required: true },
-    id: { type: Number, required: true }
+    id: { type: String, required: true }
   },
   emits: ['on-delete']
 })

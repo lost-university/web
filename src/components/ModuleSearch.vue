@@ -21,10 +21,10 @@
     <div class="fixed inset-0 flex w-screen items-center justify-center bg-black/30 dark:bg-black/70">
       <DialogPanel
         class="w-full max-w-4xl max-h-dvh flex flex-col
-      rounded bg-white dark:bg-zinc-900 p-6 shadow-2xl overflow-y-auto sm:overflow-y-hidden sm:h-3/4"
+      rounded bg-white dark:bg-zinc-900 px-6 sm:py-6 shadow-2xl overflow-y-auto sm:overflow-y-hidden sm:h-3/4"
         data-cy="ModuleSearch-DialogPanel"
       >
-        <div class="flex sm:hidden justify-end mb-2">
+        <div class="sticky sm:hidden z-30 pt-6 pb-4 top-0 flex justify-end dark:bg-zinc-900 bg-white">
           <button
             class="flex items-center"
             @click="isSearching= false"
@@ -36,7 +36,7 @@
             />
           </button>
         </div>
-        <div class="relative mb-6">
+        <div class="relative mb-6 sm:mt-0">
           <input
             v-model="filter.query"
             type="text"
@@ -55,7 +55,7 @@
           </button>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-5 gap-4 grow-0 sm:overflow-y-hidden">
+        <div class="grid grid-cols-1 sm:grid-cols-5 sm:gap-4 grow-0 sm:overflow-y-hidden">
           <div
             class="col-span-2 overflow-y-auto mb-4"
             data-cy="ModuleSearch-Filter"

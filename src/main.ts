@@ -21,6 +21,7 @@ import {
 import App from './App.vue';
 import router from './router';
 import { store } from './helpers/store';
+import { fetchConfig } from "./api/config";
 
 library.add(faBars as IconDefinition);
 library.add(fasBookmark, farBookmark as IconDefinition)
@@ -35,11 +36,11 @@ library.add(faCircleExclamation as IconDefinition);
 library.add(faCircleQuestion as IconDefinition);
 library.add(faPlusCircle as IconDefinition);
 
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
-
-createApp(App)
-  .use(router)
-  .use(store)
-  .use(clerkPlugin, { publishableKey: PUBLISHABLE_KEY })
-  .component('font-awesome-icon', FontAwesomeIcon)
-  .mount('#app');
+fetchConfig().then((clerkPublishableKey) => {
+  createApp(App)
+    .use(router)
+    .use(store)
+    .use(clerkPlugin, { publishableKey: clerkPublishableKey })
+    .component('FontAwesomeIcon', FontAwesomeIcon)
+    .mount('#app');
+});

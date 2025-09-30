@@ -9,7 +9,7 @@
     @mouseleave="handleMouseLeave"
   >
     <ModuleComponent
-      :id="Number(id)"
+      :id="id"
       :module="moduleData"
     />
   </div>
