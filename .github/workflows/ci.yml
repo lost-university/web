@@ -36,7 +36,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ghcr.io/${{ github.repository }}/web
+            ghcr.io/${{ github.repository }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -80,7 +80,7 @@ jobs:
         env:
           REPOSITORY: '${{ github.repository }}'
         run: |
-          docker run -d -p 5173:80 ghcr.io/${REPOSITORY,,}/web:sha-${{ github.sha }}
+          docker run -d -p 5173:80 ghcr.io/${REPOSITORY,,}:sha-${{ github.sha }}
       - name: Setup Firefox
         if: matrix.browser == 'firefox'
         uses: browser-actions/setup-firefox@v1
