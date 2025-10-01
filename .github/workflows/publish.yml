@@ -41,8 +41,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          build-args: |
-            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PROD_PUBLISHABLE_KEY }}
           tags: ${{ needs.build.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
