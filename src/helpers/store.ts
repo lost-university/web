@@ -3,7 +3,7 @@ import { AccreditedModule, Category, Focus, Module, Semester } from './types';
 import { SemesterInfo } from './semester-info';
 import { getColorClassForCategoryId } from '../helpers/color-helper';
 
-const BASE_URL = 'https://raw.githubusercontent.com/Janooski/data/main/data';
+const BASE_URL = 'https://raw.githubusercontent.com/lost-university/data/main/data';
 const ROUTE_MODULES = '/modules.json';
 const ROUTE_CATEGORIES = '/categories.json';
 const ROUTE_FOCUSES = '/focuses.json';
@@ -242,5 +242,3 @@ function getPlannedEcts(category?: Category): number {
     .filter((module) => !category || category.moduleIds.includes(module.id))
     .reduce((previousTotal, module) => previousTotal + module.ects, 0);
 }
-
-

@@ -1,13 +1,13 @@
 /* eslint-disable max-len */
 describe("Graph View E2E Tests", () => {
   beforeEach(() => {
-    cy.intercept("GET", "https://raw.githubusercontent.com/Janooski/data/main/data/modules.json", {
+    cy.intercept("GET", "https://raw.githubusercontent.com/lost-university/data/main/data/modules.json", {
       fixture: "modules.json",
     }).as("modules");
 
     cy.intercept(
       "GET",
-      "https://raw.githubusercontent.com/Janooski/data/main/data2I/categories.json",
+      "https://raw.githubusercontent.com/lost-university/data/main/data2I/categories.json",
       { fixture: "categories.json" }
     ).as("categories");
 
