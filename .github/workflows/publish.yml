@@ -1,4 +1,4 @@
-name: CI
+name: Publish
 on:
   push:
     branches:
@@ -24,8 +24,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Setup buildx
-        uses: docker/setup-buildx-action@v3
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
@@ -37,10 +35,12 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=sha,format=long
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
       - name: Build and Push Docker image
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ${{ needs.build.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
