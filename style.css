@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@import '@vue-flow/core/dist/theme-default.css';
+@import '@vue-flow/core/dist/style.css';
 
 @custom-variant touch-only (@media (hover: none) or (pointer: coarse));
 

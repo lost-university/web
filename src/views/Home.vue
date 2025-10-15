@@ -15,11 +15,33 @@
       @on-dismiss="removeUnknownModulesFromUrl"
     />
   </div>
-  <div class="flex space-x-2 overflow-auto before:m-auto after:m-auto p-4">
+
+  <div
+    id="print-title"
+    class="flex mb-4 hidden print:flex mt-5 ml-4"
+  >
+    <img
+      src="/logo.png"
+      class="size-30 pb-4 object-contain"
+      alt="Home"
+    >
+    <h1 class="text-3xl font-bold pt-12">
+      Studienplan
+    </h1>
+  </div>
+
+
+  <div
+    ref="plan"
+    class="flex space-x-2 overflow-auto before:m-auto after:m-auto p-4
+      print:overflow-visible print:origin-top-left"
+    data-cy="semester-container"
+  >
     <SemesterComponent
       v-for="semester in enrichedSemesters"
       :key="semester.number"
-      class="bg-gray-200 rounded-sm p-2 group/semester w-64 min-w-64"
+      class="bg-gray-200 dark:bg-zinc-800 rounded-sm p-2
+      group/semester w-64 min-w-64"
       :semester="semester"
       @on-module-deleted="(moduleId: string) => removeModule(semester.number, moduleId)"
       @on-add-module="addModule"
@@ -28,7 +50,8 @@
     />
     <button
       class="transition-colors text-white w-8 px-2 rounded-sm"
-      :class="addingSemesterIsDisabled? 'bg-gray-300' : 'bg-gray-500 hover:bg-gray-800'"
+      :class="addingSemesterIsDisabled?
+        'bg-gray-300' : 'bg-gray-500 hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-700'"
       type="button"
       :disabled="addingSemesterIsDisabled"
       :title="addingSemesterIsDisabled ?
@@ -42,11 +65,11 @@
     </button>
   </div>
 
-  <div class="mx-8 my-4">
+  <div class="mx-8 my-4 print:hidden">
     <AccreditedModules />
   </div>
 
-  <div class="my-16 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 justify-items-center gap-y-16">
+  <div class="my-16 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 justify-items-center gap-y-16 print:hidden">
     <article class="px-4 w-full sm:w-96">
       <span class="text-xl">
         Übersicht der ECTS Punkte
@@ -58,7 +81,7 @@
         <select
           id="last-semester-select"
           :value="startSemester"
-          class="ml-2 px-3 py-2 rounded-sm bg-gray-200"
+          class="ml-2 px-3 py-2 rounded-sm bg-gray-200 dark:bg-gray-700"
           @change="setStartSemester($event.target.value)"
         >
           <option
@@ -99,7 +122,7 @@
     </article>
     <img
       class="lg:col-span-2 2xl:col-span-1 justify-self-center px-4"
-      src="../assets/this_is_fine_summer.jpg"
+      src="/this_is_fine_summer.jpg"
       alt="A twist on the well known 'this is fine' meme with a dog sitting at the beach with a drink."
     >
   </div>
@@ -110,7 +133,7 @@ import { defineComponent } from 'vue';
 import SemesterComponent from '../components/Semester.vue';
 import FocusComponent from '../components/Focus.vue';
 import ToastNotification from '../components/ToastNotification.vue';
-import { UnknownModule} from '../helpers/types';
+import { UnknownModule } from '../helpers/types';
 import { SemesterInfo } from "../helpers/semester-info";
 import Categories from '../components/Categories.vue';
 import { StorageHelper } from '../helpers/storage-helper';
@@ -125,7 +148,7 @@ export default defineComponent({
     FocusComponent,
     ToastNotification,
     Categories,
-    AccreditedModules
+    AccreditedModules,
   },
   data() {
     return {
@@ -145,6 +168,7 @@ export default defineComponent({
       'enrichedSemesters',
       'startSemester',
       'studienordnung',
+      'validationEnabled',
     ]),
     addingSemesterIsDisabled() {
       return this.enrichedSemesters.length >= SemesterInfo.maxNumberOfAllowedSemesters;
@@ -162,6 +186,24 @@ export default defineComponent({
   async mounted() {
     await store.dispatch('loadModules');
     this.getPlanDataFromUrl();
+
+
+    this.$nextTick(() => {
+      const el = (this.$refs.plan as HTMLElement)
+      const before = () => {
+        const contentW = el.scrollWidth;
+        const pageW    = 1540;
+        const scale    = pageW / contentW ;
+        el.style.transform       = `scale(${scale})`;
+        el.style.transformOrigin = 'top left';
+        void el.offsetWidth;
+      }
+      const after = () => {
+        el.style.transform = '';
+      }
+      window.addEventListener('beforeprint', before);
+      window.addEventListener('afterprint',  after);
+    });
   },
   methods: {
     setStartSemester(startSemester: string) {
@@ -220,7 +262,7 @@ export default defineComponent({
         semesterNumber = nextSemester.number;
       }
 
-      store.commit('addModuleToSemester', {semesterNumber, moduleId: moduleId});
+      store.commit('addModuleToSemester', { semesterNumber, moduleId: moduleId });
       this.updateUrlFragment();
     },
     removeModule(semesterNumber: number, moduleId: string) {
@@ -257,6 +299,10 @@ export default defineComponent({
     removeUnknownModulesFromUrl() {
       this.unknownModules = [];
       this.updateUrlFragment();
+    },
+    setValidationEnabled(validationEnabled: boolean) {
+      store.commit('setValidationEnabled', validationEnabled);
+      StorageHelper.updateUrlFragment();
     },
   },
 });

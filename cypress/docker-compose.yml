@@ -1,0 +1,87 @@
+name: cypress
+services:
+  frontend:
+    container_name: frontend
+    image: ghcr.io/janooski/web/web:local-system-tests
+    restart: always
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.entrypoints=http"
+      - "traefik.http.routers.frontend.rule=Host(`localhost`) && !PathPrefix(`/api`)"
+      - "traefik.http.routers.frontend.service=frontend"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+      - "traefik.docker.network=cypress_proxy"
+  backend:
+    container_name: backend
+    image: ghcr.io/janooski/backend/backend:${BACKEND_VERSION}
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - AUTHORIZED_PARTIES=${AUTHORIZED_PARTIES}
+      - CLERK_SECRET_KEY=${CLERK_SECRET_KEY}
+    networks:
+      - proxy
+      - services
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.entrypoints=http"
+      - "traefik.http.routers.backend.rule=Host(`localhost`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.service=backend"
+      - "traefik.http.routers.backend.middlewares=api-middleware@docker"
+      - "traefik.http.middlewares.api-middleware.stripprefix.prefixes=/api"
+      - "traefik.http.services.backend.loadbalancer.server.port=80"
+      - "traefik.docker.network=cypress_proxy"
+  postgres-db:
+    container_name: postgres-db
+    image: postgres:17.4-alpine
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      - services
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+  traefik:
+    image: traefik:v3.3.3
+    container_name: traefik
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+    ports:
+      - "80:80"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    command:
+      - "--api.dashboard=false"
+      - "--api.debug=false"
+      - "--log.level=DEBUG"
+      - "--entrypoints.http.address=:80"
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--providers.docker.exposedByDefault=false"
+    labels:
+      - "traefik.enable=true"
+
+networks:
+  proxy:
+    external: false
+  services:
+    external: false
+
+volumes:
+  postgres_db:

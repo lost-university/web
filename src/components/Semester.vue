@@ -11,12 +11,12 @@
   >
     <template #header>
       <div class="flex justify-between w-full py-0.5 px-1">
-        <span class="text-xl">
+        <span class="text-xl print:text-black">
           {{ semester.number }}. Semester {{ semester.name }}
         </span>
         <button
           class="opacity-0 touch-only:opacity-25 group-hover/semester:opacity-25 hover:!opacity-75
-                 transition-opacity duration-75"
+                 transition-opacity duration-75 print:hidden"
           type="button"
           @click="removeSemester()"
         >
@@ -29,6 +29,7 @@
     </template>
     <template #item="{ element }">
       <ModuleComponent
+        :id="element.id"
         :module="element"
         :semester="semester"
         @on-delete="$emit('on-module-deleted', $event)"
@@ -38,13 +39,11 @@
       <ModuleSearch
         :show-next-possible-semester="false"
         :button-width-class="'w-2/3'"
-        :list-width-class="'w-full'"
-        :container-bound="true"
         :term-for-which-to-search="term"
         :disable-invalid-modules="!isInPast"
         @on-module-selected="(moduleId) => addModule(moduleId)"
       />
-      <div class="mt-auto p-2">
+      <div class="mt-auto p-2 print:hidden">
         <p>{{ getTotalEcts }} ECTS</p>
       </div>
     </template>

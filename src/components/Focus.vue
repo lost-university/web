@@ -1,21 +1,25 @@
 <template>
   <div
-    class="cursor-pointer border border-gray-300 hover:border-gray-600 flex items-center space-x-2 p-2"
+    class="cursor-pointer border border-gray-300 hover:border-gray-600
+    dark:border-gray-700 hover:dark:border-gray-300 flex items-center space-x-2 p-2"
     :aria-expanded="isOpen"
-    :class="{ 'bg-green-200': numberOfMissingModules == 0 }"
+    :class="{
+      'bg-green-200': numberOfMissingModules == 0,
+      'dark:bg-green-900': numberOfMissingModules === 0,
+    }"
     type="button"
     @click="toggleFocus()"
   >
     <span class="grow">{{ name }}</span>
     <span
       v-if="numberOfMissingModules != 0"
-      class="shrink-0 text-xs py-1 px-2 rounded-sm bg-blue-50"
+      class="shrink-0 text-xs py-1 px-2 rounded-sm bg-blue-50 dark:bg-gray-800 dark:text-white"
     >
       {{ numberOfMissingModules }} Module werden noch benötigt
     </span>
     <span
       v-if="numberOfMissingModules == 0"
-      class="shrink-0 text-xs py-1 px-2 rounded-sm bg-green-100"
+      class="shrink-0 text-xs py-1 px-2 rounded-sm bg-green-100 dark:bg-green-700"
     >
       Vertiefung geplant
     </span>
@@ -23,7 +27,7 @@
   </div>
   <div
     v-show="isOpen"
-    class="p-4 shadow-lg mb-4"
+    class="p-4 shadow-lg dark:border dark:border-gray-700"
   >
     <p v-if="!availableModulesForFocus.length">
       Alle benötigten Module sind bestanden/geplant.

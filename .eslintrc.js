@@ -13,6 +13,7 @@ module.exports = {
   rules: {
     'vue/multi-word-component-names': 'off',
     'vuejs-accessibility/anchor-has-content': 'off',
-    'max-len': ['error', { "code": 120 }]
+    'max-len': ['error', { "code": 120 }],
+    'object-curly-spacing': ['error', 'always']
   }
 };

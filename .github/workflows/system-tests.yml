@@ -1,0 +1,96 @@
+name: System tests
+on:
+  workflow_dispatch:
+    inputs:
+      backendVersion:
+        description: 'Backend version'
+        required: true
+
+jobs:
+  build-frontend:
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.set-docker-tag.outputs.repo }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Set Docker tag
+        id: set-docker-tag
+        env:
+          REPOSITORY: '${{ github.repository }}'
+        run: |
+          echo "repo=ghcr.io/${REPOSITORY,,}/web:local-system-tests" >> $GITHUB_OUTPUT
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          push: false
+          build-args: |
+            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }}
+          tags: ${{ steps.set-docker-tag.outputs.repo }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  system-tests:
+    needs: build-frontend
+    runs-on: ubuntu-latest
+    env:
+      BACKEND_VERSION: ${{ github.event.inputs.backendVersion }}
+      POSTGRES_HOST: postgres-db
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+      AUTHORIZED_PARTIES: http://localhost,http://localhost:5173,http://localhost:8080
+      CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+      VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
+    strategy:
+      matrix:
+        browser: [ chrome, firefox, edge ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          push: false
+          build-args: |
+            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }}
+          tags: ${{ needs.build-frontend.outputs.tags }}
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Start Docker containers
+        run: |
+          docker compose -f cypress/docker-compose.yml up -d
+      - name: Initialize DB tables
+        run: |
+          docker exec backend sh -c "uv run python app/create_tables.py"
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          browser: ${{ matrix.browser }}
+          headed: true
+          wait-on: "http://localhost"
+        env:
+          CYPRESS_BASE_URL: "http://localhost"
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
+      - name: Show Docker Compose logs in output
+        if: always()
+        run: |
+         echo "========= DOCKER COMPOSE LOGS ========="
+         docker compose -f cypress/docker-compose.yml logs --no-color
+         echo "========= END OF LOGS ========="
+      - name: Upload Cypress Screenshots
+        uses: actions/upload-artifact@v4
+        env:
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
+        with:
+          name: cypress-screenshots-${{ matrix.browser }}
+          path: cypress/screenshots/
+          retention-days: 90

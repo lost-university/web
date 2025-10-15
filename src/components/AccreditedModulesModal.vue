@@ -1,7 +1,8 @@
 <template>
   <button
-    class="h-6 w-16 bg-gray-800 text-white text-sm rounded-sm"
+    class="h-6 w-16 bg-gray-700 text-white text-sm rounded-sm"
     type="button"
+    data-cy="AccreditedModules-OpenButton"
     @click="openModal"
   >
     +
@@ -13,12 +14,15 @@
     @close="closeModal"
   >
     <div
-      class="fixed inset-0 bg-black/30"
+      class="fixed inset-0 bg-black/30 dark:bg-black/70"
       aria-hidden="true"
     />
     <div class="fixed inset-0">
       <div class="flex h-full items-center justify-center">
-        <DialogPanel class="w-full max-w-md py-3 px-6 text-center rounded-2xl bg-neutral-100 shadow-xl">
+        <DialogPanel
+          class="w-full max-w-md py-3 px-6 text-center
+          rounded-2xl bg-neutral-100 dark:bg-zinc-900 shadow-xl"
+        >
           <DialogTitle
             as="h3"
             class="text-xl mb-3"
@@ -66,7 +70,6 @@
             <div class="mx-auto w-fit">
               <ModuleSearch
                 :button-width-class="'w-auto px-2'"
-                :show-chevron="true"
                 :show-next-possible-semester="false"
                 :text-for-button="'Modul auswählen'"
                 :disable-invalid-modules="false"
@@ -119,7 +122,8 @@
                 <div class="relative">
                   <ListboxLabel>Kategorien <small>(Mehrfachauswahl)</small></ListboxLabel>
                   <ListboxButton
-                    class="flex justify-between w-full min-h-8 rounded-lg bg-gray-100 p-2 text-left shadow-md"
+                    class="flex justify-between w-full min-h-8 rounded-lg bg-gray-100
+                    dark:bg-transparent dark:border dark:text-white p-2 text-left shadow-md"
                   >
                     <span>
                       {{ externalCategories.map((c) => c.name).join(', ') }}
@@ -128,7 +132,7 @@
                   </ListboxButton>
                   <ListboxOptions
                     class="absolute mt-1 max-h-60 w-full overflow-auto
-                    rounded-md bg-white py-1 text-base shadow-lg z-40 divide-y divide-solid"
+                    rounded-md bg-white dark:bg-zinc-800 py-1 text-base shadow-lg z-40 divide-y divide-solid"
                   >
                     <ListboxOption
                       v-for="cat in selectableCategories"
@@ -157,14 +161,15 @@
 
           <div class="flex justify-end">
             <button
-              class="bg-gray-800 text-white py-1 px-2 ml-auto rounded-sm"
+              class="bg-gray-700 text-white py-1 px-2 ml-auto rounded-sm"
               type="button"
               @click="cancelChanges"
             >
               abbrechen
             </button>
             <button
-              class="bg-gray-800 text-white py-1 px-2 ml-2 rounded-sm disabled:bg-gray-500"
+              class="bg-gray-700 text-white py-1 px-2 ml-2 rounded-sm disabled:bg-gray-500
+              dark:disabled:bg-gray-700 dark:disabled:opacity-30"
               type="button"
               :disabled="!canSaveChanges"
               @click="saveChanges"

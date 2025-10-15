@@ -7,9 +7,17 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint --ext .ts,.vue src",
-    "lint-fix": "eslint --ext .ts,.vue src --fix"
+    "lint-fix": "eslint --ext .ts,.vue src --fix",
+    "test": "cypress run --config video=false",
+    "test:component:dev": "cypress open --component",
+    "test:component": "cypress run --config video=false --component",
+    "test:dev": "cypress open --e2e",
+    "test:chrome": "cypress run --config video=false --browser chrome",
+    "test:firefox": "cypress run --config video=false --browser firefox",
+    "test:edge": "cypress run --config video=false --browser edge"
   },
   "dependencies": {
+    "@clerk/vue": "^1.4.4",
     "@fortawesome/fontawesome-free": "^6.5.1",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
@@ -18,7 +26,10 @@
     "@fortawesome/vue-fontawesome": "^3.0.5",
     "@headlessui/vue": "^1.7.23",
     "@tailwindcss/vite": "^4.0.0",
+    "@vue-flow/core": "^1.42.3",
     "bulma": "^0.9.3",
+    "dagre": "^0.8.5",
+    "elkjs": "^0.10.0",
     "tailwindcss": "^4.0.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
@@ -26,6 +37,7 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@clerk/testing": "^1.4.41",
     "@types/node": "^20.3.3",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
@@ -33,10 +45,12 @@
     "@vue/eslint-config-airbnb": "^7.0.0",
     "@vue/tsconfig": "^0.4.0",
     "autoprefixer": "^10.4.17",
+    "cypress": "^13.14.2",
     "eslint": "^8.44.0",
     "eslint-plugin-vue": "^9.15.1",
     "typescript": "^5.1.6",
-    "vite": "^6.3.4",
+    "vite": "^5.4.18",
+    "vite-plugin-pwa": "^1.0.0",
     "vue-tsc": "^2.0.29"
   },
   "browserslist": [

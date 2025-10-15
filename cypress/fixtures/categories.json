@@ -1,0 +1,1403 @@
+[
+  {
+    "id": "Auf",
+    "required_ects": 48,
+    "name": "Aufbau",
+    "modules": [
+      {
+        "id": "AIAp",
+        "name": "AI Applications",
+        "url": "allModules/40870_M_AIAp.json"
+      },
+      {
+        "id": "AJwn",
+        "name": "Auf Jobsuche, was nun?",
+        "url": "allModules/57128_M_AJwn.json"
+      },
+      {
+        "id": "AppArch",
+        "name": "Application Architecture",
+        "url": "allModules/28236_M_AppArch.json"
+      },
+      {
+        "id": "BlCh",
+        "name": "Blockchain",
+        "url": "allModules/39041_M_BlCh.json"
+      },
+      {
+        "id": "Bsys2",
+        "name": "Betriebssysteme 2",
+        "url": "allModules/37903_M_Bsys2.json"
+      },
+      {
+        "id": "CN2",
+        "name": "Computernetze 2",
+        "url": "allModules/23311_M_CN2.json"
+      },
+      {
+        "id": "CPl",
+        "name": "C++",
+        "url": "allModules/24357_M_CPl.json"
+      },
+      {
+        "id": "CPlA",
+        "name": "C++ Advanced",
+        "url": "allModules/28684_M_CPlA.json"
+      },
+      {
+        "id": "CldInf",
+        "name": "Cloud Infrastructure",
+        "url": "allModules/29855_M_CldInf.json"
+      },
+      {
+        "id": "CldOp",
+        "name": "Cloud Operations",
+        "url": "allModules/55074_M_CldOp.json"
+      },
+      {
+        "id": "CldSol",
+        "name": "Cloud Solutions",
+        "url": "allModules/37167_M_CldSol.json"
+      },
+      {
+        "id": "CoBau",
+        "name": "Compilerbau",
+        "url": "allModules/40663_M_CoBau.json"
+      },
+      {
+        "id": "ComGra",
+        "name": "Computer Grafik",
+        "url": "allModules/43801_M_ComGra.json"
+      },
+      {
+        "id": "CyDef",
+        "name": "Cyber Defense",
+        "url": "allModules/38551_M_CyDef.json"
+      },
+      {
+        "id": "DL",
+        "name": "Deep Learning",
+        "url": "allModules/31834_M_DL.json"
+      },
+      {
+        "id": "DSy",
+        "name": "Distributed Systems",
+        "url": "allModules/39054_M_DSy.json"
+      },
+      {
+        "id": "DatAna",
+        "name": "Data Analytics",
+        "url": "allModules/36034_M_DatAna.json"
+      },
+      {
+        "id": "DatEng",
+        "name": "Data Engineering",
+        "url": "allModules/36038_M_DatEng.json"
+      },
+      {
+        "id": "EmbSys1",
+        "name": "Embedded Systems 1",
+        "url": "allModules/22062_M_EmbSys1.json"
+      },
+      {
+        "id": "EmbSys2",
+        "name": "Embedded Systems 2",
+        "url": "allModules/22068_M_EmbSys2.json"
+      },
+      {
+        "id": "GenAI",
+        "name": "Generative AI",
+        "url": "allModules/43809_M_GenAI.json"
+      },
+      {
+        "id": "HackL",
+        "name": "Hacking Lab",
+        "url": "allModules/36457_M_HackL.json"
+      },
+      {
+        "id": "IBN",
+        "name": "Intent-Based Networking",
+        "url": "allModules/57056_M_IBN.json"
+      },
+      {
+        "id": "IPCV1",
+        "name": "Image Processing and Computer Vision 1",
+        "url": "allModules/36264_M_IPCV1.json"
+      },
+      {
+        "id": "IPCV2",
+        "name": "Image Processing and Computer Vision 2",
+        "url": "allModules/36269_M_IPCV2.json"
+      },
+      {
+        "id": "IncResp",
+        "name": "Incident Response",
+        "url": "allModules/36473_M_IncResp.json"
+      },
+      {
+        "id": "MGE",
+        "name": "Mobile and GUI Engineering",
+        "url": "allModules/28254_M_MGE.json"
+      },
+      {
+        "id": "ML",
+        "name": "Statistical Machine Learning",
+        "url": "allModules/31838_M_ML.json"
+      },
+      {
+        "id": "MOSIM",
+        "name": "Modellbildung und Simulation",
+        "url": "allModules/40139_M_MOSIM.json"
+      },
+      {
+        "id": "MsTe",
+        "name": ".Net Technologien",
+        "url": "allModules/37247_M_MsTe.json"
+      },
+      {
+        "id": "NIoSec",
+        "name": "Network and IoT Security",
+        "url": "allModules/42231_M_NIoSec.json"
+      },
+      {
+        "id": "NetAut",
+        "name": "Network Automation",
+        "url": "allModules/56252_M_NetAut.json"
+      },
+      {
+        "id": "PF",
+        "name": "Patterns und Frameworks",
+        "url": "allModules/39045_M_PF.json"
+      },
+      {
+        "id": "PWWD",
+        "name": "Praxiswoche Webdesign",
+        "url": "allModules/57180_M_PWWD.json"
+      },
+      {
+        "id": "ParProg",
+        "name": "Parallele Programmierung",
+        "url": "allModules/41462_M_ParProg.json"
+      },
+      {
+        "id": "PlFSec",
+        "name": "Platform Security",
+        "url": "allModules/42227_M_PlFSec.json"
+      },
+      {
+        "id": "SModSim",
+        "name": "System Modeling and Simulation",
+        "url": "allModules/38938_M_SModSim.json"
+      },
+      {
+        "id": "SecSW",
+        "name": "Secure Software",
+        "url": "allModules/36488_M_SecSW.json"
+      },
+      {
+        "id": "SecSoW",
+        "name": "Secure Software",
+        "url": "allModules/40311_M_SecSoW.json"
+      },
+      {
+        "id": "ServDev",
+        "name": "Service Development (ITIL)",
+        "url": "allModules/37171_M_ServDev.json"
+      },
+      {
+        "id": "UIP",
+        "name": "UI Patterns and Frameworks",
+        "url": "allModules/56946_M_UIP.json"
+      },
+      {
+        "id": "UX",
+        "name": "User Experience",
+        "url": "allModules/41106_M_UX.json"
+      },
+      {
+        "id": "WE2",
+        "name": "Web Engineering 2",
+        "url": "allModules/38945_M_WE2.json"
+      },
+      {
+        "id": "WE3",
+        "name": "Web Engineering 3",
+        "url": "allModules/38901_M_WE3.json"
+      },
+      {
+        "id": "WIoT",
+        "name": "Wireless and IoT",
+        "url": "allModules/37157_M_WIoT.json"
+      },
+      {
+        "id": "WsoT",
+        "name": "Wireless and IoT",
+        "url": "allModules/40038_M_WsoT.json"
+      }
+    ]
+  },
+  {
+    "id": "EP",
+    "required_ects": 12,
+    "name": "Engineering Practice",
+    "modules": [
+      {
+        "id": "SE1",
+        "name": "Software-Engineering 1",
+        "url": "allModules/37893_M_SE1.json"
+      },
+      {
+        "id": "SE2",
+        "name": "Software-Engineering 2",
+        "url": "allModules/37191_M_SE2.json"
+      },
+      {
+        "id": "SEP1",
+        "name": "SE Practices 1",
+        "url": "allModules/39203_M_SEP1.json"
+      },
+      {
+        "id": "SEP2",
+        "name": "SE Practices 2",
+        "url": "allModules/57233_M_SEP2.json"
+      },
+      {
+        "id": "SEProj",
+        "name": "SE Project",
+        "url": "allModules/43712_M_SEProj.json"
+      }
+    ]
+  },
+  {
+    "id": "Inf",
+    "required_ects": 136,
+    "name": "Informatik",
+    "modules": [
+      {
+        "id": "AADL",
+        "name": "Applied AI with Deep Learning",
+        "url": "allModules/57207_M_AADL.json"
+      },
+      {
+        "id": "AIAp",
+        "name": "AI Applications",
+        "url": "allModules/40870_M_AIAp.json"
+      },
+      {
+        "id": "AIFo",
+        "name": "AI Foundations",
+        "url": "allModules/40866_M_AIFo.json"
+      },
+      {
+        "id": "AJwn",
+        "name": "Auf Jobsuche, was nun?",
+        "url": "allModules/57128_M_AJwn.json"
+      },
+      {
+        "id": "AlgDat",
+        "name": "Algorithmen und Datenstrukturen",
+        "url": "allModules/38881_M_AlgDat.json"
+      },
+      {
+        "id": "AppArch",
+        "name": "Application Architecture",
+        "url": "allModules/28236_M_AppArch.json"
+      },
+      {
+        "id": "AutPy",
+        "name": "Automatisierung mit Python",
+        "url": "allModules/38879_M_AutPy.json"
+      },
+      {
+        "id": "AutoSpr",
+        "name": "Automaten und Sprachen",
+        "url": "allModules/24404_M_AutoSpr.json"
+      },
+      {
+        "id": "BAI21",
+        "name": "Bachelor-Arbeit Informatik",
+        "url": "allModules/41626_M_BAI21.json"
+      },
+      {
+        "id": "BlCh",
+        "name": "Blockchain",
+        "url": "allModules/39041_M_BlCh.json"
+      },
+      {
+        "id": "Bsys1",
+        "name": "Betriebssysteme 1",
+        "url": "allModules/39080_M_Bsys1.json"
+      },
+      {
+        "id": "Bsys2",
+        "name": "Betriebssysteme 2",
+        "url": "allModules/37903_M_Bsys2.json"
+      },
+      {
+        "id": "CN1",
+        "name": "Computernetze 1",
+        "url": "allModules/39084_M_CN1.json"
+      },
+      {
+        "id": "CN2",
+        "name": "Computernetze 2",
+        "url": "allModules/23311_M_CN2.json"
+      },
+      {
+        "id": "CPl",
+        "name": "C++",
+        "url": "allModules/24357_M_CPl.json"
+      },
+      {
+        "id": "CPlA",
+        "name": "C++ Advanced",
+        "url": "allModules/28684_M_CPlA.json"
+      },
+      {
+        "id": "CldInf",
+        "name": "Cloud Infrastructure",
+        "url": "allModules/29855_M_CldInf.json"
+      },
+      {
+        "id": "CldOp",
+        "name": "Cloud Operations",
+        "url": "allModules/55074_M_CldOp.json"
+      },
+      {
+        "id": "CldSol",
+        "name": "Cloud Solutions",
+        "url": "allModules/37167_M_CldSol.json"
+      },
+      {
+        "id": "CoBau",
+        "name": "Compilerbau",
+        "url": "allModules/40663_M_CoBau.json"
+      },
+      {
+        "id": "ComGra",
+        "name": "Computer Grafik",
+        "url": "allModules/43801_M_ComGra.json"
+      },
+      {
+        "id": "CyDef",
+        "name": "Cyber Defense",
+        "url": "allModules/38551_M_CyDef.json"
+      },
+      {
+        "id": "CySec",
+        "name": "Cyber Security Foundations",
+        "url": "allModules/36478_M_CySec.json"
+      },
+      {
+        "id": "DL",
+        "name": "Deep Learning",
+        "url": "allModules/31834_M_DL.json"
+      },
+      {
+        "id": "DMI",
+        "name": "Diskrete Mathematik für Informatik",
+        "url": "allModules/24442_M_DMI.json"
+      },
+      {
+        "id": "DSy",
+        "name": "Distributed Systems",
+        "url": "allModules/39054_M_DSy.json"
+      },
+      {
+        "id": "DatAna",
+        "name": "Data Analytics",
+        "url": "allModules/36034_M_DatAna.json"
+      },
+      {
+        "id": "DatEng",
+        "name": "Data Engineering",
+        "url": "allModules/36038_M_DatEng.json"
+      },
+      {
+        "id": "Dbs1",
+        "name": "Datenbanksysteme 1",
+        "url": "allModules/39093_M_Dbs1.json"
+      },
+      {
+        "id": "DigCod",
+        "name": "Digitale Codierungen",
+        "url": "allModules/38920_M_DigCod.json"
+      },
+      {
+        "id": "EmbSys1",
+        "name": "Embedded Systems 1",
+        "url": "allModules/22062_M_EmbSys1.json"
+      },
+      {
+        "id": "EmbSys2",
+        "name": "Embedded Systems 2",
+        "url": "allModules/22068_M_EmbSys2.json"
+      },
+      {
+        "id": "FP",
+        "name": "Functional Programming",
+        "url": "allModules/39143_M_FP.json"
+      },
+      {
+        "id": "FunProg",
+        "name": "Funktionale Programmierung",
+        "url": "allModules/38928_M_FunProg.json"
+      },
+      {
+        "id": "GenAI",
+        "name": "Generative AI",
+        "url": "allModules/43809_M_GenAI.json"
+      },
+      {
+        "id": "HackL",
+        "name": "Hacking Lab",
+        "url": "allModules/36457_M_HackL.json"
+      },
+      {
+        "id": "IBN",
+        "name": "Intent-Based Networking",
+        "url": "allModules/57056_M_IBN.json"
+      },
+      {
+        "id": "IPCV1",
+        "name": "Image Processing and Computer Vision 1",
+        "url": "allModules/36264_M_IPCV1.json"
+      },
+      {
+        "id": "IPCV2",
+        "name": "Image Processing and Computer Vision 2",
+        "url": "allModules/36269_M_IPCV2.json"
+      },
+      {
+        "id": "IncResp",
+        "name": "Incident Response",
+        "url": "allModules/36473_M_IncResp.json"
+      },
+      {
+        "id": "MGE",
+        "name": "Mobile and GUI Engineering",
+        "url": "allModules/28254_M_MGE.json"
+      },
+      {
+        "id": "ML",
+        "name": "Statistical Machine Learning",
+        "url": "allModules/31838_M_ML.json"
+      },
+      {
+        "id": "MOSIM",
+        "name": "Modellbildung und Simulation",
+        "url": "allModules/40139_M_MOSIM.json"
+      },
+      {
+        "id": "MsTe",
+        "name": ".Net Technologien",
+        "url": "allModules/37247_M_MsTe.json"
+      },
+      {
+        "id": "NIoSec",
+        "name": "Network and IoT Security",
+        "url": "allModules/42231_M_NIoSec.json"
+      },
+      {
+        "id": "NetAut",
+        "name": "Network Automation",
+        "url": "allModules/56252_M_NetAut.json"
+      },
+      {
+        "id": "OOP1",
+        "name": "Objektorientierte Programmierung 1",
+        "url": "allModules/43813_M_OOP1.json"
+      },
+      {
+        "id": "OOP2",
+        "name": "Objektorientierte Programmierung 2",
+        "url": "allModules/38910_M_OOP2.json"
+      },
+      {
+        "id": "PF",
+        "name": "Patterns und Frameworks",
+        "url": "allModules/39045_M_PF.json"
+      },
+      {
+        "id": "PWWD",
+        "name": "Praxiswoche Webdesign",
+        "url": "allModules/57180_M_PWWD.json"
+      },
+      {
+        "id": "ParProg",
+        "name": "Parallele Programmierung",
+        "url": "allModules/41462_M_ParProg.json"
+      },
+      {
+        "id": "PlFSec",
+        "name": "Platform Security",
+        "url": "allModules/42227_M_PlFSec.json"
+      },
+      {
+        "id": "SAI21",
+        "name": "Studienarbeit Informatik",
+        "url": "allModules/40906_M_SAI21.json"
+      },
+      {
+        "id": "SE1",
+        "name": "Software-Engineering 1",
+        "url": "allModules/37893_M_SE1.json"
+      },
+      {
+        "id": "SE2",
+        "name": "Software-Engineering 2",
+        "url": "allModules/37191_M_SE2.json"
+      },
+      {
+        "id": "SEP1",
+        "name": "SE Practices 1",
+        "url": "allModules/39203_M_SEP1.json"
+      },
+      {
+        "id": "SEP2",
+        "name": "SE Practices 2",
+        "url": "allModules/57233_M_SEP2.json"
+      },
+      {
+        "id": "SEProj",
+        "name": "SE Project",
+        "url": "allModules/43712_M_SEProj.json"
+      },
+      {
+        "id": "SModSim",
+        "name": "System Modeling and Simulation",
+        "url": "allModules/38938_M_SModSim.json"
+      },
+      {
+        "id": "SecSW",
+        "name": "Secure Software",
+        "url": "allModules/36488_M_SecSW.json"
+      },
+      {
+        "id": "SecSoW",
+        "name": "Secure Software",
+        "url": "allModules/40311_M_SecSoW.json"
+      },
+      {
+        "id": "ServDev",
+        "name": "Service Development (ITIL)",
+        "url": "allModules/37171_M_ServDev.json"
+      },
+      {
+        "id": "UIP",
+        "name": "UI Patterns and Frameworks",
+        "url": "allModules/56946_M_UIP.json"
+      },
+      {
+        "id": "UX",
+        "name": "User Experience",
+        "url": "allModules/41106_M_UX.json"
+      },
+      {
+        "id": "WE1",
+        "name": "Web Engineering 1",
+        "url": "allModules/38891_M_WE1.json"
+      },
+      {
+        "id": "WE2",
+        "name": "Web Engineering 2",
+        "url": "allModules/38945_M_WE2.json"
+      },
+      {
+        "id": "WE3",
+        "name": "Web Engineering 3",
+        "url": "allModules/38901_M_WE3.json"
+      },
+      {
+        "id": "WIoT",
+        "name": "Wireless and IoT",
+        "url": "allModules/37157_M_WIoT.json"
+      },
+      {
+        "id": "WsoT",
+        "name": "Wireless and IoT",
+        "url": "allModules/40038_M_WsoT.json"
+      }
+    ]
+  },
+  {
+    "id": "KomEng",
+    "required_ects": 12,
+    "name": "Kommunikation und Englisch",
+    "modules": [
+      {
+        "id": "EnglHTw",
+        "name": "English: How Things work",
+        "url": "allModules/56496_M_EnglHTw.json"
+      },
+      {
+        "id": "EnglScience",
+        "name": "English: The World of Science",
+        "url": "allModules/56504_M_EnglScience.json"
+      },
+      {
+        "id": "FKIA",
+        "name": "Führungskommunikation im internationalen Arbeitsmarkt",
+        "url": "allModules/24427_M_FKIA.json"
+      },
+      {
+        "id": "KommIng2",
+        "name": "Kommunikation 2 für IngenieurInnen  (Teamkommunikation)",
+        "url": "allModules/37397_M_KommIng2.json"
+      },
+      {
+        "id": "RKI",
+        "name": "Rhetorische Kommunikation für IngenieurInnen",
+        "url": "allModules/25661_M_RKI.json"
+      },
+      {
+        "id": "RheKI",
+        "name": "Rhetorische Kommunikation für IngenieurInnen",
+        "url": "allModules/31909_M_RheKI.json"
+      },
+      {
+        "id": "RheKoI",
+        "name": "Rhetorische Kommunikation für IngenieurInnen",
+        "url": "allModules/43277_M_RheKoI.json"
+      },
+      {
+        "id": "SelTec",
+        "name": "English: Selling Technology",
+        "url": "allModules/45661_M_SelTec.json"
+      },
+      {
+        "id": "TecBEC",
+        "name": "English Beyond Borders: Navigating Academic & Professional Success with IELTS",
+        "url": "allModules/55597_M_TecBEC.json"
+      }
+    ]
+  },
+  {
+    "id": "MaPh",
+    "required_ects": 16,
+    "name": "Mathematik und Physik",
+    "modules": [
+      {
+        "id": "An1I",
+        "name": "Analysis 1 für Informatik",
+        "url": "allModules/28151_M_An1I.json"
+      },
+      {
+        "id": "An2I",
+        "name": "Analysis 2 für Informatik",
+        "url": "allModules/28156_M_An2I.json"
+      },
+      {
+        "id": "ExEv",
+        "name": "Experimentieren und Evaluieren für Informatik",
+        "url": "allModules/24381_M_ExEv.json"
+      },
+      {
+        "id": "FuVar",
+        "name": "Funktionen mehrerer Variablen",
+        "url": "allModules/10942_M_FuVar.json"
+      },
+      {
+        "id": "IntTra",
+        "name": "Integraltransformationen",
+        "url": "allModules/15367_M_IntTra.json"
+      },
+      {
+        "id": "KomFou1",
+        "name": "Komplexe Zahlen und Fourierreihen",
+        "url": "allModules/15546_M_KomFou1.json"
+      },
+      {
+        "id": "MathFML",
+        "name": "Mathematical Foundations for Machine Learning",
+        "url": "allModules/31614_M_MathFML.json"
+      },
+      {
+        "id": "NwP",
+        "name": "Naturwissenschaftliches Praktikum",
+        "url": "allModules/45138_M_NwP.json"
+      },
+      {
+        "id": "Ph1Mech",
+        "name": "Physik 1 - Mechanik",
+        "url": "allModules/45143_M_Ph1Mech.json"
+      },
+      {
+        "id": "Ph2HAT",
+        "name": "Physik 2 - Hydro-, Aero- und Thermodynamik",
+        "url": "allModules/22021_M_Ph2HAT.json"
+      },
+      {
+        "id": "Ph3SWO",
+        "name": "Physik 3 - Schwingungen und Wellen, Optik",
+        "url": "allModules/45153_M_Ph3SWO.json"
+      },
+      {
+        "id": "PhAI",
+        "name": "Physik Anwendungen für Informatik",
+        "url": "allModules/43544_M_PhAI.json"
+      },
+      {
+        "id": "WrStat",
+        "name": "Wahrscheinlichkeitsrechnung und Statistik",
+        "url": "allModules/24489_M_WrStat.json"
+      }
+    ]
+  },
+  {
+    "id": "RA",
+    "required_ects": 46,
+    "name": "Rahmenausbildung",
+    "modules": [
+      {
+        "id": "AADL",
+        "name": "Applied AI with Deep Learning",
+        "url": "allModules/57207_M_AADL.json"
+      },
+      {
+        "id": "AIFo",
+        "name": "AI Foundations",
+        "url": "allModules/40866_M_AIFo.json"
+      },
+      {
+        "id": "AlgDat",
+        "name": "Algorithmen und Datenstrukturen",
+        "url": "allModules/38881_M_AlgDat.json"
+      },
+      {
+        "id": "AutPy",
+        "name": "Automatisierung mit Python",
+        "url": "allModules/38879_M_AutPy.json"
+      },
+      {
+        "id": "AutoSpr",
+        "name": "Automaten und Sprachen",
+        "url": "allModules/24404_M_AutoSpr.json"
+      },
+      {
+        "id": "Bsys1",
+        "name": "Betriebssysteme 1",
+        "url": "allModules/39080_M_Bsys1.json"
+      },
+      {
+        "id": "CN1",
+        "name": "Computernetze 1",
+        "url": "allModules/39084_M_CN1.json"
+      },
+      {
+        "id": "CySec",
+        "name": "Cyber Security Foundations",
+        "url": "allModules/36478_M_CySec.json"
+      },
+      {
+        "id": "DMI",
+        "name": "Diskrete Mathematik für Informatik",
+        "url": "allModules/24442_M_DMI.json"
+      },
+      {
+        "id": "Dbs1",
+        "name": "Datenbanksysteme 1",
+        "url": "allModules/39093_M_Dbs1.json"
+      },
+      {
+        "id": "DigCod",
+        "name": "Digitale Codierungen",
+        "url": "allModules/38920_M_DigCod.json"
+      },
+      {
+        "id": "FP",
+        "name": "Functional Programming",
+        "url": "allModules/39143_M_FP.json"
+      },
+      {
+        "id": "FunProg",
+        "name": "Funktionale Programmierung",
+        "url": "allModules/38928_M_FunProg.json"
+      },
+      {
+        "id": "OOP1",
+        "name": "Objektorientierte Programmierung 1",
+        "url": "allModules/43813_M_OOP1.json"
+      },
+      {
+        "id": "OOP2",
+        "name": "Objektorientierte Programmierung 2",
+        "url": "allModules/38910_M_OOP2.json"
+      },
+      {
+        "id": "WE1",
+        "name": "Web Engineering 1",
+        "url": "allModules/38891_M_WE1.json"
+      }
+    ]
+  },
+  {
+    "id": "SaBa",
+    "required_ects": 20,
+    "name": "Studien- Bachelorarbeit",
+    "modules": [
+      {
+        "id": "BAI21",
+        "name": "Bachelor-Arbeit Informatik",
+        "url": "allModules/41626_M_BAI21.json"
+      },
+      {
+        "id": "SAI21",
+        "name": "Studienarbeit Informatik",
+        "url": "allModules/40906_M_SAI21.json"
+      }
+    ]
+  },
+  {
+    "id": "gwr",
+    "required_ects": 12,
+    "name": "Gesellschaft, Wirtschaft und Recht",
+    "modules": [
+      {
+        "id": "BuPro",
+        "name": "Business Processes für Informatik",
+        "url": "allModules/40825_M_BuPro.json"
+      },
+      {
+        "id": "BuRe1",
+        "name": "Business und Recht 1",
+        "url": "allModules/20780_M_BuRe1.json"
+      },
+      {
+        "id": "BuRe2a",
+        "name": "Business und Recht 2 (a)",
+        "url": "allModules/45604_M_BuRe2a.json"
+      },
+      {
+        "id": "DigBusI",
+        "name": "Digital Business für Informatik",
+        "url": "allModules/40316_M_DigBusI.json"
+      },
+      {
+        "id": "IKAA",
+        "name": "Applied AI",
+        "url": "allModules/44202_M_IKAA.json"
+      },
+      {
+        "id": "IKAAp",
+        "name": "Applied AI (Projektarbeit)",
+        "url": "allModules/44196_M_IKAA_p.json"
+      },
+      {
+        "id": "IKAG",
+        "name": "Alternde Gesellschaften",
+        "url": "allModules/44020_M_IKAG.json"
+      },
+      {
+        "id": "IKAK",
+        "name": "Gesundes Altern mit Hilfe von künstlicher Intelligenz",
+        "url": "allModules/44064_M_IKAK.json"
+      },
+      {
+        "id": "IKAKp",
+        "name": "Gesundes Altern mit Hilfe von künstlicher Intelligenz (Projektarbeit)",
+        "url": "allModules/44067_M_IKAK_p.json"
+      },
+      {
+        "id": "IKBD",
+        "name": "Behavioral Design",
+        "url": "allModules/55066_M_IKBD.json"
+      },
+      {
+        "id": "IKBF",
+        "name": "Selbststeuerung im Beruf",
+        "url": "allModules/56707_M_IKBF.json"
+      },
+      {
+        "id": "IKBH",
+        "name": "Behavioral Design",
+        "url": "allModules/56919_M_IKBH.json"
+      },
+      {
+        "id": "IKBW",
+        "name": "Blickwechsel",
+        "url": "allModules/44040_M_IKBW.json"
+      },
+      {
+        "id": "IKCC",
+        "name": "Co-Creation und Inclusive Design Methoden",
+        "url": "allModules/56710_M_IKCC.json"
+      },
+      {
+        "id": "IKCCp",
+        "name": "Co-Creation und Inclusive Design Methoden (Projektarbeit)",
+        "url": "allModules/56713_M_IKCC_p.json"
+      },
+      {
+        "id": "IKCG",
+        "name": "Corporate Governance and Sustainability",
+        "url": "allModules/56716_M_IKCG.json"
+      },
+      {
+        "id": "IKDH",
+        "name": "Lernlabor «Digitalisieren Hands-on»",
+        "url": "allModules/44235_M_IKDH.json"
+      },
+      {
+        "id": "IKDHp",
+        "name": "Lernlabor «Digitalisieren Hands-on» (Projektarbeit)",
+        "url": "allModules/44232_M_IKDH_p.json"
+      },
+      {
+        "id": "IKDK",
+        "name": "Demokratie im Zeitalter von KI",
+        "url": "allModules/44043_M_IKDK.json"
+      },
+      {
+        "id": "IKDKp",
+        "name": "Demokratie im Zeitalter von KI (Projektarbeit)",
+        "url": "allModules/44046_M_IKDK_p.json"
+      },
+      {
+        "id": "IKDL",
+        "name": "Digitalisieren mit Low Code: Einen AI Chatbot selber bauen",
+        "url": "allModules/44250_M_IKDL.json"
+      },
+      {
+        "id": "IKDLp",
+        "name": "Digitalisieren mit Low Code: Einen AI Chatbot selber bauen (Projektarbeit)",
+        "url": "allModules/44247_M_IKDL_p.json"
+      },
+      {
+        "id": "IKDM_A",
+        "name": "Dream Team - Mentoringprogramm für die nächste Generation Teil A",
+        "url": "allModules/44241_M_IKDM_A.json"
+      },
+      {
+        "id": "IKDM_B",
+        "name": "Dream Team - Mentoringprogramm für die nächste Generation Teil B",
+        "url": "allModules/44244_M_IKDM_B.json"
+      },
+      {
+        "id": "IKEI",
+        "name": "Einsamkeit erforschen - wirtschaftliche, gesellschaftliche und private Dimensionen",
+        "url": "allModules/56720_M_IKEI.json"
+      },
+      {
+        "id": "IKEIp",
+        "name": "Einsamkeit erforschen - wirtschaftliche, gesellschaftliche und private Dimensionen (Projektarbeit)",
+        "url": "allModules/56731_M_IKEI_p.json"
+      },
+      {
+        "id": "IKEK",
+        "name": "Ethik & KI",
+        "url": "allModules/44049_M_IKEK.json"
+      },
+      {
+        "id": "IKEKp",
+        "name": "Ethik & KI (Projektarbeit)",
+        "url": "allModules/44052_M_IKEK_p.json"
+      },
+      {
+        "id": "IKFD",
+        "name": "Applied Frugal Design: Einfach gestalten, gesund leben",
+        "url": "allModules/56734_M_IKFD.json"
+      },
+      {
+        "id": "IKFDp",
+        "name": "Applied Frugal Design: Einfach gestalten, gesund leben (Projektarbeit)",
+        "url": "allModules/56737_M_IKFD_p.json"
+      },
+      {
+        "id": "IKFL",
+        "name": "Future Life Design: Successfully shaping your own life path",
+        "url": "allModules/56740_M_IKFL.json"
+      },
+      {
+        "id": "IKFLp",
+        "name": "Future Life Design: Successfully shaping your own life path (Projektarbeit)",
+        "url": "allModules/56743_M_IKFL_p.json"
+      },
+      {
+        "id": "IKGA",
+        "name": "Generative AI in der Planung",
+        "url": "allModules/44211_M_IKGA.json"
+      },
+      {
+        "id": "IKGAp",
+        "name": "Generative AI in der Planung (Projektarbeit)",
+        "url": "allModules/44214_M_IKGA_p.json"
+      },
+      {
+        "id": "IKGE",
+        "name": "Klimagerechte Stadt- und Gemeindeentwicklung",
+        "url": "allModules/44088_M_IKGE.json"
+      },
+      {
+        "id": "IKGEp",
+        "name": "Klimagerechte Stadt- und Gemeindeentwicklung (Projektarbeit)",
+        "url": "allModules/44091_M_IKGE_p.json"
+      },
+      {
+        "id": "IKGL",
+        "name": "Gesund leben und Langlebigkeit",
+        "url": "allModules/44061_M_IKGL.json"
+      },
+      {
+        "id": "IKGS",
+        "name": "Knowhow und Technologien für nachhaltige Entwicklung im globalen Süden",
+        "url": "allModules/44190_M_IKGS.json"
+      },
+      {
+        "id": "IKGSp",
+        "name": "Knowhow und Technologien für nachhaltige Entwicklung im globalen Süden (Projektarbeit)",
+        "url": "allModules/56922_M_IKGS_p.json"
+      },
+      {
+        "id": "IKIE",
+        "name": "Interdisziplinär entwickeln - gerüstet für die technikbasierte Arbeitswelt",
+        "url": "allModules/44079_M_IKIE.json"
+      },
+      {
+        "id": "IKII",
+        "name": "Ideen Inkubator Klimawende",
+        "url": "allModules/44073_M_IKII.json"
+      },
+      {
+        "id": "IKIIp",
+        "name": "Ideen Inkubator Klimawende (Projektarbeit)",
+        "url": "allModules/44076_M_IKII_p.json"
+      },
+      {
+        "id": "IKIS",
+        "name": "International Summer School for Sustainability",
+        "url": "allModules/56789_M_IKIS.json"
+      },
+      {
+        "id": "IKISp",
+        "name": "International Summer School for Sustainability (Projektarbeit)",
+        "url": "allModules/56866_M_IKIS_p.json"
+      },
+      {
+        "id": "IKKA",
+        "name": "Nachhaltigkeit und Klimaschutz angewandt",
+        "url": "allModules/44223_M_IKKA.json"
+      },
+      {
+        "id": "IKKK",
+        "name": "Kommunale Klimawende",
+        "url": "allModules/44184_M_IKKK.json"
+      },
+      {
+        "id": "IKKKp",
+        "name": "Kommunale Klimawende (Projektarbeit)",
+        "url": "allModules/44187_M_IKKK_p.json"
+      },
+      {
+        "id": "IKKL",
+        "name": "Circular Economy",
+        "url": "allModules/44094_M_IKKL.json"
+      },
+      {
+        "id": "IKKLp",
+        "name": "Circular Economy (Projektarbeit)",
+        "url": "allModules/44097_M_IKKL_p.json"
+      },
+      {
+        "id": "IKKP",
+        "name": "Klimakrise: Kann die Politik die Welt noch retten?",
+        "url": "allModules/44226_M_IKKP.json"
+      },
+      {
+        "id": "IKKPp",
+        "name": "Klimakrise: Kann die Politik die Welt noch retten? (Projektarbeit)",
+        "url": "allModules/44229_M_IKKP_p.json"
+      },
+      {
+        "id": "IKLD",
+        "name": "Future Life Design: Den eigenen Lebensweg erfolgreich gestalten",
+        "url": "allModules/56925_M_IKLD.json"
+      },
+      {
+        "id": "IKLDp",
+        "name": "Future Life Design: Den eigenen Lebensweg erfolgreich gestalten (Projektarbeit)",
+        "url": "allModules/56928_M_IKLD_p.json"
+      },
+      {
+        "id": "IKLE",
+        "name": "IZM-Projekt",
+        "url": "allModules/44082_M_IKLE.json"
+      },
+      {
+        "id": "IKLEp",
+        "name": "IZM-Projekt (Projektarbeit)",
+        "url": "allModules/44085_M_IKLE_p.json"
+      },
+      {
+        "id": "IKLF",
+        "name": "Lernfähigkeit und Gedächtnis",
+        "url": "allModules/44100_M_IKLF.json"
+      },
+      {
+        "id": "IKLK",
+        "name": "Lösungsorientierte Kommunikation für dynamische Arbeitswelten",
+        "url": "allModules/44103_M_IKLK.json"
+      },
+      {
+        "id": "IKME",
+        "name": "Messbar gesund",
+        "url": "allModules/44115_M_IKME.json"
+      },
+      {
+        "id": "IKMEp",
+        "name": "Messbar gesund (Projektarbeit)",
+        "url": "allModules/56875_M_IKME_p.json"
+      },
+      {
+        "id": "IKMI",
+        "name": "Medien- und Informationskompetenz in Zeiten von KI",
+        "url": "allModules/44109_M_IKMI.json"
+      },
+      {
+        "id": "IKMIp",
+        "name": "Medien- und Informationskompetenz in Zeiten von KI (Projektarbeit)",
+        "url": "allModules/44112_M_IKMI_p.json"
+      },
+      {
+        "id": "IKMO",
+        "name": "Gemeinden & Städte von morgen. So gelingt nachhaltige Gemeindeentwicklung",
+        "url": "allModules/44055_M_IKMO.json"
+      },
+      {
+        "id": "IKMOp",
+        "name": "Gemeinden & Städte von morgen. So gelingt nachhaltige Gemeindeentwicklung (Projektarbeit)",
+        "url": "allModules/44058_M_IKMO_p.json"
+      },
+      {
+        "id": "IKNB",
+        "name": "Wasser und Klima: Nachhaltige Wasserbewirtschaftung auf Gemeindeebene",
+        "url": "allModules/44199_M_IKNB.json"
+      },
+      {
+        "id": "IKNBp",
+        "name": "Wasser und Klima: Nachhaltige Wasserbewirtschaftung auf Gemeindeebene (Projektarbeit)",
+        "url": "allModules/57170_M_IKNB_p.json"
+      },
+      {
+        "id": "IKNE",
+        "name": "Nachhaltige Ernährung für Körper, Geist und Klima",
+        "url": "allModules/56792_M_IKNE.json"
+      },
+      {
+        "id": "IKNEp",
+        "name": "Nachhaltige Ernährung für Körper, Geist und Klima (Projektarbeit)",
+        "url": "allModules/56795_M_IKNE_p.json"
+      },
+      {
+        "id": "IKNG",
+        "name": "Neue Narrative für eine nachhaltige Gesellschaft",
+        "url": "allModules/44121_M_IKNG.json"
+      },
+      {
+        "id": "IKNGp",
+        "name": "Neue Narrative für eine nachhaltige Gesellschaft (Projektarbeit)",
+        "url": "allModules/44124_M_IKNG_p.json"
+      },
+      {
+        "id": "IKNK",
+        "name": "New Work & KI",
+        "url": "allModules/44127_M_IKNK.json"
+      },
+      {
+        "id": "IKNKp",
+        "name": "New Work & KI (Projektarbeit)",
+        "url": "allModules/44130_M_IKNK_p.json"
+      },
+      {
+        "id": "IKNN",
+        "name": "Hackathon zu \"Netto-null in Gebäuden und Verkehr\"",
+        "url": "allModules/44070_M_IKNN.json"
+      },
+      {
+        "id": "IKNW",
+        "name": "Die Nachhaltigkeitswoche: Eventfabrik und Zukunftsworkshops",
+        "url": "allModules/56802_M_IKNW.json"
+      },
+      {
+        "id": "IKNWp",
+        "name": "Die Nachhaltigkeitswoche: Eventfabrik und Zukunftsworkshops (Projektarbeit)",
+        "url": "allModules/56804_M_IKNW_p.json"
+      },
+      {
+        "id": "IKOW",
+        "name": "Offgrid Wasser und Sonne: Hands on",
+        "url": "allModules/56805_M_IKOW.json"
+      },
+      {
+        "id": "IKOWp",
+        "name": "Offgrid Wasser und Sonne: Hands on (Projektarbeit)",
+        "url": "allModules/56806_M_IKOW_p.json"
+      },
+      {
+        "id": "IKPE",
+        "name": "Psychologisches Empowerment in Veränderungs- und Wandlungsprozessen",
+        "url": "allModules/44139_M_IKPE.json"
+      },
+      {
+        "id": "IKPH",
+        "name": "Prototyping für Startup-Ideen beim Hackathon",
+        "url": "allModules/56807_M_IKPH.json"
+      },
+      {
+        "id": "IKPS",
+        "name": "Prototyping für Startup-Ideen",
+        "url": "allModules/44133_M_IKPS.json"
+      },
+      {
+        "id": "IKPSp",
+        "name": "Prototyping für Startup-Ideen (Projektarbeit)",
+        "url": "allModules/44136_M_IKPS_p.json"
+      },
+      {
+        "id": "IKRE",
+        "name": "Resilienz: Schlüsselkompetenz für innere Stärke",
+        "url": "allModules/44142_M_IKRE.json"
+      },
+      {
+        "id": "IKSH",
+        "name": "Social and Human Robotic",
+        "url": "allModules/44145_M_IKSH.json"
+      },
+      {
+        "id": "IKSM",
+        "name": "Strategisches Management von Naturgefahren",
+        "url": "allModules/44205_M_IKSM.json"
+      },
+      {
+        "id": "IKSMp",
+        "name": "Strategisches Management von Naturgefahren (Projektarbeit)",
+        "url": "allModules/44208_M_IKSM_p.json"
+      },
+      {
+        "id": "IKSS",
+        "name": "Ski-Nation Schweiz",
+        "url": "allModules/44220_M_IKSS.json"
+      },
+      {
+        "id": "IKSSp",
+        "name": "Ski-Nation Schweiz (Projektarbeit)",
+        "url": "allModules/44217_M_IKSS_p.json"
+      },
+      {
+        "id": "IKST",
+        "name": "Starkes Ich – Starkes Team",
+        "url": "allModules/44154_M_IKST.json"
+      },
+      {
+        "id": "IKSTp",
+        "name": "Starkes Ich – Starkes Team (Projektarbeit)",
+        "url": "allModules/44157_M_IKST_p.json"
+      },
+      {
+        "id": "IKSU",
+        "name": "Startup - Weg zur Gründung",
+        "url": "allModules/44253_M_IKSU.json"
+      },
+      {
+        "id": "IKSUp",
+        "name": "Startup - Weg zur Gründung (Projektarbeit)",
+        "url": "allModules/44256_M_IKSU_p.json"
+      },
+      {
+        "id": "IKSW",
+        "name": "Stadt der kurzen Wege",
+        "url": "allModules/44148_M_IKSW.json"
+      },
+      {
+        "id": "IKSWp",
+        "name": "Stadt der kurzen Wege (Projektarbeit)",
+        "url": "allModules/44151_M_IKSW_p.json"
+      },
+      {
+        "id": "IKTE",
+        "name": "The Internet of Everything",
+        "url": "allModules/44340_M_IKTE.json"
+      },
+      {
+        "id": "IKTEp",
+        "name": "The Internet of Everything (Projektarbeit)",
+        "url": "allModules/44343_M_IKTE_p.json"
+      },
+      {
+        "id": "IKTSV2",
+        "name": "IKTS_Vorlage 2ECTS",
+        "url": "allModules/43909_M_IKTSV2.json"
+      },
+      {
+        "id": "IKTSV3",
+        "name": "IKTS_Vorlage 3ECTS",
+        "url": "allModules/43910_M_IKTSV3.json"
+      },
+      {
+        "id": "IKTSV4",
+        "name": "IKTS_Vorlage 4ECTS",
+        "url": "allModules/43911_M_IKTSV4.json"
+      },
+      {
+        "id": "IKUG",
+        "name": "Umwelt und Gesundheit",
+        "url": "allModules/44160_M_IKUG.json"
+      },
+      {
+        "id": "IKUGp",
+        "name": "Umwelt und Gesundheit (Projektarbeit)",
+        "url": "allModules/44163_M_IKUG_p.json"
+      },
+      {
+        "id": "IKVA",
+        "name": "Virtual Reality für gesundes Leben und Altern",
+        "url": "allModules/44172_M_IKVA.json"
+      },
+      {
+        "id": "IKVAp",
+        "name": "Virtual Reality für gesundes Leben und Altern (Projektarbeit)",
+        "url": "allModules/44175_M_IKVA_p.json"
+      },
+      {
+        "id": "IKVK",
+        "name": "Vielfalt, Chancengleichheit und Inklusion im KI-Zeitalter",
+        "url": "allModules/44166_M_IKVK.json"
+      },
+      {
+        "id": "IKVKp",
+        "name": "Vielfalt, Chancengleichheit und Inklusion im KI-Zeitalter (Projektarbeit)",
+        "url": "allModules/44169_M_IKVK_p.json"
+      },
+      {
+        "id": "IKVR",
+        "name": "Virtual Reality für Klima und Energie",
+        "url": "allModules/56195_M_IKVR.json"
+      },
+      {
+        "id": "IKVRp",
+        "name": "Virtual Reality für Klima und Energie (Projektarbeit)",
+        "url": "allModules/44181_M_IKVR_p.json"
+      },
+      {
+        "id": "LLDIG",
+        "name": "Lernlabor \"Digitalisieren Hands-on\"",
+        "url": "allModules/41732_M_LLDIG.json"
+      },
+      {
+        "id": "PmQm",
+        "name": "Projekt- und Qualitätsmanagement",
+        "url": "allModules/28231_M_PmQm.json"
+      },
+      {
+        "id": "VwlTg",
+        "name": "Volkswirtschaft und Technikgeschichte",
+        "url": "allModules/42760_M_VwlTg.json"
+      },
+      {
+        "id": "WI2",
+        "name": "Business Processes für Informatik",
+        "url": "allModules/57174_M_WI2.json"
+      }
+    ]
+  }
+]
