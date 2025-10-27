@@ -1,14 +1,10 @@
 <template>
-  <button
-    :aria-pressed="isDark"
-    :class="[
-      'p-2 transition-colors rounded-sm focus:outline-none',
-      isDark ? 'bg-gray-800 text-white' : 'bg-gray-800 text-white'
-    ]"
-    @click="toggleDark"
-  >
+  <button :aria-pressed="isDark" :class="[
+    'p-2 transition-colors rounded-sm focus:outline-none',
+    isDark ? 'bg-gray-800 text-white' : 'bg-gray-800 text-white'
+  ]" @click="toggleDark">
     <span aria-hidden="true">
-      {{ isDark ? '☀︎' : '⏾' }}
+      {{ isDark ? '☀︎' : '☾' }}
     </span>
   </button>
 </template>
