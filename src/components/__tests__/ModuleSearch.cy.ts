@@ -43,8 +43,8 @@ describe('ModuleSearch FilterModal Component', () => {
 
   it('filters by semester', () => {
     cy.get('[data-cy="ModuleFilter-SemesterFilter-Item"]').last().click();
-    cy.get('[data-cy="ModuleSearch-ModuleList"]').should('have.lengthOf.at.most', 5)
-    cy.get('[data-cy="ModuleSearch-ModuleList"]').should('have.lengthOf.at.least', 5)
+    cy.get('[data-cy="ModuleSearch-ModuleList"]').should('have.lengthOf.at.most', 6)
+    cy.get('[data-cy="ModuleSearch-ModuleList"]').should('have.lengthOf.at.least', 6)
     cy.get('[data-cy="ModuleSearch-ModuleList"]')
       .first()
       .children()
