@@ -11,6 +11,7 @@ export default defineConfig({
     },
     includeAssets: ['*.png', '*.jpg'],
     workbox: {
+      maximumFileSizeToCacheInBytes: 5 * 1024 ** 2, // 5 MB
       runtimeCaching: [
         {
           urlPattern: /^https:\/\/raw\.githubusercontent\.com\/.*\.json$/,
