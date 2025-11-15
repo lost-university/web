@@ -8,6 +8,18 @@ const ROUTE_MODULES = '/modules.json';
 const ROUTE_CATEGORIES = '/categories.json';
 const ROUTE_FOCUSES = '/focuses.json';
 
+// Cache for enrichedCategories to improve performance
+let enrichedCategoriesCache: Array<Category & {
+  earnedEcts: number;
+  plannedEcts: number;
+  colorClass: string;
+  modules: Module[];
+}> | null = null;
+
+function invalidateEnrichedCategoriesCache() {
+  enrichedCategoriesCache = null;
+}
+
 export const store = createStore({
   state () {
     return {
@@ -41,14 +53,19 @@ export const store = createStore({
       state.modules.map(m => m.validationInfo).filter(f => f?.severity === 'hard').length,
     hardValidationProblemsByType: state => type =>
       state.modules.map(m => m.validationInfo).filter(f => f?.severity === 'hard' && f?.type === type),
-    enrichedCategories: (state, getters) =>
-      state.categories.map(category => ({
+    enrichedCategories: (state, getters) => {
+      if (enrichedCategoriesCache !== null) {
+        return enrichedCategoriesCache;
+      }
+      enrichedCategoriesCache = state.categories.map(category => ({
         ...category,
         earnedEcts: getEarnedEcts(category),
         plannedEcts: getPlannedEcts(category),
         colorClass: getColorClassForCategoryId(category.id),
         modules: getters.modulesByIds(category.moduleIds),
-      })),
+      }));
+      return enrichedCategoriesCache;
+    },
     enrichedFocuses: (state, getters) => {
       const plannedModuleIds = getters.allPlannedModuleIds;
       const numberOfModulesRequiredToGetFocus = 8;
@@ -82,18 +99,22 @@ export const store = createStore({
   mutations: {
     setModules(state, modules: Module[]) {
       state.modules = modules;
+      invalidateEnrichedCategoriesCache();
     },
     setCategories(state, categories: Category[]) {
       state.categories = categories;
+      invalidateEnrichedCategoriesCache();
     },
     setSemesters(state, semesters: Semester[]) {
       state.semesters = semesters;
+      invalidateEnrichedCategoriesCache();
     },
     setFocuses(state, focuses: Focus[]) {
       state.focuses = focuses;
     },
     setStartSemester(state, startSemester: SemesterInfo) {
       state.startSemester = startSemester;
+      invalidateEnrichedCategoriesCache();
     },
     setStudienordnung(state, studienordnung: '21' | '23') {
       state.studienordnung = studienordnung;
@@ -103,29 +124,36 @@ export const store = createStore({
     },
     setAccreditedModules(state, accreditedModules: AccreditedModule[]) {
       state.accreditedModules = accreditedModules;
+      invalidateEnrichedCategoriesCache();
     },
     addSemester(state) {
       const newSemester = new Semester(state.semesters.length + 1, []).setName(state.startSemester);
       state.semesters.push(newSemester);
+      invalidateEnrichedCategoriesCache();
     },
     removeSemester(state, semesterNumber: number) {
       state.semesters.splice(state.semesters.findIndex(f => f.number === semesterNumber), 1);
+      invalidateEnrichedCategoriesCache();
     },
     removeModuleFromSemester(state, data: {semesterNumber: number, moduleId: string}) {
       const semester = state.semesters.find(s => s.number === data.semesterNumber);
       const index = semester.moduleIds.indexOf(data.moduleId);
       semester.moduleIds.splice(index, 1);
+      invalidateEnrichedCategoriesCache();
     },
     removeModuleFromAllSemesters(state, moduleId: string) {
       state.semesters.forEach(semester => {
         semester.moduleIds = semester.moduleIds.filter(id => id !== moduleId);
       });
+      invalidateEnrichedCategoriesCache();
     },
     addModuleToSemester(state, data: {semesterNumber: number, moduleId: string}) {
       state.semesters.find(s => s.number === data.semesterNumber).moduleIds.push(data.moduleId);
+      invalidateEnrichedCategoriesCache();
     },
     setModuleIdsForSemester(state, data: {semesterNumber: number, moduleIds: string[]}) {
       state.semesters.find(s => s.number === data.semesterNumber).moduleIds = data.moduleIds;
+      invalidateEnrichedCategoriesCache();
     },
     updateNameOfAllSemesters(state) {
       state.semesters.forEach(s => s.setName(state.startSemester));
@@ -144,9 +172,11 @@ export const store = createStore({
     },
     addAccreditedModule(state, accreditedModule: AccreditedModule) {
       state.accreditedModules.push(accreditedModule);
+      invalidateEnrichedCategoriesCache();
     },
     removeAccreditedModule(state, accreditedModule: AccreditedModule) {
       state.accreditedModules.splice(state.accreditedModules.indexOf(accreditedModule), 1);
+      invalidateEnrichedCategoriesCache();
     }
   },
   actions: {
