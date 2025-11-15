@@ -114,14 +114,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import type { Module, Term } from '../helpers/types';
+import type { Term } from '../helpers/types';
 import { store } from '../helpers/store';
 import {
   Dialog as HeadlessUIDialog,
   DialogPanel,
 } from '@headlessui/vue';
 import { getColorClassForCategoryId } from '../helpers/color-helper';
-import { ValidationHelper } from '../helpers/validation-helper';
 import ModuleFilter from "./ModuleFilter.vue";
 import ModuleSearchList from "./ModuleSearchList.vue";
 import type { GroupedModule } from "../types/GroupedModule";
@@ -291,18 +290,6 @@ export default defineComponent({
     }
   },
   methods: {
-    moduleIsDisabled(module: Module): boolean {
-      return this.moduleIsInPlan(module) || (this.disableInvalidModules && (
-        this.moduleHasWrongTerm(module) ||
-        module.isDeactivated ||
-        (this.showNextPossibleSemester && !module.nextPossibleSemester)));
-    },
-    moduleIsInPlan(module: Module): boolean {
-      return store.getters.allPlannedModuleIds.includes(module.id);
-    },
-    moduleHasWrongTerm(module: Module): boolean {
-      return ValidationHelper.isModuleInWrongTerm(module, this.termForWhichToSearch);
-    },
     selectModule(moduleId: string) {
       if (moduleId) {
         // can be null, if Combobox is closed through blur
