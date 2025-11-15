@@ -1,11 +1,11 @@
 <template>
   <li
     class="px-2 py-1 border-b border-slate-500 flex items-center last:rounded-b-sm last:border-b-0"
-    :class="moduleIsDisabled(module) ?
+    :class="moduleIsDisabled ?
       'text-gray-400 bg-gray-300 dark:bg-zinc-700 cursor-default' :
       'cursor-pointer hover:bg-gray-200'"
     data-cy="ModuleSearch-ModuleListItem"
-    @click="!moduleIsDisabled(module) ? onModuleSelect(module.id) : null"
+    @click="!moduleIsDisabled ? onModuleSelect(module.id) : null"
   >
     <div
       class="w-4/6"
@@ -15,7 +15,7 @@
     </div>
     <div class="text-right w-1/6">
       <span
-        v-if="moduleIsInPlan(module)"
+        v-if="moduleIsInPlan"
         class="italic"
       >
         geplant
@@ -34,11 +34,11 @@
       <span v-if="showNextPossibleSemester && module.nextPossibleSemester">
         ({{ module.nextPossibleSemester }})
       </span>
-      <span v-else-if="moduleHasWrongTerm(module) && disableInvalidModules">
+      <span v-else-if="moduleHasWrongTerm && disableInvalidModules">
         nur im {{ module.term }}
       </span>
       <span v-else>
-        {{ module.getDisplayTextForTerm() }}
+        {{ module.displayTextForTerm }}
       </span>
     </div>
   </li>
@@ -59,18 +59,18 @@ export default defineComponent({
       required: true
     },
   },
-  methods: {
-    moduleIsInPlan(module: Module): boolean {
-      return store.getters.allPlannedModuleIds.includes(module.id);
+  computed: {
+    moduleIsInPlan(): boolean {
+      return store.getters.allPlannedModuleIds.includes(this.module.id);
     },
-    moduleIsDisabled(module: Module): boolean {
-      return this.moduleIsInPlan(module) || (this.disableInvalidModules && (
-        this.moduleHasWrongTerm(module) ||
-        module.isDeactivated ||
-        (this.showNextPossibleSemester && !module.nextPossibleSemester))) as boolean;
+    moduleIsDisabled(): boolean {
+      return this.moduleIsInPlan || (this.disableInvalidModules && (
+        this.moduleHasWrongTerm ||
+        this.module.isDeactivated ||
+        (this.showNextPossibleSemester && !this.module.nextPossibleSemester))) as boolean;
     },
-    moduleHasWrongTerm(module: Module): boolean {
-      return ValidationHelper.isModuleInWrongTerm(module, this.termForWhichToSearch as Term);
+    moduleHasWrongTerm(): boolean {
+      return ValidationHelper.isModuleInWrongTerm(this.module, this.termForWhichToSearch as Term);
     },
   }
 })

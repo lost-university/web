@@ -63,7 +63,7 @@
             <h3>Kategorie</h3>
             <ModuleFilter
               v-model:selected="filter.categories"
-              :data="categoryFilterData()"
+              :data="categoryFilterData"
               data-cy-tag="ModuleFilter-CategoryFilter"
               :is-single-select="false"
               :is-button-group="false"
@@ -74,7 +74,7 @@
             </h3>
             <ModuleFilter
               v-model:selected="filter.ects"
-              :data="ectsFilterData()"
+              :data="ectsFilterData"
               :is-single-select="false"
               data-cy-tag="ModuleFilter-EctsFilter"
               is-button-group
@@ -85,7 +85,7 @@
             </h3>
             <ModuleFilter
               v-model:selected="filter.semester"
-              :data="semesterFilterData()"
+              :data="semesterFilterData"
               data-cy-tag="ModuleFilter-SemesterFilter"
               is-single-select
               is-button-group
@@ -239,7 +239,43 @@ export default defineComponent({
       }
 
       return filteredGroups;
-    }
+    },
+    categoryFilterData() {
+      return store.getters.enrichedCategories.map(c => {
+        return {
+          id: c.id,
+          value: c.name,
+          color: getColorClassForCategoryId(c.id)
+        };
+      });
+    },
+    ectsFilterData() {
+      return store.getters.modules.map(m => {
+        return m.ects
+      }).filter((value: number, index: number, self: number[]) => {
+        return self.indexOf(value) === index;
+      }).sort((a: number, b: number) => a - b).map((value: number) => {
+        return {
+          id: value,
+          value: value.toString()
+        };
+      }) as { id: number, value: string }[];
+    },
+    semesterFilterData() {
+      return [
+        {
+          id: 'FS',
+          value: 'Frühling'
+        },
+        {
+          id: 'HS',
+          value: 'Herbst'
+        },
+        {
+          id: 'both',
+          value: 'Beide'
+        }];
+    },
   },
   watch: {
     groupedModules: {
@@ -279,42 +315,6 @@ export default defineComponent({
         ects: [] as number[],
         semester: [] as string[],
       };
-    },
-    categoryFilterData() {
-      return store.getters.enrichedCategories.map(c => {
-        return {
-          id: c.id,
-          value: c.name,
-          color: getColorClassForCategoryId(c.id)
-        };
-      });
-    },
-    ectsFilterData() {
-      return store.getters.modules.map(m => {
-        return m.ects
-      }).filter((value: number, index: number, self: number[]) => {
-        return self.indexOf(value) === index;
-      }).sort((a: number, b: number) => a - b).map((value: number) => {
-        return {
-          id: value,
-          value: value.toString()
-        };
-      }) as { id: number, value: string }[];
-    },
-    semesterFilterData() {
-      return [
-        {
-          id: 'FS',
-          value: 'Frühling'
-        },
-        {
-          id: 'HS',
-          value: 'Herbst'
-        },
-        {
-          id: 'both',
-          value: 'Beide'
-        }];
     },
   }
 });
