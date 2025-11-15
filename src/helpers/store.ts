@@ -8,6 +8,20 @@ const ROUTE_MODULES = '/modules.json';
 const ROUTE_CATEGORIES = '/categories.json';
 const ROUTE_FOCUSES = '/focuses.json';
 
+// Memoization cache for expensive getters
+type EnrichedCategory = Category & { earnedEcts: number; plannedEcts: number; colorClass: string; modules: Module[] };
+type EnrichedFocus = Focus & { numberOfMissingModules: number; availableModules: Module[]; modules: Module[] };
+type EnrichedSemester = Semester & { modules: Module[] };
+
+let cachedEnrichedCategories: EnrichedCategory[] = [];
+let cachedEnrichedCategoriesKeys: string = '';
+let cachedEnrichedFocuses: EnrichedFocus[] = [];
+let cachedEnrichedFocusesKeys: string = '';
+let cachedEnrichedSemesters: EnrichedSemester[] = [];
+let cachedEnrichedSemestersKeys: string = '';
+let cachedAllPlannedModuleIds: string[] = [];
+let cachedAllPlannedModuleIdsKey: string = '';
+
 export const store = createStore({
   state () {
     return {
@@ -30,10 +44,25 @@ export const store = createStore({
       moduleIds.map((id) => state.modules.find((module) => module.id === id)).filter(f => f),
     totalPlannedEcts: () => getPlannedEcts(),
     totalEarnedEcts: () => getEarnedEcts(),
-    allPlannedModuleIds: state => state.semesters
-      .flatMap(semester => semester.moduleIds)
-      .concat(state.accreditedModules.map(m => m.moduleId))
-      .filter(id => id),
+    allPlannedModuleIds: state => {
+      // Create a cache key from semester module IDs and accredited module IDs
+      const cacheKey = state.semesters.map(s => s.moduleIds.join(',')).join(';') + 
+                       '|' + state.accreditedModules.map(m => m.moduleId).join(',');
+      
+      // Return cached result if key hasn't changed
+      if (cachedAllPlannedModuleIdsKey === cacheKey) {
+        return cachedAllPlannedModuleIds;
+      }
+      
+      // Compute new result
+      cachedAllPlannedModuleIds = state.semesters
+        .flatMap(semester => semester.moduleIds)
+        .concat(state.accreditedModules.map(m => m.moduleId))
+        .filter(id => id);
+      cachedAllPlannedModuleIdsKey = cacheKey;
+      
+      return cachedAllPlannedModuleIds;
+    },
     startSemester: state => state.startSemester,
     studienordnung: state => state.studienordnung,
     validationEnabled: state => state.validationEnabled,
@@ -41,18 +70,42 @@ export const store = createStore({
       state.modules.map(m => m.validationInfo).filter(f => f?.severity === 'hard').length,
     hardValidationProblemsByType: state => type =>
       state.modules.map(m => m.validationInfo).filter(f => f?.severity === 'hard' && f?.type === type),
-    enrichedCategories: (state, getters) =>
-      state.categories.map(category => ({
+    enrichedCategories: (state, getters) => {
+      // Create cache key from categories and their module IDs
+      const cacheKey = state.categories.map(c => `${c.id}:${c.moduleIds.join(',')}`).join(';');
+      
+      // Return cached result if key hasn't changed
+      if (cachedEnrichedCategoriesKeys === cacheKey) {
+        return cachedEnrichedCategories;
+      }
+      
+      // Compute new result
+      cachedEnrichedCategories = state.categories.map(category => ({
         ...category,
         earnedEcts: getEarnedEcts(category),
         plannedEcts: getPlannedEcts(category),
         colorClass: getColorClassForCategoryId(category.id),
         modules: getters.modulesByIds(category.moduleIds),
-      })),
+      }));
+      cachedEnrichedCategoriesKeys = cacheKey;
+      
+      return cachedEnrichedCategories;
+    },
     enrichedFocuses: (state, getters) => {
       const plannedModuleIds = getters.allPlannedModuleIds;
       const numberOfModulesRequiredToGetFocus = 8;
-      return state.focuses.map(focus => {
+      
+      // Create cache key from focuses and their module IDs plus planned modules
+      const cacheKey = state.focuses.map(f => `${f.id}:${f.moduleIds.join(',')}`).join(';') + 
+                       '|' + plannedModuleIds.join(',');
+      
+      // Return cached result if key hasn't changed
+      if (cachedEnrichedFocusesKeys === cacheKey) {
+        return cachedEnrichedFocuses;
+      }
+      
+      // Compute new result
+      cachedEnrichedFocuses = state.focuses.map(focus => {
         const allModulesForFocus = getters.modulesByIds(focus.moduleIds);
         return {
           ...focus,
@@ -72,12 +125,28 @@ export const store = createStore({
           modules: allModulesForFocus,
         };
       });
+      cachedEnrichedFocusesKeys = cacheKey;
+      
+      return cachedEnrichedFocuses;
     },
-    enrichedSemesters: (state, getters) =>
-      state.semesters.map(semester => ({
+    enrichedSemesters: (state, getters) => {
+      // Create cache key from semester module IDs
+      const cacheKey = state.semesters.map(s => `${s.number}:${s.moduleIds.join(',')}`).join(';');
+      
+      // Return cached result if key hasn't changed
+      if (cachedEnrichedSemestersKeys === cacheKey) {
+        return cachedEnrichedSemesters;
+      }
+      
+      // Compute new result
+      cachedEnrichedSemesters = state.semesters.map(semester => ({
         ...semester,
         modules: getters.modulesByIds(semester.moduleIds),
-      })),
+      }));
+      cachedEnrichedSemestersKeys = cacheKey;
+      
+      return cachedEnrichedSemesters;
+    },
   },
   mutations: {
     setModules(state, modules: Module[]) {
