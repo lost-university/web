@@ -63,7 +63,7 @@
             <h3>Kategorie</h3>
             <ModuleFilter
               v-model:selected="filter.categories"
-              :data="categoryFilterData"
+              :data="categoryFilterData()"
               data-cy-tag="ModuleFilter-CategoryFilter"
               :is-single-select="false"
               :is-button-group="false"
@@ -74,7 +74,7 @@
             </h3>
             <ModuleFilter
               v-model:selected="filter.ects"
-              :data="ectsFilterData"
+              :data="ectsFilterData()"
               :is-single-select="false"
               data-cy-tag="ModuleFilter-EctsFilter"
               is-button-group
@@ -85,7 +85,7 @@
             </h3>
             <ModuleFilter
               v-model:selected="filter.semester"
-              :data="semesterFilterData"
+              :data="semesterFilterData()"
               data-cy-tag="ModuleFilter-SemesterFilter"
               is-single-select
               is-button-group
@@ -114,13 +114,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import type { Term } from '../helpers/types';
+import type { Module, Term } from '../helpers/types';
 import { store } from '../helpers/store';
 import {
   Dialog as HeadlessUIDialog,
   DialogPanel,
 } from '@headlessui/vue';
 import { getColorClassForCategoryId } from '../helpers/color-helper';
+import { ValidationHelper } from '../helpers/validation-helper';
 import ModuleFilter from "./ModuleFilter.vue";
 import ModuleSearchList from "./ModuleSearchList.vue";
 import type { GroupedModule } from "../types/GroupedModule";
@@ -238,6 +239,46 @@ export default defineComponent({
       }
 
       return filteredGroups;
+    }
+  },
+  watch: {
+    groupedModules: {
+      handler(newValue) {
+        const modules = newValue.flatMap(g => {
+          return g.modules
+        })
+
+        this.isOneModuleAvailable = modules.length !== 0;
+      },
+      deep: true,
+      immediate: true
+    }
+  },
+  methods: {
+    moduleIsDisabled(module: Module): boolean {
+      return this.moduleIsInPlan(module) || (this.disableInvalidModules && (
+        this.moduleHasWrongTerm(module) ||
+        module.isDeactivated ||
+        (this.showNextPossibleSemester && !module.nextPossibleSemester)));
+    },
+    moduleIsInPlan(module: Module): boolean {
+      return store.getters.allPlannedModuleIds.includes(module.id);
+    },
+    moduleHasWrongTerm(module: Module): boolean {
+      return ValidationHelper.isModuleInWrongTerm(module, this.termForWhichToSearch);
+    },
+    selectModule(moduleId: string) {
+      if (moduleId) {
+        // can be null, if Combobox is closed through blur
+        this.$emit('on-module-selected', moduleId);
+      }
+      this.isSearching = false;
+      this.filter = {
+        query: '',
+        categories: [],
+        ects: [] as number[],
+        semester: [] as string[],
+      };
     },
     categoryFilterData() {
       return store.getters.enrichedCategories.map(c => {
@@ -274,34 +315,6 @@ export default defineComponent({
           id: 'both',
           value: 'Beide'
         }];
-    },
-  },
-  watch: {
-    groupedModules: {
-      handler(newValue) {
-        const modules = newValue.flatMap(g => {
-          return g.modules
-        })
-
-        this.isOneModuleAvailable = modules.length !== 0;
-      },
-      deep: true,
-      immediate: true
-    }
-  },
-  methods: {
-    selectModule(moduleId: string) {
-      if (moduleId) {
-        // can be null, if Combobox is closed through blur
-        this.$emit('on-module-selected', moduleId);
-      }
-      this.isSearching = false;
-      this.filter = {
-        query: '',
-        categories: [],
-        ects: [] as number[],
-        semester: [] as string[],
-      };
     },
   }
 });
