@@ -16,8 +16,17 @@ let enrichedCategoriesCache: Array<Category & {
   modules: Module[];
 }> | null = null;
 
+// Cache for enrichedSemesters to improve performance
+let enrichedSemestersCache: Array<Semester & {
+  modules: Module[];
+}> | null = null;
+
 function invalidateEnrichedCategoriesCache() {
   enrichedCategoriesCache = null;
+}
+
+function invalidateEnrichedSemestersCache() {
+  enrichedSemestersCache = null;
 }
 
 export const store = createStore({
@@ -90,16 +99,22 @@ export const store = createStore({
         };
       });
     },
-    enrichedSemesters: (state, getters) =>
-      state.semesters.map(semester => ({
+    enrichedSemesters: (state, getters) => {
+      if (enrichedSemestersCache !== null) {
+        return enrichedSemestersCache;
+      }
+      enrichedSemestersCache = state.semesters.map(semester => ({
         ...semester,
         modules: getters.modulesByIds(semester.moduleIds),
-      })),
+      }));
+      return enrichedSemestersCache;
+    },
   },
   mutations: {
     setModules(state, modules: Module[]) {
       state.modules = modules;
       invalidateEnrichedCategoriesCache();
+      invalidateEnrichedSemestersCache();
     },
     setCategories(state, categories: Category[]) {
       state.categories = categories;
@@ -108,6 +123,7 @@ export const store = createStore({
     setSemesters(state, semesters: Semester[]) {
       state.semesters = semesters;
       invalidateEnrichedCategoriesCache();
+      invalidateEnrichedSemestersCache();
     },
     setFocuses(state, focuses: Focus[]) {
       state.focuses = focuses;
@@ -130,30 +146,36 @@ export const store = createStore({
       const newSemester = new Semester(state.semesters.length + 1, []).setName(state.startSemester);
       state.semesters.push(newSemester);
       invalidateEnrichedCategoriesCache();
+      invalidateEnrichedSemestersCache();
     },
     removeSemester(state, semesterNumber: number) {
       state.semesters.splice(state.semesters.findIndex(f => f.number === semesterNumber), 1);
       invalidateEnrichedCategoriesCache();
+      invalidateEnrichedSemestersCache();
     },
     removeModuleFromSemester(state, data: {semesterNumber: number, moduleId: string}) {
       const semester = state.semesters.find(s => s.number === data.semesterNumber);
       const index = semester.moduleIds.indexOf(data.moduleId);
       semester.moduleIds.splice(index, 1);
       invalidateEnrichedCategoriesCache();
+      invalidateEnrichedSemestersCache();
     },
     removeModuleFromAllSemesters(state, moduleId: string) {
       state.semesters.forEach(semester => {
         semester.moduleIds = semester.moduleIds.filter(id => id !== moduleId);
       });
       invalidateEnrichedCategoriesCache();
+      invalidateEnrichedSemestersCache();
     },
     addModuleToSemester(state, data: {semesterNumber: number, moduleId: string}) {
       state.semesters.find(s => s.number === data.semesterNumber).moduleIds.push(data.moduleId);
       invalidateEnrichedCategoriesCache();
+      invalidateEnrichedSemestersCache();
     },
     setModuleIdsForSemester(state, data: {semesterNumber: number, moduleIds: string[]}) {
       state.semesters.find(s => s.number === data.semesterNumber).moduleIds = data.moduleIds;
       invalidateEnrichedCategoriesCache();
+      invalidateEnrichedSemestersCache();
     },
     updateNameOfAllSemesters(state) {
       state.semesters.forEach(s => s.setName(state.startSemester));
