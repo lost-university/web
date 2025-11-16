@@ -71,27 +71,30 @@ export const store = createStore({
     hardValidationProblemsByType: state => type =>
       state.modules.map(m => m.validationInfo).filter(f => f?.severity === 'hard' && f?.type === type),
     enrichedCategories: (state, getters) => {
-      // Create cache key from categories, their module IDs, AND semester data
-      // (since earnedEcts/plannedEcts depend on which semesters modules are in)
-      const semesterKey = state.semesters.map(s => `${s.number}:${s.moduleIds.join(',')}`).join(';');
-      const accreditedKey = state.accreditedModules.map(m => `${m.moduleId}:${m.ects}`).join(',');
-      const cacheKey = state.categories.map(c => `${c.id}:${c.moduleIds.join(',')}`).join(';') + 
-                       `|${semesterKey}|${accreditedKey}|${state.startSemester?.toString() || ''}`;
+      // Create cache key from only the categories and their module IDs
+      const cacheKey = state.categories.map(c => `${c.id}:${c.moduleIds.join(',')}`).join(';');
       
-      // Return cached result if key hasn't changed
-      if (cachedEnrichedCategoriesKeys === cacheKey) {
-        return cachedEnrichedCategories;
+      // Check if the structure changed
+      const structureChanged = cachedEnrichedCategoriesKeys !== cacheKey;
+      
+      if (structureChanged) {
+        // Recompute everything when structure changes
+        cachedEnrichedCategories = state.categories.map(category => ({
+          ...category,
+          earnedEcts: getEarnedEcts(category),
+          plannedEcts: getPlannedEcts(category),
+          colorClass: getColorClassForCategoryId(category.id),
+          modules: getters.modulesByIds(category.moduleIds),
+        }));
+        cachedEnrichedCategoriesKeys = cacheKey;
+      } else {
+        // Structure unchanged, only update ECTS values in place
+        // This maintains the same array/object references for Vue's reactivity
+        cachedEnrichedCategories.forEach(category => {
+          category.earnedEcts = getEarnedEcts(category);
+          category.plannedEcts = getPlannedEcts(category);
+        });
       }
-      
-      // Compute new result
-      cachedEnrichedCategories = state.categories.map(category => ({
-        ...category,
-        earnedEcts: getEarnedEcts(category),
-        plannedEcts: getPlannedEcts(category),
-        colorClass: getColorClassForCategoryId(category.id),
-        modules: getters.modulesByIds(category.moduleIds),
-      }));
-      cachedEnrichedCategoriesKeys = cacheKey;
       
       return cachedEnrichedCategories;
     },
