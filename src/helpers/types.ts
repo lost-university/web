@@ -90,7 +90,7 @@ export class Module {
     this.validationInfo = ValidationHelper.getValidationInfoForModule(this, allSemesters, allAccreditedModules);
   }
 
-  getDisplayTextForTerm() {
+  get displayTextForTerm() {
     if(this.term === 'both') {
       return 'beide';
     } else if (this.term === '') {

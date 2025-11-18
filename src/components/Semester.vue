@@ -75,7 +75,7 @@ export default defineComponent({
   emits: ['on-module-deleted', 'on-add-module', 'on-remove-semester', 'on-drop-end'],
   computed: {
     getTotalEcts(): number {
-      return this.countTotalEcts();
+      return this.semester.modules.reduce((previousValue, module) => previousValue + module.ects, 0);
     },
     modules: {
       get() {
@@ -101,9 +101,6 @@ export default defineComponent({
     },
     removeSemester() {
       this.$emit('on-remove-semester', this.semester.number);
-    },
-    countTotalEcts(): number {
-      return this.semester.modules.reduce((previousValue, module) => previousValue + module.ects, 0);
     },
     onDropEnd() {
       this.$emit('on-drop-end');
