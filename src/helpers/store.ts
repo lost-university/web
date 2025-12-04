@@ -23,11 +23,16 @@ export const store = createStore({
   },
   getters: {
     modules: state => state.modules,
+    modulesMap: state => {
+      const map = new Map<string, Module>();
+      state.modules.forEach(m => map.set(m.id, m));
+      return map;
+    },
     semesters: state => state.semesters,
     categories: state => state.categories,
     accreditedModules: state => state.accreditedModules,
-    modulesByIds: state => moduleIds =>
-      moduleIds.map((id) => state.modules.find((module) => module.id === id)).filter(f => f),
+    modulesByIds: (state, getters) => (moduleIds: string[]) =>
+      moduleIds.map((id) => getters.modulesMap.get(id)).filter((f: Module | undefined) => f),
     totalPlannedEcts: () => getPlannedEcts(),
     totalEarnedEcts: () => getEarnedEcts(),
     allPlannedModuleIds: state => state.semesters
