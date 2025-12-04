@@ -1,11 +1,11 @@
 <template>
   <div class="bg-gray-200 relative h-5 rounded-full">
     <div
-      class="bg-gray-300 h-full absolute rounded-full transition-all duration-1000"
+      class="bg-gray-300 h-full absolute rounded-full transition-all duration-300"
       :style="{ width: plannedProgress }"
     />
     <div
-      class="h-full absolute transition-all duration-1000 rounded-full"
+      class="h-full absolute transition-all duration-300 rounded-full"
       :class="computedClasses"
       :style="{
         width: earnedProgress
