@@ -189,7 +189,7 @@ export default defineComponent({
       return {
         src: '/this_is_fine.jpg',
         alt: "The well known 'this is fine' meme with a dog in a room full of fire."
-      }
+      };
     }
   },
   watch: {
