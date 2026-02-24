@@ -180,8 +180,7 @@ export default defineComponent({
           src: '/this_is_fine_summer.jpg',
           alt: "A twist on the well known 'this is fine' meme with a dog sitting at the beach with a drink."
         };
-      }
-      else if (currentMonth >= 12 || currentMonth <= 2) {
+      } else if (currentMonth >= 12 || currentMonth <= 2) {
         return {
           src: '/this_is_fine_winter.jpg',
           alt: "Alternative version of the well known 'this is fine' meme with a dog in a room full of snow."
