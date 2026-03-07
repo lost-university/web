@@ -51,7 +51,8 @@ export function useGraphView() {
   }
 
   async function computeLayout() {
-    const plannedModules = modules.value.filter((m) => allPlannedModuleIds.value.includes(m.id));
+    const plannedIdSet = new Set(allPlannedModuleIds.value);
+    const plannedModules = modules.value.filter((m) => plannedIdSet.has(m.id));
     const rawNodes = generateModuleNodes(plannedModules);
     const rawEdges = generateModuleEdges(
       plannedModules,

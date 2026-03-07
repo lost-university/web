@@ -26,14 +26,24 @@ export const store = createStore({
     semesters: state => state.semesters,
     categories: state => state.categories,
     accreditedModules: state => state.accreditedModules,
-    modulesByIds: state => moduleIds =>
-      moduleIds.map((id) => state.modules.find((module) => module.id === id)).filter(f => f),
-    totalPlannedEcts: () => getPlannedEcts(),
-    totalEarnedEcts: () => getEarnedEcts(),
+    moduleMap: state => {
+      const map = new Map<string, Module>();
+      state.modules.forEach(m => map.set(m.id, m));
+      return map;
+    },
+    modulesByIds: (_state, getters) => (moduleIds: string[]) => {
+      const map = getters.moduleMap as Map<string, Module>;
+      return moduleIds.map(id => map.get(id)).filter(f => f);
+    },
     allPlannedModuleIds: state => state.semesters
       .flatMap(semester => semester.moduleIds)
       .concat(state.accreditedModules.map(m => m.moduleId))
       .filter(id => id),
+    allPlannedModuleIdsSet: (_state, getters) => {
+      return new Set<string>(getters.allPlannedModuleIds);
+    },
+    totalPlannedEcts: (_state, getters) => getPlannedEcts(undefined, getters.enrichedSemesters),
+    totalEarnedEcts: (_state, getters) => getEarnedEcts(undefined, getters.enrichedSemesters),
     startSemester: state => state.startSemester,
     studienordnung: state => state.studienordnung,
     validationEnabled: state => state.validationEnabled,
@@ -41,43 +51,53 @@ export const store = createStore({
       state.modules.map(m => m.validationInfo).filter(f => f?.severity === 'hard').length,
     hardValidationProblemsByType: state => type =>
       state.modules.map(m => m.validationInfo).filter(f => f?.severity === 'hard' && f?.type === type),
-    enrichedCategories: (state, getters) =>
-      state.categories.map(category => ({
+    enrichedSemesters: (_state, getters) => {
+      const state = store.state;
+      const map = getters.moduleMap as Map<string, Module>;
+      return state.semesters.map(semester => ({
+        ...semester,
+        modules: semester.moduleIds.map(id => map.get(id)).filter(f => f),
+      }));
+    },
+    enrichedCategories: (_state, getters) => {
+      const state = store.state;
+      const map = getters.moduleMap as Map<string, Module>;
+      const enrichedSemesters = getters.enrichedSemesters;
+      return state.categories.map(category => ({
         ...category,
-        earnedEcts: getEarnedEcts(category),
-        plannedEcts: getPlannedEcts(category),
+        earnedEcts: getEarnedEcts(category, enrichedSemesters),
+        plannedEcts: getPlannedEcts(category, enrichedSemesters),
         colorClass: getColorClassForCategoryId(category.id),
-        modules: getters.modulesByIds(category.moduleIds),
-      })),
-    enrichedFocuses: (state, getters) => {
-      const plannedModuleIds = getters.allPlannedModuleIds;
+        modules: category.moduleIds.map(id => map.get(id)).filter(f => f),
+      }));
+    },
+    enrichedFocuses: (_state, getters) => {
+      const state = store.state;
+      const plannedSet = getters.allPlannedModuleIdsSet as Set<string>;
+      const map = getters.moduleMap as Map<string, Module>;
       const numberOfModulesRequiredToGetFocus = 8;
       return state.focuses.map(focus => {
-        const allModulesForFocus = getters.modulesByIds(focus.moduleIds);
+        const allModulesForFocus = focus.moduleIds.map(id => map.get(id)).filter(f => f) as Module[];
         return {
           ...focus,
           numberOfMissingModules:
             Math.max(
               0,
               numberOfModulesRequiredToGetFocus - focus.moduleIds.filter(moduleId =>
-                plannedModuleIds.includes(moduleId)).length
+                plannedSet.has(moduleId)).length
             ),
             // to only show actually available modules, we filter out predecessors of already planned ones
-          availableModules: getters.modulesByIds(
-            focus.moduleIds.filter(moduleId =>
-              !plannedModuleIds.includes(moduleId) &&
-              !plannedModuleIds.includes(allModulesForFocus.find(module => module.id === moduleId).successorModuleId)
+          availableModules: focus.moduleIds
+            .filter(moduleId =>
+              !plannedSet.has(moduleId) &&
+              !plannedSet.has(allModulesForFocus.find(module => module.id === moduleId)?.successorModuleId)
             )
-          ),
+            .map(id => map.get(id))
+            .filter(f => f),
           modules: allModulesForFocus,
         };
       });
     },
-    enrichedSemesters: (state, getters) =>
-      state.semesters.map(semester => ({
-        ...semester,
-        modules: getters.modulesByIds(semester.moduleIds),
-      })),
   },
   mutations: {
     setModules(state, modules: Module[]) {
@@ -204,7 +224,7 @@ export const store = createStore({
     },
   }
 });
-function getEarnedEcts(category?: Category): number {
+function getEarnedEcts(category: Category | undefined, enrichedSemesters: Semester[]): number {
   if (store.getters.startSemester === undefined) {
     return 0;
   }
@@ -214,7 +234,7 @@ function getEarnedEcts(category?: Category): number {
     return 0;
   }
 
-  const ectsInSemesters = store.getters.enrichedSemesters
+  const ectsInSemesters = enrichedSemesters
     .slice(0, indexOfLastCompletedSemester)
     .flatMap((semester) => semester.modules)
     .filter((module) => !category || category.moduleIds.includes(module.id))
@@ -225,12 +245,12 @@ function getEarnedEcts(category?: Category): number {
   return ectsInSemesters + accreditedEcts;
 }
 
-function getPlannedEcts(category?: Category): number {
+function getPlannedEcts(category: Category | undefined, enrichedSemesters: Semester[]): number {
   if (store.getters.startSemester === undefined) {
     return 0;
   }
 
-  let semestersToConsider = store.getters.enrichedSemesters;
+  let semestersToConsider = enrichedSemesters;
   const indexOfLastCompletedSemester = SemesterInfo.now().difference(store.getters.startSemester);
 
   if (indexOfLastCompletedSemester >= 0) {

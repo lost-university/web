@@ -63,7 +63,7 @@
             <h3>Kategorie</h3>
             <ModuleFilter
               v-model:selected="filter.categories"
-              :data="categoryFilterData()"
+              :data="categoryFilterData"
               data-cy-tag="ModuleFilter-CategoryFilter"
               :is-single-select="false"
               :is-button-group="false"
@@ -74,7 +74,7 @@
             </h3>
             <ModuleFilter
               v-model:selected="filter.ects"
-              :data="ectsFilterData()"
+              :data="ectsFilterData"
               :is-single-select="false"
               data-cy-tag="ModuleFilter-EctsFilter"
               is-button-group
@@ -85,7 +85,7 @@
             </h3>
             <ModuleFilter
               v-model:selected="filter.semester"
-              :data="semesterFilterData()"
+              :data="semesterFilterData"
               data-cy-tag="ModuleFilter-SemesterFilter"
               is-single-select
               is-button-group
@@ -177,7 +177,6 @@ export default defineComponent({
   data() {
     return {
       isSearching: false,
-      isOneModuleAvailable: true,
       filter: {
         query: '',
         categories: [] as string[],
@@ -197,8 +196,8 @@ export default defineComponent({
           colorClass: getColorClassForCategoryId(c.id),
         };
       });
-      const modulesInGroups = groups.flatMap(g => g.modules).map(m => m.id);
-      const modulesNotInGroups = store.getters.modules.filter(m => !modulesInGroups.includes(m.id));
+      const modulesInGroupIds = new Set(groups.flatMap(g => g.modules).map(m => m.id));
+      const modulesNotInGroups = store.getters.modules.filter(m => !modulesInGroupIds.has(m.id));
       let filteredGroups: GroupedModule[] = groups.concat({
         id: 'none',
         name: 'Ohne',
@@ -211,48 +210,50 @@ export default defineComponent({
         filteredGroups = filteredGroups.filter(v => this.filter.categories.includes(v.id))
       }
 
-      if (this.filter.ects.length > 0) {
-        filteredGroups = filteredGroups.map(g => {
-          return {
-            ...g,
-            modules: g.modules.filter(m => this.filter.ects.includes(m.ects))
-          }
-        });
-      }
+      const ectsFilter = this.filter.ects;
+      const semesterFilter = this.filter.semester;
+      const queryFilter = this.filter.query.toLowerCase();
+      const needsModuleFilter = ectsFilter.length > 0 || semesterFilter.length > 0 || queryFilter.length > 0;
 
-      if (this.filter.semester.length > 0) {
-        filteredGroups = filteredGroups.map(g => {
-          return {
-            ...g,
-            modules: g.modules.filter(m => this.filter.semester.includes(m.term as string))
-          }
-        });
-      }
-
-      if (this.filter.query.length > 0) {
-        filteredGroups = filteredGroups.map(g => {
-          return {
-            ...g,
-            modules: g.modules.filter(m => m.name.toLowerCase().includes(this.filter.query.toLowerCase()))
-          }
-        });
+      if (needsModuleFilter) {
+        filteredGroups = filteredGroups.map(g => ({
+          ...g,
+          modules: g.modules.filter(m =>
+            (ectsFilter.length === 0 || ectsFilter.includes(m.ects)) &&
+            (semesterFilter.length === 0 || semesterFilter.includes(m.term as string)) &&
+            (queryFilter.length === 0 || m.name.toLowerCase().includes(queryFilter))
+          )
+        }));
       }
 
       return filteredGroups;
-    }
-  },
-  watch: {
-    groupedModules: {
-      handler(newValue) {
-        const modules = newValue.flatMap(g => {
-          return g.modules
-        })
-
-        this.isOneModuleAvailable = modules.length !== 0;
-      },
-      deep: true,
-      immediate: true
-    }
+    },
+    isOneModuleAvailable(): boolean {
+      return this.groupedModules.some(g => g.modules.length > 0);
+    },
+    categoryFilterData() {
+      return store.getters.enrichedCategories.map(c => ({
+        id: c.id,
+        value: c.name,
+        color: getColorClassForCategoryId(c.id)
+      }));
+    },
+    ectsFilterData() {
+      return store.getters.modules.map(m => m.ects)
+        .filter((value: number, index: number, self: number[]) => self.indexOf(value) === index)
+        .sort((a: number, b: number) => a - b)
+        .map((value: number) => ({
+          id: value,
+          value: value.toString()
+        })) as { id: number, value: string }[];
+    },
+    semesterFilterData() {
+      return [
+        { id: 'FS', value: 'Frühling' },
+        { id: 'HS', value: 'Herbst' },
+        { id: 'both', value: 'Beide' }
+      ];
+    },
   },
   methods: {
     moduleIsDisabled(module: Module): boolean {
@@ -262,7 +263,7 @@ export default defineComponent({
         (this.showNextPossibleSemester && !module.nextPossibleSemester)));
     },
     moduleIsInPlan(module: Module): boolean {
-      return store.getters.allPlannedModuleIds.includes(module.id);
+      return (store.getters.allPlannedModuleIdsSet as Set<string>).has(module.id);
     },
     moduleHasWrongTerm(module: Module): boolean {
       return ValidationHelper.isModuleInWrongTerm(module, this.termForWhichToSearch);
@@ -279,42 +280,6 @@ export default defineComponent({
         ects: [] as number[],
         semester: [] as string[],
       };
-    },
-    categoryFilterData() {
-      return store.getters.enrichedCategories.map(c => {
-        return {
-          id: c.id,
-          value: c.name,
-          color: getColorClassForCategoryId(c.id)
-        };
-      });
-    },
-    ectsFilterData() {
-      return store.getters.modules.map(m => {
-        return m.ects
-      }).filter((value: number, index: number, self: number[]) => {
-        return self.indexOf(value) === index;
-      }).sort((a: number, b: number) => a - b).map((value: number) => {
-        return {
-          id: value,
-          value: value.toString()
-        };
-      }) as { id: number, value: string }[];
-    },
-    semesterFilterData() {
-      return [
-        {
-          id: 'FS',
-          value: 'Frühling'
-        },
-        {
-          id: 'HS',
-          value: 'Herbst'
-        },
-        {
-          id: 'both',
-          value: 'Beide'
-        }];
     },
   }
 });

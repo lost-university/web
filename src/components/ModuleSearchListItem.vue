@@ -61,7 +61,7 @@ export default defineComponent({
   },
   methods: {
     moduleIsInPlan(module: Module): boolean {
-      return store.getters.allPlannedModuleIds.includes(module.id);
+      return (store.getters.allPlannedModuleIdsSet as Set<string>).has(module.id);
     },
     moduleIsDisabled(module: Module): boolean {
       return this.moduleIsInPlan(module) || (this.disableInvalidModules && (
