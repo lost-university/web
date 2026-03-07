@@ -31,10 +31,6 @@ export const store = createStore({
       state.modules.forEach(m => map.set(m.id, m));
       return map;
     },
-    modulesByIds: (_state, getters) => (moduleIds: string[]) => {
-      const map = getters.moduleMap as Map<string, Module>;
-      return moduleIds.map(id => map.get(id)).filter(f => f);
-    },
     allPlannedModuleIds: state => state.semesters
       .flatMap(semester => semester.moduleIds)
       .concat(state.accreditedModules.map(m => m.moduleId))
