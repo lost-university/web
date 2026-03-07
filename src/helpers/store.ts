@@ -88,10 +88,13 @@ export const store = createStore({
             ),
             // to only show actually available modules, we filter out predecessors of already planned ones
           availableModules: focus.moduleIds
-            .filter(moduleId =>
-              !plannedSet.has(moduleId) &&
-              !plannedSet.has(allModulesForFocus.find(module => module.id === moduleId)?.successorModuleId)
-            )
+            .filter(moduleId => {
+              const successorId = allModulesForFocus.find(module => module.id === moduleId)?.successorModuleId;
+              return (
+                !plannedSet.has(moduleId) &&
+                !(successorId && plannedSet.has(successorId))
+              );
+            })
             .map(id => map.get(id))
             .filter(f => f),
           modules: allModulesForFocus,
