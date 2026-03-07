@@ -51,16 +51,14 @@ export const store = createStore({
       state.modules.map(m => m.validationInfo).filter(f => f?.severity === 'hard').length,
     hardValidationProblemsByType: state => type =>
       state.modules.map(m => m.validationInfo).filter(f => f?.severity === 'hard' && f?.type === type),
-    enrichedSemesters: (_state, getters) => {
-      const state = store.state;
+    enrichedSemesters: (state, getters) => {
       const map = getters.moduleMap as Map<string, Module>;
       return state.semesters.map(semester => ({
         ...semester,
         modules: semester.moduleIds.map(id => map.get(id)).filter(f => f),
       }));
     },
-    enrichedCategories: (_state, getters) => {
-      const state = store.state;
+    enrichedCategories: (state, getters) => {
       const map = getters.moduleMap as Map<string, Module>;
       const enrichedSemesters = getters.enrichedSemesters;
       return state.categories.map(category => ({
