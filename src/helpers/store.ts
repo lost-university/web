@@ -51,7 +51,7 @@ export const store = createStore({
       const map = getters.moduleMap as Map<string, Module>;
       return state.semesters.map(semester => ({
         ...semester,
-        modules: semester.moduleIds.map(id => map.get(id)).filter(f => f),
+        modules: semester.moduleIds.map(id => map.get(id)).filter((m): m is Module => !!m),
       }));
     },
     enrichedCategories: (state, getters) => {
@@ -64,7 +64,7 @@ export const store = createStore({
         earnedEcts: getEarnedEcts(category, enrichedSemesters, startSemester, accreditedModules),
         plannedEcts: getPlannedEcts(category, enrichedSemesters, startSemester),
         colorClass: getColorClassForCategoryId(category.id),
-        modules: category.moduleIds.map(id => map.get(id)).filter(f => f),
+        modules: category.moduleIds.map(id => map.get(id)).filter((m): m is Module => !!m),
       }));
     },
     enrichedFocuses: (state, getters) => {
@@ -72,7 +72,7 @@ export const store = createStore({
       const map = getters.moduleMap as Map<string, Module>;
       const numberOfModulesRequiredToGetFocus = 8;
       return state.focuses.map(focus => {
-        const allModulesForFocus = focus.moduleIds.map(id => map.get(id)).filter(f => f) as Module[];
+        const allModulesForFocus = focus.moduleIds.map(id => map.get(id)).filter((m): m is Module => !!m);
         return {
           ...focus,
           numberOfMissingModules:
@@ -91,7 +91,7 @@ export const store = createStore({
               );
             })
             .map(id => map.get(id))
-            .filter(f => f),
+            .filter((m): m is Module => !!m),
           modules: allModulesForFocus,
         };
       });
