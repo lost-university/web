@@ -31,14 +31,10 @@ export const store = createStore({
       state.modules.forEach(m => map.set(m.id, m));
       return map;
     },
-    modulesByIds: (_state, getters) => (moduleIds: string[]) => {
-      const map = getters.moduleMap as Map<string, Module>;
-      return moduleIds.map(id => map.get(id)).filter(f => f);
-    },
     allPlannedModuleIds: state => state.semesters
       .flatMap(semester => semester.moduleIds)
       .concat(state.accreditedModules.map(m => m.moduleId))
-      .filter(id => id),
+      .filter((id): id is string => !!id),
     allPlannedModuleIdsSet: (_state, getters) => {
       return new Set<string>(getters.allPlannedModuleIds);
     },
@@ -69,8 +65,7 @@ export const store = createStore({
         modules: category.moduleIds.map(id => map.get(id)).filter(f => f),
       }));
     },
-    enrichedFocuses: (_state, getters) => {
-      const state = store.state;
+    enrichedFocuses: (state, getters) => {
       const plannedSet = getters.allPlannedModuleIdsSet as Set<string>;
       const map = getters.moduleMap as Map<string, Module>;
       const numberOfModulesRequiredToGetFocus = 8;
