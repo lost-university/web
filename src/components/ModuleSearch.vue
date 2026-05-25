@@ -183,6 +183,7 @@ export default defineComponent({
   data() {
     return {
       isSearching: false,
+      semesterFilterData: SEMESTER_FILTER_DATA,
       filter: {
         query: '',
         categories: [] as string[],
@@ -248,9 +249,6 @@ export default defineComponent({
       return [...new Set<number>(store.getters.modules.map(m => m.ects))]
         .sort((a, b) => a - b)
         .map(value => ({ id: value, value: value.toString() })) as { id: number, value: string }[];
-    },
-    semesterFilterData() {
-      return SEMESTER_FILTER_DATA;
     },
   },
   methods: {

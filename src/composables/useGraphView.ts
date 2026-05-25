@@ -51,7 +51,7 @@ export function useGraphView() {
   }
 
   async function computeLayout() {
-    const plannedIdSet = new Set(allPlannedModuleIds.value);
+    const plannedIdSet = store.getters.allPlannedModuleIdsSet as Set<string>;
     const plannedModules = modules.value.filter((m) => plannedIdSet.has(m.id));
     const rawNodes = generateModuleNodes(plannedModules);
     const rawEdges = generateModuleEdges(

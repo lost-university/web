@@ -38,8 +38,8 @@ export const store = createStore({
     allPlannedModuleIdsSet: (_state, getters) => {
       return new Set<string>(getters.allPlannedModuleIds);
     },
-    totalPlannedEcts: (_state, getters) => getPlannedEcts(undefined, getters.enrichedSemesters),
-    totalEarnedEcts: (_state, getters) => getEarnedEcts(undefined, getters.enrichedSemesters),
+    totalPlannedEcts: (_state, getters) => getPlannedEcts(undefined, getters.enrichedSemesters, getters.startSemester),
+    totalEarnedEcts: (_state, getters) => getEarnedEcts(undefined, getters.enrichedSemesters, getters.startSemester, getters.accreditedModules),
     startSemester: state => state.startSemester,
     studienordnung: state => state.studienordnung,
     validationEnabled: state => state.validationEnabled,
@@ -57,10 +57,12 @@ export const store = createStore({
     enrichedCategories: (state, getters) => {
       const map = getters.moduleMap as Map<string, Module>;
       const enrichedSemesters = getters.enrichedSemesters;
+      const startSemester = getters.startSemester;
+      const accreditedModules = getters.accreditedModules;
       return state.categories.map(category => ({
         ...category,
-        earnedEcts: getEarnedEcts(category, enrichedSemesters),
-        plannedEcts: getPlannedEcts(category, enrichedSemesters),
+        earnedEcts: getEarnedEcts(category, enrichedSemesters, startSemester, accreditedModules),
+        plannedEcts: getPlannedEcts(category, enrichedSemesters, startSemester),
         colorClass: getColorClassForCategoryId(category.id),
         modules: category.moduleIds.map(id => map.get(id)).filter(f => f),
       }));
@@ -82,7 +84,7 @@ export const store = createStore({
             // to only show actually available modules, we filter out predecessors of already planned ones
           availableModules: focus.moduleIds
             .filter(moduleId => {
-              const successorId = allModulesForFocus.find(module => module.id === moduleId)?.successorModuleId;
+              const successorId = map.get(moduleId)?.successorModuleId;
               return (
                 !plannedSet.has(moduleId) &&
                 !(successorId && plannedSet.has(successorId))
@@ -220,11 +222,11 @@ export const store = createStore({
     },
   }
 });
-function getEarnedEcts(category: Category | undefined, enrichedSemesters: Semester[]): number {
-  if (store.getters.startSemester === undefined) {
+function getEarnedEcts(category: Category | undefined, enrichedSemesters: Semester[], startSemester: SemesterInfo | undefined, accreditedModules: AccreditedModule[]): number {
+  if (startSemester === undefined) {
     return 0;
   }
-  const indexOfLastCompletedSemester = SemesterInfo.now().difference(store.getters.startSemester);
+  const indexOfLastCompletedSemester = SemesterInfo.now().difference(startSemester);
 
   if (indexOfLastCompletedSemester < 0) {
     return 0;
@@ -235,19 +237,19 @@ function getEarnedEcts(category: Category | undefined, enrichedSemesters: Semest
     .flatMap((semester) => semester.modules)
     .filter((module) => !category || category.moduleIds.includes(module.id))
     .reduce((previousTotal, module) => previousTotal + module.ects, 0);
-  const accreditedEcts = store.getters.accreditedModules
+  const accreditedEcts = accreditedModules
     .filter(module => !category || module.categoryIds.includes(category.id))
     .reduce((previousTotal, module) => previousTotal + module.ects, 0);
   return ectsInSemesters + accreditedEcts;
 }
 
-function getPlannedEcts(category: Category | undefined, enrichedSemesters: Semester[]): number {
-  if (store.getters.startSemester === undefined) {
+function getPlannedEcts(category: Category | undefined, enrichedSemesters: Semester[], startSemester: SemesterInfo | undefined): number {
+  if (startSemester === undefined) {
     return 0;
   }
 
   let semestersToConsider = enrichedSemesters;
-  const indexOfLastCompletedSemester = SemesterInfo.now().difference(store.getters.startSemester);
+  const indexOfLastCompletedSemester = SemesterInfo.now().difference(startSemester);
 
   if (indexOfLastCompletedSemester >= 0) {
     semestersToConsider = semestersToConsider.slice(indexOfLastCompletedSemester)
