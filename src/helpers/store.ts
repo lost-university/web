@@ -39,7 +39,8 @@ export const store = createStore({
       return new Set<string>(getters.allPlannedModuleIds);
     },
     totalPlannedEcts: (_state, getters) => getPlannedEcts(undefined, getters.enrichedSemesters, getters.startSemester),
-    totalEarnedEcts: (_state, getters) => getEarnedEcts(undefined, getters.enrichedSemesters, getters.startSemester, getters.accreditedModules),
+    totalEarnedEcts: (_state, getters) =>
+      getEarnedEcts(undefined, getters.enrichedSemesters, getters.startSemester, getters.accreditedModules),
     startSemester: state => state.startSemester,
     studienordnung: state => state.studienordnung,
     validationEnabled: state => state.validationEnabled,
@@ -222,7 +223,12 @@ export const store = createStore({
     },
   }
 });
-function getEarnedEcts(category: Category | undefined, enrichedSemesters: Semester[], startSemester: SemesterInfo | undefined, accreditedModules: AccreditedModule[]): number {
+function getEarnedEcts(
+  category: Category | undefined,
+  enrichedSemesters: Semester[],
+  startSemester: SemesterInfo | undefined,
+  accreditedModules: AccreditedModule[],
+): number {
   if (startSemester === undefined) {
     return 0;
   }
@@ -243,7 +249,11 @@ function getEarnedEcts(category: Category | undefined, enrichedSemesters: Semest
   return ectsInSemesters + accreditedEcts;
 }
 
-function getPlannedEcts(category: Category | undefined, enrichedSemesters: Semester[], startSemester: SemesterInfo | undefined): number {
+function getPlannedEcts(
+  category: Category | undefined,
+  enrichedSemesters: Semester[],
+  startSemester: SemesterInfo | undefined,
+): number {
   if (startSemester === undefined) {
     return 0;
   }
