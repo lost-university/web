@@ -126,6 +126,12 @@ import ModuleFilter from "./ModuleFilter.vue";
 import ModuleSearchList from "./ModuleSearchList.vue";
 import type { GroupedModule } from "../types/GroupedModule";
 
+const SEMESTER_FILTER_DATA = [
+  { id: 'FS', value: 'Frühling' },
+  { id: 'HS', value: 'Herbst' },
+  { id: 'both', value: 'Beide' }
+];
+
 export default defineComponent({
   name: 'ModuleSearch',
   components: {
@@ -239,20 +245,12 @@ export default defineComponent({
       }));
     },
     ectsFilterData() {
-      return store.getters.modules.map(m => m.ects)
-        .filter((value: number, index: number, self: number[]) => self.indexOf(value) === index)
-        .sort((a: number, b: number) => a - b)
-        .map((value: number) => ({
-          id: value,
-          value: value.toString()
-        })) as { id: number, value: string }[];
+      return [...new Set<number>(store.getters.modules.map(m => m.ects))]
+        .sort((a, b) => a - b)
+        .map(value => ({ id: value, value: value.toString() })) as { id: number, value: string }[];
     },
     semesterFilterData() {
-      return [
-        { id: 'FS', value: 'Frühling' },
-        { id: 'HS', value: 'Herbst' },
-        { id: 'both', value: 'Beide' }
-      ];
+      return SEMESTER_FILTER_DATA;
     },
   },
   methods: {
