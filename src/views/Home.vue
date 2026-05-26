@@ -195,9 +195,9 @@ export default defineComponent({
   watch: {
     $route: {
       handler() {
-        setTimeout(() => {
+        this.$nextTick(() => {
           this.getPlanDataFromUrl();
-        }, 0);
+        });
       },
     },
   },

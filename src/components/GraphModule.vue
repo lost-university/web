@@ -123,14 +123,18 @@ export default defineComponent({
   },
   computed: {
     recommendedModules(): Module[] {
+      const moduleMap = store.getters.moduleMap as Map<string, Module>;
+      const plannedSet = store.getters.allPlannedModuleIdsSet as Set<string>;
       return this.module.recommendedModuleIds
-        .map(id => (store.getters.modules as Module[]).find(m => m.id === id))
-        .filter((m): m is Module => !!m && !(store.getters.allPlannedModuleIds as string[]).includes(m.id))
+        .map(id => moduleMap.get(id))
+        .filter((m): m is Module => !!m && !plannedSet.has(m.id))
     },
     dependentModules(): Module[] {
+      const moduleMap = store.getters.moduleMap as Map<string, Module>;
+      const plannedSet = store.getters.allPlannedModuleIdsSet as Set<string>;
       return this.module.dependentModuleIds
-        .map(id => (store.getters.modules as Module[]).find(m => m.id === id))
-        .filter((m): m is Module => !!m && !(store.getters.allPlannedModuleIds as string[]).includes(m.id))
+        .map(id => moduleMap.get(id))
+        .filter((m): m is Module => !!m && !plannedSet.has(m.id))
     },
     hasRecommended(): boolean {
       return this.recommendedModules.length > 0

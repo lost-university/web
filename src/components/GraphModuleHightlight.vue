@@ -48,7 +48,7 @@ export default {
   },
   computed: {
     isPlanned(): boolean {
-      return (store.getters.allPlannedModuleIds as string[]).includes(this.id);
+      return (store.getters.allPlannedModuleIdsSet as Set<string>).has(this.id);
     },
   },
   methods: {
