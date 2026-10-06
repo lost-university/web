@@ -3,16 +3,25 @@ import { mount } from 'cypress/vue';
 import ModuleSearch from "../ModuleSearch.vue";
 import { store } from "../../helpers/store";
 
+const DATA_URL = 'https://raw.githubusercontent.com/lost-university/data/main/data';
+
 describe('ModuleSearch FilterModal Component', () => {
   beforeEach(() => {
-    store.dispatch('loadModules')
-    store.dispatch('loadFocuses')
-    store.dispatch('loadCategories')
-    mount(ModuleSearch, {
+    cy.intercept('GET', `${DATA_URL}/modules.json`, { fixture: 'modules.json' });
+    cy.intercept('GET', `${DATA_URL}21/categories.json`, { fixture: 'categories.json' });
+    cy.intercept('GET', `${DATA_URL}21/focuses.json`, { body: [] });
+
+    cy.then(() => Promise.all([
+      store.dispatch('loadModules'),
+      store.dispatch('loadFocuses'),
+      store.dispatch('loadCategories'),
+    ]));
+
+    cy.then(() => mount(ModuleSearch, {
       global: {
         plugins: [store]
       }
-    })
+    }));
 
     cy.get('[data-cy="ModuleSearch-OpenButton"]').first().click();
     cy.get('[data-cy="ModuleSearch-DialogPanel"]').should('be.visible');
@@ -43,8 +52,7 @@ describe('ModuleSearch FilterModal Component', () => {
 
   it('filters by semester', () => {
     cy.get('[data-cy="ModuleFilter-SemesterFilter-Item"]').last().click();
-    cy.get('[data-cy="ModuleSearch-ModuleList"]').should('have.lengthOf.at.most', 6)
-    cy.get('[data-cy="ModuleSearch-ModuleList"]').should('have.lengthOf.at.least', 6)
+    cy.get('[data-cy="ModuleSearch-ModuleList"]').should('have.length', 5)
     cy.get('[data-cy="ModuleSearch-ModuleList"]')
       .first()
       .children()
