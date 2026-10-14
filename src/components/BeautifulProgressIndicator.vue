@@ -22,7 +22,7 @@
       v-if="earned < required"
       class="text-gray-400"
     >
-      {{ toBePlanned }} zu planen
+      <template v-if="planned > 0">{{ planned }} geplant · </template>{{ toBePlanned }} zu planen
     </span>
   </div>
 </template>
