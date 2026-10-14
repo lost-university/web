@@ -26,6 +26,7 @@ export const store = createStore({
     semesters: state => state.semesters,
     categories: state => state.categories,
     accreditedModules: state => state.accreditedModules,
+    focuses: state => state.focuses,
     moduleMap: state => {
       const map = new Map<string, Module>();
       state.modules.forEach(m => map.set(m.id, m));
