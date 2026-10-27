@@ -1,7 +1,8 @@
 <template>
   <div class="bg-gray-200 relative h-5 rounded-full">
     <div
-      class="bg-gray-300 h-full absolute rounded-full transition-all duration-1000"
+      class="h-full absolute rounded-full transition-all duration-1000"
+      :class="plannedClasses"
       :style="{ width: plannedProgress }"
     />
     <div
@@ -61,9 +62,10 @@ export default defineComponent({
       return Math.max(this.required - this.earned - this.planned, 0);
     },
     computedClasses() {
-      const classesObj = { 'opacity-0': this.earnedProgress == '0%' };
-      classesObj[this.colorClass] = true;
-      return classesObj;
+      return { [this.colorClass]: true, 'opacity-0': this.earnedProgress == '0%' };
+    },
+    plannedClasses() {
+      return { [this.colorClass]: true, 'opacity-0': this.plannedProgress == '0%' };
     }
   },
 });
