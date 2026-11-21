@@ -72,9 +72,6 @@ jobs:
       - name: Start Docker containers
         run: |
           docker compose -f cypress/docker-compose.yml up -d
-      - name: Initialize DB tables
-        run: |
-          docker exec backend sh -c "uv run python app/create_tables.py"
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
