@@ -149,3 +149,51 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  backend-version:
+    needs: release
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.pinned.outputs.version }}
+    steps:
+      - name: Read the deployed backend version
+        id: pinned
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          version=$(gh api repos/lost-university/backend/contents/deployment/kustomization.yaml -H 'Accept: application/vnd.github.raw' \
+            | yq '.images[] | select(.name == "ghcr.io/lost-university/backend") | .newTag')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+  system-tests:
+    needs: backend-version
+    uses: ./.github/workflows/system-tests.yml
+    with:
+      backendVersion: ${{ needs.backend-version.outputs.version }}
+    secrets: inherit
+
+  deploy:
+    needs: [release, publish, system-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          repositories: backend
+      - name: Checkout backend
+        uses: actions/checkout@v4
+        with:
+          repository: lost-university/backend
+          ref: main
+          token: ${{ steps.app-token.outputs.token }}
+          path: backend
+      - name: Deploy web
+        working-directory: backend
+        env:
+          VERSION: ${{ needs.release.outputs.tag }}
+        run: ../.github/scripts/deploy.sh ghcr.io/lost-university/web "$VERSION"
