@@ -3,6 +3,7 @@
     :id="id"
     :module="module"
     :show-validation="false"
+    :reserve-bottom-left-space="hasRecommended"
   >
     <template #actions>
       <Handle
