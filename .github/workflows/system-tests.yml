@@ -52,7 +52,7 @@ jobs:
       POSTGRES_PASSWORD: postgres
       AUTHORIZED_PARTIES: http://localhost,http://localhost:5173,http://localhost:8080
       CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
-      VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
+      CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
     strategy:
       matrix:
         browser: [ chrome, firefox, edge ]
