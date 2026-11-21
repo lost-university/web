@@ -65,7 +65,9 @@ export default defineComponent({
       return { [this.colorClass]: true, 'opacity-0': this.earnedProgress == '0%' };
     },
     plannedClasses() {
-      return { [this.colorClass]: true, 'opacity-0': this.plannedProgress == '0%' };
+      // lighter than the earned bar on top of it, so planned and earned ECTS stay distinguishable
+      const opacity = this.plannedProgress == '0%' ? 'opacity-0' : 'opacity-40';
+      return { [this.colorClass]: true, [opacity]: true };
     }
   },
 });
