@@ -54,6 +54,7 @@ jobs:
       CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
       CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
     strategy:
+      fail-fast: false
       matrix:
         browser: [ chrome, firefox, edge ]
     steps:
@@ -72,6 +73,11 @@ jobs:
       - name: Start Docker containers
         run: |
           docker compose -f cypress/docker-compose.yml up -d
+      - name: Setup Firefox
+        if: matrix.browser == 'firefox'
+        uses: browser-actions/setup-firefox@v1
+        with:
+          firefox-version: "140.0"
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
