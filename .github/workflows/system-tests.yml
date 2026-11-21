@@ -21,7 +21,7 @@ jobs:
         env:
           REPOSITORY: '${{ github.repository }}'
         run: |
-          echo "repo=ghcr.io/${REPOSITORY,,}/web:local-system-tests" >> $GITHUB_OUTPUT
+          echo "repo=ghcr.io/${REPOSITORY,,}:local-system-tests" >> $GITHUB_OUTPUT
       - name: Build Docker image
         uses: docker/build-push-action@v6
         with:
