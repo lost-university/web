@@ -5,6 +5,16 @@ on:
       backendVersion:
         description: 'Backend version'
         required: true
+  # called by ci.yml before a web release is deployed
+  workflow_call:
+    inputs:
+      backendVersion:
+        type: string
+        required: true
+  # sent by the backend CI for every backend release, which is deployed if the tests pass
+  repository_dispatch:
+    types:
+      - backend-release
 
 jobs:
   build-frontend:
@@ -34,7 +44,7 @@ jobs:
     needs: build-frontend
     runs-on: ubuntu-latest
     env:
-      BACKEND_VERSION: ${{ github.event.inputs.backendVersion }}
+      BACKEND_VERSION: ${{ inputs.backendVersion || github.event.client_payload.version }}
       POSTGRES_HOST: postgres-db
       POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
@@ -90,3 +100,33 @@ jobs:
           name: cypress-screenshots-${{ matrix.browser }}
           path: cypress/screenshots/
           retention-days: 90
+
+  deploy-backend:
+    needs: system-tests
+    if: github.event_name == 'repository_dispatch'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-backend
+      cancel-in-progress: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          repositories: backend
+      - name: Checkout backend
+        uses: actions/checkout@v4
+        with:
+          repository: lost-university/backend
+          ref: main
+          token: ${{ steps.app-token.outputs.token }}
+          path: backend
+      - name: Deploy backend
+        working-directory: backend
+        env:
+          VERSION: ${{ github.event.client_payload.version }}
+        run: ../.github/scripts/deploy.sh ghcr.io/lost-university/backend "$VERSION"
