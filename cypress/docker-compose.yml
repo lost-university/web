@@ -2,7 +2,7 @@ name: cypress
 services:
   frontend:
     container_name: frontend
-    image: ghcr.io/janooski/web/web:local-system-tests
+    image: ghcr.io/lost-university/web:local-system-tests
     restart: always
     networks:
       - proxy
@@ -15,7 +15,7 @@ services:
       - "traefik.docker.network=cypress_proxy"
   backend:
     container_name: backend
-    image: ghcr.io/janooski/backend/backend:${BACKEND_VERSION}
+    image: ghcr.io/lost-university/backend:${BACKEND_VERSION}
     restart: always
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
