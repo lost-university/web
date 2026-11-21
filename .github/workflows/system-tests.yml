@@ -26,8 +26,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: false
-          build-args: |
-            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }}
           tags: ${{ steps.set-docker-tag.outputs.repo }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -57,8 +55,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: false
-          build-args: |
-            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }}
           tags: ${{ needs.build-frontend.outputs.tags }}
           load: true
           cache-from: type=gha
