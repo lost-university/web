@@ -51,6 +51,6 @@ describe('sharing of plans', () => {
 
   cy.get('[data-cy="semester-container"]').screenshot('sharingOfPlan.cy.ts/open-shared-plan');
 
-  cy.get('[data-cy=SavedPlansActionMenu-Delete-Button]').click({ force: true });
+  cy.deleteAllPlans();
   });
 })

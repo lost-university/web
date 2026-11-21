@@ -8,16 +8,7 @@ describe('multiple plans', () => {
   });
 
   afterEach(() => {
-    cy.get('body').then(($body) => {
-      if ($body.find('[data-cy=SavedPlans-List-Item]').length > 0) {
-        cy.get('[data-cy=SavedPlans-List-Item]').each(($el) => {
-          cy.wrap($el).within(() => {
-            cy.get('[data-cy=SavedPlansActionMenu-Menu-Button]').click({ force: true });
-            cy.get('[data-cy=SavedPlansActionMenu-Delete-Button]').click({ force: true });
-          });
-        });
-      }
-    });
+    cy.deleteAllPlans();
   });
 
   it('save and load plan', () => {
@@ -80,11 +71,10 @@ describe('multiple plans', () => {
 
     cy.get('[data-cy="semester-container"]').screenshot('plans.cy.ts/create-to-delete-plan');
 
-    cy.get("[data-cy=SavedPlans-List-Item").filter(`:contains("Test Plan: To Delete")`)
-      .first().within(() => {
-        cy.get('[data-cy=SavedPlansActionMenu-Menu-Button]').first().click()
-        cy.get('[data-cy=SavedPlansActionMenu-Delete-Button]').first().click()
-      });
+    cy.contains('[data-cy="SavedPlans-List-Item"]', "Test Plan: To Delete")
+      .find('[data-cy=SavedPlansActionMenu-Menu-Button]').first().click();
+    cy.contains('[data-cy="SavedPlans-List-Item"]', "Test Plan: To Delete")
+      .find('[data-cy=SavedPlansActionMenu-Delete-Button]').first().click();
 
     cy.contains('[data-cy="SavedPlans-List-Item"]', "Test Plan: To Delete").should('not.exist');
 
