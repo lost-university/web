@@ -24,11 +24,12 @@ jobs:
         with:
           app-id: ${{ secrets.RELEASE_APP_ID }}
           private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
-      # merged with the App token so the push to main starts CI and creates a release
+      # merged with the App token so the push to main starts CI and creates a release;
+      # --admin because gh refuses locally while a review is required (the App may bypass it), required checks still apply
       - name: Merge PR
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           GH_REPO: ${{ github.repository }}
           BRANCH: ${{ github.event.workflow_run.head_branch }}
           SHA: ${{ github.event.workflow_run.head_sha }}
-        run: gh pr merge "$BRANCH" --merge --match-head-commit "$SHA"
+        run: gh pr merge "$BRANCH" --merge --admin --match-head-commit "$SHA"
